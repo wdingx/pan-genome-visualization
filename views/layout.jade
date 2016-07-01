@@ -1,0 +1,84 @@
+doctype html
+html
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    script(src='javascripts/pace.min.js')
+    link(rel="stylesheet", type="text/css", href="dist/all.css")
+    // footer icon and font
+    link(rel='stylesheet', type='text/css', href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css')
+    title Micro-PanGenome-Analysis-Visualization
+  body
+    include navbar
+    .container
+      .row
+        br
+        br
+        br
+        #logo.col-md-2
+          img(src='images/pan-blue-noReads.svg', style='width:230;height:209px;')
+          .col-md-2
+        #dc-data-count.col-md-2
+          .alert.alert-info(role='alert') Species
+          #species-selector
+          .dc-data-count
+        #dc-straincount-chart.col-md-3
+          .alert.alert-info(role='alert') Number of genes 
+        #dc-geneLength-chart.col-md-3
+          .alert.alert-info(role='alert') Gene length distribution
+        .col-md-2
+          .alert.alert-info(role='alert') Core/Accessory genes
+          #dc-coreAcc-piechart  
+          .col-md-4
+            span#coreThreshold(data-toggle='tooltip', data-placement='bottom', title='coreThreshold ')
+              | cutoff:0.99
+          .col-md-6
+            #changeCoreThreshold
+      .row
+        .col-md-6
+          .alert.alert-info(role='alert') Gene cluster table
+          table#dc-data-table.table.table-striped.table(cellspacing='0', width='100%')
+        .col-md-6
+          #sequence_viewer_title Sequence viewer
+          #snippetDiv
+      #all_trees.row
+        .col-md-6
+          .alert.alert-info(role='alert')
+            | SNP tree viewer (SNPs in all core genes)
+          .row
+            .col-md-5
+              input#TreeViewSelect(type='checkbox', data-toggle='toggle', data-style='ios', data-on='circular', data-off='vertical', data-size='mini', data-onstyle='primary', data-offstyle='info')
+              input#LabelsToggle(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Labels', data-off='Labels', data-size='mini')
+              input#InnerNodeToggle(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='subtree', data-off='subtree', data-size='mini')
+              input#ScalesToggle(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Scale', data-off='Scale', data-size='mini')
+            #dropdown_list.col-md-4
+            .col-md-3
+              input.zoom-range(type='range', min='0.4', max='1', step='0.05')
+          .row
+            .col-md-2
+              br
+              br
+              br
+              svg#legend
+            .col-md-10
+              #mytree1
+        .col-md-6
+          #genetree_title
+            | Gene tree viewer (individual gene)
+          .row
+            .col-md-4
+              #searchStrain-group-btn.input-group
+                span.input-group-btn
+                  button#searchStrainBt.btn.btn-primary.btn-xs(type='button', data-toggle='tooltip', data-placement='bottom', title='search strain') search strain!
+                input#searchStrainInput.form-control.input-xs(type='text', placeholder='Search strain...', oninput='search(this.value)')
+            #tree-rotate-div.col-md-1
+              input#tree-rotate(type='checkbox', data-toggle='toggle', data-style='ios', data-on='left-right', data-off='right-left', data-size='mini', data-onstyle='primary', data-offstyle='info')
+          .row
+            #mytree2
+      .row
+        .col-md-12
+          .alert.alert-info(role='alert') Strain meta-info table
+          table#dc-data-table2.table.table-striped.table(cellspacing='0', width='100%')
+    include footer
+    block content
+    script(src='dist/all.js')

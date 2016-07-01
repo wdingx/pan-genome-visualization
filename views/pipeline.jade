@@ -1,0 +1,134 @@
+doctype html
+html
+  head
+    meta(charset='UTF-8')  
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet', type='text/css', href='stylesheets/bootstrap.min.css', media='screen')
+    link(rel='stylesheet', type='text/css', href='stylesheets/autohiding-navbar2.css', media='screen')
+    link(rel='stylesheet', type='text/css', href='stylesheets/footer-distributed-with-address-and-phones.css')
+    link(type='text/css', rel='stylesheet', href='stylesheets/page-appearance.css')
+
+    link(rel='stylesheet', type='text/css', href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css')
+    
+    title Micro-PanGenome-Analysis-Visualization
+   
+    style.
+      body {
+      position: relative;
+      }
+      ul.nav-pills {
+      top: 60px;
+      position: fixed;
+      }
+      div.col-sm-7 div {
+      /* height: 500px; */
+      font-size: 16px;
+      }
+      #section1,#DIAMOND,#orthAgogue,#MCL,#pan-genome_mapping,#etc {
+      color: #337AB7; background-color: #fff;}
+      @media screen and (max-width: 810px) {
+      #section1, #DIAMOND, #orthAgogue, #MCL,#pan-genome_mapping,#etc {
+      margin-left: 20px;
+      }
+      }
+  body
+    include navbar
+    .container
+      br
+      br
+      |     
+      .row
+        nav#myScrollspy.col-sm-2
+          ul.nav.nav-pills.nav-stacked
+            li.active
+              a(href='#section1')  pipeline overview
+            |           
+            li
+              a(href='#DIAMOND') DIAMOND
+            |           
+            li
+              a(href='#orthAgogue') orthAgogue
+            |           
+            li
+              a(href='#MCL') MCL
+            // <li><a href="#pan-genome_mapping">pan-genome mapping</a></li>
+            // <li><a href="#etc">etc</a></li>
+        |       
+        .col-sm-7
+          br
+          |         
+          .alert.alert-success(role='alert') Pipeline overview
+          |         
+          #section1
+            h4  Data source: RefSeq records from NCBI
+            |           
+            h4 Tools: DIAMOND + orthAgogue + MCL
+            |           
+            br
+            |           
+            .item
+              figure
+                img(src='./images/pipe-MPAV.png', alt='...', style='width:655px;height:665px;')
+                |               
+                br
+                |               
+                figcaption Fig.1 A overview of pan-genome analysis and mapping pipeline.
+          |         
+          #DIAMOND
+            .alert.alert-success(role='alert') DIAMOND
+            |           
+            p
+              | The all-against-all comparison of protein sequences from all strains is performed by a speedy and sensitive protein alignment software 
+              a(href='https://github.com/bbuchfink/diamond')
+                u DIAMOND
+              |  (Buchfink et al. 2015) , which applies a double indexing method to compute the list of seed and location information in both queries and references.
+            |           
+            .item
+              figure
+                img(src='./images/diamond.png', alt='...', style='width:875px;height:470px;')
+                |               
+                figcaption
+                  | Fig.2 DIAMOND, a double indexing approach using the list of seed and their location in both queries and references.
+                |               
+                a(href='http://ab.inf.uni-tuebingen.de/teaching/ws14/bioinf/13-BeyondBlast.pdf')
+                  u Figure origin 
+          |         
+          #orthAgogue
+            .alert.alert-success(role='alert') orthAgogue
+            |           
+            p
+              | The generated sequence similarities is then processed as a matrix storing alignment score for each sequence pair. This matrix can be regarded as a graph with nodes denoting protein sequences and edges interpreting sequence similarity, with weights further transformed from alignment scores into transition probabilities from one sequence to another.This step is conducted by orthAgogue, a computationally efficient software re-implemented based on OrthoMCL in C with parallelization (Ekseth et al. 2014).
+            //
+              div class="item">
+              <figure>
+              <img src="./images/Tribe-MCL-F2.large.jpg" alt="..." style="width:875px;height:470px;">
+              <figcaption>Fig.3 orthAgogue, building the transition probability matrix from sequence similarities.</figcaption>
+              </figure>
+              <a href="http://nar.oxfordjournals.org/content/30/7/1575.full"><U>Figure origin </U></a>
+              </div
+          |         
+          #MCL
+            .alert.alert-success(role='alert') MCL
+            |           
+            p
+              | In oder to detect gene clusters among multiple genomes, we further leverages a Markov chain and graph theory-based technique from MCL algorithm to simultaneously classify global relationships in  sequence similarity space.  (Van Dongen 2000; Enright et al. 2002). To conducting random walk simulations on a graph expressed as transition probabilities matrix , MCL iterates between matrix expansion operator which links different parts of the graph and matrix inflation operator which strengthens and weakens flows. The final matrix contains knowledge on all gene clusters.
+            |           
+            .item
+              figure
+                img(src='./images/mcl-svg.jpg', alt='...', style='width:547px;height:496px;')
+                |               
+                figcaption Fig.4 MCL, graph clustering using Markov chain and flow simulation.
+              |             
+              a(href='http://micans.org/mcl/index.html?sec_thesisetc')
+                u Figure origin 
+              |             
+              br
+              |             
+              a(href='https://www.cs.ucsb.edu/~xyan/classes/CS595D-2009winter/MCL_Presentation2.pdf')
+                u MCL notes 
+    include footer
+
+    script(src='javascripts/jquery.min.js')
+    script(src='javascripts/bootstrap.min.js')
+    script(src='javascripts/jquery.bootstrap-autohidingnavbar.min.js')
+    script(src='javascripts/call-autohidingnavbar.js')

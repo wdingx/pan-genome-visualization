@@ -1,0 +1,42 @@
+doctype html
+html
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet', type='text/css', href='stylesheets/bootstrap.min.css', media='screen')
+    link(rel='stylesheet', type='text/css', href='stylesheets/autohiding-navbar2.css', media='screen')
+    link(rel='stylesheet', type='text/css', href='stylesheets/footer-distributed-with-address-and-phones.css')
+    link(type='text/css', rel='stylesheet', href='stylesheets/page-appearance.css')
+
+    link(rel='stylesheet', type='text/css', href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css')
+    title Micro-PanGenome-Analysis-Mapping
+
+  body
+    include navbar
+    .container
+      .row
+        br
+        br
+        br
+        .col-sm-1
+        .col-sm-10
+          br
+          #components_interaction
+            .alert.alert-success(role='alert')
+              | Interactive pan-genomic data visualization
+            .item
+              img(data-gifffer='./images/overall2.gif', style='width:1180px;height:696px;')
+            br           
+        
+    include footer
+
+    script(src='javascripts/gifffer.min.js') 
+    script.
+      window.onload = function() {
+      Gifffer();
+      }
+
+    script(src='javascripts/jquery.min.js')
+    script(src='javascripts/bootstrap.min.js')
+    script(src='javascripts/jquery.bootstrap-autohidingnavbar.min.js')
+    script(src='javascripts/call-autohidingnavbar.js')
