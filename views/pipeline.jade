@@ -32,7 +32,7 @@ html
       }
       }
   body
-    include navbar
+    include navbar_pipeline
     .container
       br
       br
@@ -91,8 +91,10 @@ html
                   | Fig.2 DIAMOND, a double indexing approach using the list of seed and their location in both queries and references.
                 | 
                 a(href='http://ab.inf.uni-tuebingen.de/teaching/ws14/bioinf/13-BeyondBlast.pdf')
-                  u Figure origin
+                  u Image credit: Lecture notes by Daniel Huson, Tübingen University
           | 
+          br
+          br
           #orthAgogue
             .alert.alert-success(role='alert') orthAgogue
             | 
@@ -107,6 +109,8 @@ html
               <a href="http://nar.oxfordjournals.org/content/30/7/1575.full"><U>Figure origin </U></a>
               </div
           | 
+          br
+          br
           #MCL
             .alert.alert-success(role='alert') MCL
             | 
@@ -117,15 +121,16 @@ html
               figure
                 img(src='./images/mcl-svg.jpg', alt='...', style='width:547px;height:496px;')
                 | 
-                figcaption Fig.4 MCL, graph clustering using Markov chain and flow simulation.
+                figcaption Fig.4 Graph clustering using Markov chain and flow simulation (MCL).
               | 
               a(href='http://micans.org/mcl/index.html?sec_thesisetc')
-                u Figure origin
+                u Image Credit: Stijn van Dongen, Graph Clustering by Flow Simulation. PhD thesis, University of Utrecht, May 2000.
               | 
+              br
               br
               | 
               a(href='https://www.cs.ucsb.edu/~xyan/classes/CS595D-2009winter/MCL_Presentation2.pdf')
-                u MCL notes
+                u Lecture notes on MCL by Kathy Macropol, Arcadia University
     include footer
 
     script(src='javascripts/jquery.min.js')
