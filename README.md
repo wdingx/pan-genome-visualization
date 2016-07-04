@@ -1,14 +1,15 @@
 # Pan-genome analysis and visualization
 
-The exponentially increasing volume of new genome sequences has spurred researches on bacterial pan-genome, which embodies core genome shared by almost all strains, accessory genome only partly shared and strain-specific genes. Although several stand-alone softwares have already addressed different aspects of pan-genome analysis, yet there is still no web service for interactively visualizing and exploring pan-genomic data.
+In addition to vertical inheritance, bacteria frequently loose genes or take genes up from the environment. Even closely related bacterial genomes can differ in the presence of hundreds of genes and different genes don't necessesarily share a common phylogeny since individual genes can been acquired from distant strains and species.
+This mix of inheritance patterns makes phylogenetic analyis of bacteria challenging.
 
-MPAV is a web-based versatile toolkit for microbial pan-genome visualization and exploration. MPAV provide researchers with little computational background an ease-to-use and richly interactive platform to analyze, visualize, and interpret pan-genomic data.
+Although several stand-alone software are available for pan-genome analysis, visualizion, analysis and exploration of pan-genomes remains challenging.
 
-MPAV can efficiently identify core and pan-genome from large sets of genome sequences and integrate the determined core and accessory gene clusters in a well coordinated organization of gene table viewer, multiple alignment viewer and phylogenetic tree viewer.
+Microbial Pan-genome Analysis and Visualisation (MPAV) is meant to facilitate pan-genome research with an easy-to-use and interactive platform to explore and analyze pan-genomic data.
 
-MPAV also allows convenient visual comparison among core genome SNP phylogeny and single gene phylogeny to demonstrate gene presence and absence pattern as well as gene duplication.
+MPAV displays the pan-genome using connected visual components including a gene table viewer, multiple alignment viewer, and phylogenetic tree viewers. The pan-genome data structures are prepared by our [pan-genome-analysis](https://github.com/neherlab/pan-genome-analysis) pipeline, that efficiently identifies orthologous clusters from large sets of genome sequences and precomputes alignments, trees, and a number of informative statistics.
 
-MPAV is available via the Internet at http://pangenome.tuebingen.mpg.de
+MPAV is available online at [pangenome.tuebingen.mpg.de](http://pangenome.tuebingen.mpg.de)
 
 This repository refers to pan-genome visualization.
 ## Install npm packages:

@@ -30,7 +30,7 @@ html
       }
       }
   body(data-spy='scroll', data-target='#myScrollspy', data-offset='100')
-    include navbar 
+    include navbar_tutorial
     .container
       br
       br   
@@ -38,38 +38,38 @@ html
         nav#myScrollspy.col-sm-2
           ul.nav.nav-pills.nav-stacked
             li.active
-              a(href='#components_interaction') components interaction
+              a(href='#components_interaction') Interactive components
             li
-              a(href='#search_functions') search functions
+              a(href='#search_functions') Searching for genes
             li
-              a(href='#duplicated_genes') duplicated genes
+              a(href='#duplicated_genes') Duplications
             li
-              a(href='#diverse_genes') diverse genes
+              a(href='#diverse_genes') Diverse genes
             li
-              a(href='#unique_genes') unique genes
+              a(href='#unique_genes') Unique genes
             li
-              a(href='#annotation_inspection') annotation inspection
+              a(href='#annotation_inspection') Inspecting annotations
             li
-              a(href='#mutation_inspection') mutation inspection
+              a(href='#mutation_inspection') Mapping mutations
             li
-              a(href='#meta-info_pattern') meta-info pattern
+              a(href='#meta-info_pattern') Meta-information
         
         .col-sm-10
           br
           #components_interaction
             .alert.alert-success(role='alert')
-              | Exploring components interaction
+              | Exploring the interaction of different components
             .item
               img(data-gifffer='./images/overall2.gif', style='width:1180px;height:696px;')
             br
           #search_functions
-            .alert.alert-success(role='alert') Seeking genes using versatile summary statistics and annotations
+            .alert.alert-success(role='alert') Search genes by name or annotation
             p
             .item
               img(data-gifffer='./images/searchBy.gif', alt='...', style='width:1180px;height:696px;')
             br
           #duplicated_genes
-            .alert.alert-success(role='alert') Inspecting gene duplications
+            .alert.alert-success(role='alert') Spotting duplicated genes
             p
             .item
               img(data-gifffer='./images/dupli.gif', alt='...', style='width:1180px;height:696px;')
@@ -87,31 +87,31 @@ html
               img(data-gifffer='./images/unique.gif', alt='...', style='width:1180px;height:696px;')
             br
           #annotation_inspection
-            .alert.alert-success(role='alert')  Scrutinizing annotation differences of gene clusters 
+            .alert.alert-success(role='alert')  Inspecting the annotation of all genes in each clusters 
             p
             .item
               img(data-gifffer='./images/annotation.gif', alt='...', style='width:1180px;height:696px;')
             br
           #mutation_inspection
-            .alert.alert-success(role='alert') Examining amino acid and nucleotide mutations
+            .alert.alert-success(role='alert') Examining amino acid and nucleotide mutations in the gene tree
             p
             .item
               img(data-gifffer='./images/muts.gif', alt='...', style='width:1180px;height:696px;')
             br
           #meta-info_pattern
-            .alert.alert-success(role='alert') Discovering meta-information pattern
+            .alert.alert-success(role='alert') Displaying strain specific meta-information on the core genome tree
             p
             img(data-gifffer='./images/interactive-metaInfo-pattern.gif', alt='...', style='width:1180px;height:696px;') 
     
     include footer
 
-    script(src='javascripts/gifffer.min.js') 
+    script(src='javascripts/third_party/gifffer.min.js') 
     script.
       window.onload = function() {
       Gifffer();
       }
 
-    script(src='javascripts/jquery.min.js')
-    script(src='javascripts/bootstrap.min.js')
-    script(src='javascripts/jquery.bootstrap-autohidingnavbar.min.js')
-    script(src='javascripts/call-autohidingnavbar.js')
+    script(src='javascripts/third_party/jquery.min.js')
+    script(src='javascripts/third_party/bootstrap.min.js')
+    script(src='javascripts/third_party/jquery.bootstrap-autohidingnavbar.min.js')
+    script(src='javascripts/third_party/call-autohidingnavbar.js')
