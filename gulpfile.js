@@ -57,5 +57,4 @@ gulp.task('miniCSS', function() {
 	    .pipe(gulp.dest('./public/dist/'))
 });
 
-gulp.task('default', ['miniJS'], function() {
-}); //,'miniCSS'
+gulp.task('default', ['miniJS', 'miniCSS'], function() {});

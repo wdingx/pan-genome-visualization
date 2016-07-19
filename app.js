@@ -1,4 +1,5 @@
-var express = require('express');//var expose = require('express-expose');
+var compression = require('compression');
+var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -15,6 +16,8 @@ app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     next()
   });
+
+app.use(compression());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
