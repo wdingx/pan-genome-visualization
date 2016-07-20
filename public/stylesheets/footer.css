@@ -81,7 +81,7 @@
 }
 
 .footer-distributed .footer-center i.fa-envelope{
-	font-size: 17px;
+	font-size: 17px
 	line-height: 38px;
 }
 
@@ -100,8 +100,8 @@
 }
 
 .footer-distributed .footer-center p a{
-	color:  #5383d3;
-	text-decoration: none;;
+	color:  #ffffff; /* #5383d3; */
+	text-decoration: none; /**/
 }
 
 
@@ -171,3 +171,6 @@
 	}
 
 }
+/* wding */
+
+text-decoration: underline; 

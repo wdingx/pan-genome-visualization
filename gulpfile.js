@@ -46,7 +46,7 @@ gulp.task('miniCSS', function() {
              './public/stylesheets/bootstrap.min.css',
              './public/stylesheets/bootstrap-toggle.min.css',
              './public/stylesheets/msa-new.css',
-             './public/stylesheets/footer-distributed-with-address-and-phones.css',
+             './public/stylesheets/footer.css',
              './public/stylesheets/page-appearance.css',
              './public/stylesheets/autohiding-navbar2.css',
              './public/stylesheets/d3-tip.css','./public/stylesheets/dc.css',
