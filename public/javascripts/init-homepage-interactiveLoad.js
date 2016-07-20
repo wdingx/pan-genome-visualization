@@ -516,8 +516,10 @@ function msaLoad (aln_path,scheme_type) {
       importURL: aln_path,
     };
 
-    opts.vis = {conserv: false, overviewbox: false};
-    opts.zoomer = {alignmentWidth:'auto',alignmentHeight: 250,rowHeight: 18, labelWidth: 100,labelFontsize: '13px',labelIdLength: 20, menuFontsize: '12px',menuMarginLeft: '3px', menuPadding: '3px 4px 3px 4px', menuItemFontsize: '14px', menuItemLineHeight: '14px',
+    opts.vis = {conserv: false, overviewbox: false, labelId: false};
+    opts.zoomer = {alignmentWidth:'auto',alignmentHeight: 250,rowHeight: 18, labelWidth: 100, labelNameLength: 150,
+                   labelNameFontsize: '10px',labelIdLength: 20, menuFontsize: '12px',
+                   menuMarginLeft: '3px', menuPadding: '3px 4px 3px 4px', menuItemFontsize: '14px', menuItemLineHeight: '14px',
         //boxRectHeight: 2,boxRectWidth: 0.1,overviewboxPaddingTop: 20
     };
     opts.colorscheme={scheme: scheme_type} //{scheme: 'taylor'};//{scheme: 'nucleotide'};

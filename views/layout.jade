@@ -7,7 +7,7 @@ html
     link(rel="stylesheet", type="text/css", href="dist/all.css")
     // footer icon and font
     link(rel='stylesheet', type='text/css', href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css')
-    title Micro-PanGenome-Analysis-Visualization
+    title Microbial-PanGenome-Analysis-Visualization
   body
     include navbar
     .container
@@ -39,12 +39,12 @@ html
           .alert.alert-info(role='alert') Gene cluster table
           table#dc-data-table.table.table-striped.table(cellspacing='0', width='100%')
         .col-md-6
-          #sequence_viewer_title Sequence viewer
+          #sequence_viewer_title Sequence alignment
           #snippetDiv
       #all_trees.row
         .col-md-6
           .alert.alert-info(role='alert')
-            | SNP tree viewer (SNPs in all core genes)
+            | Strain tree (based on SNPs in all core genes)
           .row
             .col-md-5
               input#TreeViewSelect(type='checkbox', data-toggle='toggle', data-style='ios', data-on='circular', data-off='vertical', data-size='mini', data-onstyle='primary', data-offstyle='info')
@@ -64,7 +64,7 @@ html
               #mytree1
         .col-md-6
           #genetree_title
-            | Gene tree viewer (individual gene)
+            | Gene tree (individual gene)
           .row
             .col-md-4
               #searchStrain-group-btn.input-group

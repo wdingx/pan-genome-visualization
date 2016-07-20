@@ -42,10 +42,10 @@ var render = function (div,treeJsonPath,svg) {
 
     //## show MSA/Gene tree title with geneCluster Id
     function showAlert(message) {
-          $('#genetree_title').html("<div class='alert alert-info' role='alert'>Gene tree viewer | "+message.split('/').pop().replace(/.tree.json/, "")+ ' | ' +ann_majority +" </div>");
+          $('#genetree_title').html("<div class='alert alert-info' role='alert'>Gene tree | "+message.split('/').pop().replace(/.tree.json/, "")+ ' | ' +ann_majority +" </div>");
           $('#genetree_title').show();
 
-          $('#sequence_viewer_title').html("<div class='alert alert-info' role='alert'> Sequence alignment viewer | "+message.split('/').pop().replace(/.tree.json/, "")+ ' | ' +ann_majority +" </div>");
+          $('#sequence_viewer_title').html("<div class='alert alert-info' role='alert'> Sequence alignment | "+message.split('/').pop().replace(/.tree.json/, "")+ ' | ' +ann_majority +" </div>");
           $('#sequence_viewer_title').show();          
         }
     // if tree file exists, show the title with geneCluster Id
