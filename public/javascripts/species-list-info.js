@@ -1,7 +1,6 @@
 var species_dt={
-'Papn':'Pseudomonas aeruginosa',
-'Sasm':'Staphylococcus aureus',
-'Campy':'Campylobacter',
-'Pmnr':'Prochlorococcus marinus roary',
-'Pmnawg':'Prochlorococcus marinus Pmnawg',
-'Pmnb':'Prochlorococcus marinus Pmnb'};
+'Sa':'Staphylococcus aureus  (74)', 
+'Pa':'Pseudomonas aeruginosa  (56)'
+};
+
+
