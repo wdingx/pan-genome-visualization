@@ -1,3 +1,35 @@
+/*msa-label-name fixed  ---begin*/
+/* this should be used cooperatively with msa-new.js */
+.biojs_msa_labels.name-scroller-wrapper {
+    /* width: 50px;  */
+    overflow: auto;
+    overflow-y: hidden;
+    outline: 1px solid white;}
+
+.name-scroller {
+    /* width: 170px; 
+    height: 100px;*/
+    overflow: auto;
+    overflow-y: hidden;
+    background: white;
+}
+
+/* Chrome, only white
+ .biojs_msa_labels::-webkit-scrollbar {
+  display: none; 
+}*/
+
+/*Targeting only Firefox, deactivate scrollbar
+@-moz-document url-prefix() {
+    .biojs_msa_labels {
+        overflow: auto;
+        width: 150px;
+    }; 
+}*/
+/*msa-label-name fixed  ---end*/
+
+
+/*menubar fix*/
 .smenubar .smenubar_alink {
   background: #3498db;
   background-image: -webkit-linear-gradient(top,#3498db,#2980b9);
