@@ -5,11 +5,11 @@ This mix of inheritance patterns makes phylogenetic analyis of bacteria challeng
 
 Although several stand-alone software are available for pan-genome analysis, visualizion, analysis and exploration of pan-genomes remains challenging.
 
-Microbial Pan-genome Analysis and Visualisation (panX) is meant to facilitate pan-genome research with an easy-to-use and interactive platform to explore and analyze pan-genomic data.
+Pan-genome Analysis and Exploration (panX) is meant to facilitate pan-genome research with an easy-to-use and interactive platform to explore and analyze pan-genomic data.
 
 panX displays the pan-genome using connected visual components including a gene table viewer, multiple alignment viewer, and phylogenetic tree viewers. The pan-genome data structures are prepared by our [pan-genome-analysis](https://github.com/neherlab/pan-genome-analysis) pipeline, that efficiently identifies orthologous clusters from large sets of genome sequences and precomputes alignments, trees, and a number of informative statistics.
 
-panX is available online at [pangenome.tuebingen.mpg.de](http://pangenome.tuebingen.mpg.de)
+panX is available online at [pangenome.tuebingen.mpg.de](http://pangenome.de)
 
 This repository refers to pan-genome visualization.
 ## Install npm packages:
