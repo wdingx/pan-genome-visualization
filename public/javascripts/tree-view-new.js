@@ -8,7 +8,7 @@ var size_node_leaf=3.5,
     size_node_inner=2,
     size_node_leaf_highlight = 8;
 var size_font_inner_label=10,
-    size_font_leaf_label=12;
+    size_font_leaf_label=10;
 var height_nodeLabel=12;
 
 //# label- and node-color (fill,stroke)
@@ -42,10 +42,10 @@ var render = function (div,treeJsonPath,svg) {
 
     //## show MSA/Gene tree title with geneCluster Id
     function showAlert(message) {
-          $('#genetree_title').html("<div class='alert alert-info' role='alert'>Gene tree | "+message.split('/').pop().replace(/.tree.json/, "")+ ' | ' +ann_majority +" </div>");
+          $('#genetree_title').html("<div class='alert alert-info' role='alert'>Gene tree | "+message.split('/').pop().replace(/_tree.json/, "")+ ' | ' +ann_majority +" </div>");
           $('#genetree_title').show();
 
-          $('#sequence_viewer_title').html("<div class='alert alert-info' role='alert'> Sequence alignment | "+message.split('/').pop().replace(/.tree.json/, "")+ ' | ' +ann_majority +" </div>");
+          $('#sequence_viewer_title').html("<div class='alert alert-info' role='alert'> Sequence alignment | "+message.split('/').pop().replace(/_tree.json/, "")+ ' | ' +ann_majority +" </div>");
           $('#sequence_viewer_title').show();          
         }
     // if tree file exists, show the title with geneCluster Id
@@ -282,6 +282,28 @@ var render = function (div,treeJsonPath,svg) {
         //console.log(JSON.stringify(tree_data));
         
         var tree_data = data;
+	function count_leafs(node){
+	    if (typeof node.children==='undefined'){
+		return 1;
+	    }else{
+		var lc=0;
+		for (var ci=0; ci<node.children.length;ci++){
+		    lc+=count_leafs(node.children[ci]);
+		}
+		return lc
+	    }
+	}
+	function set_sizes(count){
+	    height_nodeLabel = (count<60)?12:(3+540/count);
+	    size_font_leaf_label = (count<60)?12:(3+540/count);
+	    size_font_inner_label= size_font_leaf_label;
+	    size_node_leaf= (count<60)?3:(2 + 60/count);
+	    size_node_inner= (count<60)?3:(180/count);
+	    size_node_leaf_highlight = (count<60)?8:(4 + 240/count);
+	}
+
+	var leaf_count=count_leafs(tree_data);
+	set_sizes(leaf_count);
 
         var internal_label = tnt.tree.label.text()
             .text(function (node) {
@@ -303,7 +325,9 @@ var render = function (div,treeJsonPath,svg) {
         
         var leaf_label = tnt.tree.label.text()
             .fontsize(size_font_leaf_label)
-            .color(color_leaf_label) 
+            .color(color_leaf_label)
+	    //.text(function(d){return (d.strainName=='')?'A':'B';})
+	    .text(function(d){return (typeof d.data().strainName==='undefined' || d.data().strainName=='' || d.data().strainName=='unknown')?d.data().name:d.data().strainName;})
             /*function (node) { //xx
                 if (Object.keys(node_color_tmp).length !== 0) {
                     return node_color_tmp[node.name]
@@ -404,7 +428,7 @@ var render = function (div,treeJsonPath,svg) {
             //...layout.radial()... or.vertical()
             .width(width).scale(scale_layout)
             )
-            .duration(500)//2000
+            .duration(0)//2000
 
         //## The visualization is started at this point
         tree_vis(document.getElementById(div));
@@ -580,13 +604,32 @@ var render = function (div,treeJsonPath,svg) {
 
 
 render( "mytree1",treeJsonPath,svg1);
-//render ( 'mytree2',aln_file_path+'NZ_CP012001-1-1834888-1835742.tree.json',svg2);
+//render ( 'mytree2',aln_file_path+'NZ_CP012001-1-1834888-1835742_tree.json',svg2);
 
 //console.log(Initial_MsaGV)
-//console.log(aln_file_path+Initial_MsaGV.split('.')[0]+'.tree.json');
-//render ( 'mytree2', aln_file_path+Initial_MsaGV.split('.')[0]+'.tree.json',svg2); 
+//console.log(aln_file_path+Initial_MsaGV.split('.')[0]+'_tree.json');
+//render ( 'mytree2', aln_file_path+Initial_MsaGV.split('.')[0]+'_tree.json',svg2); 
 //render (document.getElementById("mytree2"),treeJsonPath,svg2);
 
+//## search strain 
+function search(val) {
+    var searchStr = val.toLowerCase();
+    function nodeMatch(d){
+	var name = d.name.toLowerCase();
+	var strainName = (typeof d.strainName==='undefined')?'':d.strainName.toLowerCase();
+	return ((name.indexOf(searchStr) > -1 || strainName.indexOf(searchStr) >-1 ) && val.length != 0);
+    }
+
+    // adjust style of matches
+    d3.selectAll("circle").filter(function(d){return nodeMatch(d);})
+        .style("fill", function (){return color_leaf_node_highlight;})
+        .style("r", function (){return size_node_leaf_highlight;})
+    // adjust style of non matches
+    d3.selectAll("circle").filter(function(d){return !nodeMatch(d);})
+        .style("fill", function (d){return node_color_tmp[d.name];})
+        .style("r", function (){return size_node_leaf;})
+}
+/*
 //## search strain 
 function search(val) {
     d3.selectAll("circle")
@@ -601,7 +644,7 @@ function search(val) {
                 return size_node_leaf_highlight;} 
         })
 }
-
+*/
 // ## zoom function 
 $(window).load(function(){
       //$("#mytree1").panzoom({
