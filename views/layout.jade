@@ -5,9 +5,12 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     script(src='javascripts/third_party/pace.min.js')
     link(rel="stylesheet", type="text/css", href="dist/all.css")
+
     // footer icon and font
     link(rel='stylesheet', type='text/css', href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css')
-    title Microbial-PanGenome-Analysis-Visualization
+    //link(rel='stylesheet', type='text/css', href='bower_components/font-awesome/css/font-awesome.min.css')
+    link(rel="icon", type="image/png", href="images/pan-blue.png", sizes="32x32")
+    title panX
   body
     include navbar
     .container
@@ -44,7 +47,7 @@ html
       #all_trees.row
         .col-md-6
           .alert.alert-info(role='alert')
-            | Strain tree (based on SNPs in all core genes)
+            | Strain tree (SNPs in all core genes)
           .row
             .col-md-5
               input#TreeViewSelect(type='checkbox', data-toggle='toggle', data-style='ios', data-on='circular', data-off='vertical', data-size='mini', data-onstyle='primary', data-offstyle='info')
@@ -71,10 +74,17 @@ html
                 span.input-group-btn
                   button#searchStrainBt.btn.btn-primary.btn-xs(type='button', data-toggle='tooltip', data-placement='bottom', title='search strain') search strain!
                 input#searchStrainInput.form-control.input-xs(type='text', placeholder='Search strain...', oninput='search(this.value)')
-            #tree-rotate-div.col-md-1
+            #tree-rotate-div.col-md-2
               input#tree-rotate(type='checkbox', data-toggle='toggle', data-style='ios', data-on='left-right', data-off='right-left', data-size='mini', data-onstyle='primary', data-offstyle='info')
+            #dropdown_list2.col-md-4
           .row
-            #mytree2
+            .col-md-10
+              #mytree2            
+            .col-md-2
+              br
+              br
+              br
+              svg#legend2
       .row
         .col-md-12
           .alert.alert-info(role='alert') Strain meta-info table
