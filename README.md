@@ -20,5 +20,9 @@ npm install
 ```
 node ./bin/www
 ```
+## Have fun!
+```
+http://localhost:8000/
+```
 ![MPAV](/web-demo.gif)
 
