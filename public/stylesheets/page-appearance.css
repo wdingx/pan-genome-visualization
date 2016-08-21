@@ -180,14 +180,11 @@ table.dataTable thead > tr > th {
 }
 
 /* dataTable childRow */
-td.ann-details-control, td.dup-details-control {
+td.ann-details-control, td.dup-details-control, td.geneName-details-control {
     background: url('../images/childRow_details_open.png') no-repeat center center;
     cursor: pointer;
 }
-tr.shown td.ann-details-control {
-    background: url('../images/childRow_details_close.png') no-repeat center center;
-}
-tr.shown td.dup-details-control {
+tr.shown td.ann-details-control, tr.shown td.dup-details-control, tr.shown td.geneName-details-control {
     background: url('../images/childRow_details_close.png') no-repeat center center;
 }
 
