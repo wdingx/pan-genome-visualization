@@ -235,7 +235,10 @@ var render = function (div,treeJsonPath,svg) {
 
             //var nodeAttriPath="./dataset/Sa-tnt-dAttri.json" ;  
             d3.json(path_datatable2, function(error, data) {
-                var newdata={};
+                var data=data['data']
+                for (var i=0;i<data.length;i++) {
+                    data[data[i]['accession']]=data[i]
+                } 
 
                 function RefreshTreeTable() {
                     var n=[];
