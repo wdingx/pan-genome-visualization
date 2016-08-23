@@ -1,1 +1,0 @@
-var meta_set = {"collection_date": ["1979", "unknown", "1988", "2014", "2009", "2011", "2013", "2012"], "host": ["Homo sapiens", "unknown", "rice"], "country": ["Malaysia", "Netherlands", "China", "USA", "Japan", "unknown", "India"]};var meta_display_set = {"collection_date": "collection_date", "host": "host", "country": "country"};
