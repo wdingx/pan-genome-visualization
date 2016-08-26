@@ -23,6 +23,7 @@ function assign_color(color_set) {
 var metaColor_sets = {}; // dict:{ 'host':hostColor,'country':countryColor}
 var metaColor_set_keys = {}; //## keep the original key order
 //## assign color to each item in each meta-info type
+delete meta_set['strainName']
 var meta_types = Object.keys(meta_set); // ['geo','host']
 for (j = 0; j < meta_types.length; j++) {
     var tmp_meta_color_set = {};
