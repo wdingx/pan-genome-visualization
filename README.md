@@ -17,7 +17,7 @@ This repository refers to pan-genome visualization.
 ```
 npm install
 ```
-## Concatenate and minify JS and CSS files:
+## Prepare JS and CSS files:
 ```
 gulp
 ```
@@ -30,12 +30,14 @@ node ./bin/www
 http://localhost:8000/
 ```
 This shows the beauty and power of the panX visualization and exploration, even if  [only one gene cluster](https://github.com/neherlab/pan-genome-visualization/tree/master/public/dataset/Sa/geneCluster) is included in the repository.
-Moreover, for your own species:
+![panX](/web-demo.gif)
+
+Moreover, for your own pan-genome:
 ## Send your own data to the local server
 After finishing the pan-genome-analysis pipeline, please use the script [link-to-server.py](https://github.com/neherlab/pan-genome-analysis/blob/master/link-to-server.py)  to transfer your data to the local server. 
 Notes: the paths in the script need to be customized.
 ```
 python link-to-server.py YourSpecies
 ```
-![panX](/web-demo.gif)
+
 
