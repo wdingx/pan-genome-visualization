@@ -29,7 +29,8 @@ node ./bin/www
 ```
 http://localhost:8000/
 ```
-This shows the beauty and power of the panX visualization and exploration, even if  [only one gene cluster](https://github.com/neherlab/pan-genome-visualization/tree/master/public/dataset/Sa/geneCluster) is included in the repository.
+It shows the beauty and power of the panX visualization and exploration, even though  [only one gene cluster](https://github.com/neherlab/pan-genome-visualization/tree/master/public/dataset/Sa/geneCluster) is included in the repository.
+
 ![panX](/web-demo.gif)
 
 Moreover, for your own pan-genome:
@@ -39,5 +40,9 @@ Notes: the paths in the script need to be customized.
 ```
 python link-to-server.py YourSpecies
 ```
-
+## Add your own page ([add-new-pages-repo.sh](https://github.com/neherlab/pan-genome-visualization/blob/master/add-new-pages-repo.sh))
+```
+bash add-new-pages-repo.sh your_species_prefix
+```
+Restart your server and enjoy your own interactive pan-genome dashboard!
 
