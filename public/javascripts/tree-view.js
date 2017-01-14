@@ -283,7 +283,6 @@ var render = function (div,treeJsonPath,svg) {
         //d3.text("./dataset/SNP_whole_matrix.newick", function(newick_file){});
         //var tree_data = tnt.tree.parse_newick(newick_file);
         //console.log(JSON.stringify(tree_data));
-        
         var tree_data = data;
 	function count_leafs(node){
 	    if (typeof node.children==='undefined'){
@@ -296,12 +295,13 @@ var render = function (div,treeJsonPath,svg) {
 		return lc
 	    }
 	}
+
 	function set_sizes(count){
 	    height_nodeLabel = (count<60)?12:(3+540/count);
 	    size_font_leaf_label = (count<60)?12:(3+540/count);
 	    size_font_inner_label= size_font_leaf_label;
 	    size_node_leaf= (count<60)?3:(2 + 60/count);
-	    size_node_inner= (count<60)?3:(180/count);
+	    size_node_inner= (count<60)?2.2:(180/count);
 	    size_node_leaf_highlight = (count<60)?8:(4 + 240/count);
 	}
 
