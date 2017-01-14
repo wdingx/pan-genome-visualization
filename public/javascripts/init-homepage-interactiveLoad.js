@@ -1,12 +1,18 @@
 var winInnerWidth = window.innerWidth;
 var init_core_threshold=0.99;
+//var color_genePresence='blue', color_geneAbsence='red';
+//var color_genePresence='#3A89EA', color_geneAbsence='#EA5833';
+//var color_genePresence='#1F69C4', color_geneAbsence='#DB2C11';
+var color_genePresence='#005BCC', color_geneAbsence='#E01F1F';//'#D82400';
+
 //## tree style tmp
 var node_color_tmp={},
     link_color_tmp={}, 
     link_width_tmp={}, 
     link_dasharray_tmp={},
     Initial_MsaGV='';
-var geneId_GV='';
+var geneId_GV='',
+    geneclusterID_GV='';
 var ann_majority= '';
 
 //## core_genome threshold slider
@@ -113,6 +119,7 @@ var meta_table_columns= Object.keys(meta_display_set);
 meta_table_columns.unshift('accession');
 creat_dataTable("#dc-data-table2",meta_table_columns);
 
+
 //## creat multiselect dropdown for dataTables
 var creat_multiselect = function (div, columns_set) {
     var select_panel = d3.select(div);
@@ -135,12 +142,12 @@ function updatePresence(geneIndex) {
         if ( (d.name.indexOf('NODE_')!=0) && (d.name!='')) {
             if (d.genePresence[parseInt(geneIndex)-1]=='1') {
             //console.log(d.genePresence[geneIndex]);
-                node_color_tmp[d.name]='blue';
-                return 'blue';
+                node_color_tmp[d.name]= color_genePresence;
+                return color_genePresence;  
             }
             else {
-                node_color_tmp[d.name]='red';
-                return 'red';
+                node_color_tmp[d.name]=color_geneAbsence;
+                return color_geneAbsence;
             }
         }
     });
@@ -175,10 +182,10 @@ function updateGainLossEvent(geneIndex) {
     link
     .style('stroke', function(d) {
         var event_type = geneGainLoss_Dt[d.target.name][parseInt(geneIndex)-1];
-        if (event_type=='2') {return "red"}
-        else if (event_type=='0') {return "red"}
-        else if (event_type=='1') {return "blue"}
-        else if (event_type=='3') {return "blue"}
+        if (event_type=='2') {return color_geneAbsence }
+        else if (event_type=='0') {return color_geneAbsence }
+        else if (event_type=='1') {return color_genePresence}
+        else if (event_type=='3') {return color_genePresence}
 
     })
     .style("stroke-width", function (d) {
@@ -345,11 +352,37 @@ var chartExample = {
                     ' <br/> <a href="javascript:dc.filterAll(); dc.renderAll();"" style="font-size:20px"> Clear filters </a>',
                 all: 'All records selected. Please click on the graph to apply filters.'
             });
-
+            
+    var buttonCommon = {
+        exportOptions: {
+            format: {
+                body: function ( data, column, row, node ) {
+                    // Strip $ from salary column to make it numeric
+                    return column === 5 ?
+                        data.replace( /[$,]/g, '' ) :
+                        data;
+                }
+            }
+        }
+    };
         //## datatable configuration
         datatable = $('#dc-data-table').DataTable({         
             responsive: true,
-            //buttons: [ 'copyHtml5','excelHtml5','csvHtml5','pdfHtml5'],//
+            /*dom: 'Bfrtip',
+            buttons: [
+                $.extend( true, {}, buttonCommon, {
+                    extend: 'copyHtml5'
+                } ),
+                $.extend( true, {}, buttonCommon, {
+                    extend: 'excelHtml5'
+                } ),
+                $.extend( true, {}, buttonCommon, {
+                    extend: 'pdfHtml5'
+                } )
+            ],*/
+            //dom: 'Bfrtip',
+            //buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+            //buttons: [ 'copyHtml5','excelHtml5','csvHtml5','pdfHtml5'],
             'search': true,
             'paging': true,
             //'pagingType': 'full_numbers',
@@ -363,7 +396,7 @@ var chartExample = {
             "serverSide": true,*/
             'columnDefs': dc_dataTable_columnDefs_config,
             // order by count (desc) and geneId (asc)
-            "order": [[2, 'desc' ],[12, 'asc' ]]
+            "order": [[2, 'desc' ],[9, 'asc' ]]
         });
 
         $('<span style="display:inline-block; width: 10px;"></span>').appendTo('div#dc-data-table_length.dataTables_length');
@@ -413,10 +446,10 @@ var chartExample = {
             }  
         });
 
-        var tableTools = new $.fn.dataTable.TableTools( datatable, {
+        /*var tableTools = new $.fn.dataTable.TableTools( datatable, {
             sRowSelect: "os",
             aButtons: []
-        } );
+        } );*/
 
         $( tableTools.fnContainer() ).insertBefore('div.dataTables_wrapper');/**/
 
@@ -450,7 +483,10 @@ var chartExample = {
             ann_majority=data[0].ann;
             chartExample.initChart(data);
             msaLoad(aln_file_path+Initial_MsaGV,'taylor'); //msaLoad(aln_file_path+speciesAbbr+'-SNP_whole_matrix.aln');
-            render ( 'mytree2',aln_file_path+Initial_MsaGV.split('_aa')[0]+'_tree.json',svg2);
+            geneTree_name=Initial_MsaGV.split('_aa')[0]+'_tree.json'
+            render ( 'mytree2',aln_file_path+geneTree_name, svg2);
+            //## download-link
+            $('<a id="download_geneTree_href" href="/download/dataset/'+speciesAbbr+'/geneCluster/'+geneTree_name+'"><i class="fa fa-arrow-circle-o-down fa-5" aria-hidden="true"></i></a>').appendTo('div#download-geneTree');
         })
     }
 };
@@ -582,8 +618,12 @@ function clickShowMsa (datatable) {
         var svg2=d3.select('#mytree2');
         svg2.selectAll("*")
             .remove();
-        svg2 = d3.select('#mytree2')
-        render ('mytree2',aln_file_path+data['msa'].split('_aa')[0]+'_tree.json',svg2);
+        svg2 = d3.select('#mytree2');
+        geneTree_name=data['msa'].split('_aa')[0]+'_tree.json'
+        render ('mytree2', aln_file_path+geneTree_name, svg2);
+        //$('a#download_geneTree_href').href('new text');
+        $('a#download_geneTree_href').attr('href', '/download/dataset/'+speciesAbbr+'/geneCluster/'+geneTree_name)
+
     };
 
     //## update the selection in dropdown list
