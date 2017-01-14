@@ -1,5 +1,4 @@
-var compression = require('compression');
-var express = require('express');
+var express = require('express');//var expose = require('express-expose');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -8,7 +7,8 @@ var bodyParser = require('body-parser');
 var requireDir = require('require-dir');
 var routes = requireDir('./routes/'); // www.npmjs.org/package/require-dir
 var app = express();
-
+var compression = require('compression');
+app.use(compression());
 //"save loaded data to the global namespace"
 //"To enable cross-domain requests, have the server set the header Access-Control-Allow-Origin."
 app.all('*', function(req, res, next) {
@@ -17,7 +17,16 @@ app.all('*', function(req, res, next) {
     next()
   });
 
-app.use(compression());
+if (0) {
+  var auth = require('http-auth');
+  var basic = auth.basic({
+          realm: "pre-release version for VIPs"
+      }, function (username, password, callback) { // Custom authentication method.
+          callback(username === "1" && password === "2");
+      }
+  ); // !! not safe
+  app.use(auth.connect(basic));
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
