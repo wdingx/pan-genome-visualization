@@ -11,8 +11,7 @@ var node_color_tmp={},
     link_width_tmp={}, 
     link_dasharray_tmp={},
     Initial_MsaGV='';
-var geneId_GV='',
-    geneclusterID_GV='';
+var geneId_GV='', geneclusterID_GV='';
 var ann_majority= '';
 
 //## core_genome threshold slider
@@ -51,86 +50,6 @@ var creat_dropdown_menu = function (div, species_dt) {
     }
 };
 creat_dropdown_menu('#species-selector', species_dt)
-
-//## dc_DataTables configuration
-/*var dc_dataTable_columnDefs_config=[ 
-    {'targets': 0,'defaultContent': '<button type="button" class="btn btn-info btn-xs" >aa </button>'},
-    {'targets': 1,'defaultContent': '<button type="button" class="btn btn-primary btn-xs" >nuc</button>'},
-    {'targets': 2,'data':'count'},
-    {'targets': 3,'defaultContent': '','data':null, 'className': 'dup-details-control', 'orderable': false},
-    {'targets': 4,'data':'dupli'},
-    {'targets': 5,'data':'divers'},
-    {'targets': 6,'data':'event'},
-    {'targets': 7,'data':'geneLen'},
-    {'targets': 8,'defaultContent': '','data':null, 'className': 'ann-details-control', 'orderable': false},
-    {'targets': 9,'data':'ann'},
-    {'targets': 10,'data':'geneId','visible': false},
-    {'targets': 11,'data':'allAnn','visible': false},
-    {'targets': 12,'defaultContent': '','data':'locus','visible': false}
-];*/
-
-//## dc_DataTables configuration
-var dc_dataTable_columnDefs_config=[ 
-    {'targets': 0,'defaultContent': '<button type="button" class="btn btn-info btn-xs" >aa </button>'},
-    {'targets': 1,'defaultContent': '<button type="button" class="btn btn-primary btn-xs" >nuc</button>'},
-    {'targets': 2,'data':'count'},
-    {'targets': 3,'defaultContent': '','data':null, 'className': 'dup-details-control', 'orderable': false},
-    {'targets': 4,'data':'dupli'},
-    {'targets': 5,'data':'divers'},
-    {'targets': 6,'data':'event'},
-    {'targets': 7,'data':'geneLen'},
-    {'targets': 8,'defaultContent': '','data':null, 'className': 'geneName-details-control', 'orderable': false},
-    {'targets': 9,'data':'GName'},     
-    {'targets': 10,'defaultContent': '','data':null, 'className': 'ann-details-control', 'orderable': false},
-    {'targets': 11,'data':'ann'},
-    {'targets': 12,'data':'geneId','visible': false},
-    {'targets': 13,'data':'allAnn','visible': false},
-    {'targets': 14,'data':'allGName','visible': false},    
-    {'targets': 15,'defaultContent': '','data':'locus','visible': false}
-];
-
-var creat_dataTable = function (div, columns_set) {
-    var datatable = d3.select(div);
-    var thead = datatable.append("thead")
-        .attr("align", "left");
-
-    thead.append("tr")
-        .selectAll("th")
-        .data( columns_set )
-        .enter()
-        .append("th")
-        .text(function(d) { return d; });
-};
-
-/*//# create GC table 
-var geneCluster_table_columns=['msa','msa','#strain','','duplicated','diversity','events','geneLen','','annotation','Id','allAnn','locus']
-creat_dataTable("#dc-data-table",geneCluster_table_columns);
-
-var GC_table_dropdown_columns=['amino_acid aln','nucleotide aln','#strain','duplicated','diversity', 'gene gain/loss events','gene length','annotation'];*/
-
-//# create GC table 
-var geneCluster_table_columns=['msa','msa','#strain','','duplicated','diversity','events','geneLen','','geneName','','annotation','Id','allAnn','allGName','locus']
-creat_dataTable("#dc-data-table",geneCluster_table_columns);
-//## pay attention to GC table column order
-var GC_table_dropdown_columns=['amino_acid aln','nucleotide aln','#strain','duplicated','diversity', 'gene gain/loss events','gene length','geneName','annotation'];
-
-//# create meta table
-var meta_table_columns= Object.keys(meta_display_set);
-meta_table_columns.unshift('accession');
-creat_dataTable("#dc-data-table2",meta_table_columns);
-
-
-//## creat multiselect dropdown for dataTables
-var creat_multiselect = function (div, columns_set) {
-    var select_panel = d3.select(div);
-
-    for (i = 0; i < columns_set.length; i++) {
-        select_panel.append("option")
-            .attr("value", columns_set[i])
-            .attr("selected", "selected")
-            .text(columns_set[i]);
-    }
-};
 
 //## update gene presence/absence pattern
 function updatePresence(geneIndex) {
@@ -353,18 +272,19 @@ var chartExample = {
                 all: 'All records selected. Please click on the graph to apply filters.'
             });
             
-    var buttonCommon = {
-        exportOptions: {
-            format: {
-                body: function ( data, column, row, node ) {
-                    // Strip $ from salary column to make it numeric
-                    return column === 5 ?
-                        data.replace( /[$,]/g, '' ) :
-                        data;
+        var buttonCommon = {
+            exportOptions: {
+                format: {
+                    body: function ( data, column, row, node ) {
+                        // Strip $ from salary column to make it numeric
+                        return column === 5 ?
+                            data.replace( /[$,]/g, '' ) :
+                            data;
+                    }
                 }
             }
-        }
-    };
+        };
+
         //## datatable configuration
         datatable = $('#dc-data-table').DataTable({         
             responsive: true,
@@ -482,7 +402,7 @@ var chartExample = {
             geneId_GV=data[0].geneId;
             ann_majority=data[0].ann;
             chartExample.initChart(data);
-            msaLoad(aln_file_path+Initial_MsaGV,'taylor'); //msaLoad(aln_file_path+speciesAbbr+'-SNP_whole_matrix.aln');
+            msaLoad(aln_file_path+Initial_MsaGV,'taylor');
             geneTree_name=Initial_MsaGV.split('_aa')[0]+'_tree.json'
             render ( 'mytree2',aln_file_path+geneTree_name, svg2);
             //## download-link
@@ -714,41 +634,3 @@ function msaLoad (aln_path,scheme_type) {
     m.addView('menu', defMenu);
 };//msaLoad(aln_file_path+Initial_MsaGV); 
 
-//#DataTable for meta-info
-var chartExample2 = {
-    dataTable2Fun: function () {
-        
-        var columnDefs_list=[];
-        for (i = 0; i < meta_table_columns.length; i++) { 
-            columnDefs_list.push({
-                'targets': i,
-                'data': meta_table_columns[i]      
-            });
-        }
-
-        datatable2= $('#dc-data-table2').DataTable({
-                'ajax': path_datatable2,
-                'responsive': true,
-                'search':true,
-                'paging':true,
-                //'autoFill': {focus: 'click'},
-                //'pagingType': 'full_numbers',
-                //'bSort': true,
-                'scrollX': true,
-                'scrollY': '200px',//'30vh',
-                'bAutoWidth': true,
-                'bDeferRender': true,
-                //'aaData':  geneCountDimension.top(Infinity),
-                //'bDestroy': true, 
-                'columnDefs': columnDefs_list
-            });
-    }
-};
-chartExample2.dataTable2Fun();/**/
-
-var tableTools = new $.fn.dataTable.TableTools( datatable2, {
-    sRowSelect: "os",
-    aButtons: []
-} );
-
-$( tableTools.fnContainer() ).insertBefore('div.dataTables_wrapper');
