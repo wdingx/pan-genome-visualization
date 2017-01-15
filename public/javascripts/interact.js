@@ -484,7 +484,7 @@ d3.json('./dataset/'+speciesAbbr+'/geneGainLossEvent.json', function(error, data
 function clickShowMsa (datatable) {
 
     // unfold and fold annotation column
-    $('#dc-data-table tbody').on('click', 'td.ann-details-control', function () {
+    $('#dc-data-table tbody').on('click', 'td.ann-details-control', function (e) {
         var tr = $(this).closest('tr');
         var row = datatable.row( tr );
 
@@ -498,10 +498,12 @@ function clickShowMsa (datatable) {
             row.child( format_annotation(row.data()) ).show();
             tr.addClass('shown');
         }
+
+        e.stopPropagation();
     });  
 
     // unfold and fold duplication column
-    $('#dc-data-table tbody').on('click', 'td.dup-details-control', function () {
+    $('#dc-data-table tbody').on('click', 'td.dup-details-control', function (e) {
         var tr = $(this).closest('tr');
         var row = datatable.row( tr );
 
@@ -515,10 +517,12 @@ function clickShowMsa (datatable) {
             row.child( format_dup_detail(row.data()) ).show();
             tr.addClass('shown');
         }
+
+        e.stopPropagation();
     } );
 
     // unfold and fold duplication column
-    $('#dc-data-table tbody').on('click', 'td.geneName-details-control', function () {
+    $('#dc-data-table tbody').on('click', 'td.geneName-details-control', function (e) {
         var tr = $(this).closest('tr');
         var row = datatable.row( tr );
 
@@ -532,6 +536,8 @@ function clickShowMsa (datatable) {
             row.child( format_geneNames(row.data()) ).show();
             tr.addClass('shown');
         }
+
+        e.stopPropagation();
     } );
 
     function updateTree(data) {
@@ -580,6 +586,8 @@ function clickShowMsa (datatable) {
         $("#table tbody tr").removeClass('row_selected');
         $(this).addClass('row_selected');
     });/**/
+
+
 
     //## aa.aln
     $('#dc-data-table tbody').on('click', '.btn.btn-info.btn-xs', function (e) {
