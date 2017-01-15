@@ -573,8 +573,12 @@ function clickShowMsa (datatable) {
 
     //## row-clicking trigger
     $('#dc-data-table tbody').on('click', 'tr', function () {
+        //trigger aln_tree when clicked
         var data = datatable.row( $(this) ).data();
         trigger_aln_tree(data, 'aa');
+        //highlight when clicked/selected
+        $("#table tbody tr").removeClass('row_selected');
+        $(this).addClass('row_selected');
     });/**/
 
     //## aa.aln
