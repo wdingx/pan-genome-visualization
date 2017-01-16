@@ -286,7 +286,7 @@ var chartExample = {
         };
 
         //## datatable configuration
-        datatable = $('#dc-data-table').DataTable({         
+        datatable = $('#dc-data-table').DataTable({
             responsive: true,
             /*dom: 'Bfrtip',
             buttons: [
@@ -300,10 +300,9 @@ var chartExample = {
                     extend: 'pdfHtml5'
                 } )
             ],*/
-            //dom: 'Bfrtip',
+            /*dom: 'Bfrtip',
             //buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
-            //buttons: [ 'copyHtml5','excelHtml5','csvHtml5','pdfHtml5'],
-            'search': true,
+            'buttons': [ 'copyHtml5','excelHtml5','csvHtml5','pdfHtml5'],*/
             'paging': true,
             //'pagingType': 'full_numbers',
             //'scrollX': true,
@@ -371,7 +370,7 @@ var chartExample = {
             aButtons: []
         } );*/
 
-        $( tableTools.fnContainer() ).insertBefore('div.dataTables_wrapper');/**/
+        /*$( tableTools.fnContainer() ).insertBefore('div.dataTables_wrapper');*/
 
         // display sequence alignment
         clickShowMsa(datatable);
@@ -578,16 +577,14 @@ function clickShowMsa (datatable) {
     }
 
     //## row-clicking trigger
-    $('#dc-data-table tbody').on('click', 'tr', function () {
+    $('#dc-data-table tbody').on('click', 'tr', function (e) {
         //trigger aln_tree when clicked
         var data = datatable.row( $(this) ).data();
         trigger_aln_tree(data, 'aa');
         //highlight when clicked/selected
-        $("#table tbody tr").removeClass('row_selected');
+        $("#dc-data-table tbody tr").removeClass('row_selected');
         $(this).addClass('row_selected');
-    });/**/
-
-
+    });
 
     //## aa.aln
     $('#dc-data-table tbody').on('click', '.btn.btn-info.btn-xs', function (e) {
