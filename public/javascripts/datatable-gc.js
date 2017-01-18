@@ -1,8 +1,9 @@
 
+function custo_print(data) { console.log(data)};
 //## dc_DataTables configuration
 var dc_dataTable_columnDefs_config=[ 
-    {'targets': 0,'defaultContent': '<button type="button" class="btn btn-info btn-xs" >aa </button>'},
-    {'targets': 1,'defaultContent': '<button type="button" class="btn btn-primary btn-xs" >nuc</button>'},
+    {'targets': 0,'defaultContent': '<button type="button" class="btn btn-info btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="amino acid alignment" >aa </button>'},
+    {'targets': 1,'defaultContent': '<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="nucleotide alignment" >na </button>'},
     {'targets': 2,'data':'count'},
     {'targets': 3,'defaultContent': '','data':null, 'className': 'dup-details-control', 'orderable': false},
     {'targets': 4,'data':'dupli'},
@@ -19,7 +20,8 @@ var dc_dataTable_columnDefs_config=[
     {'targets': 15,'defaultContent': '','data':'locus','visible': false}
 ];
 
-var creat_dataTable = function (div, columns_set) {
+
+var creat_dataTable = function (div, columns_set, tooltip_dict) {
     var datatable = d3.select(div);
     var thead = datatable.append("thead")
         .attr("align", "left");
@@ -32,9 +34,41 @@ var creat_dataTable = function (div, columns_set) {
         .text(function(d) { return d; });
 };
 
+
 //# create GC table 
 var geneCluster_table_columns=['msa','msa','#strain','','duplicated','diversity','events','geneLen','','geneName','','annotation','Id','allAnn','allGName','locus']
-creat_dataTable("#dc-data-table",geneCluster_table_columns);
+
+var tooltip_dict= {'msa':'multiple sequence alignment','msa':'multiple sequence alignment',
+    '#strain':'strain count','duplicated':'whether duplicated and duplication count in each strain',
+    'diversity':'gene diversity', 'events':'gene gain/loss events count',
+    'geneLen':'average gene length', 'geneName':'gene name','annotation':'gene annotation'}
+creat_dataTable("#dc-data-table",geneCluster_table_columns,tooltip_dict);
+
+//## datatables header tooltip
+var tooltip = d3.select("body")
+    .append("div")
+    .style("position", "absolute")
+    //.style("z-index", "10")
+    .style("color", "white")
+    .style("padding","5px")
+    .style("border-radius","2px")
+    .style("visibility", "hidden")
+    .style("background", "rgba(0,0,0,0.5)"); //255,255,255
+
+d3.selectAll("#dc-data-table tr th")
+    .on("mouseover", function(d){
+        tooltip.text(tooltip_dict[d]);
+        if (tooltip.text()!="") {
+            return tooltip.style("visibility", "visible");
+        }
+    })
+    .on("mousemove", function(){
+        return tooltip.style("top", (event.pageY-40)+"px").style("left",(event.pageX+10)+"px");
+    })
+    .on("mouseout", function(){
+        return tooltip.style("visibility", "hidden");
+    })
+
 //## pay attention to GC table column order
 var GC_table_dropdown_columns=['amino_acid aln','nucleotide aln','#strain','duplicated','diversity', 'gene gain/loss events','gene length','geneName','annotation'];
 
