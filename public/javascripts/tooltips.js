@@ -1,5 +1,7 @@
 // ## tooltip
-var antibiotics_set = ["amikacin","tigecycline","cefepime" ,"doxycycline","nitrofurantoin","cefoxitin","ampicillin","cefotaxime","ciprofloxacin","imipenem","levofloxacin","ampicillin/sulbactam","trimethoprim/sulfamethoxazole","cephalothin","ertapenem","tetracycline","piperacillin/tazobactam","minocycline","cefazolin","ceftazidime","gentamicin","meropenem"];
+var antibiotics_set=[];
+if (0) { //antibiotics_set
+    var antibiotics_set = ["amikacin","tigecycline","cefepime" ,"doxycycline","nitrofurantoin","cefoxitin","ampicillin","cefotaxime","ciprofloxacin","imipenem","levofloxacin","ampicillin/sulbactam","trimethoprim/sulfamethoxazole","cephalothin","ertapenem","tetracycline","piperacillin/tazobactam","minocycline","cefazolin","ceftazidime","gentamicin","meropenem"];}
 
 var tips_node = d3.tip().attr('class', 'd3-tip').html(function(d) { 
     
@@ -80,15 +82,3 @@ var tips_link = d3.tip().attr('class', 'd3-tip').html(function(d) {
 
     return string; 
 });
-
-//## add download button
-//# core tree download
-$('<a href="/download/dataset/'+speciesAbbr+'/coreGenomeTree.json"><i class="fa fa-arrow-circle-o-down fa-5" aria-hidden="true"></i></a>').appendTo('div#download-coreTree');
-//#treeJsonPath.split('/').pop().replace(/_tree.json/, "")
-//$('<a href="/download/dataset/'+speciesAbbr+'/geneCluster/'+treeJsonPath.split('/').pop()+'"><i class="fa fa-arrow-circle-o-down fa-5" aria-hidden="true"></i></a>').appendTo('div#download-geneTree');
-
-//console.log(treeJsonPath.split('/').pop());
-//console.log(aln_file_path+Initial_MsaGV.split('_aa')[0]+'_tree.json');
-//console.log(Initial_MsaGV,1,geneId_GV,2,geneclusterID_GV)
-//$('<a href="/download/dataset/'+speciesAbbr+'/geneCluster/'+Initial_MsaGV+'"><i class="fa fa-arrow-circle-o-down fa-5" aria-hidden="true"></i></a>').appendTo('div#download-geneTree');
-
