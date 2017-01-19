@@ -19,7 +19,7 @@ html
     link(rel="stylesheet", type="text/css", href='stylesheets/dc.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/dataTables.bootstrap.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/dataTables-customized.css')
-    link(rel="stylesheet", type="text/css", href='https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css')
+    //- link(rel="stylesheet", type="text/css", href='https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css')
 
     //link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
 
@@ -60,7 +60,8 @@ html
           .alert.alert-info(role='alert') Gene cluster table
           table#dc-data-table.table.table-striped.table(cellspacing='0', width='100%')
         .col-md-6
-          #sequence_viewer_title Sequence alignment
+          .alert.alert-info(role='alert')
+            #sequence_viewer_title Sequence alignment
           #snippetDiv
       #all_trees.row
         .col-md-6
@@ -87,8 +88,8 @@ html
             .col-md-10
               #mytree1
         .col-md-6
-          #genetree_title
-            | Gene tree (individual gene)
+          .alert.alert-info(role='alert')
+            #genetree_title Gene tree (individual gene)
           .row
             .col-md-4
               #searchStrain-group-btn.input-group
@@ -133,12 +134,18 @@ html
     script(src='javascripts/third_party/d3-tip.min.js')
     script(src='javascripts/third_party/crossfilter.min.js')
     script(src='javascripts/third_party/dc.min.js')
-    script(src='javascripts/third_party/jquery.dataTables.min.js')
-    script(src='javascripts/third_party/dataTables.tableTools.min.js')
-    script(src='javascripts/third_party/dataTables.scrollingPagination.js')
-    script(src='javascripts/third_party/dataTables.bootstrap.min.js')
-    script(src='javascripts/third_party/dataTables.autoFill.min.js')
-    script(src='//cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js')
+
+    //- script(src='javascripts/third_party/jquery.dataTables.min.js')
+    //- script(src='javascripts/third_party/dataTables.scrollingPagination.js')
+    //- script(src='javascripts/third_party/dataTables.bootstrap.min.js')
+    //- script(src='javascripts/third_party/dataTables.autoFill.min.js')
+    
+    //- code.jquery.com/jquery-1.12.4.js
+    script(src='javascripts/third_party/table_plugin/jquery.dataTables.min.js')
+    script(src='javascripts/third_party/table_plugin/dataTables.buttons.min.js')
+    script(src='javascripts/third_party/table_plugin/dataTables.bootstrap.min.js')
+    script(src='javascripts/third_party/table_plugin/dataTables.colReorder.min.js')
+
     script(src='javascripts/third_party/msa-new.js')
     script(src='javascripts/third_party/tnt.tree.min.js')
     script(src='javascripts/third_party/jquery.panzoom.min.js')

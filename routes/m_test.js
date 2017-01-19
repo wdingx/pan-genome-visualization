@@ -9,7 +9,8 @@ var basic = auth.basic({
 ); // !! not safe
 
 /* GET home page. */
-router.get('/', auth.connect(basic), function(req, res) {
+//router.get('/', auth.connect(basic), function(req, res) {
+router.get('/', function(req, res) {
   res.render('m_test', { title: '' });
   //res.sendfile(__dirname + '/public/clienthtml/index.html');
 });
