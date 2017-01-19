@@ -69,7 +69,7 @@ function updatePresence(geneIndex) {
             return pxtree.node_color_mem[d.target.name]; 
         }
         else {
-            return 'gray';
+            return pxtree.branch_col;
         }
     });
 
@@ -87,24 +87,17 @@ function updateGainLossEvent(geneIndex) {
     var gainloss_disabled=0;
     var link = svg.selectAll('path.tnt_tree_link')
             .filter(function(d) {
-                if (geneGainLoss_Dt[d.target.name]!==undefined) {
-                    return true
-                } else if (gainloss_disabled==0) {
-                    gainloss_disabled=1; return false
-                } else { return false}
+                if (geneGainLoss_Dt[d.target.name]!==undefined) {return true}
+                else if (gainloss_disabled==0) {gainloss_disabled=1; return false}
+                else { return false}
             })
     if (gainloss_disabled==1) { pxtree.wid_gloss=pxtree.wid_link}
-
-
-    link.style('stroke-width',pxtree.wid_link)
-        /*.style('stroke-dasharray', 'none');*/
 
     link
     .style('stroke', function(d) {
         var event_type = geneGainLoss_Dt[d.target.name][gindex];
         if (event_type==='0' || event_type=='2') {return pxtree.col_abse }
         else {return pxtree.col_pres}
-
     })
     .style("stroke-width", function (d) {
         var event_type = geneGainLoss_Dt[d.target.name][gindex];

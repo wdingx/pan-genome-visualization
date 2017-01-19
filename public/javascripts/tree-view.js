@@ -19,10 +19,6 @@ var color_node_stroke='steelblue',
     color_inner_node='black';
 var color_leaf_node_highlight="#EE6363",
     color_inner_node_highlight="steelblue";
-var branch_color="#4A4A4A",
-    branch_color_highlight="#2D59B1";
-var link_width='1px',
-    link_dasharray='1px, 0px';
 
 //# subtree coloring
 var subtree_node_colorSet = d3.scale.category20c();
@@ -183,7 +179,7 @@ var render = function render_tree(div,treeJsonPath,svg) {
                 });
             
             tree_vis
-                .branch_color(branch_color)
+                .branch_color(pxtree.branch_col)
                 .node_display(node_display)
                 .label(node_label)//.label(tnt.tree.label.text().height(2).fontsize(fontSize).color('steelblue'))
                 .data(tree_data)
@@ -374,8 +370,8 @@ var svgAction= function(svg) {
                 pxtree.link_dash_mem[this.id]=this.style['stroke-dasharray'];
                 //console.log(this.style,this.style['stroke-width'],this.style['stroke-dasharray']);
                 d3.select(this)
-                    .style("stroke", branch_color_highlight) //"steelblue"
-                    .style("stroke-width",'3px'); //'5px'
+                    .style("stroke", pxtree.branch_col_highlight)
+                    .style("stroke-width", pxtree.branch_wid_highlight);
             }
 
             var result = [];
@@ -433,17 +429,17 @@ var svgAction= function(svg) {
                     .style('stroke', function () {
                         if (pxtree.link_color_mem[this.id]!=undefined ) {
                             return pxtree.link_color_mem[this.id];
-                        } else { return branch_color;}
+                        } else { return pxtree.branch_col;}
                     }) 
                     .style("stroke-width", function () {
                         if (pxtree.link_width_mem[this.id]!=undefined ) {
                             return pxtree.link_width_mem[this.id];
-                        } else { return link_width;}
+                        } else { return pxtree.link_width;}
                     })
                     .style("stroke-dasharray",function () {
                         if (pxtree.link_dash_mem[this.id]!=undefined ) {
                             return pxtree.link_dash_mem[this.id];
-                        } else { return link_dasharray;}
+                        } else { return pxtree.link_dasharray;}
                     })
             }
 
