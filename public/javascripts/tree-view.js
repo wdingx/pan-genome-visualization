@@ -198,7 +198,7 @@ var render = function render_tree(div,treeJsonPath,svg) {
 
             /*link width*/
             var links = svg.selectAll(".tnt_tree_link")
-            links.style("stroke-width",'1.2px')
+            links.style("stroke-width",pxtree.wid_link)
 
             //## make scale bar
             var scaleBar = tree_vis.scale_bar(50, "pixel").toFixed(3);
@@ -371,7 +371,7 @@ var svgAction= function(svg) {
             } else if (click_type=='link') {
                 pxtree.link_color_mem[this.id]=this.style.stroke;
                 pxtree.link_width_mem[this.id]=this.style['stroke-width'];
-                pxtree.link_dasharray_mem[this.id]=this.style['stroke-dasharray'];
+                pxtree.link_dash_mem[this.id]=this.style['stroke-dasharray'];
                 //console.log(this.style,this.style['stroke-width'],this.style['stroke-dasharray']);
                 d3.select(this)
                     .style("stroke", branch_color_highlight) //"steelblue"
@@ -441,8 +441,8 @@ var svgAction= function(svg) {
                         } else { return link_width;}
                     })
                     .style("stroke-dasharray",function () {
-                        if (pxtree.link_dasharray_mem[this.id]!=undefined ) {
-                            return pxtree.link_dasharray_mem[this.id];
+                        if (pxtree.link_dash_mem[this.id]!=undefined ) {
+                            return pxtree.link_dash_mem[this.id];
                         } else { return link_dasharray;}
                     })
             }
