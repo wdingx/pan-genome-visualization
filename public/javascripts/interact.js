@@ -285,94 +285,8 @@ var chartExample = {
             }
         };
 
-        //## datatable configuration
-        datatable = $('#dc-data-table').DataTable({
-            responsive: true,
-            /*dom: 'Bfrtip',
-            buttons: [
-                $.extend( true, {}, buttonCommon, {
-                    extend: 'copyHtml5'
-                } ),
-                $.extend( true, {}, buttonCommon, {
-                    extend: 'excelHtml5'
-                } ),
-                $.extend( true, {}, buttonCommon, {
-                    extend: 'pdfHtml5'
-                } )
-            ],*/
-            /*dom: 'Bfrtip',
-            //buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
-            'buttons': [ 'copyHtml5','excelHtml5','csvHtml5','pdfHtml5'],*/
-            'paging': true,
-            //'pagingType': 'full_numbers',
-            //'scrollX': true,
-            'scrollY': '200px',//'30vh',
-            'bAutoWidth': true,
-            'bDeferRender': true,
-            'aaData': geneCountDimension.top(Infinity),
-            //'bDestroy': true,
-            /*"processing": true,
-            "serverSide": true,*/
-            'columnDefs': dc_dataTable_columnDefs_config,
-            // order by count (desc) and geneId (asc)
-            "order": [[2, 'desc' ],[9, 'asc' ]]
-        });
+        datatable_configuration(geneCountDimension.top(Infinity));
 
-        $('<span style="display:inline-block; width: 10px;"></span>').appendTo('div#dc-data-table_length.dataTables_length');
-        $('<select id="GC_tablecol_select" multiple="multiple" ></select>').appendTo('div#dc-data-table_length.dataTables_length');
-
-        //## empty and non-empty indexes
-        function get_all_Indexes(array) {
-            var non_empty_indexes = []; var empty_indexes = []; 
-            var dropdown_table_col = []; var i;
-            for(i = 0; i < array.length; i++) {
-                if (array[i] === '') {empty_indexes.push(i);}
-                else { non_empty_indexes.push(i) }
-            }
-            return [non_empty_indexes, empty_indexes];
-        }
-
-        var indexes_list= get_all_Indexes(geneCluster_table_columns, '');
-        var non_empty_index_list= indexes_list[0]; 
-        var empty_inde_list = indexes_list[1]; 
-
-        creat_multiselect("#GC_tablecol_select",GC_table_dropdown_columns);
-        $('#GC_tablecol_select').multiselect({
-            //enableFiltering: true,
-            onChange: function(element, checked) {
-
-                function element_included (arr, number) {
-                    return (arr.indexOf(number) != -1)
-                }
-                var col_index = GC_table_dropdown_columns.indexOf(element.val());
-                var original_col_index = non_empty_index_list[col_index];
-
-                if (checked === true) {
-                    if ( element_included(empty_inde_list,original_col_index-1)==true ) {
-                        var column_expand = datatable.column( original_col_index-1 );
-                        column_expand.visible( ! column_expand.visible() );}
-                    var column_normal = datatable.column( original_col_index );
-                    column_normal.visible( ! column_normal.visible() );
-                }
-                else if (checked === false) {
-                    if ( element_included(empty_inde_list,original_col_index-1)==true ) {
-                        var column_expand = datatable.column( original_col_index-1 );
-                        column_expand.visible( ! column_expand.visible() );}
-                    var column_normal = datatable.column( original_col_index );
-                    column_normal.visible( ! column_normal.visible() ); 
-
-                }
-            }  
-        });
-
-        /*var tableTools = new $.fn.dataTable.TableTools( datatable, {
-            sRowSelect: "os",
-            aButtons: []
-        } );*/
-
-        /*$( tableTools.fnContainer() ).insertBefore('div.dataTables_wrapper');*/
-
-        // display sequence alignment
         clickShowMsa(datatable);
 
         function RefreshTable() {
@@ -402,10 +316,17 @@ var chartExample = {
             ann_majority=data[0].ann;
             chartExample.initChart(data);
             msaLoad(aln_file_path+Initial_MsaGV,'taylor');
-            geneTree_name=Initial_MsaGV.split('_aa')[0]+'_tree.json'
+            var clusterID=Initial_MsaGV.split('_aa')[0];
+            var geneTree_name=clusterID+'_tree.json';
             render ( 'mytree2',aln_file_path+geneTree_name, svg2);
             //## download-link
-            $('<a id="download_geneTree_href" href="/download/dataset/'+speciesAbbr+'/geneCluster/'+geneTree_name+'"><i class="fa fa-arrow-circle-o-down fa-5" aria-hidden="true"></i></a>').appendTo('div#download-geneTree');
+            var download_geneTree=d3.select('#download-geneTree');
+            download_geneTree.append('a')
+                .attr('id','download_geneTree_href')
+                .attr('href','/download/dataset/'+speciesAbbr+'/geneCluster/'+clusterID+'.nwk')
+                .append('i')
+                .attr('class','fa fa-arrow-circle-o-down fa-5')
+                .attr('aria-hidden','true')
         })
     }
 };
@@ -544,11 +465,12 @@ function clickShowMsa (datatable) {
         svg2.selectAll("*")
             .remove();
         svg2 = d3.select('#mytree2');
-        geneTree_name=data['msa'].split('_aa')[0]+'_tree.json'
+        var clusterID=data['msa'].split('_aa')[0];
+        var geneTree_name=clusterID+'_tree.json';
         render ('mytree2', aln_file_path+geneTree_name, svg2);
-        //$('a#download_geneTree_href').href('new text');
-        $('a#download_geneTree_href').attr('href', '/download/dataset/'+speciesAbbr+'/geneCluster/'+geneTree_name)
-
+        d3.select('#download_geneTree_href')
+        .attr('href', '/download/dataset/'+speciesAbbr+'/geneCluster/'+clusterID+'.nwk')
+        //$('a#download_geneTree_href')
     };
 
     //## update the selection in dropdown list
