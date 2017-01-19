@@ -1,5 +1,5 @@
+function csprint(data) { console.log(data)};
 
-function custo_print(data) { console.log(data)};
 //## dc_DataTables configuration
 var dc_dataTable_columnDefs_config=[ 
     {'targets': 0,'defaultContent': '<button type="button" class="btn btn-info btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="amino acid alignment" >aa </button>'},

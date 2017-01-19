@@ -42,12 +42,13 @@ var render = function (div,treeJsonPath,svg) {
 
     //## show MSA/Gene tree title with geneCluster Id
     function showAlert(message) {
-          $('#genetree_title').html("<div class='alert alert-info' role='alert'>Gene tree | "+message.split('/').pop().replace(/_tree.json/, "")+ ' | ' +ann_majority +" </div>");
-          $('#genetree_title').show();
-
-          $('#sequence_viewer_title').html("<div class='alert alert-info' role='alert'> Sequence alignment | "+message.split('/').pop().replace(/_tree.json/, "")+ ' | ' +ann_majority +" </div>");
-          $('#sequence_viewer_title').show();          
+        var genetree_viewer=d3.select('#genetree_title');
+        genetree_viewer.html('Gene tree | '+message.split('/').pop().replace('_tree.json', '')+ ' | ' +ann_majority);
+          
+        var sequence_viewer=d3.select('#sequence_viewer_title');  
+        sequence_viewer.html(' Sequence alignment | '+message.split('/').pop().replace('_tree.json', '')+ ' | ' +ann_majority)
         }
+
     // if tree file exists, show the title with geneCluster Id
     if (treeJsonPath.indexOf('tree.json') !== -1) {
         showAlert(treeJsonPath);
@@ -100,7 +101,6 @@ var render = function (div,treeJsonPath,svg) {
                         .style("stroke-width",'20px')
                         .style("fill", "steelblue");
                 } else if (click_type=='link') {
-                    
                     link_color_tmp[this.id]=this.style.stroke;
                     link_width_tmp[this.id]=this.style['stroke-width'];
                     link_dasharray_tmp[this.id]=this.style['stroke-dasharray'];
@@ -460,7 +460,7 @@ var render = function (div,treeJsonPath,svg) {
             })
             .text(scaleBar);
 
-        svgAction ();
+        svgAction();
         
         rotate_tree(svg2,set_rotate);
     });
@@ -478,9 +478,13 @@ var render = function (div,treeJsonPath,svg) {
             
         }
         var layout = tnt.tree.layout[setLayout]().width(width).scale($('#ScalesToggle').prop('checked'))
+        
         tree_vis.layout(layout);
         tree_vis.update();
-        svgAction ();
+        //var t0 = performance.now(); var t1 = performance.now(); csprint("time: "+ (t1-t0) +" milliseconds.");
+
+        var t0 = performance.now(); svgAction();
+        var t1 = performance.now(); csprint("time: "+ (t1-t0) +" milliseconds.");
     });
 
     //# Enable label or not 
@@ -499,12 +503,13 @@ var render = function (div,treeJsonPath,svg) {
             {var setLayout='vertical' } 
         else {  var setLayout='radial'} 
         var layout = tnt.tree.layout[setLayout]().width(width).scale( $(this).prop('checked'))
-        tree_vis.layout(layout)
+        tree_vis.layout(layout);
         tree_vis.update();
         svgAction ();
         //console.log(set_rotate);
-        //set_rotate='left-right';
-        //rotate_tree(svg2,set_rotate);
+        //set_rotate='right-left';
+        set_rotate='left-right';
+        rotate_tree(svg2,set_rotate);
     });
 
     // ## Enable selection of subtree by clicking innerNode  
@@ -571,6 +576,15 @@ var render = function (div,treeJsonPath,svg) {
                   return "translate(" +  d.y  + "," + d.x  + ")"; 
           });
 
+        function elbow(d, i) {
+        return "M" + d.source.y + "," + d.source.x
+            + "V" + d.target.x + "H" + d.target.y;
+        }
+
+        svg.selectAll(".tnt_tree_link")//link
+          .attr("d", elbow );
+
+        if (1) {
         svg.selectAll(".tnt_tree_label")
             .attr("transform", function() {
                 if (direction=="left-right") {
@@ -584,14 +598,9 @@ var render = function (div,treeJsonPath,svg) {
                 } 
                 else { return "end";}
             });
-
-        function elbow(d, i) {
-        return "M" + d.source.y + "," + d.source.x
-            + "V" + d.target.x + "H" + d.target.y;
         }
 
-        svg.selectAll(".tnt_tree_link")//link
-          .attr("d", elbow );
+
     }
 
     //## toggle tree-rotate
@@ -608,9 +617,6 @@ var render = function (div,treeJsonPath,svg) {
 
 render( "mytree1",treeJsonPath,svg1);
 //render ( 'mytree2',aln_file_path+'NZ_CP012001-1-1834888-1835742_tree.json',svg2);
-
-//console.log(Initial_MsaGV)
-//console.log(aln_file_path+Initial_MsaGV.split('.')[0]+'_tree.json');
 //render ( 'mytree2', aln_file_path+Initial_MsaGV.split('.')[0]+'_tree.json',svg2); 
 //render (document.getElementById("mytree2"),treeJsonPath,svg2);
 
@@ -658,3 +664,12 @@ $(window).load(function(){
           $reset: $(".reset")*/
       });
 });
+
+
+//## download strain tree
+d3.select('#download-coreTree')
+    .append('a')
+    .attr('href','/download/dataset/'+speciesAbbr+'/strain_tree.nwk')
+    .append('i')
+    .attr('class','fa fa-arrow-circle-o-down fa-5')
+    .attr('aria-hidden','true')
