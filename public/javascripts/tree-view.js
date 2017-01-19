@@ -92,8 +92,8 @@ var render = function render_tree(div,treeJsonPath,svg) {
             //.text(function(d){return (d.strainName=='')?'A':'B';})
             .text(function(d){return (typeof d.data().strainName==='undefined' || d.data().strainName=='' || d.data().strainName=='unknown')?d.data().name:d.data().strainName;})
                 /*function (node) { //xx
-                    if (Object.keys(node_color_tmp).length !== 0) {
-                        return node_color_tmp[node.name]
+                    if (Object.keys(node_color_mem).length !== 0) {
+                        return node_color_mem[node.name]
                     }
                     else {return color_leaf_label}
                 }*/
@@ -168,8 +168,8 @@ var render = function render_tree(div,treeJsonPath,svg) {
                     })    
                 .fill( function (node,d){ 
                         if (node.is_leaf()) { 
-                            if (Object.keys(node_color_tmp).length !== 0) {
-                                return node_color_tmp[node.node_name()];
+                            if (Object.keys(pxtree.node_color_mem).length !== 0) {
+                                return pxtree.node_color_mem[node.node_name()];
                             }
                             else {return color_node_fill}
                         }
@@ -196,33 +196,29 @@ var render = function render_tree(div,treeJsonPath,svg) {
             //## The visualization is started at this point
             tree_vis(document.getElementById(div));
 
-            var links = svg.selectAll("g.tnt_tree_link")
-            links.style("stroke-width",'5px')
+            /*link width*/
+            var links = svg.selectAll(".tnt_tree_link")
+            links.style("stroke-width",'1.2px')
 
             //## make scale bar
             var scaleBar = tree_vis.scale_bar(50, "pixel").toFixed(3);
             var legend = d3.select("#"+div);
-
-            legend
-                .append("div")
+            legend.append("div")
                 .style({
                     width:"50px",
-                    height:"4px",
+                    height:"2px",
                     "background-color":"steelblue",
                     margin:"6px 5px 5px 25px",
                     float: "left"
                 });
-
-            legend
-                .append("text")
-                .style({
-                    "font-size": "12px"
-                })
+            legend.append("text")
+                .style({"font-size": "12px"})
                 .text(scaleBar);
 
             svgAction(svg);
             
             rotate_tree(svg2,set_rotate);
+
         });
 
         //## tree displaying options 
@@ -373,9 +369,9 @@ var svgAction= function(svg) {
                     .style("stroke-width",'20px')
                     .style("fill", "steelblue");
             } else if (click_type=='link') {
-                link_color_tmp[this.id]=this.style.stroke;
-                link_width_tmp[this.id]=this.style['stroke-width'];
-                link_dasharray_tmp[this.id]=this.style['stroke-dasharray'];
+                pxtree.link_color_mem[this.id]=this.style.stroke;
+                pxtree.link_width_mem[this.id]=this.style['stroke-width'];
+                pxtree.link_dasharray_mem[this.id]=this.style['stroke-dasharray'];
                 //console.log(this.style,this.style['stroke-width'],this.style['stroke-dasharray']);
                 d3.select(this)
                     .style("stroke", branch_color_highlight) //"steelblue"
@@ -422,7 +418,7 @@ var svgAction= function(svg) {
         makeLegend(legendOptionValue);
         if ( (d.name.indexOf('NODE_')!=0) && (d.name!='') ) {
             d3.selectAll("circle.pt" + d.name)
-                .style("fill", node_color_tmp[d.name])
+                .style("fill", pxtree.node_color_mem[d.name])
                 .attr("r", size_node_leaf);
         }
         else if  ( (d.name.indexOf('NODE_')==0) || (d.name=="") ) {
@@ -435,18 +431,18 @@ var svgAction= function(svg) {
             } else if (click_type=='link') {
                 d3.select(this)
                     .style('stroke', function () {
-                        if (link_color_tmp[this.id]!=undefined ) {
-                            return link_color_tmp[this.id];
+                        if (pxtree.link_color_mem[this.id]!=undefined ) {
+                            return pxtree.link_color_mem[this.id];
                         } else { return branch_color;}
                     }) 
                     .style("stroke-width", function () {
-                        if (link_width_tmp[this.id]!=undefined ) {
-                            return link_width_tmp[this.id];
+                        if (pxtree.link_width_mem[this.id]!=undefined ) {
+                            return pxtree.link_width_mem[this.id];
                         } else { return link_width;}
                     })
                     .style("stroke-dasharray",function () {
-                        if (link_dasharray_tmp[this.id]!=undefined ) {
-                            return link_dasharray_tmp[this.id];
+                        if (pxtree.link_dasharray_mem[this.id]!=undefined ) {
+                            return pxtree.link_dasharray_mem[this.id];
                         } else { return link_dasharray;}
                     })
             }
@@ -470,7 +466,7 @@ var svgAction= function(svg) {
             for(var i=0;i<result.length;i++) {
                 d3.selectAll("circle.pt" + result[i])
                     .style("fill", function(d) {
-                        return node_color_tmp[d.name]
+                        return pxtree.node_color_mem[d.name]
                     })
                     .attr("r", size_node_leaf);
             }
@@ -617,7 +613,7 @@ function search(val) {
         .style("r", function (){return size_node_leaf_highlight;})
     // adjust style of non matches
     d3.selectAll("circle").filter(function(d){return !nodeMatch(d);})
-        .style("fill", function (d){return node_color_tmp[d.name];})
+        .style("fill", function (d){return pxtree.node_color_mem[d.name];})
         .style("r", function (){return size_node_leaf;})
 }
 /*
