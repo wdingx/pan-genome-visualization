@@ -84,10 +84,17 @@ function updatePresence(geneIndex) {
 function updateGainLossEvent(geneIndex) {
     var gindex= parseInt(geneIndex)-1;
     var svg=d3.select('#mytree1');
+    var gainloss_disabled=0;
     var link = svg.selectAll('path.tnt_tree_link')
-                .filter(function(d) {
-                    return geneGainLoss_Dt[d.target.name]!==undefined
-                })
+            .filter(function(d) {
+                if (geneGainLoss_Dt[d.target.name]!==undefined) {
+                    return true
+                } else if (gainloss_disabled==0) {
+                    gainloss_disabled=1; return false
+                } else { return false}
+            })
+    if (gainloss_disabled==1) { pxtree.wid_gloss=pxtree.wid_link}
+
 
     link.style('stroke-width',pxtree.wid_link)
         /*.style('stroke-dasharray', 'none');*/
