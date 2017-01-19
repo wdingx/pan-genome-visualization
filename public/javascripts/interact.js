@@ -54,12 +54,12 @@ function updatePresence(geneIndex) {
         if ( (d.name.indexOf('NODE_')!=0) && (d.name!='')) {
             if (d.genePresence[parseInt(geneIndex)-1]=='1') {
             //console.log(d.genePresence[geneIndex]);
-                pxtree.node_color_mem[d.name]= pxtree.col_genePresent;
-                return pxtree.col_genePresent;  
+                pxtree.node_color_mem[d.name]= pxtree.col_pres;
+                return pxtree.col_pres;  
             }
             else {
-                pxtree.node_color_mem[d.name]=pxtree.col_geneAbsent;
-                return pxtree.col_geneAbsent;
+                pxtree.node_color_mem[d.name]=pxtree.col_abse;
+                return pxtree.col_abse;
             }
         }
     });
@@ -82,37 +82,32 @@ function updatePresence(geneIndex) {
 
 //## update gene gain/loss pattern
 function updateGainLossEvent(geneIndex) {
-
-    //var geneEvent_arr=geneGainLoss_Dt[geneIndex];        
+    var gindex= parseInt(geneIndex)-1;
     var svg=d3.select('#mytree1');
     var link = svg.selectAll('path.tnt_tree_link')
+                .filter(function(d) {
+                    return geneGainLoss_Dt[d.target.name]!==undefined
+                })
+
+    link.style('stroke-width',pxtree.wid_link)
+        /*.style('stroke-dasharray', 'none');*/
 
     link
-        .style("stroke-width",'1px')
-        .style("stroke-dasharray", 'none');
-    //added
-    link
     .style('stroke', function(d) {
-        var event_type = geneGainLoss_Dt[d.target.name][parseInt(geneIndex)-1];
-        if (event_type=='2') {return pxtree.col_geneAbsent }
-        else if (event_type=='0') {return pxtree.col_geneAbsent }
-        else if (event_type=='1') {return pxtree.col_genePresent}
-        else if (event_type=='3') {return pxtree.col_genePresent}
+        var event_type = geneGainLoss_Dt[d.target.name][gindex];
+        if (event_type==='0' || event_type=='2') {return pxtree.col_abse }
+        else {return pxtree.col_pres}
 
     })
     .style("stroke-width", function (d) {
-        var event_type = geneGainLoss_Dt[d.target.name][parseInt(geneIndex)-1];
-        if (event_type=='2') {return '3px'}
-        else if (event_type=='0') {return '1px'}
-        else if (event_type=='1') {return '3px'}
-        else if (event_type=='3') {return '1px'}
+        var event_type = geneGainLoss_Dt[d.target.name][gindex];
+        if (event_type=='1' || event_type=='2') {return pxtree.wid_gloss}
+        else {return pxtree.wid_link}
     })
     .style("stroke-dasharray", function(d) {
-        var event_type = geneGainLoss_Dt[d.target.name][parseInt(geneIndex)-1];
+        var event_type = geneGainLoss_Dt[d.target.name][gindex];
         if (event_type=='2'){ return (d.source.parent) ? "6,6" : "1,0"; }
-        else if (event_type=='0') {return 'none' }
-        else if (event_type=='1') {return 'none' }
-        else if (event_type=='3') {return 'none' }
+        else {return 'none' }
     });
 
 };
