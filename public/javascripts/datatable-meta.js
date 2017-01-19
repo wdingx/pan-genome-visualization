@@ -1,8 +1,7 @@
-
 //# create meta table
 var meta_table_columns= Object.keys(meta_display_set);
 meta_table_columns.unshift('accession');
-creat_dataTable("#dc-data-table2",meta_table_columns);
+creat_dataTable("#dc-data-table2",meta_table_columns,{}); // {}: no tooltip on header
 
 //#DataTable for meta-info
 var chartExample2 = {
@@ -21,8 +20,6 @@ var chartExample2 = {
                 'responsive': true,
                 'search':true,
                 'paging':true,
-                //'autoFill': {focus: 'click'},
-                //'pagingType': 'full_numbers',
                 //'bSort': true,
                 'scrollX': true,
                 'scrollY': '200px',//'30vh',
@@ -34,11 +31,4 @@ var chartExample2 = {
             });
     }
 };
-chartExample2.dataTable2Fun();/**/
-
-var tableTools = new $.fn.dataTable.TableTools( datatable2, {
-    sRowSelect: "os",
-    aButtons: []
-} );
-
-$( tableTools.fnContainer() ).insertBefore('div.dataTables_wrapper');
+chartExample2.dataTable2Fun();
