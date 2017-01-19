@@ -23,6 +23,7 @@
     "tnt.tree": "https://github.com/tntvis/tnt.tree.git",
     "msa": "http://cdn.biojs.net/msa/0.4/msa.min.gz.js",
     "datatables-tabletools": "http://cdn.datatables.net/tabletools/2.2.4/js/dataTables.tableTools.js",
-    "nouislider": "^8.5.1"
+    "nouislider": "^8.5.1",
+    "datatables.net-buttons-bs": "^1.2.4"
   }
 }
