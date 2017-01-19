@@ -53,230 +53,6 @@ var render = function (div,treeJsonPath,svg) {
     if (treeJsonPath.indexOf('tree.json') !== -1) {
         showAlert(treeJsonPath);
     }
-
-    //## actions on tree (tooltips, select subtree by nodes/links)
-    var svgAction= function() {
-
-        function hasOwnProperty(obj, prop) {
-            var proto = obj.__proto__ || obj.constructor.prototype;
-            return (prop in obj) &&
-                (!(prop in proto) || proto[prop] !== obj[prop]);
-        }
-
-        //## leaf nodes tooltip
-        function tooltip_node (){
-            svg.selectAll("g.tnt_tree_node.leaf")
-                .on('mouseover', tips_node.show)
-                .on('mouseout', tips_node.hide)
-                .call(tips_node);
-        } 
-        tooltip_node();
-
-        function mouseover_show_subTree(d, i) {
-            var click_type='';
-            if (hasOwnProperty(d, 'target' )) {
-                click_type='link';
-            } else { click_type='node';}
-
-            if (click_type=='link') {
-                if (d.target.muts != undefined) { tips_link.show(d);}
-                d=d.target;
-            }
-
-            removeLegend();
-
-            //if (hasOwnProperty(d, 'name') && d.name!='') {
-            if ( (d.name.indexOf('NODE_')!=0) && (d.name!='') ) {
-                //console.log(hasOwnProperty(d, 'target'));
-                d3.selectAll("circle.pt" + d.name)
-                  .style("fill", color_leaf_node_highlight)
-                  .attr("r", size_node_leaf_highlight)
-            }
-            else if  (  (d.name.indexOf('NODE_')==0) || (d.name=="") ){ 
-                this.style.cursor='pointer';
-                //# highlight selected inner node
-                if (click_type=='node') {
-                    d3.select(this)
-                        .style("stroke",color_inner_node_highlight)
-                        .style("stroke-width",'20px')
-                        .style("fill", "steelblue");
-                } else if (click_type=='link') {
-                    link_color_tmp[this.id]=this.style.stroke;
-                    link_width_tmp[this.id]=this.style['stroke-width'];
-                    link_dasharray_tmp[this.id]=this.style['stroke-dasharray'];
-                    //console.log(this.style,this.style['stroke-width'],this.style['stroke-dasharray']);
-                    d3.select(this)
-                        .style("stroke", branch_color_highlight) //"steelblue"
-                        .style("stroke-width",'3px'); //'5px'
-                }
-
-                var result = [];
-                var x = d.children;
-                var findChildren =function (x) {
-                    for(var i=0;i<x.length;i++) {
-                        if  ((x[i].name.indexOf('NODE_')!=0) && (x[i].name!='')) {
-                            result.push(x[i].name);
-                        }
-                        else {
-                            findChildren(x[i].children);
-                        }
-                    }
-                }
-                findChildren(x);
-
-                //# highlight all subtree leaf nodes
-                for(var i=0;i<result.length;i++) {
-                    d3.selectAll("circle.pt" + result[i])
-                        .style("fill", function(d) {
-                            return subtree_node_colorSet(d.name);
-                        })
-                        .attr("r", size_node_leaf_highlight);
-                }
-            }
-        }
-
-        function mouseout_hide_sub_highlight(d, i) {
-            var click_type='';
-            //d.target!=undefined
-            if (hasOwnProperty(d, 'target' )) {
-                click_type='link';
-            } else { click_type='node';}
-
-            if (click_type=='link') {
-                tips_link.hide(d);
-                d=d.target
-            }
-
-            makeLegend(legendOptionValue);
-            if ( (d.name.indexOf('NODE_')!=0) && (d.name!='') ) {
-                d3.selectAll("circle.pt" + d.name)
-                    .style("fill", node_color_tmp[d.name])
-                    .attr("r", size_node_leaf);
-            }
-            else if  ( (d.name.indexOf('NODE_')==0) || (d.name=="") ) {
-                //#change the color of selected inner nodes
-                if (click_type=='node') { 
-                    d3.select(this)
-                        .style("stroke-width",'0px')
-                        .style("fill", color_inner_node)
-                        .attr("r", size_node_inner);
-                } else if (click_type=='link') {
-                    d3.select(this)
-                        .style('stroke', function () {
-                            if (link_color_tmp[this.id]!=undefined ) {
-                                return link_color_tmp[this.id];
-                            } else { return branch_color;}
-                        }) 
-                        .style("stroke-width", function () {
-                            if (link_width_tmp[this.id]!=undefined ) {
-                                return link_width_tmp[this.id];
-                            } else { return link_width;}
-                        })
-                        .style("stroke-dasharray",function () {
-                            if (link_dasharray_tmp[this.id]!=undefined ) {
-                                return link_dasharray_tmp[this.id];
-                            } else { return link_dasharray;}
-                        })
-                }
-
-                
-                //# change the color of subtree leaf nodes 
-                var result = [];
-                var x = d.children;
-                var findChildren =function (x) {
-                    for(var i=0;i<x.length;i++) {
-                        if  ( (x[i].name.indexOf('NODE_')!=0) && (x[i].name!='') ) {
-                            result.push(x[i].name);
-                        }
-                        else {
-                            findChildren(x[i].children);
-                        }
-                    }
-                };
-                findChildren(x);
-
-                for(var i=0;i<result.length;i++) {
-                    d3.selectAll("circle.pt" + result[i])
-                        .style("fill", function(d) {
-                            return node_color_tmp[d.name]
-                        })
-                        .attr("r", size_node_leaf);
-                }
-            }
-        }
-
-        function click_show_sub_metaTable(d, i) {
-            //d.target!=undefined
-            var click_type='';
-            if (hasOwnProperty(d, 'target' )) {
-                click_type='link';
-            } else { click_type='node';}
-
-            if (click_type=='link') {d=d.target}
-
-            var result = [];
-            if ( (d.name.indexOf('NODE_')==0) || (d.name=="")  ) {
-                var x = d.children; 
-                var findChildren =function (x) {
-                    for(var i=0;i<x.length;i++) {
-                        if  ( x[i].name.indexOf('NODE_')!=0 && x[i].name!='') {
-                            result.push(x[i].name);
-                        }
-                        else {
-                            findChildren(x[i].children);
-                        }
-                    }
-                };
-                findChildren(x);
-            }
-            else {
-                result =[d.name]; //console.log( d.name); 
-            }
-
-            //var nodeAttriPath="./dataset/Sa-tnt-dAttri.json" ;  
-            d3.json(path_datatable2, function(error, data) {
-                var data=data['data']
-                for (var i=0;i<data.length;i++) {
-                    data[data[i]['accession']]=data[i]
-                } 
-
-                function RefreshTreeTable() {
-                    var n=[];
-                    for (var i=0;i<result.length;i++) {
-                        var tmp = data[result[i]];
-                        tmp['accession']=result[i];
-                        n.push(tmp);
-                    }
-                    $('#dc-data-table2').dataTable().fnClearTable();
-                    $('#dc-data-table2').dataTable().fnAddData(n);
-                    $('#dc-data-table2').dataTable().fnDraw();
-                }; 
-                RefreshTreeTable(); 
-            });
-        }
-
-        //## find the corresponding node in another tree
-        function node_showSubtree_trace(){
-            svg.selectAll("circle") // nodes tracing trick
-                .attr("class", function(d,i) {
-                    return  "pt" +d.name;
-                })
-                .on("mouseover", mouseover_show_subTree )
-                .on("mouseout", mouseout_hide_sub_highlight)
-                .on("click", click_show_sub_metaTable );
-        }
-        node_showSubtree_trace();
-
-        //## select link to show sub-tree
-        function link_showSubtree_trace() {
-            svg.selectAll('path.tnt_tree_link')
-                .on("mouseover", mouseover_show_subTree )
-                .on("mouseout", mouseout_hide_sub_highlight )
-                .call(tips_link)
-                .on("click", click_show_sub_metaTable );
-        }
-        link_showSubtree_trace();
-    };
     
     //## load tree data and draw the initial tree
     d3.json (treeJsonPath, function (error,data) {
@@ -460,7 +236,7 @@ var render = function (div,treeJsonPath,svg) {
             })
             .text(scaleBar);
 
-        svgAction();
+        svgAction(svg);
         
         rotate_tree(svg2,set_rotate);
     });
@@ -483,11 +259,11 @@ var render = function (div,treeJsonPath,svg) {
         tree_vis.update();
         //var t0 = performance.now(); var t1 = performance.now(); csprint("time: "+ (t1-t0) +" milliseconds.");
 
-        var t0 = performance.now(); svgAction();
+        var t0 = performance.now(); svgAction(svg);
         var t1 = performance.now(); csprint("time: "+ (t1-t0) +" milliseconds.");
     });
 
-    //# Enable label or not 
+    //# Enable label or not
     $('#LabelsToggle').change(function() {
         if ($('#LabelsToggle').prop('checked')==false) {  
             svg.selectAll("text").style("visibility", "hidden");
@@ -505,7 +281,7 @@ var render = function (div,treeJsonPath,svg) {
         var layout = tnt.tree.layout[setLayout]().width(width).scale( $(this).prop('checked'))
         tree_vis.layout(layout);
         tree_vis.update();
-        svgAction ();
+        svgAction(svg);
         //console.log(set_rotate);
         //set_rotate='right-left';
         set_rotate='left-right';
@@ -566,6 +342,230 @@ var render = function (div,treeJsonPath,svg) {
 
 };
 
+    //## actions on tree (tooltips, select subtree by nodes/links)
+var svgAction= function(svg) {
+
+    function hasOwnProperty(obj, prop) {
+        var proto = obj.__proto__ || obj.constructor.prototype;
+        return (prop in obj) &&
+            (!(prop in proto) || proto[prop] !== obj[prop]);
+    }
+
+    //## leaf nodes tooltip
+    function tooltip_node (){
+        svg.selectAll("g.tnt_tree_node.leaf")
+            .on('mouseover', tips_node.show)
+            .on('mouseout', tips_node.hide)
+            .call(tips_node);
+    } 
+    tooltip_node();
+
+    function mouseover_show_subTree(d, i) {
+        var click_type='';
+        if (hasOwnProperty(d, 'target' )) {
+            click_type='link';
+        } else { click_type='node';}
+
+        if (click_type=='link') {
+            if (d.target.muts != undefined) { tips_link.show(d);}
+            d=d.target;
+        }
+
+        removeLegend();
+
+        //if (hasOwnProperty(d, 'name') && d.name!='') {
+        if ( (d.name.indexOf('NODE_')!=0) && (d.name!='') ) {
+            //console.log(hasOwnProperty(d, 'target'));
+            d3.selectAll("circle.pt" + d.name)
+              .style("fill", color_leaf_node_highlight)
+              .attr("r", size_node_leaf_highlight)
+        }
+        else if  (  (d.name.indexOf('NODE_')==0) || (d.name=="") ){ 
+            this.style.cursor='pointer';
+            //# highlight selected inner node
+            if (click_type=='node') {
+                d3.select(this)
+                    .style("stroke",color_inner_node_highlight)
+                    .style("stroke-width",'20px')
+                    .style("fill", "steelblue");
+            } else if (click_type=='link') {
+                link_color_tmp[this.id]=this.style.stroke;
+                link_width_tmp[this.id]=this.style['stroke-width'];
+                link_dasharray_tmp[this.id]=this.style['stroke-dasharray'];
+                //console.log(this.style,this.style['stroke-width'],this.style['stroke-dasharray']);
+                d3.select(this)
+                    .style("stroke", branch_color_highlight) //"steelblue"
+                    .style("stroke-width",'3px'); //'5px'
+            }
+
+            var result = [];
+            var x = d.children;
+            var findChildren =function (x) {
+                for(var i=0;i<x.length;i++) {
+                    if  ((x[i].name.indexOf('NODE_')!=0) && (x[i].name!='')) {
+                        result.push(x[i].name);
+                    }
+                    else {
+                        findChildren(x[i].children);
+                    }
+                }
+            }
+            findChildren(x);
+
+            //# highlight all subtree leaf nodes
+            for(var i=0;i<result.length;i++) {
+                d3.selectAll("circle.pt" + result[i])
+                    .style("fill", function(d) {
+                        return subtree_node_colorSet(d.name);
+                    })
+                    .attr("r", size_node_leaf_highlight);
+            }
+        }
+    }
+
+    function mouseout_hide_sub_highlight(d, i) {
+        var click_type='';
+        //d.target!=undefined
+        if (hasOwnProperty(d, 'target' )) {
+            click_type='link';
+        } else { click_type='node';}
+
+        if (click_type=='link') {
+            tips_link.hide(d);
+            d=d.target
+        }
+
+        makeLegend(legendOptionValue);
+        if ( (d.name.indexOf('NODE_')!=0) && (d.name!='') ) {
+            d3.selectAll("circle.pt" + d.name)
+                .style("fill", node_color_tmp[d.name])
+                .attr("r", size_node_leaf);
+        }
+        else if  ( (d.name.indexOf('NODE_')==0) || (d.name=="") ) {
+            //#change the color of selected inner nodes
+            if (click_type=='node') { 
+                d3.select(this)
+                    .style("stroke-width",'0px')
+                    .style("fill", color_inner_node)
+                    .attr("r", size_node_inner);
+            } else if (click_type=='link') {
+                d3.select(this)
+                    .style('stroke', function () {
+                        if (link_color_tmp[this.id]!=undefined ) {
+                            return link_color_tmp[this.id];
+                        } else { return branch_color;}
+                    }) 
+                    .style("stroke-width", function () {
+                        if (link_width_tmp[this.id]!=undefined ) {
+                            return link_width_tmp[this.id];
+                        } else { return link_width;}
+                    })
+                    .style("stroke-dasharray",function () {
+                        if (link_dasharray_tmp[this.id]!=undefined ) {
+                            return link_dasharray_tmp[this.id];
+                        } else { return link_dasharray;}
+                    })
+            }
+
+            
+            //# change the color of subtree leaf nodes 
+            var result = [];
+            var x = d.children;
+            var findChildren =function (x) {
+                for(var i=0;i<x.length;i++) {
+                    if  ( (x[i].name.indexOf('NODE_')!=0) && (x[i].name!='') ) {
+                        result.push(x[i].name);
+                    }
+                    else {
+                        findChildren(x[i].children);
+                    }
+                }
+            };
+            findChildren(x);
+
+            for(var i=0;i<result.length;i++) {
+                d3.selectAll("circle.pt" + result[i])
+                    .style("fill", function(d) {
+                        return node_color_tmp[d.name]
+                    })
+                    .attr("r", size_node_leaf);
+            }
+        }
+    }
+
+    function click_show_sub_metaTable(d, i) {
+        //d.target!=undefined
+        var click_type='';
+        if (hasOwnProperty(d, 'target' )) {
+            click_type='link';
+        } else { click_type='node';}
+
+        if (click_type=='link') {d=d.target}
+
+        var result = [];
+        if ( (d.name.indexOf('NODE_')==0) || (d.name=="")  ) {
+            var x = d.children; 
+            var findChildren =function (x) {
+                for(var i=0;i<x.length;i++) {
+                    if  ( x[i].name.indexOf('NODE_')!=0 && x[i].name!='') {
+                        result.push(x[i].name);
+                    }
+                    else {
+                        findChildren(x[i].children);
+                    }
+                }
+            };
+            findChildren(x);
+        }
+        else {
+            result =[d.name]; //console.log( d.name); 
+        }
+
+        //var nodeAttriPath="./dataset/Sa-tnt-dAttri.json" ;  
+        d3.json(path_datatable2, function(error, data) {
+            var data=data['data']
+            for (var i=0;i<data.length;i++) {
+                data[data[i]['accession']]=data[i]
+            } 
+
+            function RefreshTreeTable() {
+                var n=[];
+                for (var i=0;i<result.length;i++) {
+                    var tmp = data[result[i]];
+                    tmp['accession']=result[i];
+                    n.push(tmp);
+                }
+                $('#dc-data-table2').dataTable().fnClearTable();
+                $('#dc-data-table2').dataTable().fnAddData(n);
+                $('#dc-data-table2').dataTable().fnDraw();
+            }; 
+            RefreshTreeTable(); 
+        });
+    }
+
+    //## find the corresponding node in another tree
+    function node_showSubtree_trace(){
+        svg.selectAll("circle") // nodes tracing trick
+            .attr("class", function(d,i) {
+                return  "pt" +d.name;
+            })
+            .on("mouseover", mouseover_show_subTree )
+            .on("mouseout", mouseout_hide_sub_highlight)
+            .on("click", click_show_sub_metaTable );
+    }
+    node_showSubtree_trace();
+
+    //## select link to show sub-tree
+    function link_showSubtree_trace() {
+        svg.selectAll('path.tnt_tree_link')
+            .on("mouseover", mouseover_show_subTree )
+            .on("mouseout", mouseout_hide_sub_highlight )
+            .call(tips_link)
+            .on("click", click_show_sub_metaTable );
+    }
+    link_showSubtree_trace();
+
+};
     // ## rotate tree             
     function rotate_tree(svg, direction) {
         svg.selectAll(".tnt_tree_node")
@@ -599,10 +599,7 @@ var render = function (div,treeJsonPath,svg) {
                 else { return "end";}
             });
         }
-
-
     }
-
     //## toggle tree-rotate
     $('#tree-rotate').change(function() {
         var svg2 = d3.select('#mytree2')
@@ -611,6 +608,7 @@ var render = function (div,treeJsonPath,svg) {
         }
         else { var set_rotate='left-right';}
         //## call rotate function
+        //svgAction.rotate_tree(svg2,set_rotate);
         rotate_tree(svg2,set_rotate);
     });
 
