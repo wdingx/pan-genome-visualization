@@ -1,16 +1,9 @@
 var winInnerWidth = window.innerWidth;
 var init_core_threshold=0.99;
-//var color_genePresence='blue', color_geneAbsence='red';
-//var color_genePresence='#3A89EA', color_geneAbsence='#EA5833';
-//var color_genePresence='#1F69C4', color_geneAbsence='#DB2C11';
-var color_genePresence='#005BCC', color_geneAbsence='#E01F1F';//'#D82400';
+
 
 //## tree style tmp
-var node_color_tmp={},
-    link_color_tmp={}, 
-    link_width_tmp={}, 
-    link_dasharray_tmp={},
-    Initial_MsaGV='';
+var Initial_MsaGV='';
 var geneId_GV='', geneclusterID_GV='';
 var ann_majority= '';
 
@@ -61,19 +54,19 @@ function updatePresence(geneIndex) {
         if ( (d.name.indexOf('NODE_')!=0) && (d.name!='')) {
             if (d.genePresence[parseInt(geneIndex)-1]=='1') {
             //console.log(d.genePresence[geneIndex]);
-                node_color_tmp[d.name]= color_genePresence;
-                return color_genePresence;  
+                pxtree.node_color_mem[d.name]= pxtree.col_genePresent;
+                return pxtree.col_genePresent;  
             }
             else {
-                node_color_tmp[d.name]=color_geneAbsence;
-                return color_geneAbsence;
+                pxtree.node_color_mem[d.name]=pxtree.col_geneAbsent;
+                return pxtree.col_geneAbsent;
             }
         }
     });
 
     link.style("stroke", function(d){ 
         if (  (d.target.name.indexOf('NODE_')!=0) && d.target.name!='') { 
-            return node_color_tmp[d.target.name]; 
+            return pxtree.node_color_mem[d.target.name]; 
         }
         else {
             return 'gray';
@@ -82,7 +75,7 @@ function updatePresence(geneIndex) {
 
     text.style("fill", function(d) {
         if (d!==undefined && d.name!='' ) {
-            return node_color_tmp[d.name];
+            return pxtree.node_color_mem[d.name];
         }
     });
 };
@@ -101,10 +94,10 @@ function updateGainLossEvent(geneIndex) {
     link
     .style('stroke', function(d) {
         var event_type = geneGainLoss_Dt[d.target.name][parseInt(geneIndex)-1];
-        if (event_type=='2') {return color_geneAbsence }
-        else if (event_type=='0') {return color_geneAbsence }
-        else if (event_type=='1') {return color_genePresence}
-        else if (event_type=='3') {return color_genePresence}
+        if (event_type=='2') {return pxtree.col_geneAbsent }
+        else if (event_type=='0') {return pxtree.col_geneAbsent }
+        else if (event_type=='1') {return pxtree.col_genePresent}
+        else if (event_type=='3') {return pxtree.col_genePresent}
 
     })
     .style("stroke-width", function (d) {
