@@ -328,10 +328,13 @@ var render_tree = function(div,treeJsonPath,svg) {
     //## actions on tree (tooltips, select subtree by nodes/links)
 var svgAction= function treesvg_act(svg) {
 
-    function hasOwnProperty(obj, prop) {
+    /*function hasOwnProperty(obj, prop) {
         var proto = obj.__proto__ || obj.constructor.prototype;
         return (prop in obj) &&
             (!(prop in proto) || proto[prop] !== obj[prop]);
+    }*/
+    function hasOwnProperty(obj, prop){
+        return (obj[prop] !== undefined);
     }
 
     //## leaf nodes tooltip
