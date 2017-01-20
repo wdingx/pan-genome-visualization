@@ -65,22 +65,7 @@ var render_tree = function(div,treeJsonPath,svg) {
         set_sizes(leaf_count);
 
         var internal_label = tnt.tree.label.text()
-            .text(function (node) {
-                return ""
-                /*var branch_length_origin = node.data().branch_length;
-                var branch_length_treated = branch_length_origin.toFixed(20).match(/^-?\d*\.?0*\d{0,2}/)[0];
-                if ( d3.select('#TreeViewSelect').property('checked')==true || branch_length_treated==0 ) {return ""
-                } else {return branch_length_treated}*/
-            });
-            /*.fontweight("bold")
-            .fontsize(size_font_inner_label)
-            .color("red")
-            .transform(function (node) {
-                return {
-                    "translate" : [-50, -5],
-                    "rotate" : -0
-                };
-            });*/
+            .text(function (node) {return ""});
         
         var leaf_label = tnt.tree.label.text()
             .fontsize(size_font_leaf_label)
