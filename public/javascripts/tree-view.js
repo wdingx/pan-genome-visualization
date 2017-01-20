@@ -1,7 +1,11 @@
+var winInnerWidth = pgDashbord.winInnerWidth;
+
 var svg1 = d3.select('#mytree1');
 var svg2 = d3.select('#mytree2');
 //var svg_all = d3.select('#all_tree');
 var svg_all = d3.select('#mytree1,#mytree2');
+
+var times_flag=0;
 
 //# node/label size
 var size_node_leaf=3.5,
@@ -24,7 +28,7 @@ var color_leaf_node_highlight="#EE6363",
 var subtree_node_colorSet = d3.scale.category20c();
 
 //## render the tree viewer
-var render = function render_tree(div,treeJsonPath,svg) {
+var render_tree = function(div,treeJsonPath,svg) {
     "use strict";
     var tree_vis = tnt.tree();
     var width = winInnerWidth/3; //600; //var height = 360;
@@ -68,7 +72,7 @@ var render = function render_tree(div,treeJsonPath,svg) {
                 .text(function (node) {
                     var branch_length_origin = node.data().branch_length;
                     var branch_length_treated = branch_length_origin.toFixed(20).match(/^-?\d*\.?0*\d{0,2}/)[0];
-                    if ( $('#TreeViewSelect').prop('checked')==true || branch_length_treated==0 ) {return ""}
+                    if ( d3.select('#TreeViewSelect').property('checked')==true || branch_length_treated==0 ) {return ""}
                     //else {return branch_length_treated}
                     else {return ""}
                 })
@@ -124,14 +128,14 @@ var render = function render_tree(div,treeJsonPath,svg) {
                 .height(height_nodeLabel)//30
                 .display(function (node) {
                     if (node.is_leaf()) {
-                        if ($('#TreeViewSelect').prop('checked')==false){
+                        if (d3.select('#TreeViewSelect').property('checked')==false){
                             return leaf_label.display().call(this, node, "vertical");
                         }  
                         else {return leaf_label.display().call(this, node, "radial");
                         }
                     }
                     else{ 
-                        if ($('#TreeViewSelect').prop('checked')==false) {
+                        if (d3.select('#TreeViewSelect').property('checked')==false) {
                             return internal_label.display().call(this, node, "vertical")
                         }
                         else {
@@ -141,13 +145,13 @@ var render = function render_tree(div,treeJsonPath,svg) {
                 })
                 .transform(function (node) {
                     if (node.is_leaf()) {
-                        if ($('#TreeViewSelect').prop('checked')==false){
+                        if (d3.select('#TreeViewSelect').property('checked')==false){
                             return leaf_label.transform().call(this, node, "vertical");
                         }
                         else {return leaf_label.transform().call(this, node, "radial");
                         }
                     } else {
-                        if ($('#TreeViewSelect').prop('checked')==false) {return internal_label.transform().call(this, node, "vertical");
+                        if (d3.select('#TreeViewSelect').property('checked')==false) {return internal_label.transform().call(this, node, "vertical");
                         }
                         else {return internal_label.transform().call(this, node, "radial");
                         }
@@ -222,15 +226,18 @@ var render = function render_tree(div,treeJsonPath,svg) {
         $('#TreeViewSelect').change(function() {
             var setLayout= (d3.select(this).property('checked')==false) ? 'vertical' : 'radial';
             var rotate_vis_state= (setLayout=='vertical') ? 'visible' : 'hidden';
+
             document.getElementById('tree-rotate-div').style.visibility=rotate_vis_state;
 
-            var layout = tnt.tree.layout[setLayout]().width(width).scale($('#ScalesToggle').prop('checked'))
+            var layout = tnt.tree.layout[setLayout]().width(width).scale(d3.select('#ScalesToggle').property('checked'))
             
             tree_vis.layout(layout);
             tree_vis.update();
 
             var t0 = performance.now(); svgAction(svg);
-            var t1 = performance.now(); csprint("time: "+ Math.round(t1-t0) +" msec");
+            var t1 = performance.now(); 
+            if (times_flag==1) { csprint("time: "+ Math.round(t1-t0) +" msec");}
+        
         });
 
         //# Enable label or not
@@ -242,7 +249,7 @@ var render = function render_tree(div,treeJsonPath,svg) {
         // ## Enable scale or not 
         $('#ScalesToggle').change(function() {
             var setLayout= (d3.select('#TreeViewSelect').property('checked')==false) ? 'vertical' : 'radial';
-            var layout = tnt.tree.layout[setLayout]().width(width).scale( $(this).prop('checked'))
+            var layout = tnt.tree.layout[setLayout]().width(width).scale( d3.select(this).property('checked'))
             tree_vis.layout(layout);
             tree_vis.update();
             svgAction(svg);
@@ -319,7 +326,7 @@ var render = function render_tree(div,treeJsonPath,svg) {
 };
 
     //## actions on tree (tooltips, select subtree by nodes/links)
-var svgAction= function(svg) {
+var svgAction= function treesvg_act(svg) {
 
     function hasOwnProperty(obj, prop) {
         var proto = obj.__proto__ || obj.constructor.prototype;
@@ -333,8 +340,11 @@ var svgAction= function(svg) {
             .on('mouseover', tips_node.show)
             .on('mouseout', tips_node.hide)
             .call(tips_node);
-    } 
+    }
+    var t0 = performance.now();
     tooltip_node();
+    var t1 = performance.now(); 
+    if (times_flag==1) {csprint("x0 time: "+ Math.round(t1-t0) +" msec");}
 
     function mouseover_show_subTree(d, i) {
         var click_type='';
@@ -368,7 +378,6 @@ var svgAction= function(svg) {
                 pxtree.link_color_mem[this.id]=this.style.stroke;
                 pxtree.link_width_mem[this.id]=this.style['stroke-width'];
                 pxtree.link_dash_mem[this.id]=this.style['stroke-dasharray'];
-                //console.log(this.style,this.style['stroke-width'],this.style['stroke-dasharray']);
                 d3.select(this)
                     .style("stroke", pxtree.branch_col_highlight)
                     .style("stroke-width", pxtree.branch_wid_highlight);
@@ -529,7 +538,11 @@ var svgAction= function(svg) {
             .on("mouseout", mouseout_hide_sub_highlight)
             .on("click", click_show_sub_metaTable );
     }
+    var t0 = performance.now();
     node_showSubtree_trace();
+    var t1 = performance.now(); 
+    if (times_flag==1) {csprint("x1 time: "+ Math.round(t1-t0) +" msec");} 
+    
 
     //## select link to show sub-tree
     function link_showSubtree_trace() {
@@ -539,7 +552,10 @@ var svgAction= function(svg) {
             .call(tips_link)
             .on("click", click_show_sub_metaTable );
     }
+    var t0 = performance.now(); 
     link_showSubtree_trace();
+    var t1 = performance.now(); 
+    if (times_flag==1) {csprint("x2 time: "+ Math.round(t1-t0) +" msec");}
 
 };
     // ## rotate tree             
@@ -579,7 +595,7 @@ var svgAction= function(svg) {
     //## toggle tree-rotate
     $('#tree-rotate').change(function() {
         var svg2 = d3.select('#mytree2')
-        if ($(this).prop('checked')==false) { 
+        if (d3.select(this).property('checked')==false) { 
             var set_rotate='right-left';        
         }
         else { var set_rotate='left-right';}
@@ -589,7 +605,7 @@ var svgAction= function(svg) {
     });
 
 
-render( "mytree1",treeJsonPath,svg1);
+render_tree("mytree1",treeJsonPath,svg1);
 //render ( 'mytree2',aln_file_path+'NZ_CP012001-1-1834888-1835742_tree.json',svg2);
 //render ( 'mytree2', aln_file_path+Initial_MsaGV.split('.')[0]+'_tree.json',svg2); 
 //render (document.getElementById("mytree2"),treeJsonPath,svg2);

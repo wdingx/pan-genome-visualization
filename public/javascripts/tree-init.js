@@ -1,3 +1,6 @@
+var pgDashbord = {
+    winInnerWidth: window.innerWidth,
+};
 var pxtree = {
     id: 5,
     branch_col: '#4A4A4A', 
@@ -14,7 +17,9 @@ var pxtree = {
     link_dash_mem: {},
     wid_link: '1.2px',
     wid_gloss: '3px',//gain loss highlight
-
+};
+var treeSwitch= {
+    layout_vertical: 'false',
 };
 
 var backup_var= {
