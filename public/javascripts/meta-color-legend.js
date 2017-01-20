@@ -178,14 +178,14 @@ function updateData(meta_type) {
             if ( (d.name.indexOf('NODE_')!=0) && d.name!='' ) {
                 if ( isNumeric(metaColor_set_keys[meta_type][0])==false ) {
                     var setColor=metaColorSet[d[meta_type]];
-                    node_color_tmp[d.name]=setColor;
+                    pxTree.node_color_mem[d.name]=setColor;
                     d3.selectAll("circle.pt" + d.name)
                         .style("fill", setColor);
                     return setColor;
                 } else {
                     if (d[meta_type]=='unknown') {
                         var setColor='#FFFFFF';
-                        node_color_tmp[d.name]=setColor;
+                        pxTree.node_color_mem[d.name]=setColor;
                         d3.selectAll("circle.pt" + d.name)
                             .style("fill", setColor);
                         return setColor;
@@ -195,7 +195,7 @@ function updateData(meta_type) {
                         for (i = 1; i <= current_keys.length; i++) {
                             if (  current_meta_value >= current_keys[i-1] && current_meta_value <=  current_keys[i] ) {
                                 var setColor=metaColorSet[current_keys[i]];
-                                node_color_tmp[d.name]=setColor;
+                                pxTree.node_color_mem[d.name]=setColor;
                                 d3.selectAll("circle.pt" + d.name)
                                     .style("fill", setColor);
                                 return setColor;
@@ -220,11 +220,11 @@ function updateData(meta_type) {
                             break;
                         }
                         // info unknown
-                        return branch_color;
+                        return pxTree.branch_col;
                     }
 
                 }
-            } else { return branch_color;}
+            } else { return pxTree.branch_col;}
         });
     } else {
         //## coloring all leaf nodes in gene Tree with blue

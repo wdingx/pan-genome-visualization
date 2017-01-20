@@ -1,7 +1,34 @@
+var pgModule = function(){
+    var current = null;
+    var labels = {'home':'home'};
+    var init = function(){
+    };
+
+    function hasOwnProperty(obj, prop){
+        return (obj[prop] !== undefined);
+    }
+    /*function hasOwnProperty(obj, prop) {
+        var proto = obj.__proto__ || obj.constructor.prototype;
+        return (prop in obj) &&
+            (!(prop in proto) || proto[prop] !== obj[prop]);
+    }*/
+
+    function isEmptyObj(obj) {
+        for (var key in obj) { 
+            if (obj.hasOwnProperty(key)) { return false; }
+        }
+        return true;
+    }
+
+   return{ hasOwnProperty:hasOwnProperty, isEmptyObj:isEmptyObj }
+}();
+
+
 var pgDashbord = {
     winInnerWidth: window.innerWidth,
 };
-var pxtree = {
+
+var pxTree = {
     id: 5,
     branch_col: '#4A4A4A', 
     branch_col_highlight: '#2D59B1',

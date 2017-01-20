@@ -52,28 +52,28 @@ function updatePresence(geneIndex) {
         if ( (d.name.indexOf('NODE_')!=0) && (d.name!='')) {
             if (d.genePresence[parseInt(geneIndex)-1]=='1') {
             //console.log(d.genePresence[geneIndex]);
-                pxtree.node_color_mem[d.name]= pxtree.col_pres;
-                return pxtree.col_pres;  
+                pxTree.node_color_mem[d.name]= pxTree.col_pres;
+                return pxTree.col_pres;  
             }
             else {
-                pxtree.node_color_mem[d.name]=pxtree.col_abse;
-                return pxtree.col_abse;
+                pxTree.node_color_mem[d.name]=pxTree.col_abse;
+                return pxTree.col_abse;
             }
         }
     });
 
     link.style("stroke", function(d){ 
         if (  (d.target.name.indexOf('NODE_')!=0) && d.target.name!='') { 
-            return pxtree.node_color_mem[d.target.name]; 
+            return pxTree.node_color_mem[d.target.name]; 
         }
         else {
-            return pxtree.branch_col;
+            return pxTree.branch_col;
         }
     });
 
     text.style("fill", function(d) {
         if (d!==undefined && d.name!='' ) {
-            return pxtree.node_color_mem[d.name];
+            return pxTree.node_color_mem[d.name];
         }
     });
 };
@@ -89,18 +89,18 @@ function updateGainLossEvent(geneIndex) {
                 else if (gainloss_disabled==0) {gainloss_disabled=1; return false}
                 else { return false}
             })
-    if (gainloss_disabled==1) { pxtree.wid_gloss=pxtree.wid_link}
+    if (gainloss_disabled==1) { pxTree.wid_gloss=pxTree.wid_link}
 
     link
     .style('stroke', function(d) {
         var event_type = geneGainLoss_Dt[d.target.name][gindex];
-        if (event_type==='0' || event_type=='2') {return pxtree.col_abse }
-        else {return pxtree.col_pres}
+        if (event_type==='0' || event_type=='2') {return pxTree.col_abse }
+        else {return pxTree.col_pres}
     })
     .style("stroke-width", function (d) {
         var event_type = geneGainLoss_Dt[d.target.name][gindex];
-        if (event_type=='1' || event_type=='2') {return pxtree.wid_gloss}
-        else {return pxtree.wid_link}
+        if (event_type=='1' || event_type=='2') {return pxTree.wid_gloss}
+        else {return pxTree.wid_link}
     })
     .style("stroke-dasharray", function(d) {
         var event_type = geneGainLoss_Dt[d.target.name][gindex];

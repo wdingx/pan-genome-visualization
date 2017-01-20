@@ -55,7 +55,7 @@ var render_tree = function(div,treeJsonPath,svg) {
         function set_sizes(count){
             height_nodeLabel = (count<60)?12:(3+540/count);
             size_font_leaf_label = (count<60)?12:(3+540/count);
-            size_font_inner_label= size_font_leaf_label;
+            //size_font_inner_label= size_font_leaf_label;
             size_node_leaf= (count<60)?3:(2 + 60/count);
             size_node_inner= (count<60)?2.2:(180/count);
             size_node_leaf_highlight = (count<60)?8:(4 + 240/count);
@@ -64,47 +64,24 @@ var render_tree = function(div,treeJsonPath,svg) {
         var leaf_count=count_leafs(tree_data);
         set_sizes(leaf_count);
 
-        var internal_label = tnt.tree.label.text()
-            .text(function (node) {return ""});
-        
-        var leaf_label = tnt.tree.label.text()
-            .fontsize(size_font_leaf_label)
-            .color(color_leaf_label)
-            //.text(function(d){return (d.strainName=='')?'A':'B';})
-            .text(function(d){return (typeof d.data().strainName==='undefined' || d.data().strainName=='' || d.data().strainName=='unknown')?d.data().name:d.data().strainName;})
-
-        var node_label = tnt.tree.label()
-            .width(leaf_label.width())
-            .height(height_nodeLabel)//30
-            .display(function (node) {
-                if (node.is_leaf()) {
-                    return leaf_label.display().call(this, node, "vertical");
-                } else { 
-                    return internal_label.display().call(this, node, "vertical");
-                } 
+        var node_label = tnt.tree.label.text()
+            .text(function (d){
+                if (d.is_leaf()) {
+                    return (typeof d.data().strainName==='undefined' || d.data().strainName=='' || d.data().strainName=='unknown') ? d.data().name : d.data().strainName;
+                } else {return ""}
             })
-            .transform(function (node) {
-                if (node.is_leaf()) {
-                        return leaf_label.transform().call(this, node, "vertical");
-                } else {
-                    return internal_label.transform().call(this, node, "vertical");
-                }
-            }); 
+            .color(function (node) {
+                return color_leaf_label; /*if (node.is_leaf()) {return color_leaf_label}*/
+            })
+            .fontsize(size_font_leaf_label)
+            .height(height_nodeLabel)
 
         var circle_node = tnt.tree.node_display.circle()
-            .size( function (node){
-                    if (node.is_leaf()) { return size_node_leaf }
-                    else {return size_node_inner} 
-                }) 
-            .stroke( function (node){ 
-                    if (node.is_leaf()) { return color_node_stroke }
-                })    
+            .size( function (node){ return (node.is_leaf()) ? size_node_leaf : size_node_inner;}) 
+            .stroke( function (node){ if (node.is_leaf()) { return color_node_stroke };})
             .fill( function (node,d){ 
                     if (node.is_leaf()) { 
-                        if (Object.keys(pxtree.node_color_mem).length !== 0) {
-                            return pxtree.node_color_mem[node.node_name()];
-                        }
-                        else {return color_node_fill}
+                        return (pgModule.hasOwnProperty(pxTree.node_color_mem,node.node_name())) ? pxTree.node_color_mem[node.node_name()] : color_node_fill;
                     }
                     else {return color_inner_node} 
                 });
@@ -116,7 +93,7 @@ var render_tree = function(div,treeJsonPath,svg) {
             });
         
         tree_vis
-            .branch_color(pxtree.branch_col)
+            .branch_color(pxTree.branch_col)
             .node_display(node_display)
             .label(node_label)//.label(tnt.tree.label.text().height(2).fontsize(fontSize).color('steelblue'))
             .data(tree_data)
@@ -131,7 +108,7 @@ var render_tree = function(div,treeJsonPath,svg) {
 
         /*link width*/
         var links = svg.selectAll(".tnt_tree_link")
-        links.style("stroke-width",pxtree.wid_link)
+        links.style("stroke-width",pxTree.wid_link)
 
         //## make scale bar
         var scaleBar = tree_vis.scale_bar(50, "pixel").toFixed(3);
@@ -262,15 +239,6 @@ var render_tree = function(div,treeJsonPath,svg) {
     //## actions on tree (tooltips, select subtree by nodes/links)
 var svgAction= function(svg) {
 
-    /*function hasOwnProperty(obj, prop) {
-        var proto = obj.__proto__ || obj.constructor.prototype;
-        return (prop in obj) &&
-            (!(prop in proto) || proto[prop] !== obj[prop]);
-    }*/
-    function hasOwnProperty(obj, prop){
-        return (obj[prop] !== undefined);
-    }
-
     //## leaf nodes tooltip
     function tooltip_node (){
         svg.selectAll(".tnt_tree_node.leaf")
@@ -285,7 +253,7 @@ var svgAction= function(svg) {
 
     function mouseover_show_subTree(d, i) {
         var click_type='';
-        if (hasOwnProperty(d, 'target' )) {
+        if (pgModule.hasOwnProperty(d, 'target' )) {
             click_type='link';
         } else { click_type='node';}
 
@@ -296,9 +264,9 @@ var svgAction= function(svg) {
 
         removeLegend();
 
-        //if (hasOwnProperty(d, 'name') && d.name!='') {
+        //if (pgModule.hasOwnProperty(d, 'name') && d.name!='') {
         if ( (d.name.indexOf('NODE_')!=0) && (d.name!='') ) {
-            //console.log(hasOwnProperty(d, 'target'));
+            //console.log(pgModule.hasOwnProperty(d, 'target'));
             d3.selectAll("circle.pt" + d.name)
               .style("fill", color_leaf_node_highlight)
               .attr("r", size_node_leaf_highlight)
@@ -312,12 +280,12 @@ var svgAction= function(svg) {
                     .style("stroke-width",'20px')
                     .style("fill", "steelblue");
             } else if (click_type=='link') {
-                pxtree.link_color_mem[this.id]=this.style.stroke;
-                pxtree.link_width_mem[this.id]=this.style['stroke-width'];
-                pxtree.link_dash_mem[this.id]=this.style['stroke-dasharray'];
+                pxTree.link_color_mem[this.id]=this.style.stroke;
+                pxTree.link_width_mem[this.id]=this.style['stroke-width'];
+                pxTree.link_dash_mem[this.id]=this.style['stroke-dasharray'];
                 d3.select(this)
-                    .style("stroke", pxtree.branch_col_highlight)
-                    .style("stroke-width", pxtree.branch_wid_highlight);
+                    .style("stroke", pxTree.branch_col_highlight)
+                    .style("stroke-width", pxTree.branch_wid_highlight);
             }
 
             var result = [];
@@ -348,7 +316,7 @@ var svgAction= function(svg) {
     function mouseout_hide_sub_highlight(d, i) {
         var click_type='';
         //d.target!=undefined
-        if (hasOwnProperty(d, 'target' )) {
+        if (pgModule.hasOwnProperty(d, 'target' )) {
             click_type='link';
         } else { click_type='node';}
 
@@ -360,7 +328,7 @@ var svgAction= function(svg) {
         makeLegend(legendOptionValue);
         if ( (d.name.indexOf('NODE_')!=0) && (d.name!='') ) {
             d3.selectAll("circle.pt" + d.name)
-                .style("fill", pxtree.node_color_mem[d.name])
+                .style("fill", pxTree.node_color_mem[d.name])
                 .attr("r", size_node_leaf);
         }
         else if  ( (d.name.indexOf('NODE_')==0) || (d.name=="") ) {
@@ -373,19 +341,19 @@ var svgAction= function(svg) {
             } else if (click_type=='link') {
                 d3.select(this)
                     .style('stroke', function () {
-                        if (pxtree.link_color_mem[this.id]!=undefined ) {
-                            return pxtree.link_color_mem[this.id];
-                        } else { return pxtree.branch_col;}
+                        if (pxTree.link_color_mem[this.id]!=undefined ) {
+                            return pxTree.link_color_mem[this.id];
+                        } else { return pxTree.branch_col;}
                     }) 
                     .style("stroke-width", function () {
-                        if (pxtree.link_width_mem[this.id]!=undefined ) {
-                            return pxtree.link_width_mem[this.id];
-                        } else { return pxtree.link_width;}
+                        if (pxTree.link_width_mem[this.id]!=undefined ) {
+                            return pxTree.link_width_mem[this.id];
+                        } else { return pxTree.link_width;}
                     })
                     .style("stroke-dasharray",function () {
-                        if (pxtree.link_dash_mem[this.id]!=undefined ) {
-                            return pxtree.link_dash_mem[this.id];
-                        } else { return pxtree.link_dasharray;}
+                        if (pxTree.link_dash_mem[this.id]!=undefined ) {
+                            return pxTree.link_dash_mem[this.id];
+                        } else { return pxTree.link_dasharray;}
                     })
             }
 
@@ -408,7 +376,7 @@ var svgAction= function(svg) {
             for(var i=0;i<result.length;i++) {
                 d3.selectAll("circle.pt" + result[i])
                     .style("fill", function(d) {
-                        return pxtree.node_color_mem[d.name]
+                        return pxTree.node_color_mem[d.name]
                     })
                     .attr("r", size_node_leaf);
             }
@@ -418,7 +386,7 @@ var svgAction= function(svg) {
     function click_show_sub_metaTable(d, i) {
         //d.target!=undefined
         var click_type='';
-        if (hasOwnProperty(d, 'target' )) {
+        if (pgModule.hasOwnProperty(d, 'target' )) {
             click_type='link';
         } else { click_type='node';}
 
@@ -562,7 +530,7 @@ function search(val) {
         .style("r", function (){return size_node_leaf_highlight;})
     // adjust style of non matches
     d3.selectAll("circle").filter(function(d){return !nodeMatch(d);})
-        .style("fill", function (d){return pxtree.node_color_mem[d.name];})
+        .style("fill", function (d){return pxTree.node_color_mem[d.name];})
         .style("r", function (){return size_node_leaf;})
 }
 /*
