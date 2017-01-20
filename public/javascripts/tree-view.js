@@ -66,13 +66,13 @@ var render_tree = function(div,treeJsonPath,svg) {
 
         var internal_label = tnt.tree.label.text()
             .text(function (node) {
-                var branch_length_origin = node.data().branch_length;
+                return ""
+                /*var branch_length_origin = node.data().branch_length;
                 var branch_length_treated = branch_length_origin.toFixed(20).match(/^-?\d*\.?0*\d{0,2}/)[0];
-                if ( d3.select('#TreeViewSelect').property('checked')==true || branch_length_treated==0 ) {return ""}
-                //else {return branch_length_treated}
-                else {return ""}
-            })
-            .fontweight("bold")
+                if ( d3.select('#TreeViewSelect').property('checked')==true || branch_length_treated==0 ) {return ""
+                } else {return branch_length_treated}*/
+            });
+            /*.fontweight("bold")
             .fontsize(size_font_inner_label)
             .color("red")
             .transform(function (node) {
@@ -80,7 +80,7 @@ var render_tree = function(div,treeJsonPath,svg) {
                     "translate" : [-50, -5],
                     "rotate" : -0
                 };
-            });  
+            });*/
         
         var leaf_label = tnt.tree.label.text()
             .fontsize(size_font_leaf_label)
@@ -93,34 +93,17 @@ var render_tree = function(div,treeJsonPath,svg) {
             .height(height_nodeLabel)//30
             .display(function (node) {
                 if (node.is_leaf()) {
-                    if (d3.select('#TreeViewSelect').property('checked')==false){
-                        return leaf_label.display().call(this, node, "vertical");
-                    }  
-                    else {return leaf_label.display().call(this, node, "radial");
-                    }
-                }
-                else{ 
-                    if (d3.select('#TreeViewSelect').property('checked')==false) {
-                        return internal_label.display().call(this, node, "vertical")
-                    }
-                    else {
-                        return internal_label.display().call(this, node, "radial")
-                    }
+                    return leaf_label.display().call(this, node, "vertical");
+                } else { 
+                    return internal_label.display().call(this, node, "vertical");
                 } 
             })
             .transform(function (node) {
                 if (node.is_leaf()) {
-                    if (d3.select('#TreeViewSelect').property('checked')==false){
                         return leaf_label.transform().call(this, node, "vertical");
-                    }
-                    else {return leaf_label.transform().call(this, node, "radial");
-                    }
                 } else {
-                    if (d3.select('#TreeViewSelect').property('checked')==false) {return internal_label.transform().call(this, node, "vertical");
-                    }
-                    else {return internal_label.transform().call(this, node, "radial");
-                    }
-                } 
+                    return internal_label.transform().call(this, node, "vertical");
+                }
             }); 
 
         var circle_node = tnt.tree.node_display.circle()
@@ -472,7 +455,7 @@ var svgAction= function(svg) {
             findChildren(x);
         }
         else {
-            result =[d.name]; //console.log( d.name); 
+            result =[d.name];
         }
 
         //var nodeAttriPath="./dataset/Sa-tnt-dAttri.json" ;  
