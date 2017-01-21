@@ -45,7 +45,7 @@ var render_tree = function(div,treeJsonPath,svg) {
                 return 1;
             } else {
                 var lc=0;
-                for (var ci=0; ci<node.children.length; ci++){
+                for (var ci=0, ch_len=node.children.length; ci<ch_len; ci++){
                     lc+= count_leafs(node.children[ci]);
                 }
                 return lc;
@@ -86,14 +86,10 @@ var render_tree = function(div,treeJsonPath,svg) {
                     else {return color_inner_node} 
                 });
 
-        var collapse_node_size = 4.5;
-        var node_fill='steelblue';//'white'
-        var node_stroke='steelblue';
-        var expanded_node = tnt.tree.node_display.circle()
         var collapsed_node = tnt.tree.node_display.triangle()
-            .size(collapse_node_size)
-            .fill(node_fill)
-            .stroke(node_stroke);
+            .size(pxTree.collapsed_node_size)
+            .fill(pxTree.collapsed_node_fill)
+            .stroke(pxTree.collapsed_node_stroke);
 
         var node_display = tnt.tree.node_display()
             .size(0.1) // This is used for the layout calculation
@@ -122,8 +118,10 @@ var render_tree = function(div,treeJsonPath,svg) {
             )
             .duration(0)//2000
 
-        tree_vis.on ("click", function(node){
-            node.toggle();
+        tree_vis.on ("click", function(d){
+            d3.select(this).style('cursor','pointer');
+            svgTree_Module.mouseout_hide_sub_highlight;
+            d.toggle();
             tree_vis.update();
             svgAction(svg);
             
@@ -262,9 +260,7 @@ var render_tree = function(div,treeJsonPath,svg) {
 
 };
 
-    //## actions on tree (tooltips, select subtree by nodes/links)
-var svgAction= function(svg) {
-
+var svgTree_Module= function(){
     var findChildren =function (array,innerNd_childrenArr) {
         if (array!=undefined) {
             for(var i=0, len=array.length; i<len; i++) {
@@ -278,16 +274,12 @@ var svgAction= function(svg) {
     };
 
     //## leaf nodes tooltip
-    function tooltip_node (){
+    function tooltip_node (svg){
         svg.selectAll(".tnt_tree_node.leaf")
             .on('mouseover', tips_node.show)
             .on('mouseout', tips_node.hide)
             .call(tips_node);
-    }
-    var t0 = performance.now();
-    tooltip_node();
-    var t1 = performance.now(); 
-    if (times_flag==1) {csprint("x0 time: "+ Math.round(t1-t0) +" msec");}
+    };
 
     function mouseover_show_subTree(d, i) {
         var click_type='';
@@ -338,8 +330,7 @@ var svgAction= function(svg) {
                     .attr("r", size_node_leaf_highlight);
             }
         }
-    }
-
+    };
     function mouseout_hide_sub_highlight(d, i) {
         var click_type='';
         //d.target!=undefined
@@ -384,9 +375,14 @@ var svgAction= function(svg) {
                     })
             }
 
-            //# change the color of subtree leaf nodes 
-            var innerNd_childrenArr = [];
-            findChildren(d.children,innerNd_childrenArr);
+            //# change the color of subtree leaf nodes
+            if (pgModule.hasOwnProperty(d, 'toggle_children')==false) {
+                var innerNd_childrenArr = [];
+                findChildren(d.children,innerNd_childrenArr);
+                d.toggle_children=innerNd_childrenArr
+            } else {
+                var innerNd_childrenArr= d.toggle_children;
+            }
 
             for(var i=0;i<innerNd_childrenArr.length;i++) {
                 d3.selectAll("circle.pt" + innerNd_childrenArr[i])
@@ -396,8 +392,7 @@ var svgAction= function(svg) {
                     .attr("r", size_node_leaf);
             }
         }
-    }
-
+    };
     function click_show_sub_metaTable(d, i) {
         //d.target!=undefined
         var click_type='';
@@ -435,10 +430,10 @@ var svgAction= function(svg) {
             }; 
             RefreshTreeTable(); 
         });
-    }
+    };
 
     //## find the corresponding node in another tree
-    function node_showSubtree_trace(){
+    function node_showSubtree_trace(svg){
         svg.selectAll("circle") // nodes tracing trick
             .attr("class", function(d,i) {
                 return  "pt" +d.name;
@@ -446,25 +441,38 @@ var svgAction= function(svg) {
             .on("mouseover", mouseover_show_subTree )
             .on("mouseout", mouseout_hide_sub_highlight)
             .on("click", click_show_sub_metaTable );
-    }
-    var t0 = performance.now();
-    node_showSubtree_trace();
-    var t1 = performance.now(); 
-    if (times_flag==1) {csprint("x1 time: "+ Math.round(t1-t0) +" msec");} 
-    
+    };
     //## select link to show sub-tree
-    function link_showSubtree_trace() {
+    function link_showSubtree_trace(svg) {
         svg.selectAll('path.tnt_tree_link')
             .on("mouseover", mouseover_show_subTree )
             .on("mouseout", mouseout_hide_sub_highlight )
             .call(tips_link)
             .on("click", click_show_sub_metaTable );
-    }
+    };
+
+    return{tooltip_node:tooltip_node,
+        node_showSubtree_trace:node_showSubtree_trace,
+        link_showSubtree_trace:link_showSubtree_trace}
+}();
+
+    //## actions on tree (tooltips, select subtree by nodes/links)
+var svgAction= function(svg) {
+
+    var t0 = performance.now();
+    svgTree_Module.tooltip_node(svg);
+    var t1 = performance.now(); 
+    if (times_flag==1) {csprint("x0 time: "+ Math.round(t1-t0) +" msec");}
+
+    var t0 = performance.now();
+    svgTree_Module.node_showSubtree_trace(svg);
+    var t1 = performance.now(); 
+    if (times_flag==1) {csprint("x1 time: "+ Math.round(t1-t0) +" msec");} 
+
     var t0 = performance.now(); 
-    link_showSubtree_trace();
+    svgTree_Module.link_showSubtree_trace(svg);
     var t1 = performance.now(); 
     if (times_flag==1) {csprint("x2 time: "+ Math.round(t1-t0) +" msec");}
-
 };
 
 // ## rotate tree             
