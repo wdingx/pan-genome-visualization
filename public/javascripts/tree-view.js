@@ -31,7 +31,7 @@ var render_tree = function(div,treeJsonPath,svg) {
     var set_rotate = 'right-left'
     //## initial layout/scale options .property('checked', true);
     var scale_layout = d3.select('#ScalesToggle').property('checked');
-    var setLayout= (d3.select('#TreeViewSelect').property('checked')==false) ? 'vertical' : 'radial';
+    var setLayout= 'vertical';//(d3.select('#TreeViewSelect').property('checked')==false) ? 'vertical' : 'radial';
 
     //## load tree data and draw the initial tree
     d3.json (treeJsonPath, function (error,data) {
@@ -57,7 +57,7 @@ var render_tree = function(div,treeJsonPath,svg) {
             size_font_leaf_label = (count<60)?12:(3+540/count);
             //size_font_inner_label= size_font_leaf_label;
             size_node_leaf= (count<60)?3:(2 + 60/count);
-            size_node_inner= (count<60)?2.2:(180/count);
+            size_node_inner= (count<60)?2.2:(500/count);//280
             size_node_leaf_highlight = (count<60)?8:(4 + 240/count);
         }
 
@@ -76,7 +76,7 @@ var render_tree = function(div,treeJsonPath,svg) {
             .fontsize(size_font_leaf_label)
             .height(height_nodeLabel)
 
-        var circle_node = tnt.tree.node_display.circle()
+        var leaf_node = tnt.tree.node_display.circle()
             .size( function (node){ return (node.is_leaf()) ? size_node_leaf : size_node_inner;}) 
             .stroke( function (node){ if (node.is_leaf()) { return color_node_stroke };})
             .fill( function (node,d){ 
@@ -86,22 +86,48 @@ var render_tree = function(div,treeJsonPath,svg) {
                     else {return color_inner_node} 
                 });
 
+        var collapse_node_size = 4.5;
+        var node_fill='steelblue';//'white'
+        var node_stroke='steelblue';
+        var expanded_node = tnt.tree.node_display.circle()
+        var collapsed_node = tnt.tree.node_display.triangle()
+            .size(collapse_node_size)
+            .fill(node_fill)
+            .stroke(node_stroke);
+
         var node_display = tnt.tree.node_display()
             .size(0.1) // This is used for the layout calculation
             .display (function (node) {
-                circle_node.display().call(this, node);
+                //leaf_node.display().call(this, node);
+                if (node.is_collapsed()) {
+                    collapsed_node.display().call(this, node);
+                } else {
+                    leaf_node.display().call(this, node);
+                }                
             });
-        
+        var empty_label = tnt.tree.label.text()
+            .text(function () {
+                return "";
+            });
+        var myLabel= (0) ? empty_label : node_label;
+
         tree_vis
             .branch_color(pxTree.branch_col)
             .node_display(node_display)
-            .label(node_label)//.label(tnt.tree.label.text().height(2).fontsize(fontSize).color('steelblue'))
+            .label(myLabel)//.label(tnt.tree.label.text().height(2).fontsize(fontSize).color('steelblue'))
             .data(tree_data)
             .layout(tnt.tree.layout[setLayout]()
             //...layout.radial()... or.vertical()
             .width(width).scale(scale_layout)
             )
             .duration(0)//2000
+
+        tree_vis.on ("click", function(node){
+            node.toggle();
+            tree_vis.update();
+            svgAction(svg);
+            
+        });
 
         //## The visualization is started at this point
         tree_vis(document.getElementById(div));
@@ -239,6 +265,18 @@ var render_tree = function(div,treeJsonPath,svg) {
     //## actions on tree (tooltips, select subtree by nodes/links)
 var svgAction= function(svg) {
 
+    var findChildren =function (array,innerNd_childrenArr) {
+        if (array!=undefined) {
+            for(var i=0, len=array.length; i<len; i++) {
+                if  ( (array[i].name.indexOf('NODE_')!=0) && (array[i].name!='') ) {
+                    innerNd_childrenArr.push(array[i].name);
+                } else {
+                    findChildren(array[i].children,innerNd_childrenArr);
+                }
+            }
+        }
+    };
+
     //## leaf nodes tooltip
     function tooltip_node (){
         svg.selectAll(".tnt_tree_node.leaf")
@@ -265,13 +303,13 @@ var svgAction= function(svg) {
         removeLegend();
 
         //if (pgModule.hasOwnProperty(d, 'name') && d.name!='') {
-        if ( (d.name.indexOf('NODE_')!=0) && (d.name!='') ) {
+        if ((d.name.indexOf('NODE_')!=0) && (d.name!='')) {
             //console.log(pgModule.hasOwnProperty(d, 'target'));
             d3.selectAll("circle.pt" + d.name)
               .style("fill", color_leaf_node_highlight)
               .attr("r", size_node_leaf_highlight)
         }
-        else if  (  (d.name.indexOf('NODE_')==0) || (d.name=="") ){ 
+        else if ((d.name.indexOf('NODE_')==0) || (d.name=="")) { 
             this.style.cursor='pointer';
             //# highlight selected inner node
             if (click_type=='node') {
@@ -288,23 +326,12 @@ var svgAction= function(svg) {
                     .style("stroke-width", pxTree.branch_wid_highlight);
             }
 
-            var result = [];
-            var x = d.children;
-            var findChildren =function (x) {
-                for(var i=0;i<x.length;i++) {
-                    if  ((x[i].name.indexOf('NODE_')!=0) && (x[i].name!='')) {
-                        result.push(x[i].name);
-                    }
-                    else {
-                        findChildren(x[i].children);
-                    }
-                }
-            }
-            findChildren(x);
+            var innerNd_childrenArr = [];
+            findChildren(d.children, innerNd_childrenArr);
 
             //# highlight all subtree leaf nodes
-            for(var i=0;i<result.length;i++) {
-                d3.selectAll("circle.pt" + result[i])
+            for(var i=0;i<innerNd_childrenArr.length;i++) {
+                d3.selectAll("circle.pt" + innerNd_childrenArr[i])
                     .style("fill", function(d) {
                         return subtree_node_colorSet(d.name);
                     })
@@ -357,24 +384,12 @@ var svgAction= function(svg) {
                     })
             }
 
-            
             //# change the color of subtree leaf nodes 
-            var result = [];
-            var x = d.children;
-            var findChildren =function (x) {
-                for(var i=0;i<x.length;i++) {
-                    if  ( (x[i].name.indexOf('NODE_')!=0) && (x[i].name!='') ) {
-                        result.push(x[i].name);
-                    }
-                    else {
-                        findChildren(x[i].children);
-                    }
-                }
-            };
-            findChildren(x);
+            var innerNd_childrenArr = [];
+            findChildren(d.children,innerNd_childrenArr);
 
-            for(var i=0;i<result.length;i++) {
-                d3.selectAll("circle.pt" + result[i])
+            for(var i=0;i<innerNd_childrenArr.length;i++) {
+                d3.selectAll("circle.pt" + innerNd_childrenArr[i])
                     .style("fill", function(d) {
                         return pxTree.node_color_mem[d.name]
                     })
@@ -392,23 +407,12 @@ var svgAction= function(svg) {
 
         if (click_type=='link') {d=d.target}
 
-        var result = [];
+        var innerNd_childrenArr = [];
         if ( (d.name.indexOf('NODE_')==0) || (d.name=="")  ) {
-            var x = d.children; 
-            var findChildren =function (x) {
-                for(var i=0;i<x.length;i++) {
-                    if  ( x[i].name.indexOf('NODE_')!=0 && x[i].name!='') {
-                        result.push(x[i].name);
-                    }
-                    else {
-                        findChildren(x[i].children);
-                    }
-                }
-            };
-            findChildren(x);
+            findChildren(d.children,innerNd_childrenArr);
         }
         else {
-            result =[d.name];
+            innerNd_childrenArr =[d.name];
         }
 
         //var nodeAttriPath="./dataset/Sa-tnt-dAttri.json" ;  
@@ -420,9 +424,9 @@ var svgAction= function(svg) {
 
             function RefreshTreeTable() {
                 var n=[];
-                for (var i=0;i<result.length;i++) {
-                    var tmp = data[result[i]];
-                    tmp['accession']=result[i];
+                for (var i=0;i<innerNd_childrenArr.length;i++) {
+                    var tmp = data[innerNd_childrenArr[i]];
+                    tmp['accession']=innerNd_childrenArr[i];
                     n.push(tmp);
                 }
                 $('#dc-data-table2').dataTable().fnClearTable();
