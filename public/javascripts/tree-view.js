@@ -24,8 +24,10 @@ var color_leaf_node_highlight="#EE6363",
 var subtree_node_colorSet = d3.scale.category20c();
 
 //## render the tree viewer
-var render_tree = function(div,treeJsonPath,svg) {
+var render_tree = function(div,treeJsonPath) {
     "use strict";
+    var selected_div= div;
+    var svg= d3.select('#'+selected_div);
     var tree_vis = tnt.tree();
     var width = winInnerWidth/3; //600; //var height = 360;
     var set_rotate = 'right-left'
@@ -105,7 +107,7 @@ var render_tree = function(div,treeJsonPath,svg) {
             .text(function () {
                 return "";
             });
-        var myLabel= (0) ? empty_label : node_label;
+        var myLabel= (leaf_count>300) ? empty_label : node_label;
 
         tree_vis
             .branch_color(pxTree.branch_col)
@@ -124,11 +126,10 @@ var render_tree = function(div,treeJsonPath,svg) {
             d.toggle();
             tree_vis.update();
             svgAction(svg);
-            
         });
 
         //## The visualization is started at this point
-        tree_vis(document.getElementById(div));
+        tree_vis(document.getElementById(selected_div));
 
         /*link width*/
         var links = svg.selectAll(".tnt_tree_link")
@@ -136,7 +137,7 @@ var render_tree = function(div,treeJsonPath,svg) {
 
         //## make scale bar
         var scaleBar = tree_vis.scale_bar(50, "pixel").toFixed(3);
-        var legend = d3.select("#"+div);
+        var legend = d3.select("#"+selected_div);
         legend.append("div")
             .style({
                 width:"50px",
@@ -150,7 +151,9 @@ var render_tree = function(div,treeJsonPath,svg) {
             .text(scaleBar);
 
         svgAction(svg);
-        rotate_tree(svg2,set_rotate);
+        if (selected_div=='mytree2') {
+            rotate_tree(svg,set_rotate);
+        }
         });
         
         //## tree displaying options 
@@ -163,23 +166,15 @@ var render_tree = function(div,treeJsonPath,svg) {
 
             var layout = tnt.tree.layout[setLayout]().width(width).scale(d3.select('#ScalesToggle').property('checked'))
             
-            var t0 = performance.now();
             tree_vis.layout(layout);
             tree_vis.update();
-            var t1 = performance.now();
-            if (times_flag==0) { csprint("time 0: "+ Math.round(t1-t0) +" msec");}
-
-            var t0 = performance.now(); svgAction(svg);
-            var t1 = performance.now(); 
-            if (times_flag==0) { csprint("time 1: "+ Math.round(t1-t0) +" msec");}
-        
-    });
-
-        //# Enable label or not
-        $('#LabelsToggle').change(function() {
-            var text_vis_state = (d3.select('#LabelsToggle').property('checked')==false) ? 'hidden' : 'visible';
-            svg.selectAll(".tnt_tree_label").style("visibility", text_vis_state);
-        }); 
+            svgAction(svg);
+            if ((setLayout=='vertical') && (selected_div=='mytree2')) {
+                rotate_tree(svg,'left-right');
+                $('#tree-rotate').bootstrapToggle('on');
+            }
+            //rotate_tree(svg2,'left-right');
+        });
 
         // ## Enable scale or not 
         $('#ScalesToggle').change(function() {
@@ -188,10 +183,17 @@ var render_tree = function(div,treeJsonPath,svg) {
             tree_vis.layout(layout);
             tree_vis.update();
             svgAction(svg);
-            //console.log(set_rotate);
-            //set_rotate='right-left';
-            rotate_tree(svg2,'left-right');
+            if ((setLayout=='vertical') && (selected_div=='mytree2')) {
+                rotate_tree(svg,'left-right');
+                $('#tree-rotate').bootstrapToggle('on');
+            }            
         });
+
+        //# Enable label or not
+        $('#LabelsToggle').change(function() {
+            var text_vis_state = (d3.select('#LabelsToggle').property('checked')==false) ? 'hidden' : 'visible';
+            svg.selectAll(".tnt_tree_label").style("visibility", text_vis_state);
+        }); 
 
         // ## Enable selection of subtree by clicking innerNode  
         $('#InnerNodeToggle').change(function() {
@@ -318,8 +320,14 @@ var svgTree_Module= function(){
                     .style("stroke-width", pxTree.branch_wid_highlight);
             }
 
-            var innerNd_childrenArr = [];
-            findChildren(d.children, innerNd_childrenArr);
+            //# change the color of subtree leaf nodes
+            if (pgModule.hasOwnProperty(d, 'toggle_children')==false) {
+                var innerNd_childrenArr = [];
+                findChildren(d.children,innerNd_childrenArr);
+                d.toggle_children=innerNd_childrenArr
+            } else {
+                var innerNd_childrenArr= d.toggle_children;
+            }
 
             //# highlight all subtree leaf nodes
             for(var i=0;i<innerNd_childrenArr.length;i++) {
@@ -477,6 +485,12 @@ var svgAction= function(svg) {
 
 // ## rotate tree             
 function rotate_tree(svg, direction) {
+    /*if (direction=="left-right") {
+        d3.select('#tree-rotate').attr('checked',true);
+    } else {
+        d3.select('#tree-rotate').attr('checked',false);
+    }*/
+
     svg.selectAll(".tnt_tree_node")
       .attr("transform", function(d) {
               width= winInnerWidth/3.15;
@@ -510,10 +524,11 @@ function rotate_tree(svg, direction) {
     }
 }
 //## toggle tree-rotate
+//## only apply to svg2 (not inside render_tree)
 $('#tree-rotate').change(function() {
     var svg2 = d3.select('#mytree2')
     if (d3.select(this).property('checked')==false) { 
-        var set_rotate='right-left';        
+        var set_rotate='right-left';    
     }
     else { var set_rotate='left-right';}
     //## call rotate function
@@ -522,7 +537,7 @@ $('#tree-rotate').change(function() {
 });
 
 //strain_tree_process
-render_tree("mytree1",treeJsonPath,svg1);
+render_tree("mytree1",treeJsonPath);
 //render ( 'mytree2',aln_file_path+'NZ_CP012001-1-1834888-1835742_tree.json',svg2);
 //render ( 'mytree2', aln_file_path+Initial_MsaGV.split('.')[0]+'_tree.json',svg2); 
 //render (document.getElementById("mytree2"),treeJsonPath,svg2);
