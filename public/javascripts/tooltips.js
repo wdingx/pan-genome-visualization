@@ -10,6 +10,9 @@ var tips_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
     if (typeof d.name != "undefined") {
         string += "NCBI accesion:  " + d.name;
     }
+    if (typeof d.ann != "undefined") {
+        string += "<br/>" + "annotation:  " + d.ann;
+    }
 
     for (i = 0; i < meta_types.length; i++) {
         //console.log(meta_types);
@@ -31,22 +34,17 @@ var tips_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
     }
 
     string +="<br/><br/> <table> "
-
     for (i = 0; i < antibiotics_set.length; i++) {
         if (d[antibiotics_set[i]]!='unknown' && d[antibiotics_set[i]]!='Susceptible' && typeof d[antibiotics_set[i]] != "undefined" ) {
             //console.log(d[antibiotics_set[i]])
             string +=" <tr> <th>"+antibiotics_set[i]+"</th> <td>"+d[antibiotics_set[i]]+"</td> </tr> "
         } 
     }
-
     string +="</table>"    
 
-    if (typeof d.ann != "undefined") {
-        string += "<br/>" + "annotation:  " + d.ann;
-        }
-    /*if (typeof d.antibiotics_count!="undefined") {
-        
+    /*if (typeof d.antibiotics_count!="undefined") { 
     }*/
+
     if (typeof d.muts != "undefined") {
         var muts_str=d.muts
         if (muts_str.length>50) { muts_str=muts_str.substr(0,50)+'...'}
@@ -65,6 +63,9 @@ var tips_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
 var tips_link = d3.tip().attr('class', 'd3-tip').html(function(d) { 
     
     string = "";
+    if (typeof d.target.ann != "undefined") {
+        string += "<br/>" + "annotation:  " + d.target.ann;
+        }
     if (typeof d.target.muts != "undefined") {
         var muts_str=d.target.muts
         if (muts_str.length>50) { muts_str=muts_str.substr(0,50)+'...'}
@@ -75,9 +76,7 @@ var tips_link = d3.tip().attr('class', 'd3-tip').html(function(d) {
         if (aa_muts_str.length>50) { aa_muts_str=aa_muts_str.substr(0,50)+'...'}
         string += "<br/>" + "amino acid mutations:  " + aa_muts_str;
         } 
-    if (typeof d.target.ann != "undefined") {
-        string += "<br/>" + "annotation:  " + d.target.ann;
-        } 
+
     string += "<div class=\"smallspacer\"></div>";
 
     return string; 
