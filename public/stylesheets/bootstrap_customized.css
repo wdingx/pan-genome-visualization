@@ -1,20 +1,9 @@
-/* btn size */ 
-.btn-xs  {
-  font-size:13px;
-  /* line-height: 1.4; */
-  /* background:  #008DDD; */
-}
-
-/*msa-button color*/
-.smenubar .smenubar_alink {
-  background:   #337AB7; /*#008DDD;*/
-}
-
-.glyphicon.glyphicon-plus-sign, .glyphicon.glyphicon-minus-sign, .glyphicon.glyphicon-download-alt{
+.glyphicon.glyphicon-plus-sign,
+.glyphicon.glyphicon-minus-sign,
+.glyphicon.glyphicon-download-alt{
     font-size:20px;
-    /* padding-top:2px; */
-    /* vertical-align: middle; */
-    /*padding-left: 4px;  */
+    /* padding-top: 10px; */
+    /* padding-left: 7px; */
 }
 
 .btn-link {
@@ -22,20 +11,3 @@
     padding-right: 0px;
 }
 
-#tree-viewer-button-groups {margin-left:10px}
-
-/* toggle-shape border-radius: 20px;border-radius: 20px;*/
-/* .toggle.ios, .toggle-on.ios, .toggle-off.ios { font-size:10px; }
-.toggle.ios .toggle-handle { font-weight: 100; } */
-
-#zoomin,#zoomout,.btn {border-radius: 20px;}
-/* .btn.btn-info {border-radius: 2px;} */
-#accordion {width: 150px;}
-
-/*searchStrain-group-btn position control*/
-#searchStrain-group-btn {
-    position: relative; /* absolute; */
-    left: 0px;
-    top: 0px;
-    z-index: 0;
-}

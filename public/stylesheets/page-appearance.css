@@ -38,11 +38,28 @@ margin-left: -10px;
   padding-left: 5px;/* */
 }
 
+.link {
+  fill: red;
+  stroke: steelblue;
+  stroke-width: 10px;
+}
+
 /*#meta-info dropdown_list;*/
 .form-control.sm-customized
 {   height: 25px;
     padding: 1px 5px;
     font-size: 14px;}
+
+
+/*searchStrain-group-btn position control*/
+#searchStrain-group-btn {
+    position: relative; /* absolute; */
+    left: 0px;
+    top: 0px;
+    z-index: 0;
+}
+
+#tree-viewer-button-groups {margin-left:15px}
 
 /* annotation-details */
 table {
@@ -70,6 +87,25 @@ table.dataTable th {
 table.dataTable thead > tr > th {
     text-align: left;
 }*/
+
+/* toggle-shape */
+.toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px;font-size:10px; }
+.toggle.ios .toggle-handle { border-radius: 20px;font-weight: 100; }
+#zoomin,#zoomout,.btn {border-radius: 20px;}
+.btn.btn-info {border-radius: 2px;}
+#accordion {width: 150px;}
+
+/* btn size */ 
+.btn-xs  {
+  font-size:13px;
+  /* line-height: 1.4; */
+  /* background:  #008DDD; */
+}
+
+/*msa-button color*/
+.smenubar .smenubar_alink {
+  background:   #337AB7; /*#008DDD;*/
+}
 
 /* alert new */
 .alert {
