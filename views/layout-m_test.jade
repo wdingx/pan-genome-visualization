@@ -4,24 +4,28 @@ html
     meta(charset='UTF-8')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     script(src='javascripts/third_party/pace.min.js')
-    //link(rel="stylesheet", type="text/css", href="dist/all.css")
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
+    //link(rel="stylesheet", type="text/css", href="dist/all-edge.css")
+    
     link(rel="stylesheet", type="text/css", href='stylesheets/pace-theme-center-atom.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/nouislider.min.css')
     //link(rel="stylesheet", type="text/css", href='javascripts/third_party/test/assets/bootstrap.min.css')
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/bootstrap-multiselect.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/bootstrap-toggle.min.css')
-    link(rel="stylesheet", type="text/css", href='stylesheets/msa-new.css')
-    link(rel="stylesheet", type="text/css", href='stylesheets/footer-distributed-with-address-and-phones.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/page-appearance.css')
+    link(rel="stylesheet", type="text/css", href='stylesheets/msa-new.css')
+    link(rel='stylesheet', type="text/css", href='stylesheets/bootstrap_customized.css')
+
     link(rel="stylesheet", type="text/css", href='stylesheets/autohiding-navbar2.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/d3-tip.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/dc.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/dataTables.bootstrap.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/dataTables-customized.css')
+    link(rel="stylesheet", type="text/css", href='stylesheets/footer-distributed-with-address-and-phones.css')
+    
     //- link(rel="stylesheet", type="text/css", href='https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css')
-
-    //link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
+    //- link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
 
     // footer icon and font
     link(rel='stylesheet', type='text/css', href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css')
@@ -68,17 +72,22 @@ html
           .alert.alert-info(role='alert')
             | Strain tree (SNPs in all core genes)
           .row
-            .col-md-5
-              input#TreeViewSelect(type='checkbox', data-toggle='toggle', data-style='ios', data-on='circular', data-off='vertical', data-size='mini', data-onstyle='primary', data-offstyle='info')
-              input#LabelsToggle(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Labels', data-off='Labels', data-size='mini')
-              input#InnerNodeToggle(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Innernode', data-off='Innernode', data-size='mini')
+            #LeftTreeButtons.col-md-5(style='vertical-align: top') 
+              input#TreeViewSelect(type='checkbox', data-toggle='toggle', data-style='ios', data-on='Circular', data-off='Vertical', data-size='mini', data-onstyle='primary', data-offstyle='info')
+              input#LabelsToggle(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Label', data-off='Label', data-size='mini')
+              input#InnerNodeToggle(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Node', data-off='Node', data-size='mini')
               input#ScalesToggle(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Scale', data-off='Scale', data-size='mini')
-            #dropdown_list.col-md-3
-            .col-md-3
+              //- input#HeightToggle(type='checkbox', checked='true', data-toggle='toggle', data-style='ios', data-on='H', data-off='H', data-size='mini')
+              button#Height_plus_Toggle.btn.btn-xs.btn-link
+                span.glyphicon.glyphicon-plus-sign
+              //- i#Height_plus_Toggle.glyphicon.glyphicon-plus-sign
+              button#Height_minus_Toggle.btn.btn-xs.btn-link(type='button')
+                span.glyphicon.glyphicon-minus-sign
+              span#treeLoader
+            #tree_zoom_range.col-md-3
               input.zoom-range(type='range', min='0.4', max='1', step='0.05')
+            #dropdown_list.col-md-3
             #download-coreTree.col-md-1(data-toggle='tooltip', data-placement='bottom', title='download tree')
-              //a(href='/download/Papn-pan-genome.fasta')
-              //  i.fa.fa-arrow-circle-o-down.fa-5(aria-hidden='true')
           .row
             .col-md-2
               br
@@ -100,8 +109,6 @@ html
               input#tree-rotate(type='checkbox', data-toggle='toggle', data-style='ios', data-on='left-right', data-off='right-left', data-size='mini', data-onstyle='primary', data-offstyle='info')
             //#dropdown_list2.col-md-4
             #download-geneTree.col-md-1(data-toggle='tooltip', data-placement='bottom', title='download tree ')
-              //a(href='/download/Papn-pan-genome.fasta')
-              //  i.fa.fa-arrow-circle-o-down.fa-5(aria-hidden='true')
           .row
             .col-md-10
               #mytree2            
@@ -116,7 +123,8 @@ html
           table#dc-data-table2.table.table-striped.table(cellspacing='0', width='100%')
     include footer
     block content
-    //script(src='dist/all-reorg.js')
+    //- script(src='dist/all-edge.js')
+
     script(src='javascripts/colors.js')
     script(src='javascripts/species-list-info.js')
     script(src='javascripts/third_party/d3.min.js')
@@ -140,9 +148,8 @@ html
     //- script(src='javascripts/third_party/dataTables.bootstrap.min.js')
     //- script(src='javascripts/third_party/dataTables.autoFill.min.js')
     
-    //- code.jquery.com/jquery-1.12.4.js
     script(src='javascripts/third_party/table_plugin/jquery.dataTables.min.js')
-    script(src='javascripts/third_party/table_plugin/dataTables.buttons.min.js')
+    //script(src='javascripts/third_party/table_plugin/dataTables.buttons.min.js')
     script(src='javascripts/third_party/table_plugin/dataTables.bootstrap.min.js')
     script(src='javascripts/third_party/table_plugin/dataTables.colReorder.min.js')
 
@@ -152,10 +159,10 @@ html
     script(src='javascripts/reload.test2-reorg.min.js')
     script(src='javascripts/datatable-gc.js')
     script(src='javascripts/tree-init.js')
+    script(src='javascripts/tooltips.js')
     script(src='javascripts/tree-view.js')
-    
     script(src='javascripts/interact.js')
     script(src='javascripts/datatable-meta.js')
     script(src='javascripts/meta-color-legend.js')
-    script(src='javascripts/tooltips.js')
+
 
