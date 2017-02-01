@@ -230,8 +230,8 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
         var node_label = tnt.tree.label.text()
                     .text(function (d) { return d.data().shown_label;})
                     //.fontsize(size_font_leaf_label)
-                    //.color(color_leaf_label)
-                    .height(height_nodeLabel);
+                    .height(height_nodeLabel)
+                    .color(color_leaf_label);
         tree_vis.label(node_label);
         tree_vis.update();
         svgAction(ind,svg);
@@ -247,7 +247,8 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
         var node_label = tnt.tree.label.text()
                     .text(function (d) { return d.data().shown_label;})
                     .fontsize(size_font_leaf_label)
-                    .height(height_nodeLabel).color(color_leaf_label);
+                    .height(height_nodeLabel)
+                    .color(color_leaf_label);
         tree_vis.label(node_label);
         tree_vis.update();
         svgAction(ind,svg);
