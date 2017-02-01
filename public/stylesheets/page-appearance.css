@@ -32,10 +32,10 @@ margin-left: -10px;
 }
 
 /*#tree;*/
-.link {
-  fill: red;
-  stroke: steelblue;
-  stroke-width: 10px;
+#treeLoader{
+  color:#428BCA;
+  font-weight: 300; 
+  padding-left: 5px;/* */
 }
 
 /*#meta-info dropdown_list;*/
@@ -43,17 +43,6 @@ margin-left: -10px;
 {   height: 25px;
     padding: 1px 5px;
     font-size: 14px;}
-
-
-/*searchStrain-group-btn position control*/
-#searchStrain-group-btn {
-    position: relative; /* absolute; */
-    left: 0px;
-    top: 0px;
-    z-index: 0;
-}
-
-#tree-viewer-button-groups {margin-left:15px}
 
 /* annotation-details */
 table {
@@ -81,25 +70,6 @@ table.dataTable th {
 table.dataTable thead > tr > th {
     text-align: left;
 }*/
-
-/* toggle-shape */
-.toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px;font-size:10px; }
-.toggle.ios .toggle-handle { border-radius: 20px;font-weight: 100; }
-#zoomin,#zoomout,.btn {border-radius: 20px;}
-.btn.btn-info {border-radius: 2px;}
-#accordion {width: 150px;}
-
-/* btn size */ 
-.btn-xs  {
-  font-size:13px;
-  /* line-height: 1.4; */
-  /* background:  #008DDD; */
-}
-
-/*msa-button color*/
-.smenubar .smenubar_alink {
-  background:   #337AB7; /*#008DDD;*/
-}
 
 /* alert new */
 .alert {
@@ -259,7 +229,6 @@ background: none;/*rgba(94,164,233,0.9) ;/*!important; */
   /* margin: 0 auto 0px; */
 }
 
-
 /*slider style*/
 input[type=range] {
     /*removes default webkit styles*/
@@ -352,4 +321,5 @@ input[type=range]:focus::-ms-fill-lower {
 input[type=range]:focus::-ms-fill-upper {
     background: #ccc;
 }
+
 
