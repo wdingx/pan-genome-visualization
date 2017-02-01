@@ -304,14 +304,15 @@ var chartExample = {
             msaLoad(aln_file_path+Initial_MsaGV,'taylor');
             var clusterID=Initial_MsaGV.split('_aa')[0];
             var geneTree_name=clusterID+'_tree.json';
-            render_tree('mytree2',aln_file_path+geneTree_name);
+            render_tree(1,'mytree2',aln_file_path+geneTree_name);
             //## download-link
             var download_geneTree=d3.select('#download-geneTree');
             download_geneTree.append('a')
                 .attr('id','download_geneTree_href')
                 .attr('href','/download/dataset/'+speciesAbbr+'/geneCluster/'+clusterID+'.nwk')
                 .append('i')
-                .attr('class','fa fa-arrow-circle-o-down fa-5')
+                .attr('class','glyphicon glyphicon-download-alt')
+                //.attr('class','fa fa-arrow-circle-down fa-5')
                 .attr('aria-hidden','true')
         })
     }
