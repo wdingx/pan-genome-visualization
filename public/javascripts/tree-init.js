@@ -7,7 +7,8 @@ var pgModule = function(){
     function hasOwnProperty(obj, prop){
         return (obj[prop] !== undefined);
     }
-    /*function hasOwnProperty(obj, prop) {
+    
+   /*function hasOwnProperty(obj, prop) {
         var proto = obj.__proto__ || obj.constructor.prototype;
         return (prop in obj) &&
             (!(prop in proto) || proto[prop] !== obj[prop]);
@@ -23,13 +24,17 @@ var pgModule = function(){
    return{ hasOwnProperty:hasOwnProperty, isEmptyObj:isEmptyObj }
 }();
 
-
 var pgDashbord = {
     winInnerWidth: window.innerWidth,
 };
 
 var pxTree = {
+    large_output: true, //if true, use separated pattern instead of entire pattern
+    gain_loss_enabled: true,
     id: 5,
+    collapsed_node_size: 4.5,
+    collapsed_node_fill: '#26B629', //'steelblue',
+    collapsed_node_stroke:'steelblue',
     branch_col: '#4A4A4A', 
     branch_col_highlight: '#2D59B1',
     branch_wid_highlight: '3px',
@@ -52,4 +57,6 @@ var treeSwitch= {
 var backup_var= {
 stroke: '#999',
 'stroke-opacity': .6,
+color_node_stroke:'steelblue',
+color_node_fill:'white',
 }

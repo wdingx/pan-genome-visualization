@@ -253,7 +253,6 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
         tree_vis.update();
         svgAction(ind,svg);
         if (text_vis_state=='hidden') {
-            console.log(text_vis_state);
             svg.selectAll(".tnt_tree_label").style("visibility", text_vis_state)
         };
     });
@@ -270,7 +269,6 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
         tree_vis.update();
         svgAction(ind,svg);
         if (text_vis_state=='hidden') {
-            console.log(text_vis_state);
             svg.selectAll(".tnt_tree_label").style("visibility", text_vis_state)
         }; 
     });
@@ -318,7 +316,7 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
     }
 
     //## show MSA/Gene tree title with geneCluster Id
-    function showAlert(message) {
+    function showViewerTitle(message) {
         var genetree_viewer=d3.select('#genetree_title');
         genetree_viewer.html('Gene tree | '+message.split('/').pop().replace('_tree.json', '')+ ' | ' +ann_majority);
           
@@ -326,10 +324,10 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
         sequence_viewer.html(' Sequence alignment | '+message.split('/').pop().replace('_tree.json', '')+ ' | ' +ann_majority)
         }
 
-    // if tree file exists, show the title with geneCluster Id
+    // if it is a gene tree, show the title with geneCluster Id
     if (treeJsonPath.indexOf('tree.json') !== -1) {
-        showAlert(treeJsonPath);
-    }
+        showViewerTitle(treeJsonPath);
+    };
 
 };
 
@@ -355,7 +353,6 @@ var svgTree_Module= function(){
     };
 
     function mouseover_show_subTree(d, i, ind) {
-        console.log(size_node_leaf_highlight_arr[ind]);
         var click_type='';
         if (pgModule.hasOwnProperty(d, 'target' )) {
             click_type='link';
@@ -493,7 +490,6 @@ var svgTree_Module= function(){
             innerNd_childrenArr =[d.name];
         }
 
-        //var nodeAttriPath="./dataset/Sa-tnt-dAttri.json" ;  
         d3.json(path_datatable2, function(error, data) {
             var data=data['data']
             for (var i=0;i<data.length;i++) {
@@ -606,12 +602,11 @@ $('#tree-rotate').change(function() {
     }
     else { var set_rotate='left-right';}
     //## call rotate function
-    //svgAction.rotate_tree(svg2,set_rotate);
     rotate_tree(svg2,set_rotate);
 });
 
 //strain_tree_process
-render_tree(0,"mytree1",treeJsonPath);
+render_tree(0,"mytree1",coreTree_path);
 //render ( 'mytree2',aln_file_path+'NZ_CP012001-1-1834888-1835742_tree.json',svg2);
 //render ( 'mytree2', aln_file_path+Initial_MsaGV.split('.')[0]+'_tree.json',svg2); 
 //render (document.getElementById("mytree2"),treeJsonPath,svg2);
@@ -650,6 +645,10 @@ function search(val) {
         })
 }
 */
+
+//tree button tooltip
+var treeButton_tooltip_dict= {};
+
 // ## zoom function 
 $(window).load(function(){
       //$("#mytree1").panzoom({
@@ -670,3 +669,5 @@ d3.select('#download-coreTree')
     .attr('class','glyphicon glyphicon-download-alt')
     //.attr('class','fa fa-arrow-circle-down fa-5')
     .attr('aria-hidden','true')
+
+

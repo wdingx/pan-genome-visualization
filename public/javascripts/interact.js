@@ -42,16 +42,35 @@ var creat_dropdown_menu = function (div, species_dt) {
 };
 creat_dropdown_menu('#species-selector', species_dt)
 
-//## update gene presence/absence pattern
-function updatePresence(geneIndex) {
-    var svg=d3.select('#mytree1');
-    var node = svg.selectAll('circle')
-    var link = svg.selectAll('path.tnt_tree_link')
-    var text = svg_all.selectAll("text")
+//## load genePresence data
+var geneGainLoss_Dt = {};
+d3.json('./dataset/'+speciesAbbr+'/geneGainLossEvent.json', function(error, data) {
+    // if geneGainLossEvent.json exists
+    if (error!==null) { pxTree.large_output=true} 
+    else {geneGainLoss_Dt=data}
+});
+
+function call_updatePresence() {
+    var svg= d3.select('#mytree1'),
+    node = svg.selectAll('circle'),
+    link = svg.selectAll('path.tnt_tree_link'),
+    text = svg_all.selectAll("text");
+
     node.style('fill', function(d) {
-        if ( (d.name.indexOf('NODE_')!=0) && (d.name!='')) {
-            if (d.genePresence[parseInt(geneIndex)-1]=='1') {
-            //console.log(d.genePresence[geneIndex]);
+        if ((d.name.indexOf('NODE_')!=0) && (d.name!='')) {
+            var presence_flag;
+            if (pxTree.large_output==false) { // large_output false
+                d.genePattern=d.genePresence[parseInt(geneIndex)-1];
+                presence_flag= (d.genePattern=='1') ? 1 : 0;
+            } else if (pxTree.gain_loss_enabled==true) {
+                d.genePattern=geneGainLoss_Dt[d.name];
+                presence_flag= (d.genePattern%2==1) ? 1 : 0;
+            } else if (pxTree.gain_loss_enabled==false) {
+                d.genePattern= geneGainLoss_Dt[d.name];
+                presence_flag= (d.genePattern=='0') ? 0 : 1;
+            };
+
+            if (presence_flag==1) {
                 pxTree.node_color_mem[d.name]= pxTree.col_pres;
                 return pxTree.col_pres;  
             }
@@ -61,16 +80,14 @@ function updatePresence(geneIndex) {
             }
         }
     });
-
     link.style("stroke", function(d){ 
-        if (  (d.target.name.indexOf('NODE_')!=0) && d.target.name!='') { 
+        if (  (d.target.name.indexOf('NODE_')!=0) && d.target.name!='') {
             return pxTree.node_color_mem[d.target.name]; 
         }
         else {
             return pxTree.branch_col;
         }
     });
-
     text.style("fill", function(d) {
         if (d!==undefined && d.name!='' ) {
             return pxTree.node_color_mem[d.name];
@@ -78,8 +95,26 @@ function updatePresence(geneIndex) {
     });
 };
 
-//## update gene gain/loss pattern
-function updateGainLossEvent(geneIndex) {
+//## update gene presence/absence pattern
+function updatePresence(geneIndex, clusterID) {
+    if (pxTree.large_output==true) {
+        d3.json(aln_file_path+clusterID+'_patterns.json', function (error,data) {
+            geneGainLoss_Dt=data;
+            call_updatePresence();
+        });
+    };
+};
+
+function gain_loss_link_attr(d) {
+    if (pxTree.large_output==true) {
+        event_type = geneGainLoss_Dt[d.target.name];
+    } else {
+        event_type = geneGainLoss_Dt[d.target.name][gindex];
+    };
+    return event_type;
+};
+
+function call_updateGainLoss(geneIndex) {
     var gindex= parseInt(geneIndex)-1;
     var svg=d3.select('#mytree1');
     var gainloss_disabled=0;
@@ -88,26 +123,41 @@ function updateGainLossEvent(geneIndex) {
                 if (geneGainLoss_Dt[d.target.name]!==undefined) {return true}
                 else if (gainloss_disabled==0) {gainloss_disabled=1; return false}
                 else { return false}
-            })
-    if (gainloss_disabled==1) { pxTree.wid_gloss=pxTree.wid_link}
+            });
+    if (gainloss_disabled==1) { pxTree.wid_gloss=pxTree.wid_link};
 
-    link
-    .style('stroke', function(d) {
-        var event_type = geneGainLoss_Dt[d.target.name][gindex];
-        if (event_type==='0' || event_type=='2') {return pxTree.col_abse }
-        else {return pxTree.col_pres}
+    link.style('stroke', function(d) {
+        var event_type;
+        event_type= gain_loss_link_attr(d);
+        if (event_type==='0' || event_type=='2') {return pxTree.col_abse}
+        else {return pxTree.col_pres};
     })
     .style("stroke-width", function (d) {
-        var event_type = geneGainLoss_Dt[d.target.name][gindex];
+        var event_type;
+        event_type= gain_loss_link_attr(d);
         if (event_type=='1' || event_type=='2') {return pxTree.wid_gloss}
         else {return pxTree.wid_link}
     })
     .style("stroke-dasharray", function(d) {
-        var event_type = geneGainLoss_Dt[d.target.name][gindex];
+        var event_type;
+        event_type=gain_loss_link_attr(d);
         if (event_type=='2'){ return (d.source.parent) ? "6,6" : "1,0"; }
         else {return 'none' }
     });
+};
 
+//## update gene gain/loss pattern
+function updateGainLossEvent(geneIndex, clusterID) {
+    if  (pxTree.large_output==true) {
+        //use separated gain/loss pattern if geneGainLossEvent.json not found
+        d3.json(aln_file_path+clusterID+'_patterns.json', function (error,data) {
+            //if both json files are missing, set it to empty
+            if (error===null) { geneGainLoss_Dt=data };
+            call_updateGainLoss(geneIndex);
+        });
+    } else {
+        call_updateGainLoss(geneIndex);
+    }
 };
 
 //## create charts and load geneCluster dataTable 
@@ -302,7 +352,7 @@ var chartExample = {
             ann_majority=data[0].ann;
             chartExample.initChart(data);
             msaLoad(aln_file_path+Initial_MsaGV,'taylor');
-            var clusterID=Initial_MsaGV.split('_aa')[0];
+            var clusterID=Initial_MsaGV;
             var geneTree_name=clusterID+'_tree.json';
             render_tree(1,'mytree2',aln_file_path+geneTree_name);
             //## download-link
@@ -379,15 +429,6 @@ function format_geneNames ( d ) {
     return geneName_Table_Str;
 }
 
-//## load genePresence data
-var geneGainLoss_Dt = {}; 
-d3.json('./dataset/'+speciesAbbr+'/geneGainLossEvent.json', function(error, data) {
-    geneGainLoss_Dt=data;
-    /*for ( var id_data in data ) {
-        geneGainLoss_Dt[id_data]=data[id_data];
-    }*/
-});
-
 function clickShowMsa (datatable) {
 
     // unfold and fold annotation column
@@ -449,13 +490,12 @@ function clickShowMsa (datatable) {
 
     function updateTree(data) {
         var svg2=d3.select('#mytree2');
-        svg2.selectAll("*")
-            .remove();
-        var clusterID=data['msa'].split('_aa')[0];
+        svg2.selectAll("*").remove();
+        var clusterID=data['msa'];
         var geneTree_name=clusterID+'_tree.json';
-        render_tree('mytree2', aln_file_path+geneTree_name);
+        render_tree(1,'mytree2', aln_file_path+geneTree_name);
         d3.select('#download_geneTree_href')
-        .attr('href', '/download/dataset/'+speciesAbbr+'/geneCluster/'+clusterID+'.nwk')
+            .attr('href', '/download/dataset/'+speciesAbbr+'/geneCluster/'+clusterID+'.nwk')
     };
 
     //## update the selection in dropdown list
@@ -466,18 +506,18 @@ function clickShowMsa (datatable) {
 
     function trigger_aln_tree(data, aln_type) {
         if (aln_type=='aa') {
-            msaLoad(aln_file_path+data['msa'],'taylor');
-            console.log(data['msa']);
+            msaLoad(aln_file_path+data['msa']+'_aa.aln','taylor')
         } else if (aln_type=='nu') {
-            msaLoad(aln_file_path+data['msa'].split('_aa')[0]+'_na.aln','nucleotide');
-            console.log(data['msa'].split('_aa')[0]+'_na.aln');
-        }
-        
-        ann_majority = data['ann'];
+            msaLoad(aln_file_path+data['msa']+'_na.aln','nucleotide')
+        };
+        console.log(data['msa']);
+
+        geneId_GV = data['geneId'];
+        var clusterID=data['msa'];
+        updatePresence(geneId_GV,clusterID);
+        updateGainLossEvent(geneId_GV,clusterID);
         updateTree(data);
-        geneId_GV = data['geneId']
-        updatePresence(data['geneId']);
-        updateGainLossEvent(data['geneId']);
+        ann_majority = data['ann'];
         $('#tree-rotate').bootstrapToggle('off');
         selectElement("dropdown_select",'genePresence');
         removeLegend(); legendOptionValue='';
