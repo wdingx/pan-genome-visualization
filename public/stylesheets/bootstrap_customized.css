@@ -1,9 +1,9 @@
-.glyphicon.glyphicon-plus-sign,
-.glyphicon.glyphicon-minus-sign,
+.glyphicon.glyphicon-plus-sign, .glyphicon.glyphicon-minus-sign,
 .glyphicon.glyphicon-download-alt{
-    font-size:20px;
-    /* padding-top: 10px; */
-    /* padding-left: 7px; */
+    font-size:21px;/* padding-top: 10px; padding-left: 7px;*/
+}
+.glyphicon.glyphicon-resize-full, .glyphicon.glyphicon-resize-small{
+    color: #fff;
 }
 
 .btn-link {
