@@ -566,8 +566,8 @@ function msaLoad (aln_path,scheme_type) {
                     menuMarginLeft: '3px', menuPadding: '3px 4px 3px 4px', menuItemFontsize: '14px', menuItemLineHeight: '14px',
         //boxRectHeight: 2,boxRectWidth: 0.1,overviewboxPaddingTop: 20
     };
-    opts.colorscheme={scheme: scheme_type} //{scheme: 'taylor'};//{scheme: 'nucleotide'};
-    opts.config={}
+    opts.colorscheme={scheme: scheme_type}; //{scheme: 'taylor'};//{scheme: 'nucleotide'};
+    opts.config={};
     var m =  msa(opts);    //JSON.stringify
     //m.g.on('row:click', function(data){ console.log(data) });
     //m.g.on('column:click', function(data){ console.log(data) });
@@ -582,7 +582,6 @@ function msaLoad (aln_path,scheme_type) {
         colorByGenotypePosition([data['rowPos']]);});
     m.g.on("residue:click", function(data)
         {console.log(data);});*/
-
 
     var menuOpts = {};
     menuOpts.msa = m;

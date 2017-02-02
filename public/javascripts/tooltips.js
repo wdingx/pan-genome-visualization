@@ -3,6 +3,34 @@ var antibiotics_set=[];
 if (0) { //antibiotics_set
     var antibiotics_set = ["amikacin","tigecycline","cefepime" ,"doxycycline","nitrofurantoin","cefoxitin","ampicillin","cefotaxime","ciprofloxacin","imipenem","levofloxacin","ampicillin/sulbactam","trimethoprim/sulfamethoxazole","cephalothin","ertapenem","tetracycline","piperacillin/tazobactam","minocycline","cefazolin","ceftazidime","gentamicin","meropenem"];}
 
+//## tooltip for datatables header
+var tooltip = d3.select("body")
+    .append("div")
+    .style("position", "absolute")
+    //.style("z-index", "10")
+    .style("color", "white")
+    .style("padding","5px")
+    .style("border-radius","2px")
+    .style("visibility", "hidden")
+    .style("background", "rgba(0,0,0,0.5)"); //255,255,255
+
+function button_tooltip(divID, tooltip_dict) {
+    d3.selectAll(divID)
+    .on("mouseover", function(d){        
+        tooltip.text(tooltip_dict[d]);
+        if (tooltip.text()!="") {
+            return tooltip.style("visibility", "visible");
+        } else {return tooltip.style("visibility", "hidden");}
+    })
+    .on("mousemove", function(){
+        return tooltip.style("top", (event.pageY-40)+"px").style("left",(event.pageX+10)+"px");
+    })
+    .on("mouseout", function(){
+        return tooltip.style("visibility", "hidden");
+    })
+};
+
+//## d3 tooltip for tree nodes and branches
 var tips_node = d3.tip().attr('class', 'd3-tip').html(function(d) { 
     
     string = "";

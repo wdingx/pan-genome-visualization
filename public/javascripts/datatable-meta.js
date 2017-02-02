@@ -1,7 +1,7 @@
 //# create meta table
 var meta_table_columns= Object.keys(meta_display_set);
 meta_table_columns.unshift('accession');
-creat_dataTable("#dc-data-table2",meta_table_columns,{}); // {}: no tooltip on header
+creat_dataTable("#dc-data-table2",meta_table_columns);
 
 //#DataTable for meta-info
 var chartExample2 = {
