@@ -173,4 +173,9 @@
 }
 /* wding */
 
-text-decoration: underline; 
+text-decoration: underline;
+/* footer style */
+.footer-company-name.author{
+    padding-left: 5em;
+    color:red;
+}
