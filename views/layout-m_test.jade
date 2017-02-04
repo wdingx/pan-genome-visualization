@@ -4,7 +4,7 @@ html
     meta(charset='UTF-8')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     script(src='javascripts/third_party/pace.min.js')
-    //link(rel="stylesheet", type="text/css", href="dist/all-edge.css")
+    //- link(rel="stylesheet", type="text/css", href="dist/all-edge.css")
 
     link(rel="stylesheet", type="text/css", href='stylesheets/pace-theme-center-atom.css')
     link(rel='stylesheet', href='stylesheets/bootstrap.min.css')
@@ -67,18 +67,18 @@ html
           .alert.alert-info(role='alert')
             | Strain tree (SNPs in all core genes)
           .row
-            #LeftTreeButtons.col-md-5(style='vertical-align: top') 
-              input#TreeViewSelect.btn_tooltip(type='checkbox', data-toggle='toggle', data-style='ios', data-on='Circular', data-off='Vertical', data-size='mini', data-onstyle='primary', data-offstyle='info', text='layout')
+            #LeftTreeButtons.col-md-5(style='vertical-align: top')
+              input#TreeViewSelect.btn_tooltip.input(type='checkbox', data-toggle='toggle', data-style='ios', data-on='Circular', data-off='Vertical', data-size='mini', data-onstyle='primary', data-offstyle='info', text='layout')
               input#LabelsToggle.btn_tooltip(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Label', data-off='Label', data-size='mini')
               input#InnerNodeToggle.btn_tooltip(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Node', data-off='Node', data-size='mini')
               input#ScalesToggle.btn_tooltip(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Scale', data-off='Scale', data-size='mini')
               //- input#HeightToggle(type='checkbox', checked='true', data-toggle='toggle', data-style='ios', data-on='H', data-off='H', data-size='mini')
-              button#Height_plus_Toggle.btn.btn-xs.btn-primary.btn_tooltip(text='111')
+              button#Height_plus_Toggle.btn.btn-xs.btn-primary.btn_tooltip
                 span.glyphicon.glyphicon-resize-full
-              //- i#Height_plus_Toggle.glyphicon.glyphicon-plus-sign/minus-sign
               button#Height_minus_Toggle.btn.btn-xs.btn-primary.btn_tooltip
                 span.glyphicon.glyphicon-resize-small
-              span#treeLoader
+              //- i#Height_plus_Toggle.glyphicon.glyphicon-plus-sign/minus-sign
+              //- span#treeLoader
             #tree_zoom_range.col-md-3.btn_tooltip
               input.zoom-range(type='range', min='0.4', max='1', step='0.05')
             #dropdown_list.col-md-3.btn_tooltip
@@ -96,10 +96,9 @@ html
             #genetree_title Gene tree (individual gene)
           .row
             .col-md-4
-              #searchStrain-group-btn.input-group
-                span.input-group-btn
-                  button#searchStrainBt.btn.btn-primary.btn-xs(type='button', data-toggle='tooltip', data-placement='bottom', title='search strain') search strain!
-                input#searchStrainInput.form-control.input-xs(type='text', placeholder='Search strain...', oninput='search(this.value)')
+              #searchStrain-group.input-group
+                span#sizing-addon1.input-group-addon.primary.sm-customized Search strain
+                input.form-control.sm-customized(type='text', placeholder='NCBI accession number', aria-describedby='sizing-addon1',oninput='search(this.value)')
             #tree-rotate-div.col-md-2
               input#tree-rotate(type='checkbox', data-toggle='toggle', data-style='ios', data-on='left-right', data-off='right-left', data-size='mini', data-onstyle='primary', data-offstyle='info')
             //#dropdown_list2.col-md-4

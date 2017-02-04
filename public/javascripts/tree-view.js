@@ -650,7 +650,37 @@ function search(val) {
 */
 
 //tree button tooltip
-var treeButton_tooltip_dict= {};
+var treeButton_tooltip_dict= {
+    /*'TreeViewSelect':'tree layout',
+    'LabelsToggle':'labels',
+    'InnerNodeToggle':'show inner node',
+    'ScalesToggle':'scale or without scale',*/
+    'Height_plus_Toggle':'increase tree height',
+    'Height_minus_Toggle':'decrease tree height',
+    'download-coreTree':'download strain tree',
+    'download-geneTree':'download gene tree'}
+
+
+function button_tooltip2(divID, tooltip_dict) {
+    d3.selectAll(divID).selectAll('button, .btn_tooltip')/*, button*/
+    .each(function(d,i) {
+      console.log( d3.select(this).attr('id'), i);
+    })
+    .on("mouseover", function(d){
+        tooltip.text(tooltip_dict[d3.select(this).attr('id')]);
+        if (tooltip.text()!="") {
+            return tooltip.style("visibility", "visible");
+        } else {return tooltip.style("visibility", "hidden");}
+    })
+    .on("mousemove", function(){
+        return tooltip.style("top", (d3.event.pageY-40)+"px").style("left",(d3.event.pageX+10)+"px");
+    })
+    .on("mouseout", function(){
+        return tooltip.style("visibility", "hidden");
+    })
+};
+button_tooltip2('#all_trees', treeButton_tooltip_dict);
+//button_tooltip2('#LeftTreeButtons', treeButton_tooltip_dict);
 
 // ## zoom function 
 $(window).load(function(){
