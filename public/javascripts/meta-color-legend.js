@@ -110,7 +110,7 @@ function makeLegend(meta_type){ // && legendOptionValue!= "Meta-info"
                         }
                     }
                 })
-                .attr("r", size_node_leaf_highlight);
+                .attr("r", size_node_leaf_highlight_arr[0]);
         }
 
         function mouseout_lengend(d) {
@@ -128,7 +128,7 @@ function makeLegend(meta_type){ // && legendOptionValue!= "Meta-info"
                         }
                     }
                 })
-                .attr("r", size_node_leaf);
+                .attr("r", size_node_leaf_arr[0]);
         }
 
         tmp_leg.append('rect')
