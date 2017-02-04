@@ -31,37 +31,8 @@ margin-right: -10px;
 margin-left: -10px;
 }
 
-/*#tree;*/
-#treeLoader{
-  color:#428BCA;
-  font-weight: 300; 
-  padding-left: 5px;/* */
-}
 
-.link {
-  fill: red;
-  stroke: steelblue;
-  stroke-width: 10px;
-}
-
-/*#meta-info dropdown_list;*/
-.form-control.sm-customized
-{   height: 25px;
-    padding: 1px 5px;
-    font-size: 14px;}
-
-
-/*searchStrain-group-btn position control*/
-#searchStrain-group-btn {
-    position: relative; /* absolute; */
-    left: 0px;
-    top: 0px;
-    z-index: 0;
-}
-
-#tree-viewer-button-groups {margin-left:15px}
-
-/* annotation-details */
+/* table: annotation-details */
 table {
     border-collapse: collapse;
     width: 50%;
@@ -73,27 +44,107 @@ th, td {
     border-bottom: 1px solid #ddd;
 }
  tr:hover {background-color: #f5f5f5}
- /**/
 
 table.dataTable thead > tr > th {
     padding-left: 1px;
     padding-right: 18px;
 }
-/*  
-table.dataTable th {
+/*table.dataTable th {
    text-align: left;
 } */
-/*
-table.dataTable thead > tr > th {
+/*table.dataTable thead > tr > th {
     text-align: left;
 }*/
 
+/* 
+.input {
+    position: relative;
+}
+
+.tooltip {
+    display: none;
+    padding: 10px;
+}
+
+.input:hover .tooltip {
+    background: blue;
+    border-radius: 3px;
+    bottom: -60px;
+    color: white;
+    display: inline;
+    height: 30px;
+    left: 0;
+    line-height: 30px;
+    position: absolute;
+}
+
+.input:hover .tooltip:before {
+    display: block;
+    content: "";
+    position: absolute;
+    top: -5px;
+    width: 0; 
+    height: 0; 
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid blue;
+} */
+
+/* tooltip */
+/* .tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    
+    Position the tooltip
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -60px;
+}
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+} */
+
 /* toggle-shape */
 .toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px;font-size:10px; }
-.toggle.ios .toggle-handle { border-radius: 20px;font-weight: 100; }
-#zoomin,#zoomout,.btn {border-radius: 20px;}
-.btn.btn-info {border-radius: 2px;}
+/*.toggle.ios .toggle-handle { border-radius: 20px;font-weight: 100; }*/
+#zoomin,#zoomout,.btn {border-radius: 20px} /*; height: 25px;*/
+/*.btn.btn-info {border-radius: 2px;} */
+.btn.btn-primary.btn-xs.btn-square {border-radius: 2px;}
+/*.btn {border-radius: 50%;}*/
 #accordion {width: 150px;}
+
+/* treeLoader*/
+#treeLoader{
+  color:#428BCA;
+  font-weight: 300; 
+  padding-left: 5px;
+}
+/*searchStrain-group*/
+.input-group-addon.primary {
+  border-radius: 20px 0px 0px 20px;
+  color: rgb(255, 255, 255);
+  background-color: #428BCA;
+  border-color: #428BCA; }
+
+/*#meta-info dropdown_list;*/
+.sm-customized, .form-control.sm-customized {
+  height: 24px;
+  padding: 1px 5px;
+  font-size: 12px; }
+
+#tree-viewer-button-groups {margin-left:15px}
 
 /* btn size */ 
 .btn-xs  {
@@ -102,10 +153,10 @@ table.dataTable thead > tr > th {
   /* background:  #008DDD; */
 }
 
-/*msa-button color*/
+/*msa-button color
 .smenubar .smenubar_alink {
-  background:   #337AB7; /*#008DDD;*/
-}
+  background:  red #337AB7; 
+}*/
 
 /* alert new */
 .alert {
