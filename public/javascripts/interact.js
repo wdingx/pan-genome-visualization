@@ -80,14 +80,12 @@ function call_updatePresence() {
             }
         }
     });
-    link.style("stroke", function(d){ 
+    /*link.style("stroke", function(d){ 
         if (  (d.target.name.indexOf('NODE_')!=0) && d.target.name!='') {
             return pxTree.node_color_mem[d.target.name]; 
         }
-        else {
-            return pxTree.branch_col;
-        }
-    });
+        else {console.log(d.target.name);return pxTree.branch_col}
+    });*/
     text.style("fill", function(d) {
         if (d!==undefined && d.name!='' ) {
             return pxTree.node_color_mem[d.name];
@@ -119,16 +117,17 @@ function call_updateGainLoss(geneIndex) {
     var svg=d3.select('#mytree1');
     var gainloss_disabled=0;
     var link = svg.selectAll('path.tnt_tree_link')
-            .filter(function(d) {
+                .filter(function(d) {
                 if (geneGainLoss_Dt[d.target.name]!==undefined) {return true}
                 else if (gainloss_disabled==0) {gainloss_disabled=1; return false}
-                else { return false}
+                else { return false};
             });
     if (gainloss_disabled==1) { pxTree.wid_gloss=pxTree.wid_link};
 
     link.style('stroke', function(d) {
         var event_type;
         event_type= gain_loss_link_attr(d);
+        //console.log(event_type,d.target.name);
         if (event_type==='0' || event_type=='2') {return pxTree.col_abse}
         else {return pxTree.col_pres};
     })
@@ -351,7 +350,8 @@ var chartExample = {
             geneId_GV=data[0].geneId;
             ann_majority=data[0].ann;
             chartExample.initChart(data);
-            msaLoad(aln_file_path+Initial_MsaGV,'taylor');
+            msaLoad(aln_file_path+Initial_MsaGV+'_aa.aln','taylor');
+            console.log(aln_file_path+Initial_MsaGV+'_aa.aln');
             var clusterID=Initial_MsaGV;
             var geneTree_name=clusterID+'_tree.json';
             render_tree(1,'mytree2',aln_file_path+geneTree_name);
@@ -515,10 +515,11 @@ function clickShowMsa (datatable) {
         geneId_GV = data['geneId'];
         var clusterID=data['msa'];
         updatePresence(geneId_GV,clusterID);
-        updateGainLossEvent(geneId_GV,clusterID);
         updateTree(data);
+        updateGainLossEvent(geneId_GV,clusterID);
+        
         ann_majority = data['ann'];
-        $('#tree-rotate').bootstrapToggle('off');
+        $('#tree-rotate').bootstrapToggle('off');/**/
         selectElement("dropdown_select",'genePresence');
         removeLegend(); legendOptionValue='';
     }
