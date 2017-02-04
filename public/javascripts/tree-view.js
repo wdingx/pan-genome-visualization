@@ -2,7 +2,7 @@ var winInnerWidth = pgDashbord.winInnerWidth;
 var svg1 = d3.select('#mytree1');
 var svg2 = d3.select('#mytree2');
 var svg_all = d3.select('#mytree1,#mytree2');//var svg_all = d3.select('#all_tree');
-
+var adjust_height_unit =0.3;//#0.3
 var times_flag=0;
 
 //# node/label size
@@ -10,6 +10,7 @@ var leaf_count_limit=60;
 var size_node_leaf_init=3.5, size_node_inner_init=2, size_node_leaf_highlight_init= 8;
 var size_font_inner_label_init=10, size_font_leaf_label_init=10;
 var height_nodeLabel_init=12;
+var size_node_leaf_searched=4.5, color_leaf_searched= 'red';
 //# node/label array
 var size_node_leaf_arr=[0,0], size_node_inner_arr=[0,0], size_node_leaf_highlight_arr=[0,0];
 var size_font_inner_label_arr=[0,0], size_font_leaf_label_arr=[0,0], height_nodeLabel_arr=[0,0];
@@ -226,7 +227,7 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
     //d3.select('#Height_more_Toggle').on("click", function() {
     $('#Height_plus_Toggle').on("click", function() {
         var text_vis_state = (d3.select('#LabelsToggle').property('checked')==false) ? 'hidden' : 'visible';
-        height_nodeLabel+=0.2;
+        height_nodeLabel+=adjust_height_unit;
         var node_label = tnt.tree.label.text()
                     .text(function (d) { return d.data().shown_label;})
                     //.fontsize(size_font_leaf_label)
@@ -243,7 +244,7 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
 
     $('#Height_minus_Toggle').on("click", function() {
         var text_vis_state = (d3.select('#LabelsToggle').property('checked')==false) ? 'hidden' : 'visible';
-        height_nodeLabel-=0.2;
+        height_nodeLabel-=adjust_height_unit;
         var node_label = tnt.tree.label.text()
                     .text(function (d) { return d.data().shown_label;})
                     .fontsize(size_font_leaf_label)
@@ -613,22 +614,24 @@ render_tree(0,"mytree1",coreTree_path);
 
 //## search strain 
 function search(val) {
+    var ind=1;
     var searchStr = val.toLowerCase();
     function nodeMatch(d){
-    var name = d.name.toLowerCase();
-    var strainName = (typeof d.strainName==='undefined')?'':d.strainName.toLowerCase();
-    return ((name.indexOf(searchStr) > -1 || strainName.indexOf(searchStr) >-1 ) && val.length != 0);
-    }
+        var name = d.name.toLowerCase();
+        var strainName = (typeof d.strainName==='undefined')?'':d.strainName.toLowerCase();
+        return ((name.indexOf(searchStr) > -1 || strainName.indexOf(searchStr) >-1 ) && (val.length != 0));
+    };
 
     // adjust style of matches
-    d3.selectAll("circle").filter(function(d){return nodeMatch(d);})
-        .style("fill", function (){return color_leaf_node_highlight;})
-        .style("r", function (){return size_node_leaf_highlight_arr[ind];})
+    d3.selectAll('circle').filter(function(d){return nodeMatch(d) && (d.name.indexOf('NODE_')!=0)})
+        .style('fill', function (d) {return color_leaf_searched})
+        .attr('r', function (d){return size_node_leaf_searched});
+
     // adjust style of non matches
-    d3.selectAll("circle").filter(function(d){return !nodeMatch(d);})
-        .style("fill", function (d){return pxTree.node_color_mem[d.name];})
-        .style("r", function (){return size_node_leaf_arr[ind];})
-}
+    d3.selectAll('circle').filter(function(d){return !nodeMatch(d) && (d.name.indexOf('NODE_')!=0)})
+        .style('fill', function (d){ pxTree.node_color_mem[d.name]})
+        .attr('r', function (d){ return size_node_leaf_arr[ind]});
+};
 /*
 //## search strain 
 function search(val) {
