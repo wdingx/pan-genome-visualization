@@ -33,7 +33,7 @@ margin-right: -10px;
 margin-left: -10px;
 }
 
-span#coreThreshold {font-size: 0.8vw;  }
+span#coreThreshold {font-size: 0.8vw; }
 @media screen and (max-width: 1024px) {
     span#coreThreshold{font-size: 0.01vw;}
 }
