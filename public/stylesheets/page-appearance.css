@@ -19,6 +19,8 @@ body {
   margin: 0;
 }
 
+img{width: 100%;} /*max-width: 1363px; */
+
 .container {
 	margin-right: auto;
 	margin-left: auto;
@@ -31,6 +33,20 @@ margin-right: -10px;
 margin-left: -10px;
 }
 
+span#coreThreshold {font-size: 0.8vw;  }
+@media screen and (max-width: 1024px) {
+    span#coreThreshold{font-size: 0.01vw;}
+}
+
+.col-md-4#col-coreThreshold { padding-left: 0;}
+
+/*noUiSlider background color */
+.noUi-connect { background:#2980B9;}
+
+/* vertical noUiSlider */
+#slider-vertical-range {
+  height: 300px;/* margin: 0 auto 0px; */
+}
 
 /* table: annotation-details */
 table {
@@ -56,65 +72,6 @@ table.dataTable thead > tr > th {
     text-align: left;
 }*/
 
-/* 
-.input {
-    position: relative;
-}
-
-.tooltip {
-    display: none;
-    padding: 10px;
-}
-
-.input:hover .tooltip {
-    background: blue;
-    border-radius: 3px;
-    bottom: -60px;
-    color: white;
-    display: inline;
-    height: 30px;
-    left: 0;
-    line-height: 30px;
-    position: absolute;
-}
-
-.input:hover .tooltip:before {
-    display: block;
-    content: "";
-    position: absolute;
-    top: -5px;
-    width: 0; 
-    height: 0; 
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-bottom: 5px solid blue;
-} */
-
-/* tooltip */
-/* .tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black;
-}
-.tooltip .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    
-    Position the tooltip
-    position: absolute;
-    z-index: 1;
-    bottom: 100%;
-    left: 50%;
-    margin-left: -60px;
-}
-.tooltip:hover .tooltiptext {
-    visibility: visible;
-} */
 
 /* toggle-shape */
 .toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px;font-size:10px; }
@@ -131,6 +88,7 @@ table.dataTable thead > tr > th {
   font-weight: 300; 
   padding-left: 5px;
 }
+
 /*searchStrain-group*/
 .input-group-addon.primary {
   border-radius: 20px 0px 0px 20px;
@@ -142,7 +100,7 @@ table.dataTable thead > tr > th {
 .sm-customized, .form-control.sm-customized {
   height: 24px;
   padding: 1px 5px;
-  font-size: 12px; }
+  font-size: 12px;}
 
 #tree-viewer-button-groups {margin-left:15px}
 
@@ -163,8 +121,8 @@ table.dataTable thead > tr > th {
   padding: 5px 0 5px 15px; /* 15px; */
   margin-bottom: 15px;
   border: 1px solid transparent;
-  /* border-radius: 0; */
-  font-size: 17px;
+  /* font-size: 17px; */
+  font-size: 0.9vw;
 }
 .alert h4 {
   margin-top: 0;
@@ -245,28 +203,18 @@ tr.shown td.ann-details-control, tr.shown td.dup-details-control, tr.shown td.ge
     background: url('../images/childRow_details_close.png') no-repeat center center;
 }
 
-/* input */
-.input-xs {
-  height: 22px;
-  padding: 2px 5px;
-  font-size: 12px;
-  line-height: 1.5; //If Placeholder of the input is moved up, rem/modify this.
-  border-radius: 3px;
-  }
-
-
 @media (min-width: 1160px) {
 	 div[class^="col"]{padding-left:10px; padding-right:10px;} /**/
-
     .container{
       /* max-width: 2000px; */
       width:85%;
       } /* 1160px 970px;  */ 
 }
 
-#dc-straincount-chart .axis text {
-  font-size: 11px;
-  } 
+/* .x-axis-label {font-size: 1px;} */
+/* #dc-straincount-chart .axis text {
+  font-size: 1px;
+} */
 
 /*carousel
 .carousel .item {
@@ -307,14 +255,6 @@ background: none;/*rgba(94,164,233,0.9) ;/*!important; */
     background-color: rgba(94,164,233,0.5); /*#5EA4E9;*/
 }
 
-/*  noUiSlider background color */
-.noUi-connect { background:#2980B9;}
-
-/* vertical noUiSlider */
-#slider-vertical-range {
-  height: 300px;
-  /* margin: 0 auto 0px; */
-}
 
 /*slider style*/
 input[type=range] {
