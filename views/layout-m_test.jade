@@ -11,7 +11,6 @@ html
     //link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
     link(rel='stylesheet', type="text/css", href='stylesheets/bootstrap_customized.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/bootstrap-toggle.min.css')
-    link(rel="stylesheet", type="text/css", href='stylesheets/page-appearance.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/bootstrap-multiselect.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/nouislider.min.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/dc.css')
@@ -19,6 +18,7 @@ html
     link(rel="stylesheet", type="text/css", href='stylesheets/dataTables-customized.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/msa-new.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/d3-tip.css')
+    link(rel="stylesheet", type="text/css", href='stylesheets/page-appearance.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/autohiding-navbar2.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/footer.css')
 
@@ -47,9 +47,9 @@ html
         #dc-geneLength-chart.col-md-3
           .alert.alert-info(role='alert') Gene length distribution
         .col-md-2
-          .alert.alert-info(role='alert') Core/Accessory genes
+          .alert.alert-info(role='alert') Core vs. Accessory
           #dc-coreAcc-piechart  
-          .col-md-4
+          .col-md-4#col-coreThreshold
             span#coreThreshold(data-toggle='tooltip', data-placement='bottom', title='coreThreshold ')
               | cutoff:0.99
           .col-md-6
