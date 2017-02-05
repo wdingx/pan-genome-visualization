@@ -4,6 +4,8 @@ var init_core_threshold=0.99;
 var Initial_MsaGV='';
 var geneId_GV='', geneclusterID_GV='';
 var ann_majority= '';
+var chart_width=(winInnerWidth/4.5>255) ? winInnerWidth/4.5 : 255,
+    chart_width_sm=winInnerWidth/8;
 
 //## core_genome threshold slider
 var tooltipSlider = document.getElementById('changeCoreThreshold');
@@ -162,7 +164,6 @@ function updateGainLossEvent(geneIndex, clusterID) {
 //## create charts and load geneCluster dataTable 
 var chartExample = {
     initChart: function (data) {
-
         var lineChart = dc.lineChart('#dc-straincount-chart')
                         .xAxisLabel('gene')
                         .yAxisLabel('strain count');
@@ -219,7 +220,7 @@ var chartExample = {
         var totalGeneNumber= Object.keys(data).length;
 
         lineChart
-            .width(winInnerWidth/4.5).height(150) //4.5
+            .width(chart_width).height(150) //4.5
             .x(d3.scale.linear().domain([1,totalGeneNumber] ))
             //.x(d3.scale.log().base(10).domain([1,totalGeneNumber] ))
             .transitionDuration(500)
@@ -241,7 +242,7 @@ var chartExample = {
 
         var geneLengthMax=Math.max.apply(Math,data.map(function(o){return o.geneLen;}))
         geneLengthBarChart
-            .width(winInnerWidth/4.5).height(150) //winInnerWidth/3.5
+            .width(chart_width).height(150) //winInnerWidth/3.5
             //.margins({top: 10, right: 10, bottom: 20, left: 40})
             .dimension(geneLengthValue)
             .group(geneLengthGroup)
@@ -257,7 +258,7 @@ var chartExample = {
             .xAxis().tickFormat(function(v) {return v;}).ticks(5);
 
         coreYesNoPieChart
-            .width(winInnerWidth/8)//.width(120)
+            .width(chart_width_sm)//.width(120)
             .height(120)//150
             .radius(60)
             .innerRadius(12.5)
