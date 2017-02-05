@@ -351,7 +351,7 @@ var chartExample = {
             ann_majority=data[0].ann;
             chartExample.initChart(data);
             msaLoad(aln_file_path+Initial_MsaGV+'_aa.aln','taylor');
-            console.log(aln_file_path+Initial_MsaGV+'_aa.aln');
+            console.log(Initial_MsaGV+'_aa.aln');
             var clusterID=Initial_MsaGV;
             var geneTree_name=clusterID+'_tree.json';
             render_tree(1,'mytree2',aln_file_path+geneTree_name);

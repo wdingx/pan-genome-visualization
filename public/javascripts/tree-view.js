@@ -662,10 +662,10 @@ var treeButton_tooltip_dict= {
 
 
 function button_tooltip2(divID, tooltip_dict) {
-    d3.selectAll(divID).selectAll('button, .btn_tooltip')/*, button*/
-    .each(function(d,i) {
+    d3.selectAll(divID).selectAll('.btn_tooltip')/*, button*/
+    /*.each(function(d,i) {
       console.log( d3.select(this).attr('id'), i);
-    })
+    })*/
     .on("mouseover", function(d){
         tooltip.text(tooltip_dict[d3.select(this).attr('id')]);
         if (tooltip.text()!="") {
