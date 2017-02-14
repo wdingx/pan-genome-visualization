@@ -6,7 +6,7 @@ var adjust_height_unit =0.3;//#0.3
 var times_flag=0;
 
 //# node/label size
-var leaf_count_limit=60;
+var leaf_count_limit=260;
 var size_node_leaf_init=3.5, size_node_inner_init=2, size_node_leaf_highlight_init= 8;
 var size_font_inner_label_init=10, size_font_leaf_label_init=10;
 var height_nodeLabel_init=12;
