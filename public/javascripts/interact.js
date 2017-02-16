@@ -52,7 +52,7 @@ d3.json('./dataset/'+speciesAbbr+'/geneGainLossEvent.json', function(error, data
     else {geneGainLoss_Dt=data}
 });
 
-function call_updatePresence() {
+function call_updatePresence(geneIndex) {
     var svg= d3.select('#mytree1'),
     node = svg.selectAll('circle'),
     link = svg.selectAll('path.tnt_tree_link'),
@@ -100,12 +100,12 @@ function updatePresence(geneIndex, clusterID) {
     if (pxTree.large_output==true) {
         d3.json(aln_file_path+clusterID+'_patterns.json', function (error,data) {
             geneGainLoss_Dt=data;
-            call_updatePresence();
+            call_updatePresence(geneIndex);
         });
-    };
+    } else {call_updatePresence(geneIndex)};
 };
 
-function gain_loss_link_attr(d) {
+function gain_loss_link_attr(d,gindex) {
     if (pxTree.large_output==true) {
         event_type = geneGainLoss_Dt[d.target.name];
     } else {
@@ -128,20 +128,20 @@ function call_updateGainLoss(geneIndex) {
 
     link.style('stroke', function(d) {
         var event_type;
-        event_type= gain_loss_link_attr(d);
+        event_type= gain_loss_link_attr(d,gindex);
         //console.log(event_type,d.target.name);
         if (event_type==='0' || event_type=='2') {return pxTree.col_abse}
         else {return pxTree.col_pres};
     })
     .style("stroke-width", function (d) {
         var event_type;
-        event_type= gain_loss_link_attr(d);
+        event_type= gain_loss_link_attr(d,gindex);
         if (event_type=='1' || event_type=='2') {return pxTree.wid_gloss}
         else {return pxTree.wid_link}
     })
     .style("stroke-dasharray", function(d) {
         var event_type;
-        event_type=gain_loss_link_attr(d);
+        event_type=gain_loss_link_attr(d,gindex);
         if (event_type=='2'){ return (d.source.parent) ? "6,6" : "1,0"; }
         else {return 'none' }
     });
