@@ -41,6 +41,10 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
     var setLayout= 'vertical'; 
     var scale_layout= 'true';
     var set_rotate= 'right-left';
+    // if it is a gene tree, show the title with geneCluster Id
+    if (treeJsonPath.indexOf('tree.json') !== -1) {
+        showViewerTitle(treeJsonPath);
+    };
     /**
      * adjust node size and label height based on leaf_count
      * @param {int} count leaf_count
@@ -314,22 +318,17 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
         //console.log( Object.keys(get_coordinates(svg1)).length );
         //console.log( Object.keys(get_coordinates(svg2)).length );
         //Object.keys(myObj).length;
-    }
-
-    //## show MSA/Gene tree title with geneCluster Id
-    function showViewerTitle(message) {
-        var genetree_viewer=d3.select('#genetree_title');
-        genetree_viewer.html('Gene tree | '+message.split('/').pop().replace('_tree.json', '')+ ' | ' +ann_majority);
-          
-        var sequence_viewer=d3.select('#sequence_viewer_title');  
-        sequence_viewer.html(' Sequence alignment | '+message.split('/').pop().replace('_tree.json', '')+ ' | ' +ann_majority)
-        }
-
-    // if it is a gene tree, show the title with geneCluster Id
-    if (treeJsonPath.indexOf('tree.json') !== -1) {
-        showViewerTitle(treeJsonPath);
     };
 
+};
+
+//## show MSA/Gene tree title with geneCluster Id
+function showViewerTitle(message) {
+    var genetree_viewer=d3.select('#genetree_title');
+    genetree_viewer.html('Gene tree | '+message.split('/').pop().replace('_tree.json', '')+ ' | ' +ann_majority);
+    
+    var sequence_viewer=d3.select('#sequence_viewer_title');  
+    sequence_viewer.html(' Sequence alignment | '+message.split('/').pop().replace('_tree.json', '')+ ' | ' +ann_majority)
 };
 
 var svgTree_Module= function(){
