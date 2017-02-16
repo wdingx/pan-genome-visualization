@@ -514,12 +514,12 @@ function clickShowMsa (datatable) {
         console.log(data['msa']);
 
         geneId_GV = data['geneId'];
+        ann_majority = data['ann'];
         var clusterID=data['msa'];
         updatePresence(geneId_GV,clusterID);
         updateTree(data);
         updateGainLossEvent(geneId_GV,clusterID);
         
-        ann_majority = data['ann'];
         $('#tree-rotate').bootstrapToggle('off');/**/
         selectElement("dropdown_select",'genePresence');
         removeLegend(); legendOptionValue='';
