@@ -1,7 +1,7 @@
 function csprint(data) { console.log(data)};
 
 //## dc_DataTables configuration
-var dc_dataTable_columnDefs_config=[ 
+var dc_dataTable_columnDefs_config=[
     {'targets': 0,'defaultContent': '<button type="button" class="btn btn-info btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="amino acid alignment" >aa </button>'},
     {'targets': 1,'defaultContent': '<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="nucleotide alignment" >na </button>'},
     {'targets': 2,'data':'count'},
@@ -11,12 +11,12 @@ var dc_dataTable_columnDefs_config=[
     {'targets': 6,'data':'event'},
     {'targets': 7,'data':'geneLen'},
     {'targets': 8,'defaultContent': '','data':null, 'className': 'geneName-details-control', 'orderable': false},
-    {'targets': 9,'data':'GName'},     
+    {'targets': 9,'data':'GName'},
     {'targets': 10,'defaultContent': '','data':null, 'className': 'ann-details-control', 'orderable': false},
     {'targets': 11,'data':'ann'},
     {'targets': 12,'data':'geneId','visible': false},
     {'targets': 13,'data':'allAnn','visible': false},
-    {'targets': 14,'data':'allGName','visible': false},    
+    {'targets': 14,'data':'allGName','visible': false},
     {'targets': 15,'defaultContent': '','data':'locus','visible': false},
     {'targets': 16,'data':'msa','visible': false}
 
@@ -37,16 +37,13 @@ var creat_dataTable = function (div, columns_set) {
 };
 
 
-//# create GC table 
+//# create GC table
 var geneCluster_table_columns=['msa','msa','#strain','','duplicated','diversity','events','geneLen','','geneName','','annotation','Id','allAnn','allGName','locus']
 
 var clusterTable_tooltip_dict= {'msa':'multiple sequence alignment','msa':'multiple sequence alignment',
     '#strain':'strain count','duplicated':'whether duplicated and duplication count in each strain',
     'diversity':'gene diversity', 'events':'gene gain/loss events count',
     'geneLen':'average gene length', 'geneName':'gene name','annotation':'gene annotation'}
-creat_dataTable("#dc-data-table",geneCluster_table_columns);
-
-button_tooltip("#dc-data-table tr th",clusterTable_tooltip_dict );
 
 //## pay attention to GC table column order
 var GC_table_dropdown_columns=['amino_acid aln','nucleotide aln','#strain','duplicated','diversity', 'gene gain/loss events','gene length','geneName','annotation'];
@@ -63,17 +60,11 @@ var creat_multiselect = function (div, columns_set) {
     }
 };
 
-// disable warning
-$.fn.dataTable.ext.errMode = 'none';
-if (1) {
-    $('#dc-data-table').on('error.dt', function(e, settings, techNote, message) { console.log(message); });
-}
 
-
-
-function datatable_configuration(table_input) {
+function datatable_configuration(table_input, table_id, col_select_id) {
+    //GC_tablecol_select
     //## datatable configuration
-    datatable = $('#dc-data-table').DataTable({
+    var datatable = $('#'+table_id).DataTable({
         responsive: true,
         //dom: 'Bfrtip',
         //buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
@@ -94,12 +85,18 @@ function datatable_configuration(table_input) {
         "order": [[2, 'desc' ],[9, 'asc' ]]
     });
 
-    $('<span style="display:inline-block; width: 10px;"></span>').appendTo('div#dc-data-table_length.dataTables_length');
-    $('<select id="GC_tablecol_select" multiple="multiple" ></select>').appendTo('div#dc-data-table_length.dataTables_length');
+    // disable warning
+    $.fn.dataTable.ext.errMode = 'none';
+    if (1) {
+        $('#'+table_id).on('error.dt', function(e, settings, techNote, message) { console.log(message); });
+    }
+
+    $('<span style="display:inline-block; width: 10px;"></span>').appendTo('div#'+table_id+'_length.dataTables_length');
+    $('<select id="'+col_select_id+'" multiple="multiple" ></select>').appendTo('div#'+table_id+'_length.dataTables_length');
 
     //## empty and non-empty indexes
     function get_all_Indexes(array) {
-        var non_empty_indexes = []; var empty_indexes = []; 
+        var non_empty_indexes = []; var empty_indexes = [];
         var dropdown_table_col = []; var i;
         for(i = 0; i < array.length; i++) {
             if (array[i] === '') {empty_indexes.push(i);}
@@ -109,14 +106,14 @@ function datatable_configuration(table_input) {
     }
 
     var indexes_list= get_all_Indexes(geneCluster_table_columns, '');
-    var non_empty_index_list= indexes_list[0]; 
-    var empty_inde_list = indexes_list[1]; 
+    var non_empty_index_list= indexes_list[0];
+    var empty_inde_list = indexes_list[1];
 
-    creat_multiselect("#GC_tablecol_select",GC_table_dropdown_columns);
-    $('#GC_tablecol_select').multiselect({
+    creat_multiselect('#'+col_select_id,GC_table_dropdown_columns);
+    $('#'+col_select_id).multiselect({
         //enableFiltering: true,
         onChange: function(element, checked) {
-
+            console.log(col_select_id,datatable,element,checked);
             function element_included (arr, number) {
                 return (arr.indexOf(number) != -1)
             }
@@ -135,9 +132,11 @@ function datatable_configuration(table_input) {
                     var column_expand = datatable.column( original_col_index-1 );
                     column_expand.visible( ! column_expand.visible() );}
                 var column_normal = datatable.column( original_col_index );
-                column_normal.visible( ! column_normal.visible() ); 
+                column_normal.visible( ! column_normal.visible() );
 
             }
-        }  
+        }
     });
-}
+
+    return datatable;
+};
