@@ -31,22 +31,31 @@ html
   body
     include navbar
     .container
-      .row
+      //- .row
+      .grid-stack
         br
         br
         br
         #logo.col-md-2
           img(src='images/pan-blue-noReads.svg', style='width:230;height:209px;')
           .col-md-2
-        #dc-data-count.col-md-2
+        //- data-count
+        #dc-data-count.col-md-2.grid-stack-item(data-gs-x='2', data-gs-y='1', data-gs-width='2', data-gs-height='0')
+          .grid-stack-item-content
           .alert.alert-info(role='alert') Species
           #species-selector
           .dc-data-count
-        #dc-straincount-chart.col-md-3
-          .alert.alert-info(role='alert') Gene count rank distribution 
-        #dc-geneLength-chart.col-md-3
+        //- straincount-chart
+        #dc-straincount-chart.col-md-3.grid-stack-item(data-gs-x='4', data-gs-y='1', data-gs-width='3', data-gs-height='0')
+          .grid-stack-item-content
+          .alert.alert-info(role='alert') Gene count rank distribution
+        //- geneLength-chart
+        #dc-geneLength-chart.col-md-3.grid-stack-item(data-gs-x='7', data-gs-y='1', data-gs-width='3', data-gs-height='0')
+          .grid-stack-item-content  
           .alert.alert-info(role='alert') Gene length distribution
-        .col-md-2
+        //- coreAcc-piechart
+        .col-md-2.grid-stack-item(data-gs-x='11', data-gs-y='1', data-gs-width='2', data-gs-height='0')
+          .grid-stack-item-content
           .alert.alert-info(role='alert') Core vs. Accessory
           #dc-coreAcc-piechart  
           .col-md-4#col-coreThreshold
@@ -54,16 +63,21 @@ html
               | cutoff:0.99
           .col-md-6
             #changeCoreThreshold
-      .row
-        .col-md-6
+
+        //- cluster table
+        .col-md-6.grid-stack-item(data-gs-x='0', data-gs-y='5', data-gs-width='6', data-gs-height='0')
+          .grid-stack-item-content
           .alert.alert-info(role='alert') Gene cluster table
           table#dc-data-table.table.table-striped.table(cellspacing='0', width='100%')
-        .col-md-6
+        //- MSA viewer
+        .col-md-6.grid-stack-item(data-gs-x='6', data-gs-y='5', data-gs-width='6', data-gs-height='0')
+          .grid-stack-item-content
           .alert.alert-info(role='alert')
             #sequence_viewer_title Sequence alignment
           #snippetDiv
-      #all_trees.row
-        .col-md-6
+        //- strain tree
+        .col-md-6.grid-stack-item(data-gs-x='0', data-gs-y='12', data-gs-width='6', data-gs-height='0')
+          .grid-stack-item-content
           .alert.alert-info(role='alert')
             | Strain tree (SNPs in all core genes)
           .row
@@ -91,7 +105,9 @@ html
               svg#legend
             .col-md-10
               #mytree1
-        .col-md-6
+        //- gene tree
+        .col-md-6.grid-stack-item(data-gs-x='6', data-gs-y='12', data-gs-width='6', data-gs-height='0')
+          .grid-stack-item-content
           .alert.alert-info(role='alert')
             #genetree_title Gene tree (individual gene)
           .row
@@ -111,10 +127,29 @@ html
               br
               br
               svg#legend2
-      .row
-        .col-md-12
+        //- metadata table
+        .col-md-12.grid-stack-item(data-gs-x='0', data-gs-y='18', data-gs-width='12', data-gs-height='0')
+          .grid-stack-item-content
           .alert.alert-info(role='alert') Strain meta-info table
           table#dc-data-table2.table.table-striped.table(cellspacing='0', width='100%')
+      .row
+        .row
+          .row
+            .row
+              .row
+          br
+          br
+          br
+          br
+          br
+          br
+          br
+          br
+          br
+          br
+          br
+          br
+          br
     include footer
     block content
     //- script(src='dist/all-edge.js')
@@ -125,6 +160,7 @@ html
     script(src='javascripts/third_party/wNumb.js')
     script(src='javascripts/third_party/nouislider.min.js')
     script(src='javascripts/third_party/jquery.min.js')
+    script(src='javascripts/third_party/jquery-ui.min.js')
     script(src='javascripts/third_party/lodash.min.js')
     script(src='javascripts/third_party/bootstrap.min.js')
     script(src='javascripts/third_party/bootstrap-toggle.min.js')
@@ -158,3 +194,30 @@ html
     script(src='javascripts/datatable-meta.js')
     script(src='javascripts/meta-color-legend.js')
 
+    link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.2.6/gridstack.min.css')
+    script(type='text/javascript', src='//cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.2.6/gridstack.min.js')
+
+    link(rel="stylesheet", type="text/css", href='stylesheets/gridstack.css')
+
+    script(type='text/javascript').
+      $(function () {
+      var options = {
+      cell_height: 30,
+      //vertical_margin: 15,
+      //always_show_resize_handle: true,
+      //animate: false,
+      float:true
+      };
+      $('.grid-stack').gridstack(options);
+      });
+      //- $('#zoomin1').on('click', function (e) {
+      //- var grid = $('.grid-stack').data('gridstack');
+      //- grid.movable('.grid-stack-item', false);
+      //- grid.resizable('.grid-stack-item', false);
+      //- });
+      //- $('#zoomout1').on('click', function (e) {
+      //- var grid = $('.grid-stack').data('gridstack');
+      //- grid.movable('.grid-stack-item', true);
+      //- grid.resizable('.grid-stack-item', true);
+      //- });
+    
