@@ -4,8 +4,8 @@ function isNumeric(num){
 
 function assign_color(color_set) {
     var index = meta_detail.indexOf('unknown');
-    if (index > -1) { 
-        meta_detail.splice(index, 1); 
+    if (index > -1) {
+        meta_detail.splice(index, 1);
         tmp_meta_color_set['unknown']='#FFFFFF'
     }
     for (i = 0; i < meta_detail.length; i++) {
@@ -32,8 +32,8 @@ for (j = 0; j < meta_types.length; j++) {
     var meta_detail = meta_set[meta_type_key]; // ["human", "rice"]
     if (isNumeric(meta_detail[0])) {
         var index = meta_detail.indexOf('unknown');
-        if (index > -1) { 
-            meta_detail.splice(index, 1); 
+        if (index > -1) {
+            meta_detail.splice(index, 1);
             tmp_meta_color_set['unknown']='#FFFFFF'
         }
         var min = Math.min.apply(null, meta_detail),
@@ -90,7 +90,7 @@ function makeLegend(meta_type){ // && legendOptionValue!= "Meta-info"
                 var height = legendRectSize + legendSpacing;
                 var fromRight = Math.floor(i / stack);
                 var fromTop = i % stack;
-                var horz = fromRight * 145 + 5;              
+                var horz = fromRight * 145 + 5;
                 var vert = fromTop * height + 5;
                 return 'translate(' + horz + ',' + vert + ')';
             });
@@ -98,7 +98,7 @@ function makeLegend(meta_type){ // && legendOptionValue!= "Meta-info"
         function mouseover_lengend(d) {
             var text_value = d3.select(this).attr("text");
             svg1.selectAll("circle")
-                .filter(function(d) { 
+                .filter(function(d) {
                     if (d[meta_type] === text_value ) {
                         return d;
                     } else if ( isNumeric(text_value) ) {
@@ -116,7 +116,7 @@ function makeLegend(meta_type){ // && legendOptionValue!= "Meta-info"
         function mouseout_lengend(d) {
             var text_value = d3.select(this).attr("text");
             svg1.selectAll("circle")
-                .filter(function(d) { 
+                .filter(function(d) {
                     if (d[meta_type] === text_value ) {
                         return d;
                     } else if ( isNumeric(text_value) ) {
@@ -136,7 +136,7 @@ function makeLegend(meta_type){ // && legendOptionValue!= "Meta-info"
             .attr('height', legendRectSize)
             .attr('text', function (d) {return d;} )
             .attr('fill', function (d) {
-                var col = metaColor_sets[meta_type][d]; 
+                var col = metaColor_sets[meta_type][d];
                 return d3.rgb(col).toString();
             })
             .attr('stroke', function (d) {
@@ -145,7 +145,7 @@ function makeLegend(meta_type){ // && legendOptionValue!= "Meta-info"
             })
             .on("mouseover", mouseover_lengend)
             .on("mouseout", mouseout_lengend);
-            
+
         tmp_leg.append('text')
             .attr('x', legendRectSize + legendSpacing + 5)
             .attr('y', legendRectSize - legendSpacing)
@@ -154,8 +154,8 @@ function makeLegend(meta_type){ // && legendOptionValue!= "Meta-info"
                 return d.toString();
             })
             .on("mouseover", mouseover_lengend)
-            .on("mouseout", mouseout_lengend);            
-            
+            .on("mouseout", mouseout_lengend);
+
         return tmp_leg;
     }
 }
@@ -167,7 +167,7 @@ function updateData(meta_type) {
     var node = svg1.selectAll("circle"),
         text = svg1.selectAll("text"),
         link = svg1.selectAll(".tnt_tree_link");
-                
+
     legendOptionValue=meta_type;
     var metaColorSet=metaColor_sets[meta_type];
     removeLegend();
@@ -243,7 +243,7 @@ var creat_dropdown = function (div) {
         .attr("id","dropdown_select")
         .attr("class","form-control sm-customized")
     var meta_types = Object.keys(meta_set);
-    
+
     dropdown_meta.on("change", function(d) {
         if (this.value!='Meta-info') {
             updateData(this.value);
