@@ -4,12 +4,12 @@ var init_core_threshold=0.99;
 var Initial_MsaGV='';
 var geneId_GV='', geneclusterID_GV='';
 var ann_majority= '';
-var chart_width=(winInnerWidth/4.5>255) ? winInnerWidth/4.5 : 255,
-    chart_width_sm=winInnerWidth/8;
+var chart_width=winInnerWidth/4.5,//(winInnerWidth/4.5>255) ? winInnerWidth/4.5 : 255,
+    chart_width_sm=winInnerWidth/30;
 var lineChart_width=chart_width, lineChart_height=150;
 var barChart_width=chart_width,  barChart_height=150;
-var pie_width=chart_width_sm, pie_height=120,
-    pie_outer_radius=60, pie_inner_radius=12.5;
+var pie_width=chart_width_sm, pie_height=chart_width_sm,
+    pie_outer_radius=chart_width_sm/2, pie_inner_radius=chart_width_sm/8;
 
 //## core_genome threshold slider
 function coreThreshold_slider_init(coreThreshold_slider_id){
@@ -389,10 +389,10 @@ var chartExample = {
 chartExample.initData(path_datatable1,'dc-data-table', 'GC_tablecol_select',
     'dc-data-count','dc-straincount-chart','dc-geneLength-chart','dc-coreAcc-piechart',
     'changeCoreThreshold','coreThreshold');
-/*chartExample.initData(path_datatable11,'dc-data-table11', 'GC_tablecol_select2',
+chartExample.initData(path_datatable11,'dc-data-table11', 'GC_tablecol_select2',
     'dc-data-count2','dc-straincount-chart2','dc-geneLength-chart2','dc-coreAcc-piechart2',
     'changeCoreThreshold2','coreThreshold2');
-*/
+/**/
 //## extract all annotations
 function format_annotation ( d ) {
     // 'd' is the original data object for the row
