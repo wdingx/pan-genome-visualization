@@ -252,7 +252,7 @@ var chartExample = {
             .x(d3.scale.linear().domain([0, geneLengthMax]))
             //.x(d3.scale.linear().clamp(true).domain([0, 5000])) 
             .elasticY(true)
-            .mouseZoomable(true)
+            //.mouseZoomable(true)
             .renderHorizontalGridLines(true)
             //.brushOn(false)
             .xAxis().tickFormat(function(v) {return v;}).ticks(5);
