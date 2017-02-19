@@ -8,17 +8,20 @@ var chart_width=(winInnerWidth/4.5>255) ? winInnerWidth/4.5 : 255,
     chart_width_sm=winInnerWidth/8;
 
 //## core_genome threshold slider
-var tooltipSlider = document.getElementById('changeCoreThreshold');
-noUiSlider.create(tooltipSlider, {
-    start:  0.99,
-    behaviour: 'tap',
-    connect: 'upper',//'lower',/**/
-    range: {
-        'min': 0,
-        'max': 1
-    }
-    //, tooltips: [  wNumb({ decimals: 2 }) ]
-});
+function coreThreshold_slider_init(coreThreshold_slider_id){
+    var tooltipSlider = document.getElementById(coreThreshold_slider_id);
+    noUiSlider.create(tooltipSlider, {
+        start:  0.99,
+        behaviour: 'tap',
+        connect: 'upper',//'lower',/**/
+        range: {
+            'min': 0,
+            'max': 1
+        }
+        //, tooltips: [  wNumb({ decimals: 2 }) ]
+    });
+    return tooltipSlider;
+};
 
 //## make dropdown_menu
 var creat_dropdown_menu = function (div, species_dt) {
@@ -163,21 +166,23 @@ function updateGainLossEvent(geneIndex, clusterID) {
 
 //## create charts and load geneCluster dataTable 
 var chartExample = {
-    initChart: function (data) {
-        var lineChart = dc.lineChart('#dc-straincount-chart')
+    initChart: function (data, table_id, col_select_id,
+        count_id, chart1_id, chart2_id, chart3_id,
+        coreThreshold_slider_id, coreThreshold_text_id) {
+        var lineChart = dc.lineChart('#'+chart1_id)
                         .xAxisLabel('gene')
                         .yAxisLabel('strain count');
-        var geneLengthBarChart = dc.barChart('#dc-geneLength-chart')
+        var geneLengthBarChart = dc.barChart('#'+chart2_id)
                         .yAxisLabel('gene count')
                         .xAxisLabel('gene length');
-        var coreYesNoPieChart = dc.pieChart('#dc-coreAcc-piechart');
+        var coreYesNoPieChart = dc.pieChart('#'+chart3_id);
         
         //# Create Crossfilter Dimensions and Groups
         var ndx = crossfilter(data);
         var all = ndx.groupAll();
 
         // count all the genes
-        dc.dataCount('#dc-data-count')
+        dc.dataCount('#'+count_id)
             .dimension(ndx)
             .group(all);
 
@@ -198,7 +203,7 @@ var chartExample = {
         // reusable function to create threshold dimension
         function coreCount_from_threshold() {
             var totalStrainNumber=data[1].count;
-            var coreThreshold=document.getElementById('coreThreshold').value;
+            var coreThreshold=document.getElementById(coreThreshold_text_id).value;
             coreThreshold=parseFloat(coreThreshold);
             if (isNaN(coreThreshold)) {
                 coreThreshold=init_core_threshold
@@ -258,9 +263,9 @@ var chartExample = {
 
         coreYesNoPieChart
             .width(chart_width_sm)//.width(120)
-            .height(120)//150
-            .radius(60)
-            .innerRadius(12.5)
+            .height(120)//150, chart_width_sm
+            .radius(60)//chart_width_sm/2
+            .innerRadius(12.5)//chart_width_sm/8
             .dimension(coreCount)
             .title(function(d){return d.value;})
             .group(coreCountGroup)
@@ -278,7 +283,8 @@ var chartExample = {
 
         //## using core threshold in slider to re-distribute pie chart data
         // update the field
-        var coreThresholdField = document.getElementById("coreThreshold");
+        var tooltipSlider=coreThreshold_slider_init(coreThreshold_slider_id);
+        var coreThresholdField = document.getElementById(coreThreshold_text_id);
         tooltipSlider.noUiSlider.on('update', function( values, handle ){
             if ( parseFloat(values[handle]) !== init_core_threshold) {
                 coreThresholdField.value = parseFloat(values[handle]);
@@ -294,7 +300,7 @@ var chartExample = {
         });
 
         //## data count records (selected records and all records)
-        var nasdaqCount = dc.dataCount('.dc-data-count');
+        var nasdaqCount = dc.dataCount('.'+count_id);
         nasdaqCount
             .dimension(ndx)
             .group(all)
@@ -320,7 +326,11 @@ var chartExample = {
             }
         };
 
-        datatable_configuration(geneCountDimension.top(Infinity));
+        creat_dataTable('#'+table_id,geneCluster_table_columns);
+
+        button_tooltip('#'+table_id+' tr th',clusterTable_tooltip_dict );
+
+        var datatable=datatable_configuration(geneCountDimension.top(Infinity), table_id, col_select_id);
 
         clickShowMsa(datatable);
 
@@ -343,13 +353,17 @@ var chartExample = {
         dc.renderAll();
 
     },
-    initData: function (path_datatable1) {
+    initData: function (path_datatable1, table_id, col_select_id,
+        count_id, chart1_id, chart2_id, chart3_id,
+        coreThreshold_slider_id, coreThreshold_text_id ) {
         //## load the data, charts and MSA
         d3.json(path_datatable1, function(error, data) {
             Initial_MsaGV=data[0].msa; 
             geneId_GV=data[0].geneId;
             ann_majority=data[0].ann;
-            chartExample.initChart(data);
+            chartExample.initChart(data, table_id, col_select_id,
+                count_id, chart1_id, chart2_id, chart3_id,
+                coreThreshold_slider_id, coreThreshold_text_id);
             msaLoad(aln_file_path+Initial_MsaGV+'_aa.aln','taylor');
             console.log(Initial_MsaGV+'_aa.aln');
             var clusterID=Initial_MsaGV;
@@ -368,8 +382,13 @@ var chartExample = {
     }
 };
 
-chartExample.initData(path_datatable1);
-
+chartExample.initData(path_datatable1,'dc-data-table', 'GC_tablecol_select',
+    'dc-data-count','dc-straincount-chart','dc-geneLength-chart','dc-coreAcc-piechart',
+    'changeCoreThreshold','coreThreshold');
+/*chartExample.initData(path_datatable11,'dc-data-table11', 'GC_tablecol_select2',
+    'dc-data-count2','dc-straincount-chart2','dc-geneLength-chart2','dc-coreAcc-piechart2',
+    'changeCoreThreshold2','coreThreshold2');
+*/
 //## extract all annotations
 function format_annotation ( d ) {
     // 'd' is the original data object for the row
