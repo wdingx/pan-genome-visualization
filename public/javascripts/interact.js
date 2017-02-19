@@ -6,6 +6,10 @@ var geneId_GV='', geneclusterID_GV='';
 var ann_majority= '';
 var chart_width=(winInnerWidth/4.5>255) ? winInnerWidth/4.5 : 255,
     chart_width_sm=winInnerWidth/8;
+var lineChart_width=chart_width, lineChart_height=150;
+var barChart_width=chart_width,  barChart_height=150;
+var pie_width=chart_width_sm, pie_height=120,
+    pie_outer_radius=60, pie_inner_radius=12.5;
 
 //## core_genome threshold slider
 function coreThreshold_slider_init(coreThreshold_slider_id){
@@ -51,7 +55,7 @@ creat_dropdown_menu('#species-selector', species_dt)
 var geneGainLoss_Dt = {};
 d3.json('./dataset/'+speciesAbbr+'/geneGainLossEvent.json', function(error, data) {
     // if geneGainLossEvent.json exists
-    if (error!==null) { pxTree.large_output=true} 
+    if (error!==null) { pxTree.large_output=true}
     else {geneGainLoss_Dt=data}
 });
 
@@ -77,7 +81,7 @@ function call_updatePresence(geneIndex) {
 
             if (presence_flag==1) {
                 pxTree.node_color_mem[d.name]= pxTree.col_pres;
-                return pxTree.col_pres;  
+                return pxTree.col_pres;
             }
             else {
                 pxTree.node_color_mem[d.name]=pxTree.col_abse;
@@ -85,9 +89,9 @@ function call_updatePresence(geneIndex) {
             }
         }
     });
-    /*link.style("stroke", function(d){ 
+    /*link.style("stroke", function(d){
         if (  (d.target.name.indexOf('NODE_')!=0) && d.target.name!='') {
-            return pxTree.node_color_mem[d.target.name]; 
+            return pxTree.node_color_mem[d.target.name];
         }
         else {console.log(d.target.name);return pxTree.branch_col}
     });*/
@@ -164,7 +168,7 @@ function updateGainLossEvent(geneIndex, clusterID) {
     }
 };
 
-//## create charts and load geneCluster dataTable 
+//## create charts and load geneCluster dataTable
 var chartExample = {
     initChart: function (data, table_id, col_select_id,
         count_id, chart1_id, chart2_id, chart3_id,
@@ -176,7 +180,7 @@ var chartExample = {
                         .yAxisLabel('gene count')
                         .xAxisLabel('gene length');
         var coreYesNoPieChart = dc.pieChart('#'+chart3_id);
-        
+
         //# Create Crossfilter Dimensions and Groups
         var ndx = crossfilter(data);
         var all = ndx.groupAll();
@@ -193,7 +197,7 @@ var chartExample = {
         var geneCountGroup = geneCountDimension.group()
             .reduceSum(function (d) {return d.count;});
 
-        // Dimension by geneLength 
+        // Dimension by geneLength
         var geneLengthValue = ndx.dimension(function (d) {
             return d.geneLen;});
         //Group by total movement within month
@@ -225,16 +229,16 @@ var chartExample = {
         var totalGeneNumber= Object.keys(data).length;
 
         lineChart
-            .width(chart_width).height(150) //4.5
+            .width(lineChart_width).height(lineChart_height) //4.5
             .x(d3.scale.linear().domain([1,totalGeneNumber] ))
             //.x(d3.scale.log().base(10).domain([1,totalGeneNumber] ))
             .transitionDuration(500)
             .dimension(geneCountDimension)
-            .group(geneCountGroup)  
+            .group(geneCountGroup)
             .renderArea(true)
             .renderHorizontalGridLines(true)
             .elasticY(true)
-            .xAxis().ticks(5);            
+            .xAxis().ticks(5);
             //.ticks(10, ",.0f") //???
             //.tickSize(5, 0);
             //.tickFormat(function(v) {return v;});
@@ -246,15 +250,15 @@ var chartExample = {
 
         var geneLengthMax=Math.max.apply(Math,data.map(function(o){return o.geneLen;}))
         geneLengthBarChart
-            .width(chart_width).height(150) //winInnerWidth/3.5
+            .width(barChart_width).height(barChart_height) //winInnerWidth/3.5
             //.margins({top: 10, right: 10, bottom: 20, left: 40})
             .dimension(geneLengthValue)
             .group(geneLengthGroup)
             .transitionDuration(500)
-            .centerBar(true)  
+            .centerBar(true)
             .gap(1) // bar width Keep increasing to get right then back off.
             .x(d3.scale.linear().domain([0, geneLengthMax]))
-            //.x(d3.scale.linear().clamp(true).domain([0, 5000])) 
+            //.x(d3.scale.linear().clamp(true).domain([0, 5000]))
             .elasticY(true)
             //.mouseZoomable(true)
             .renderHorizontalGridLines(true)
@@ -262,10 +266,10 @@ var chartExample = {
             .xAxis().tickFormat(function(v) {return v;}).ticks(5);
 
         coreYesNoPieChart
-            .width(chart_width_sm)//.width(120)
-            .height(120)//150, chart_width_sm
-            .radius(60)//chart_width_sm/2
-            .innerRadius(12.5)//chart_width_sm/8
+            .width(pie_width)
+            .height(pie_height)
+            .radius(pie_outer_radius)
+            .innerRadius(pie_inner_radius)
             .dimension(coreCount)
             .title(function(d){return d.value;})
             .group(coreCountGroup)
@@ -292,7 +296,7 @@ var chartExample = {
                 coreCount.dispose();
                 coreCount = coreCount_from_threshold();
                 coreCountGroup = coreCount.group();
-                     
+
                 coreYesNoPieChart
                   .dimension(coreCount)
                   .group(coreCountGroup);
@@ -312,7 +316,7 @@ var chartExample = {
                     ' <br/> <a href="javascript:dc.filterAll(); dc.renderAll();"" style="font-size:20px"> Clear filters </a>',
                 all: 'All records selected. Please click on the graph to apply filters.'
             });
-            
+
         var buttonCommon = {
             exportOptions: {
                 format: {
@@ -358,7 +362,7 @@ var chartExample = {
         coreThreshold_slider_id, coreThreshold_text_id ) {
         //## load the data, charts and MSA
         d3.json(path_datatable1, function(error, data) {
-            Initial_MsaGV=data[0].msa; 
+            Initial_MsaGV=data[0].msa;
             geneId_GV=data[0].geneId;
             ann_majority=data[0].ann;
             chartExample.initChart(data, table_id, col_select_id,
@@ -392,7 +396,7 @@ chartExample.initData(path_datatable1,'dc-data-table', 'GC_tablecol_select',
 //## extract all annotations
 function format_annotation ( d ) {
     // 'd' is the original data object for the row
-    // Example: allAnn='arginine/ornithine_transporter_AotQ#36@arginine/ornithine_transport_protein_AotQ#2@arginine/ornithine_ABC_transporter_permease_AotQ:1' 
+    // Example: allAnn='arginine/ornithine_transporter_AotQ#36@arginine/ornithine_transport_protein_AotQ#2@arginine/ornithine_ABC_transporter_permease_AotQ:1'
     var annSplit = d.allAnn.split("@");
     var ann_Table_Str='<table cellpadding="5" cellspacing="0" border="0" style="padding-right:50px;">'+
         '<tr><td>Annotation detail:</td> <td>Counts:</td></tr>';
@@ -414,19 +418,19 @@ function format_annotation ( d ) {
 
 //## extract duplicated strain name
 function format_dup_detail ( d ) {
-    // Example: dup_detail='gene1#2@gene12#1' 
-    var dupSplit = d.dup_detail.split("@"); 
+    // Example: dup_detail='gene1#2@gene12#1'
+    var dupSplit = d.dup_detail.split("@");
     var dup_Table_Str='<table cellpadding="5" cellspacing="0" border="0" style="padding-right:50px;">'+
         '<tr><td>strain name:</td> <td>Counts:</td></tr>';
     for (var i=0;i<dupSplit.length;i++) {
         var dupCountSplit=dupSplit[i].split("#");
-        var strainName =dupCountSplit[0]; 
+        var strainName =dupCountSplit[0];
         var geneCount=dupCountSplit[1];
         if (geneCount==undefined) {
             geneCount='';
         }
         dup_Table_Str+='<tr><td>'+strainName+'</td> <td>'+geneCount+'</td>'+'</tr>';
-    } 
+    }
     dup_Table_Str+='</table>';
     return dup_Table_Str;
 }
@@ -434,7 +438,7 @@ function format_dup_detail ( d ) {
 //## extract all annotations
 function format_geneNames ( d ) {
     // 'd' is the original data object for the row
-    // Example: allGName='arginine/ornithine_transporter_AotQ#36@arginine/ornithine_transport_protein_AotQ#2@arginine/ornithine_ABC_transporter_permease_AotQ:1' 
+    // Example: allGName='arginine/ornithine_transporter_AotQ#36@arginine/ornithine_transport_protein_AotQ#2@arginine/ornithine_ABC_transporter_permease_AotQ:1'
     var geneName_Split = d.allGName.split("@");
     var geneName_Table_Str='<table cellpadding="5" cellspacing="0" border="0" style="padding-right:50px;">'+
         '<tr><td>geneName detail:</td> <td>Counts:</td></tr>';
@@ -467,7 +471,7 @@ function clickShowMsa (datatable) {
         }
 
         e.stopPropagation();
-    });  
+    });
 
     // unfold and fold duplication column
     $('#dc-data-table tbody').on('click', 'td.dup-details-control', function (e) {
@@ -518,7 +522,7 @@ function clickShowMsa (datatable) {
     };
 
     //## update the selection in dropdown list
-    function selectElement(div_id,valueToSelect) {    
+    function selectElement(div_id,valueToSelect) {
         var element = document.getElementById(div_id);
         element.value = valueToSelect;
     }
@@ -537,7 +541,7 @@ function clickShowMsa (datatable) {
         updatePresence(geneId_GV,clusterID);
         updateTree(data);
         updateGainLossEvent(geneId_GV,clusterID);
-        
+
         $('#tree-rotate').bootstrapToggle('off');/**/
         selectElement("dropdown_select",'genePresence');
         removeLegend(); legendOptionValue='';
@@ -568,7 +572,7 @@ function clickShowMsa (datatable) {
         e.stopPropagation();
     });
 
-}; 
+};
 var msa = require('msa');//var aln_path='';
 function msaLoad (aln_path,scheme_type) {
     var rootDiv = document.getElementById('snippetDiv');
@@ -580,7 +584,7 @@ function msaLoad (aln_path,scheme_type) {
     };
 
     opts.vis = {conserv: false, overviewbox: false, labelId: false};
-    opts.zoomer = {alignmentWidth:'auto',alignmentHeight: 250,rowHeight: 18, 
+    opts.zoomer = {alignmentWidth:'auto',alignmentHeight: 250,rowHeight: 18,
                     labelWidth: 100, labelNameLength: 150,
                     labelNameFontsize: '10px',labelIdLength: 20, menuFontsize: '12px',
                     menuMarginLeft: '3px', menuPadding: '3px 4px 3px 4px', menuItemFontsize: '14px', menuItemLineHeight: '14px',
@@ -607,5 +611,5 @@ function msaLoad (aln_path,scheme_type) {
     menuOpts.msa = m;
     var defMenu = new msa.menu.defaultmenu(menuOpts);
     m.addView('menu', defMenu);
-};//msaLoad(aln_file_path+Initial_MsaGV); 
+};//msaLoad(aln_file_path+Initial_MsaGV);
 
