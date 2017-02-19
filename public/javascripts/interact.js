@@ -239,7 +239,6 @@ var chartExample = {
             //.renderDataPoints(true)
             //.clipPadding(10)
 
-
         var geneLengthMax=Math.max.apply(Math,data.map(function(o){return o.geneLen;}))
         geneLengthBarChart
             .width(chart_width).height(150) //winInnerWidth/3.5
@@ -344,7 +343,7 @@ var chartExample = {
         dc.renderAll();
 
     },
-    initData: function () {
+    initData: function (path_datatable1) {
         //## load the data, charts and MSA
         d3.json(path_datatable1, function(error, data) {
             Initial_MsaGV=data[0].msa; 
@@ -369,7 +368,7 @@ var chartExample = {
     }
 };
 
-chartExample.initData();
+chartExample.initData(path_datatable1);
 
 //## extract all annotations
 function format_annotation ( d ) {
