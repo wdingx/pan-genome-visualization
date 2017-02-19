@@ -38,7 +38,7 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
     var tree_vis = tnt.tree();
     var width = winInnerWidth/3; //600; //var height = 360;
     //## initial layout/scale options .property('checked', true);
-    var setLayout= 'vertical'; 
+    var setLayout= 'vertical';
     var scale_layout= 'true';
     var set_rotate= 'right-left';
     // if it is a gene tree, show the title with geneCluster Id
@@ -103,13 +103,13 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
             .height(height_nodeLabel)
 
         var leaf_node = tnt.tree.node_display.circle()
-            .size( function (node){ return (node.is_leaf()) ? size_node_leaf : size_node_inner;}) 
+            .size( function (node){ return (node.is_leaf()) ? size_node_leaf : size_node_inner;})
             .stroke( function (node){ if (node.is_leaf()) { return color_node_stroke };})
-            .fill( function (node,d){ 
-                    if (node.is_leaf()) { 
+            .fill( function (node,d){
+                    if (node.is_leaf()) {
                         return (pgModule.hasOwnProperty(pxTree.node_color_mem,node.node_name())) ? pxTree.node_color_mem[node.node_name()] : color_node_fill;
                     }
-                    else {return color_inner_node} 
+                    else {return color_inner_node}
                 });
 
         var collapsed_node = tnt.tree.node_display.triangle()
@@ -125,7 +125,7 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
                     collapsed_node.display().call(this, node);
                 } else {
                     leaf_node.display().call(this, node);
-                }                
+                }
             });
 
         tree_vis
@@ -163,7 +163,7 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
         legend.append("div")
             .style({ width:"50px", height:"2px", "background-color":"steelblue",
                     margin:"6px 5px 5px 25px", float: "left"});
-            
+
         legend.append("text")
             .style({"font-size": "12px"})
             .text(scaleBar);
@@ -183,7 +183,7 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
         d3.select('#tree-rotate-div').style('visibility',rotate_vis_state);
 
         var layout = tnt.tree.layout[setLayout]().width(width).scale(d3.select('#ScalesToggle').property('checked'))
-        
+
         tree_vis.layout(layout);
         tree_vis.update();
         if (leaf_count>leaf_count_limit) {
@@ -198,7 +198,7 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
         //rotate_tree(svg2,'left-right');
     });
 
-    // ## Enable scale or not 
+    // ## Enable scale or not
     $('#ScalesToggle').change(function() {
         var setLayout= (d3.select('#TreeViewSelect').property('checked')==false) ? 'vertical' : 'radial';
         var layout = tnt.tree.layout[setLayout]().width(width).scale( d3.select(this).property('checked'))
@@ -208,7 +208,7 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
         if ((setLayout=='vertical') && (selected_div=='mytree2')) {
             rotate_tree(svg,'left-right');
             $('#tree-rotate').bootstrapToggle('on');
-        }            
+        }
     });
 
     //# Enable label or not
@@ -217,14 +217,14 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
         svg.selectAll(".tnt_tree_label").style("visibility", text_vis_state);
     });
 
-    // ## Enable selection of subtree by clicking innerNode  
+    // ## Enable selection of subtree by clicking innerNode
     $('#InnerNodeToggle').change(function() {
         var setInnerNode=(d3.select(this).property('checked')==false) ? 'hidden' : 'visible';
         svg.selectAll("circle")
             //selectAll(".tnt_tree_node.inner, .tnt_tree_node.root")
             .style("visibility", function(d) {
                 if ((d.name.indexOf('NODE_')==0 || d.name=='')) {
-                    return setInnerNode} 
+                    return setInnerNode}
             })
     });
 
@@ -243,7 +243,7 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
         if (text_vis_state=='hidden') {
             svg.selectAll(".tnt_tree_label").style("visibility", text_vis_state)
         };
-        
+
     });
 
     $('#Height_minus_Toggle').on("click", function() {
@@ -275,7 +275,7 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
         svgAction(ind,svg);
         if (text_vis_state=='hidden') {
             svg.selectAll(".tnt_tree_label").style("visibility", text_vis_state)
-        }; 
+        };
     });
 
     function link_two_trees () {
@@ -284,7 +284,7 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
             var nodes = svg.selectAll("circle")
             var leaves_list = [];
             nodes.each(function(d){
-                leaves_list.push(d.name,d.x,d.y); 
+                leaves_list.push(d.name,d.x,d.y);
                 });
             return leaves_list;
         }; //console.log(get_leaveName());
@@ -295,15 +295,15 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
             var coordinates_dict = {};
             nodes.each(function(d){
                 if (d.children === undefined) { // leaves
-                    coordinates_dict[d.name]=[d.x,d.y]; 
+                    coordinates_dict[d.name]=[d.x,d.y];
                 }
             });
             return coordinates_dict;
-        }; 
+        };
         //get_coordinates(svg1);get_coordinates(svg2)
-        
+
         console.log(get_coordinates(svg1));
-        console.log(get_coordinates(svg2));        
+        console.log(get_coordinates(svg2));
 
         /*var lines = svg1.append("svg").append("line") //svg_all
                     .style("stroke", "black")
@@ -326,8 +326,8 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
 function showViewerTitle(message) {
     var genetree_viewer=d3.select('#genetree_title');
     genetree_viewer.html('Gene tree | '+message.split('/').pop().replace('_tree.json', '')+ ' | ' +ann_majority);
-    
-    var sequence_viewer=d3.select('#sequence_viewer_title');  
+
+    var sequence_viewer=d3.select('#sequence_viewer_title');
     sequence_viewer.html(' Sequence alignment | '+message.split('/').pop().replace('_tree.json', '')+ ' | ' +ann_majority)
 };
 
@@ -372,7 +372,7 @@ var svgTree_Module= function(){
               .style("fill", color_leaf_node_highlight)
               .attr("r", size_node_leaf_highlight_arr[ind])
         }
-        else if ((d.name.indexOf('NODE_')==0) || (d.name=="")) { 
+        else if ((d.name.indexOf('NODE_')==0) || (d.name=="")) {
             this.style.cursor='pointer';
             //# highlight selected inner node
             if (click_type=='node') {
@@ -430,7 +430,7 @@ var svgTree_Module= function(){
         }
         else if  ( (d.name.indexOf('NODE_')==0) || (d.name=="") ) {
             //#change the color of selected inner nodes
-            if (click_type=='node') { 
+            if (click_type=='node') {
                 d3.select(this)
                     .style("stroke-width",'0px')
                     .style("fill", color_inner_node)
@@ -441,7 +441,7 @@ var svgTree_Module= function(){
                         if (pxTree.link_color_mem[this.id]!=undefined ) {
                             return pxTree.link_color_mem[this.id];
                         } else { return pxTree.branch_col;}
-                    }) 
+                    })
                     .style("stroke-width", function () {
                         if (pxTree.link_width_mem[this.id]!=undefined ) {
                             return pxTree.link_width_mem[this.id];
@@ -494,7 +494,7 @@ var svgTree_Module= function(){
             var data=data['data']
             for (var i=0;i<data.length;i++) {
                 data[data[i]['accession']]=data[i]
-            } 
+            }
 
             function RefreshTreeTable() {
                 var n=[];
@@ -506,8 +506,8 @@ var svgTree_Module= function(){
                 $('#dc-data-table2').dataTable().fnClearTable();
                 $('#dc-data-table2').dataTable().fnAddData(n);
                 $('#dc-data-table2').dataTable().fnDraw();
-            }; 
-            RefreshTreeTable(); 
+            };
+            RefreshTreeTable();
         });
     };
 
@@ -539,21 +539,21 @@ var svgTree_Module= function(){
 var svgAction = function(ind,svg) {
     var t0 = performance.now();
     svgTree_Module.tooltip_node(svg);
-    var t1 = performance.now(); 
+    var t1 = performance.now();
     if (times_flag==1) {csprint("x0 time: "+ Math.round(t1-t0) +" msec");}
 
     var t0 = performance.now();
     svgTree_Module.node_showSubtree_trace(svg);
-    var t1 = performance.now(); 
-    if (times_flag==1) {csprint("x1 time: "+ Math.round(t1-t0) +" msec");} 
+    var t1 = performance.now();
+    if (times_flag==1) {csprint("x1 time: "+ Math.round(t1-t0) +" msec");}
 
-    var t0 = performance.now(); 
+    var t0 = performance.now();
     svgTree_Module.link_showSubtree_trace(svg);
-    var t1 = performance.now(); 
+    var t1 = performance.now();
     if (times_flag==1) {csprint("x2 time: "+ Math.round(t1-t0) +" msec");}
 };
 
-// ## rotate tree             
+// ## rotate tree
 function rotate_tree(svg, direction) {
     /*if (direction=="left-right") {
         d3.select('#tree-rotate').attr('checked',true);
@@ -566,7 +566,7 @@ function rotate_tree(svg, direction) {
               width= winInnerWidth/3.15;
               d.x = d.x;
               d.y = (width -d.y);
-              return "translate(" +  d.y  + "," + d.x  + ")"; 
+              return "translate(" +  d.y  + "," + d.x  + ")";
       });
 
     function elbow(d, i) {
@@ -581,14 +581,14 @@ function rotate_tree(svg, direction) {
     svg.selectAll(".tnt_tree_label")
         .attr("transform", function() {
             if (direction=="left-right") {
-                return "translate(5,3)" 
-            } 
+                return "translate(5,3)"
+            }
             else { return "translate(-10,3)"}
         })
         .attr("text-anchor", function() {
             if (direction=="left-right") {
                 return "start";
-            } 
+            }
             else { return "end";}
         });
     }
@@ -597,8 +597,8 @@ function rotate_tree(svg, direction) {
 //## only apply to svg2 (not inside render_tree)
 $('#tree-rotate').change(function() {
     var svg2 = d3.select('#mytree2')
-    if (d3.select(this).property('checked')==false) { 
-        var set_rotate='right-left';    
+    if (d3.select(this).property('checked')==false) {
+        var set_rotate='right-left';
     }
     else { var set_rotate='left-right';}
     //## call rotate function
@@ -608,10 +608,10 @@ $('#tree-rotate').change(function() {
 //strain_tree_process
 render_tree(0,"mytree1",coreTree_path);
 //render ( 'mytree2',aln_file_path+'NZ_CP012001-1-1834888-1835742_tree.json',svg2);
-//render ( 'mytree2', aln_file_path+Initial_MsaGV.split('.')[0]+'_tree.json',svg2); 
+//render ( 'mytree2', aln_file_path+Initial_MsaGV.split('.')[0]+'_tree.json',svg2);
 //render (document.getElementById("mytree2"),treeJsonPath,svg2);
 
-//## search strain 
+//## search strain
 function search(val) {
     var ind=1;
     var searchStr = val.toLowerCase();
@@ -632,18 +632,18 @@ function search(val) {
         .attr('r', function (d){ return size_node_leaf_arr[ind]});
 };
 /*
-//## search strain 
+//## search strain
 function search(val) {
     d3.selectAll("circle")
-        .style("fill", function (node){ 
+        .style("fill", function (node){
             var name = node.name;
-            if (name.toLowerCase().indexOf(val.toLowerCase()) > -1 && val.length != 0) { 
-                return color_leaf_node_highlight;} 
+            if (name.toLowerCase().indexOf(val.toLowerCase()) > -1 && val.length != 0) {
+                return color_leaf_node_highlight;}
         })
-        .style("r", function (node){ 
+        .style("r", function (node){
             var name = node.name;
-            if (name.toLowerCase().indexOf(val.toLowerCase()) > -1 && val.length != 0) { 
-                return size_node_leaf_highlight;} 
+            if (name.toLowerCase().indexOf(val.toLowerCase()) > -1 && val.length != 0) {
+                return size_node_leaf_highlight;}
         })
 }
 */
@@ -681,7 +681,7 @@ function button_tooltip2(divID, tooltip_dict) {
 button_tooltip2('#all_trees', treeButton_tooltip_dict);
 //button_tooltip2('#LeftTreeButtons', treeButton_tooltip_dict);
 
-// ## zoom function 
+// ## zoom function
 $(window).load(function(){
       //$("#mytree1").panzoom({
       $("#mytree1,#mytree2").panzoom({
