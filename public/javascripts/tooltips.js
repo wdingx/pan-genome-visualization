@@ -16,7 +16,7 @@ var tooltip = d3.select("body")
 
 function button_tooltip(divID, tooltip_dict) {
     d3.selectAll(divID)
-    .on("mouseover", function(d){        
+    .on("mouseover", function(d){
         tooltip.text(tooltip_dict[d]);
         if (tooltip.text()!="") {
             return tooltip.style("visibility", "visible");
@@ -31,8 +31,8 @@ function button_tooltip(divID, tooltip_dict) {
 };
 
 //## d3 tooltip for tree nodes and branches
-var tips_node = d3.tip().attr('class', 'd3-tip').html(function(d) { 
-    
+var tips_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
+
     string = "";
     // safe to assume the following attributes
     if (typeof d.name != "undefined") {
@@ -51,7 +51,7 @@ var tips_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
             } else {
                 if (typeof d[meta_category] != "undefined") {
                     string += "<br/>" + meta_category + ":  " + d[meta_category];
-                }  
+                }
             }
         }
         else {
@@ -66,11 +66,11 @@ var tips_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
         if (d[antibiotics_set[i]]!='unknown' && d[antibiotics_set[i]]!='Susceptible' && typeof d[antibiotics_set[i]] != "undefined" ) {
             //console.log(d[antibiotics_set[i]])
             string +=" <tr> <th>"+antibiotics_set[i]+"</th> <td>"+d[antibiotics_set[i]]+"</td> </tr> "
-        } 
+        }
     }
-    string +="</table>"    
+    string +="</table>"
 
-    /*if (typeof d.antibiotics_count!="undefined") { 
+    /*if (typeof d.antibiotics_count!="undefined") {
     }*/
 
     if (typeof d.muts != "undefined") {
@@ -80,16 +80,16 @@ var tips_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
         }
     if (typeof d.aa_muts != "undefined") {
         var aa_muts_str=d.aa_muts
-        if (aa_muts_str.length>50) { aa_muts_str=aa_muts_str.substr(0,50)+'...'}        
+        if (aa_muts_str.length>50) { aa_muts_str=aa_muts_str.substr(0,50)+'...'}
         string += "<br/>" + "amino acid mutations:  " + aa_muts_str;
-        }     
+        }
     string += "<div class=\"smallspacer\"></div>";
 
-    return string; 
+    return string;
 });
 
-var tips_link = d3.tip().attr('class', 'd3-tip').html(function(d) { 
-    
+var tips_link = d3.tip().attr('class', 'd3-tip').html(function(d) {
+
     string = "";
     if (typeof d.target.ann != "undefined") {
         string += "<br/>" + "annotation:  " + d.target.ann;
@@ -103,9 +103,9 @@ var tips_link = d3.tip().attr('class', 'd3-tip').html(function(d) {
         var aa_muts_str=d.target.aa_muts
         if (aa_muts_str.length>50) { aa_muts_str=aa_muts_str.substr(0,50)+'...'}
         string += "<br/>" + "amino acid mutations:  " + aa_muts_str;
-        } 
+        }
 
     string += "<div class=\"smallspacer\"></div>";
 
-    return string; 
+    return string;
 });
