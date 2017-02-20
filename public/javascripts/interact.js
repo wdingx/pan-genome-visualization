@@ -374,9 +374,9 @@ var chartExample = {
             var clusterID=Initial_MsaGV;
             var geneTree_name=clusterID+'_tree.json';
             if ('mytree2'==gene_tree_id){
-                render_tree(1,gene_tree_id,aln_file_path+geneTree_name,0);
+                render_tree(1,gene_tree_id,aln_file_path+geneTree_name,null);
             } else {
-                render_tree(1,gene_tree_id,aln_file_path+geneTree_name,1);
+                render_tree(1,gene_tree_id,aln_file_path+geneTree_name,null);
             };
             //## download-link
             var download_geneTree=d3.select('#download-geneTree');
@@ -523,7 +523,7 @@ function clickShowMsa (datatable,table_id) {
         svg2.selectAll("*").remove();
         var clusterID=data['msa'];
         var geneTree_name=clusterID+'_tree.json';
-        render_tree(1,'mytree2', aln_file_path+geneTree_name);
+        render_tree(1,'mytree2', aln_file_path+geneTree_name, null);
         d3.select('#download_geneTree_href')
             .attr('href', '/download/dataset/'+speciesAbbr+'/geneCluster/'+clusterID+'.nwk')
     };
