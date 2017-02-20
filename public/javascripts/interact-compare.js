@@ -336,14 +336,14 @@ var chartExample = {
 
         var datatable=datatable_configuration(geneCountDimension.top(Infinity), table_id, col_select_id);
 
-        clickShowMsa(datatable);
+        clickShowMsa(datatable,table_id);
 
         function RefreshTable() {
             dc.events.trigger(function () {
                 alldata = geneCountDimension.top(Infinity);
-                $('#dc-data-table').dataTable().fnClearTable();
-                $('#dc-data-table').dataTable().fnAddData(alldata);
-                $('#dc-data-table').dataTable().fnDraw();
+                $('#'+table_id).dataTable().fnClearTable();
+                $('#'+table_id).dataTable().fnAddData(alldata);
+                $('#'+table_id).dataTable().fnDraw();
                 //clickShowMsa(datatable);
             });
         }
@@ -359,7 +359,8 @@ var chartExample = {
     },
     initData: function (path_datatable1, table_id, col_select_id,
         count_id, chart1_id, chart2_id, chart3_id,
-        coreThreshold_slider_id, coreThreshold_text_id ) {
+        coreThreshold_slider_id, coreThreshold_text_id,
+        gene_tree_id ) {
         //## load the data, charts and MSA
         d3.json(path_datatable1, function(error, data) {
             Initial_MsaGV=data[0].msa;
@@ -372,7 +373,11 @@ var chartExample = {
             console.log(Initial_MsaGV+'_aa.aln');
             var clusterID=Initial_MsaGV;
             var geneTree_name=clusterID+'_tree.json';
-            render_tree(1,'mytree2',aln_file_path+geneTree_name);
+            if ('mytree2'==gene_tree_id){
+                render_tree(1,gene_tree_id,aln_file_path+geneTree_name,0);
+            } else {
+                render_tree(1,gene_tree_id,aln_file_path+geneTree_name,1);
+            };
             //## download-link
             var download_geneTree=d3.select('#download-geneTree');
             download_geneTree.append('a')
@@ -388,10 +393,12 @@ var chartExample = {
 
 chartExample.initData(path_datatable1,'dc-data-table', 'GC_tablecol_select',
     'dc-data-count','dc-straincount-chart','dc-geneLength-chart','dc-coreAcc-piechart',
-    'changeCoreThreshold','coreThreshold');
+    'changeCoreThreshold','coreThreshold',
+    'mytree2');
 chartExample.initData(path_datatable11,'dc-data-table11', 'GC_tablecol_select2',
     'dc-data-count2','dc-straincount-chart2','dc-geneLength-chart2','dc-coreAcc-piechart2',
-    'changeCoreThreshold2','coreThreshold2');
+    'changeCoreThreshold2','coreThreshold2',
+    'compare_tree2');
 /**/
 //## extract all annotations
 function format_annotation ( d ) {
@@ -452,10 +459,10 @@ function format_geneNames ( d ) {
     return geneName_Table_Str;
 }
 
-function clickShowMsa (datatable) {
+function clickShowMsa (datatable,table_id) {
 
     // unfold and fold annotation column
-    $('#dc-data-table tbody').on('click', 'td.ann-details-control', function (e) {
+    $('#'+table_id+' tbody').on('click', 'td.ann-details-control', function (e) {
         var tr = $(this).closest('tr');
         var row = datatable.row( tr );
 
@@ -474,7 +481,7 @@ function clickShowMsa (datatable) {
     });
 
     // unfold and fold duplication column
-    $('#dc-data-table tbody').on('click', 'td.dup-details-control', function (e) {
+    $('#'+table_id+' tbody').on('click', 'td.dup-details-control', function (e) {
         var tr = $(this).closest('tr');
         var row = datatable.row( tr );
 
@@ -493,7 +500,7 @@ function clickShowMsa (datatable) {
     } );
 
     // unfold and fold duplication column
-    $('#dc-data-table tbody').on('click', 'td.geneName-details-control', function (e) {
+    $('#'+table_id+' tbody').on('click', 'td.geneName-details-control', function (e) {
         var tr = $(this).closest('tr');
         var row = datatable.row( tr );
 
@@ -548,24 +555,24 @@ function clickShowMsa (datatable) {
     }
 
     //## row-clicking trigger
-    $('#dc-data-table tbody').on('click', 'tr', function (e) {
+    $('#'+table_id+' tbody').on('click', 'tr', function (e) {
         //trigger aln_tree when clicked
         var data = datatable.row( $(this) ).data();
         trigger_aln_tree(data, 'aa');
         //highlight when clicked/selected
-        $("#dc-data-table tbody tr").removeClass('row_selected');
+        $('#'+table_id+' tbody tr').removeClass('row_selected');
         $(this).addClass('row_selected');
     });
 
     //## aa.aln
-    $('#dc-data-table tbody').on('click', '.btn.btn-info.btn-xs', function (e) {
+    $('#'+table_id+' tbody').on('click', '.btn.btn-info.btn-xs', function (e) {
         var data = datatable.row( $(this).parents('tr') ).data();
         trigger_aln_tree(data, 'aa');
         e.stopPropagation();
     });
 
     //## nu.aln
-    $('#dc-data-table tbody').on('click', '.btn.btn-primary.btn-xs', function (e) {
+    $('#'+table_id+' tbody').on('click', '.btn.btn-primary.btn-xs', function (e) {
         var data = datatable.row( $(this).parents('tr') ).data();
         trigger_aln_tree(data, 'nu');
         //## avoid to activate row clicking
