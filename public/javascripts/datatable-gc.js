@@ -62,6 +62,7 @@ var creat_multiselect = function (div, columns_set) {
 
 
 function datatable_configuration(table_input, table_id, col_select_id) {
+    "use strict";
     //GC_tablecol_select
     //## datatable configuration
     var datatable = $('#'+table_id).DataTable({
@@ -113,7 +114,7 @@ function datatable_configuration(table_input, table_id, col_select_id) {
     $('#'+col_select_id).multiselect({
         //enableFiltering: true,
         onChange: function(element, checked) {
-            console.log(col_select_id,datatable,element,checked);
+            //console.log(col_select_id,datatable,element,checked);
             function element_included (arr, number) {
                 return (arr.indexOf(number) != -1)
             }
