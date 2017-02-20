@@ -27,7 +27,8 @@ var subtree_node_colorSet = d3.scale.category20c();
  * @param  {str} selected_div div_id
  * @param  {str} treeJsonPath path for tree json
  */
-var render_tree = function(ind,selected_div,treeJsonPath) {
+
+var render_tree = function(ind,selected_div,treeJsonPath, tree_side) {
     //"use strict";
     var leaf_count;
     var size_node_leaf= size_node_leaf_init, size_node_inner= size_node_inner_init,
@@ -41,6 +42,27 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
     var setLayout= 'vertical';
     var scale_layout= 'true';
     var set_rotate= 'right-left';
+    //## buttons
+    var buttons={
+        TreeViewSelect_id:'', LabelsToggle_id:'', InnerNodeToggle_id:'',ScalesToggle_id:'',
+        Height_plus_Toggle_id:'',Height_minus_Toggle_id:'',tree_zoom_range_id:'',
+        dropdown_list_id:'',download_coreTree_id:'',
+        tree_rotate_div_id:'',tree_rotate_id:''
+        }
+    if (tree_side==null) {
+        for (var k in buttons) {
+            buttons[k]=k.split('_id')[0]
+        }
+    } else if (tree_side==0){
+        for (var k in buttons) {
+            buttons[k]=k.split('_id')[0]+'_01'
+        }
+    } else {
+        for (var k in buttons) {
+            buttons[k]=k.split('_id')[0]+'_02'
+        }
+    };
+
     // if it is a gene tree, show the title with geneCluster Id
     if (treeJsonPath.indexOf('tree.json') !== -1) {
         showViewerTitle(treeJsonPath);
@@ -150,7 +172,7 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
         //## not display labels on large tree
         if (leaf_count>leaf_count_limit) {
             svg.selectAll(".tnt_tree_label").style("visibility", "hidden");
-            $('#LabelsToggle').bootstrapToggle('off');
+            $('#'+buttons.LabelsToggle_id).bootstrapToggle('off');
         };
 
         /*link width*/
@@ -169,56 +191,56 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
             .text(scaleBar);
 
         svgAction(ind,svg);
-        if (selected_div=='mytree2') {
+        if (selected_div.indexOf('tree2') !== -1) {
             rotate_tree(svg,set_rotate);
         }
     };
 
     //-------tree displaying options-------//
     //# Layout transition between a radial and a vertical tree
-    $('#TreeViewSelect').change(function() {
+    $('#'+buttons.TreeViewSelect_id).change(function() {
         var setLayout= (d3.select(this).property('checked')==false) ? 'vertical' : 'radial';
         var rotate_vis_state= (setLayout=='vertical') ? 'visible' : 'hidden';
 
-        d3.select('#tree-rotate-div').style('visibility',rotate_vis_state);
+        d3.select('#'+buttons.tree_rotate_div_id).style('visibility',rotate_vis_state);
 
-        var layout = tnt.tree.layout[setLayout]().width(width).scale(d3.select('#ScalesToggle').property('checked'))
+        var layout = tnt.tree.layout[setLayout]().width(width).scale(d3.select('#'+buttons.ScalesToggle_id).property('checked'))
 
         tree_vis.layout(layout);
         tree_vis.update();
         if (leaf_count>leaf_count_limit) {
             svg.selectAll(".tnt_tree_label").style("visibility", "hidden");
-            $('#LabelsToggle').bootstrapToggle('off');
+            $('#'+buttons.LabelsToggle_id).bootstrapToggle('off');
         };
         svgAction(ind,svg);
-        if ((setLayout=='vertical') && (selected_div=='mytree2')) {
+        if ((setLayout=='vertical') && ((selected_div.indexOf('tree2') !== -1))) {
             rotate_tree(svg,'left-right');
-            $('#tree-rotate').bootstrapToggle('on');
+            $('#'+buttons.tree_rotate_id).bootstrapToggle('on');
         }
         //rotate_tree(svg2,'left-right');
     });
 
     // ## Enable scale or not
-    $('#ScalesToggle').change(function() {
-        var setLayout= (d3.select('#TreeViewSelect').property('checked')==false) ? 'vertical' : 'radial';
+    $('#'+buttons.ScalesToggle_id).change(function() {
+        var setLayout= (d3.select('#'+buttons.TreeViewSelect_id).property('checked')==false) ? 'vertical' : 'radial';
         var layout = tnt.tree.layout[setLayout]().width(width).scale( d3.select(this).property('checked'))
         tree_vis.layout(layout);
         tree_vis.update();
         svgAction(ind,svg);
-        if ((setLayout=='vertical') && (selected_div=='mytree2')) {
+        if ((setLayout=='vertical') && (selected_div.indexOf('tree2') !== -1)) {
             rotate_tree(svg,'left-right');
-            $('#tree-rotate').bootstrapToggle('on');
+            $('#'+buttons.tree_rotate_id).bootstrapToggle('on');
         }
     });
 
     //# Enable label or not
-    $('#LabelsToggle').change(function() {
-        var text_vis_state = (d3.select('#LabelsToggle').property('checked')==false) ? 'hidden' : 'visible';
+    $('#'+buttons.LabelsToggle_id).change(function() {
+        var text_vis_state = (d3.select('#'+buttons.LabelsToggle_id).property('checked')==false) ? 'hidden' : 'visible';
         svg.selectAll(".tnt_tree_label").style("visibility", text_vis_state);
     });
 
     // ## Enable selection of subtree by clicking innerNode
-    $('#InnerNodeToggle').change(function() {
+    $('#'+buttons.InnerNodeToggle_id).change(function() {
         var setInnerNode=(d3.select(this).property('checked')==false) ? 'hidden' : 'visible';
         svg.selectAll("circle")
             //selectAll(".tnt_tree_node.inner, .tnt_tree_node.root")
@@ -229,8 +251,8 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
     });
 
     //d3.select('#Height_more_Toggle').on("click", function() {
-    $('#Height_plus_Toggle').on("click", function() {
-        var text_vis_state = (d3.select('#LabelsToggle').property('checked')==false) ? 'hidden' : 'visible';
+    $('#'+buttons.Height_plus_Toggle_id).on("click", function() {
+        var text_vis_state = (d3.select('#'+buttons.LabelsToggle_id).property('checked')==false) ? 'hidden' : 'visible';
         height_nodeLabel+=adjust_height_unit;
         var node_label = tnt.tree.label.text()
                     .text(function (d) { return d.data().shown_label;})
@@ -246,30 +268,15 @@ var render_tree = function(ind,selected_div,treeJsonPath) {
 
     });
 
-    $('#Height_minus_Toggle').on("click", function() {
-        var text_vis_state = (d3.select('#LabelsToggle').property('checked')==false) ? 'hidden' : 'visible';
+    $('#'+buttons.Height_minus_Toggle_id).on("click", function() {
+        console.log(buttons.Height_minus_Toggle_id);
+        var text_vis_state = (d3.select('#'+buttons.LabelsToggle_id).property('checked')==false) ? 'hidden' : 'visible';
         height_nodeLabel-=adjust_height_unit;
         var node_label = tnt.tree.label.text()
                     .text(function (d) { return d.data().shown_label;})
                     .fontsize(size_font_leaf_label)
                     .height(height_nodeLabel)
                     .color(color_leaf_label);
-        tree_vis.label(node_label);
-        tree_vis.update();
-        svgAction(ind,svg);
-        if (text_vis_state=='hidden') {
-            svg.selectAll(".tnt_tree_label").style("visibility", text_vis_state)
-        };
-    });
-
-    $('#HeightToggle').change(function() {
-        var height_state = (d3.select('#HeightToggle').property('checked')==false) ? 'large' : 'small';
-        var text_vis_state = (d3.select('#LabelsToggle').property('checked')==false) ? 'hidden' : 'visible';
-        var mysize= (height_state =='large') ? 1 : 3;
-        var node_label = tnt.tree.label.text()
-                    .text(function (d) { return d.data().shown_label;})
-                    .fontsize(size_font_leaf_label)
-                    .height(mysize).color(color_leaf_label);
         tree_vis.label(node_label);
         tree_vis.update();
         svgAction(ind,svg);
@@ -553,12 +560,12 @@ var svgAction = function(ind,svg) {
     if (times_flag==1) {csprint("x2 time: "+ Math.round(t1-t0) +" msec");}
 };
 
-// ## rotate tree
+//## rotate tree
 function rotate_tree(svg, direction) {
     /*if (direction=="left-right") {
-        d3.select('#tree-rotate').attr('checked',true);
+        d3.select('#'+tree_rotate_id).attr('checked',true);
     } else {
-        d3.select('#tree-rotate').attr('checked',false);
+        d3.select('#'+tree_rotate_id).attr('checked',false);
     }*/
 
     svg.selectAll(".tnt_tree_node")
@@ -592,23 +599,25 @@ function rotate_tree(svg, direction) {
             else { return "end";}
         });
     }
-}
-//## toggle tree-rotate
-//## only apply to svg2 (not inside render_tree)
-$('#tree-rotate').change(function() {
-    var svg2 = d3.select('#mytree2')
-    if (d3.select(this).property('checked')==false) {
-        var set_rotate='right-left';
-    }
-    else { var set_rotate='left-right';}
-    //## call rotate function
-    rotate_tree(svg2,set_rotate);
-});
+};
 
-//strain_tree_process
-render_tree(0,"mytree1",coreTree_path);
-//render ( 'mytree2',aln_file_path+'NZ_CP012001-1-1834888-1835742_tree.json',svg2);
-//render ( 'mytree2', aln_file_path+Initial_MsaGV.split('.')[0]+'_tree.json',svg2);
+//## toggle tree_rotate (click and change)
+//## only apply to svg2 (not inside render_tree, putting inside has funny behavior)
+function rotate_monitor(tree_rotate_id,gene_tree_id){
+    $('#'+tree_rotate_id).change(function() {
+        var svg2 = d3.select('#'+gene_tree_id)
+        if (d3.select(this).property('checked')==false) {
+            var set_rotate='right-left';
+        }
+        else { var set_rotate='left-right';}
+        //## call rotate function
+        rotate_tree(svg2,set_rotate);
+    });
+};
+rotate_monitor('tree_rotate','mytree2');
+
+//## strain_tree processing
+render_tree(0,"mytree1",coreTree_path, null);
 //render (document.getElementById("mytree2"),treeJsonPath,svg2);
 
 //## search strain
@@ -656,7 +665,7 @@ var treeButton_tooltip_dict= {
     'ScalesToggle':'scale or without scale',*/
     'Height_plus_Toggle':'increase tree height',
     'Height_minus_Toggle':'decrease tree height',
-    'download-coreTree':'download strain tree',
+    'download_coreTree':'download strain tree',
     'download-geneTree':'download gene tree'}
 
 
@@ -694,7 +703,7 @@ $(window).load(function(){
 
 
 //## download strain tree
-d3.select('#download-coreTree')
+d3.select('#download_coreTree')
     .append('a')
     .attr('href','/download/dataset/'+speciesAbbr+'/strain_tree.nwk')
     .append('i')
