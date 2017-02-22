@@ -1,7 +1,14 @@
 //var speciesAbbr='Sa'
+var speciesAbbr2=speciesAbbr+'2';
 var path_datatable1="./dataset/"+speciesAbbr+"/geneCluster.json",
-path_datatable2="./dataset/"+speciesAbbr+"/strainMetainfo.json",
-aln_file_path="./dataset/"+speciesAbbr+"/geneCluster/",
 coreTree_path="./dataset/"+speciesAbbr+"/coreGenomeTree.json",
-sequenceJsonPath="./dataset/"+speciesAbbr+"/_seq.json"; 
+aln_file_path="./dataset/"+speciesAbbr+"/geneCluster/",
+
+path_datatable11="./dataset/"+speciesAbbr2+"/geneCluster.json",
+coreTree_path_B="./dataset/"+speciesAbbr2+"/coreGenomeTree.json",
+aln_file_path_B="./dataset/"+speciesAbbr2+"/geneCluster/",
+
+path_datatable_meta="./dataset/"+speciesAbbr+"/strainMetainfo.json",
+
+sequenceJsonPath="./dataset/"+speciesAbbr+"/_seq.json";
 //nodeAttriPath="./dataset/"+speciesAbbr+"/-tnt-nodeAttri.json"
