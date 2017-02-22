@@ -1,5 +1,11 @@
 var init_core_threshold=0.99;
 
+/** dc_data_table_registered: flag to record the first loaded dashboard.
+ *  important for distinguishing between comparative datatables
+ *  otherwise dc cross filtering works only for one dashboard.
+ */
+var dc_data_table_registered=0;
+var first_registered_list=[];
 var Initial_MsaGV='';
 var geneId_GV='', geneclusterID_GV='';
 var ann_majority= '';
@@ -341,7 +347,7 @@ var chartExample = {
 
         function RefreshTable() {
             dc.events.trigger(function () {
-                var alldata = geneCountDimension.top(Infinity);
+                alldata = geneCountDimension.top(Infinity);
                 $('#'+table_id).dataTable().fnClearTable();
                 $('#'+table_id).dataTable().fnAddData(alldata);
                 $('#'+table_id).dataTable().fnDraw();
@@ -349,8 +355,19 @@ var chartExample = {
             });
         }
 
-        for (var i = 0; i < dc.chartRegistry.list().length; i++) {
-            var chartI = dc.chartRegistry.list()[i];
+        /** when no table registered */
+        if (!dc_data_table_registered) {
+            dc_data_table_registered=1;
+            var mylist= dc.chartRegistry.list();
+            first_registered_list=dc.chartRegistry.list();
+            first_registered_list_len=first_registered_list.length;
+        } else {
+            var mylist=dc.chartRegistry.list().slice(first_registered_list_len);
+        }
+
+        for (var i = 0; i < mylist.length; i++) {
+            var chartI = mylist[i];
+            console.log(mylist.length);
             chartI.on('filtered', RefreshTable);
         }
 
