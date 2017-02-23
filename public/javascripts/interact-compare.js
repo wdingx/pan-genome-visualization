@@ -319,7 +319,9 @@ var trigger_action_table= function(){
                 var presence_flag;
                 if (pxTree.large_output==false) { // large_output false
                     d.genePattern=d.genePresence[parseInt(geneIndex)-1];
-                    presence_flag= (d.genePattern=='1') ? 1 : 0;
+                    //presence_flag= (d.genePattern=='1') ? 1 : 0;
+                    /** calculated from gain/loss pattern */
+                    presence_flag= ((d.genePattern=='1')|| (d.genePattern=='3')) ? 1 : 0;
                 } else if (pxTree.gain_loss_enabled==true) {
                     d.genePattern=geneGainLoss_Dt[d.name];
                     presence_flag= (d.genePattern%2==1) ? 1 : 0;
@@ -338,12 +340,7 @@ var trigger_action_table= function(){
                 }
             }
         });
-        /*link.style("stroke", function(d){
-            if (  (d.target.name.indexOf('NODE_')!=0) && d.target.name!='') {
-                return pxTree.node_color_mem[d.target.name];
-            }
-            else {console.log(d.target.name);return pxTree.branch_col}
-        });*/
+
         text.style("fill", function(d) {
             if (d!==undefined && d.name!='' ) {
                 return pxTree.node_color_mem[d.name];
@@ -352,7 +349,7 @@ var trigger_action_table= function(){
     }
 
     /** update gene presence/absence pattern */
-    function updatePresence(geneGainLoss_Dt,geneIndex, clusterID, strain_tree_id) {
+    function updatePresence(geneGainLoss_Dt, geneIndex, clusterID, strain_tree_id) {
         if (pxTree.large_output==true) {
             d3.json(aln_file_path+clusterID+'_patterns.json', function (error,data) {
                 geneGainLoss_Dt=data;
@@ -364,9 +361,10 @@ var trigger_action_table= function(){
     /** ascertain event_type in different input scenarios */
     function gain_loss_link_attr(d,geneGainLoss_Dt,gindex) {
         if (pxTree.large_output==true) {
-            event_type = geneGainLoss_Dt[d.target.name];
+            //event_type = geneGainLoss_Dt[d.target.name];
         } else {
-            event_type = geneGainLoss_Dt[d.target.name][gindex];
+            //event_type = geneGainLoss_Dt[d.target.name][gindex];
+            event_type = d.target.genePresence[gindex];
         };
         return event_type
     }
@@ -376,7 +374,8 @@ var trigger_action_table= function(){
         var gindex= parseInt(geneIndex)-1;
         var svg=d3.select('#'+strain_tree_id);
         var gainloss_disabled=0;
-        var link = svg.selectAll('path.tnt_tree_link')
+        var nodes = svg.selectAll('circle'),
+            link = svg.selectAll('path.tnt_tree_link')
                     .filter(function(d) {
                     if (geneGainLoss_Dt[d.target.name]!==undefined) {return true}
                     else if (gainloss_disabled==0) {gainloss_disabled=1; return false}
