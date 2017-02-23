@@ -77,7 +77,7 @@ function removeLegend() {
 
 //## create legend
 function makeLegend(meta_type){ // && legendOptionValue!= "Meta-info"
-    if ( legendOptionValue=='genePresence') {
+    if ( legendOptionValue=='genePattern') {
         updatePresence( geneId_GV );
         updateGainLossEvent( geneId_GV );
     } else if (legendOptionValue!='') {
@@ -173,7 +173,7 @@ function updateData(meta_type) {
     removeLegend();
     makeLegend(meta_type);
 
-    if (meta_type != 'genePresence') {
+    if (meta_type != 'genePattern') {
         node.style("fill", function(d) {
             if ( (d.name.indexOf('NODE_')!=0) && d.name!='' ) {
                 if ( isNumeric(metaColor_set_keys[meta_type][0])==false ) {
@@ -256,7 +256,7 @@ var creat_dropdown = function (div) {
         .text("Meta-info");
 
     dropdown_meta.append("option")
-        .attr("value", "genePresence")
+        .attr("value", "genePattern")
         .text("gene presence/absence");
 
     for (i = 0; i < meta_types.length; i++) { // ['geo','host']
@@ -266,3 +266,5 @@ var creat_dropdown = function (div) {
     }
 }
 creat_dropdown("#dropdown_list");
+creat_dropdown("#dropdown_list_01");
+creat_dropdown("#dropdown_list_02");
