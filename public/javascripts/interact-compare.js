@@ -226,8 +226,9 @@ var render_chart_table = {
 
         var datatable=datatable_configuration(geneCountDimension.top(Infinity), table_id, col_select_id);
 
-        trigger_action_table.init_action(datatable,table_id,tool_side);
-        trigger_action_table.click_table_show_AlnTree(datatable, trigger_action_table.geneGainLoss_Dt, table_id, strain_tree_id, gene_tree_id, tool_side);
+        /*var trigger_action_table_each= new trigger_action_table();
+        trigger_action_table_each.init_action(datatable,table_id,strain_tree_id, gene_tree_id,tool_side);*/
+        trigger_action_table.init_action(datatable,table_id,strain_tree_id, gene_tree_id,tool_side);
 
         function RefreshTable() {
             dc.events.trigger(function () {
@@ -299,25 +300,14 @@ render_chart_table.initData(path_datatable11,'dc_data_table2', 'GC_tablecol_sele
     'changeCoreThreshold2','coreThreshold2',
     'compare_tree1','compare_tree2',1);
 
-
+/**
+ * Module for initializing trigger actions in cluster datatable. It includes:
+ * click the Plus/Minus button to unfold/fold annotation/geneName/etc details,
+ * click aa/na alignment button to show MSA and linked trees.
+ */
 var trigger_action_table= function(){
 
-    var geneGainLoss_Dt;
-    var init_load_geneEvent= function (){
-        /** load gene gain/loss event json */
-        var geneGainLoss_Dt = {};
-        geneEvent_path= geneEvent_path_A; //(tool_side===0) ? geneEvent_path_A : geneEvent_path_B;
-        d3.json(geneEvent_path, function(error, data) {
-            // if geneGainLossEvent.json exists
-            if (error!==null) { pxTree.large_output=true}
-            else {
-                geneGainLoss_Dt=data;
-                trigger_action_table.geneGainLoss_Dt=geneGainLoss_Dt;
-                //console.log(313, trigger_action_table.geneGainLoss_Dt);
-            }
-        });
-    }
-
+    /** called by wrapper function updatePresence */
     function call_updatePresence(geneGainLoss_Dt,geneIndex,strain_tree_id) {
         var svg= d3.select('#'+strain_tree_id),
             node = svg.selectAll('circle'),
@@ -361,7 +351,7 @@ var trigger_action_table= function(){
         });
     }
 
-    //## update gene presence/absence pattern
+    /** update gene presence/absence pattern */
     function updatePresence(geneGainLoss_Dt,geneIndex, clusterID, strain_tree_id) {
         if (pxTree.large_output==true) {
             d3.json(aln_file_path+clusterID+'_patterns.json', function (error,data) {
@@ -371,15 +361,17 @@ var trigger_action_table= function(){
         } else {call_updatePresence(geneGainLoss_Dt,geneIndex, strain_tree_id)};
     }
 
+    /** ascertain event_type in different input scenarios */
     function gain_loss_link_attr(d,geneGainLoss_Dt,gindex) {
         if (pxTree.large_output==true) {
             event_type = geneGainLoss_Dt[d.target.name];
         } else {
             event_type = geneGainLoss_Dt[d.target.name][gindex];
         };
-        return event_type;
+        return event_type
     }
 
+    /** called by wrapper function updateGainLossEvent */
     function call_updateGainLoss(geneGainLoss_Dt, geneIndex, strain_tree_id) {
         var gindex= parseInt(geneIndex)-1;
         var svg=d3.select('#'+strain_tree_id);
@@ -413,9 +405,9 @@ var trigger_action_table= function(){
         });
     }
 
-    //## update gene gain/loss pattern
+    /** update gene gain/loss pattern */
     function updateGainLossEvent(geneGainLoss_Dt, geneIndex, clusterID, strain_tree_id) {
-        if  (pxTree.large_output==true) {
+        if (pxTree.large_output==true) {
             //use separated gain/loss pattern if geneGainLossEvent.json not found
             d3.json(aln_file_path+clusterID+'_patterns.json', function (error,data) {
                 //if both json files are missing, set it to empty
@@ -501,8 +493,108 @@ var trigger_action_table= function(){
         return geneName_Table_Str;
     }
 
-    function init_action(datatable, table_id, tool_side) {
-        init_load_geneEvent();
+    /**
+     * [update_geneTree description]
+     * @param  {object} data      : object loaded from datatable json file
+     * @param  {str} gene_tree_id : div ID for gene tree
+     */
+    function update_geneTree(data, gene_tree_id, tool_side) {
+        var svg2=d3.select('#'+gene_tree_id);
+        svg2.selectAll("*").remove();
+        var clusterID=data['msa'];
+        var geneTree_name=clusterID+'_tree.json';
+        /** update gene tree */
+        var aln_path= (tool_side===0) ? aln_file_path : aln_file_path_B;
+        render_tree(1,gene_tree_id, aln_path+geneTree_name, tool_side);
+        d3.select('#download_geneTree_href')
+            .attr('href', '/download/dataset/'+speciesAbbr+'/geneCluster/'+clusterID+'.nwk')
+    }
+
+    /**
+     * update the gene tree color via selected metadata from dropdown list
+     * @param  {str} div_id        : div ID for metadata_selection dropdown (dropdown_select)
+     * @param  {str} valueToSelect : metadata type(e.g.: 'genePresence')
+     */
+    function selectElement(div_id,valueToSelect) {
+        var element = document.getElementById(div_id);
+        element.value = valueToSelect;
+    }
+
+    /**
+     * wrapper function for triggering all events linked with alignment button
+     * @param  {object} data         : object loaded from datatable json file
+     * @param  {str}    aln_type     : type of alignment ('aa' for amino_acid, 'na' for nucleotide)
+     */
+    function trigger_aln_tree(data, geneGainLoss_Dt, aln_type, strain_tree_id, gene_tree_id, tool_side) {
+        var msa_colorScheme =(aln_type=='aa') ? 'taylor' : 'nucleotide';
+        /** load MSA alignment */
+        msaLoad(aln_file_path+data['msa']+'_'+aln_type+'.aln',msa_colorScheme);
+        console.log(data['msa']);
+
+        geneId_GV = data['geneId'];
+        /** majority annotaion */
+        ann_majority = data['ann'];
+        var clusterID=data['msa'];
+        /** call functions to update tree pattern */
+        updatePresence(geneGainLoss_Dt,geneId_GV, clusterID, strain_tree_id);
+        update_geneTree(data, gene_tree_id,tool_side);
+        updateGainLossEvent(geneGainLoss_Dt, geneId_GV, clusterID, strain_tree_id);
+        $('#tree-rotate').bootstrapToggle('off');
+        selectElement("dropdown_select",'genePresence');
+        /** remove metadata legend and set legend_option_value to empty */
+        removeLegend(); legendOptionValue='';
+    }
+
+    /**
+     * load gene gain/loss event json and pass it to row-clicking trigger
+     * @param: see function init_action
+     */
+    var init_loading_geneEvent= function (datatable, table_id, strain_tree_id, gene_tree_id, tool_side){
+        var geneGainLoss_Dt = {};
+        //geneEvent_path= geneEvent_path_A;
+        geneEvent_path= (tool_side===0) ? geneEvent_path_A : geneEvent_path_B;
+        d3.json(geneEvent_path, function(error, geneGainLoss_input) {
+            var geneGainLoss_Dt = {};
+            /** if geneGainLossEvent.json does not exist */
+            if (error!==null) { pxTree.large_output=true}
+            else { geneGainLoss_Dt=geneGainLoss_input}
+
+            /** row-clicking trigger: update MSA amino_acid alignment when clicking datatable row*/
+            $('#'+table_id+' tbody').on('click', 'tr', function (e) {
+                var data = datatable.row( $(this) ).data();
+                /** trigger alignment and tree when clicked
+                 *  use trigger_action_table.geneGainLoss_Dt to ensure that
+                 *  fully d3_loaded json has been passed.
+                 */
+                trigger_aln_tree(data, geneGainLoss_Dt, 'aa', strain_tree_id, gene_tree_id, tool_side);
+                /** highlight the row when clicked/selected  */
+                $('#'+table_id+' tbody tr').removeClass('row_selected');
+                $(this).addClass('row_selected');
+            });
+
+            /** aa button (amino_acid button in table): update MSA amino_acid alignment and tree*/
+            $('#'+table_id+' tbody').on('click', '.btn.btn-info.btn-xs', function (e) {
+                var data = datatable.row( $(this).parents('tr') ).data();
+                trigger_aln_tree(data, geneGainLoss_Dt, 'aa', strain_tree_id, gene_tree_id, tool_side);
+                /** avoid to activate row clicking */
+                e.stopPropagation();
+            });
+
+            /** na button (nucleotide button  in table): update MSA nucleotide alignment and tree*/
+            $('#'+table_id+' tbody').on('click', '.btn.btn-primary.btn-xs', function (e) {
+                var data = datatable.row( $(this).parents('tr') ).data();
+                trigger_aln_tree(data, geneGainLoss_Dt, 'na', strain_tree_id, gene_tree_id, tool_side);
+                /** avoid to activate row clicking */
+                e.stopPropagation();
+            });
+        });
+    };
+
+    /**
+     * add event listener for Plus/Minus(Unfold/Fold) button in cluster table
+     * @param: see function init_action
+     */
+    var init_folding_listener= function(datatable, table_id) {
         /** unfold and fold annotation column in cluster datatable */
         $('#'+table_id+' tbody').on('click', 'td.ann-details-control', function (e) {
             var tr = $(this).closest('tr');
@@ -550,99 +642,21 @@ var trigger_action_table= function(){
             };
             e.stopPropagation();
         });
-    }
+    };
 
     /**
-     * click datatable (row, buttons) to show alignment and tree
-     * @param  {object} datatable : object loaded from datatable json file
-     * @param  {str} table_id     : div ID for datatable
-     * @param  {str} gene_tree_id : div ID for gene tree
+     * wrapper function for all initial actions
+     * @param  {object} datatable      : object loaded from datatable json file
+     * @param  {str} table_id          : div ID for datatable
+     * @param  {str} strain_tree_id    : div ID for strain tree
+     * @param  {str} gene_tree_id      : div ID for gene tree
+     * @param  {int} tool_side         : flag for tool side (0:left; 1:right)
      */
-    function click_table_show_AlnTree (datatable, geneGainLoss_Dt, table_id, strain_tree_id, gene_tree_id, tool_side) {
-        /**
-         * [update_geneTree description]
-         * @param  {object} data      : object loaded from datatable json file
-         * @param  {str} gene_tree_id : div ID for gene tree
-         */
-        function update_geneTree(data, gene_tree_id, tool_side) {
-            var svg2=d3.select('#'+gene_tree_id);
-            svg2.selectAll("*").remove();
-            var clusterID=data['msa'];
-            var geneTree_name=clusterID+'_tree.json';
-            /** update gene tree */
-            render_tree(1,gene_tree_id, aln_file_path+geneTree_name, tool_side);
-            d3.select('#download_geneTree_href')
-                .attr('href', '/download/dataset/'+speciesAbbr+'/geneCluster/'+clusterID+'.nwk')
-        }
-
-        /**
-         * update the gene tree color via selected metadata from dropdown list
-         * @param  {str} div_id        : div ID for metadata_selection dropdown (dropdown_select)
-         * @param  {str} valueToSelect : metadata type(e.g.: 'genePresence')
-         */
-        function selectElement(div_id,valueToSelect) {
-            var element = document.getElementById(div_id);
-            element.value = valueToSelect;
-        }
-
-        /**
-         * wrapper function for triggering all events linked with alignment button
-         * @param  {object} data         : object loaded from datatable json file
-         * @param  {str}    aln_type     : type of alignment ('aa' for amino_acid, 'na' for nucleotide)
-         * @param  {str}    gene_tree_id : div ID for gene tree
-         */
-        function trigger_aln_tree(data, geneGainLoss_Dt, aln_type, strain_tree_id, gene_tree_id, tool_side) {
-            var msa_colorScheme =(aln_type=='aa') ? 'taylor' : 'nucleotide';
-            /** load MSA alignment */
-            msaLoad(aln_file_path+data['msa']+'_'+aln_type+'.aln',msa_colorScheme);
-            console.log(data['msa']);
-
-            geneId_GV = data['geneId'];
-            /** majority annotaion */
-            ann_majority = data['ann'];
-            var clusterID=data['msa'];
-            /** call functions to update tree pattern */
-            updatePresence(geneGainLoss_Dt,geneId_GV, clusterID, strain_tree_id);
-            update_geneTree(data, gene_tree_id,tool_side);
-            updateGainLossEvent(geneGainLoss_Dt, geneId_GV, clusterID, strain_tree_id);
-            $('#tree-rotate').bootstrapToggle('off');
-            selectElement("dropdown_select",'genePresence');
-            /** remove metadata legend and set legend_option_value to empty */
-            removeLegend(); legendOptionValue='';
-        }
-
-        /** row-clicking trigger: update MSA amino_acid alignment when clicking datatable row*/
-        $('#'+table_id+' tbody').on('click', 'tr', function (e) {
-            var data = datatable.row( $(this) ).data();
-            /** trigger alignment and tree when clicked
-             *  use trigger_action_table.geneGainLoss_Dt to ensure that
-             *  fully d3_loaded json has been passed.
-             */
-            trigger_aln_tree(data, trigger_action_table.geneGainLoss_Dt, 'aa', strain_tree_id, gene_tree_id, tool_side);
-            /** highlight the row when clicked/selected  */
-            $('#'+table_id+' tbody tr').removeClass('row_selected');
-            $(this).addClass('row_selected');
-        });
-
-        /** aa button (amino_acid button in table): update MSA amino_acid alignment and tree*/
-        $('#'+table_id+' tbody').on('click', '.btn.btn-info.btn-xs', function (e) {
-            var data = datatable.row( $(this).parents('tr') ).data();
-            trigger_aln_tree(data, trigger_action_table.geneGainLoss_Dt, 'aa', strain_tree_id, gene_tree_id, tool_side);
-            /** avoid to activate row clicking */
-            e.stopPropagation();
-        });
-
-        /** na button (nucleotide button  in table): update MSA nucleotide alignment and tree*/
-        $('#'+table_id+' tbody').on('click', '.btn.btn-primary.btn-xs', function (e) {
-            var data = datatable.row( $(this).parents('tr') ).data();
-            trigger_aln_tree(data, trigger_action_table.geneGainLoss_Dt, 'na', strain_tree_id, gene_tree_id, tool_side);
-            /** avoid to activate row clicking */
-            e.stopPropagation();
-        });
+    var init_action= function (datatable, table_id, strain_tree_id, gene_tree_id, tool_side) {
+        init_loading_geneEvent(datatable, table_id, strain_tree_id, gene_tree_id, tool_side);
+        init_folding_listener(datatable, table_id);
     }
-
-    return { init_action:init_action,
-            click_table_show_AlnTree:click_table_show_AlnTree}
+    return { init_action:init_action}
 }();
 
 var msa = require('msa');//var aln_path='';
