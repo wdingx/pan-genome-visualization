@@ -17,7 +17,7 @@ var pie_width=chart_width_sm, pie_height=chart_width_sm,
     pie_outer_radius=chart_width_sm/2, pie_inner_radius=chart_width_sm/8;
 
 //## core_genome threshold slider
-function coreThreshold_slider_init(coreThreshold_slider_id){
+function slider_coreThreshold_init(coreThreshold_slider_id){
     var tooltipSlider = document.getElementById(coreThreshold_slider_id);
     noUiSlider.create(tooltipSlider, {
         start:  0.99,
@@ -56,129 +56,12 @@ var creat_dropdown_menu = function (div, species_dt) {
 };
 creat_dropdown_menu('#species-selector', species_dt)
 
-//## load genePresence data
-var geneGainLoss_Dt = {};
-d3.json('./dataset/'+speciesAbbr+'/geneGainLossEvent.json', function(error, data) {
-    // if geneGainLossEvent.json exists
-    if (error!==null) { pxTree.large_output=true}
-    else {geneGainLoss_Dt=data}
-});
-
-function call_updatePresence(geneIndex,gene_tree_id) {
-    var svg= d3.select('#'+gene_tree_id),
-    node = svg.selectAll('circle'),
-    link = svg.selectAll('path.tnt_tree_link'),
-    text = svg_all.selectAll("text");
-
-    node.style('fill', function(d) {
-        if ((d.name.indexOf('NODE_')!=0) && (d.name!='')) {
-            var presence_flag;
-            if (pxTree.large_output==false) { // large_output false
-                d.genePattern=d.genePresence[parseInt(geneIndex)-1];
-                presence_flag= (d.genePattern=='1') ? 1 : 0;
-            } else if (pxTree.gain_loss_enabled==true) {
-                d.genePattern=geneGainLoss_Dt[d.name];
-                presence_flag= (d.genePattern%2==1) ? 1 : 0;
-            } else if (pxTree.gain_loss_enabled==false) {
-                d.genePattern= geneGainLoss_Dt[d.name];
-                presence_flag= (d.genePattern=='0') ? 0 : 1;
-            };
-
-            if (presence_flag==1) {
-                pxTree.node_color_mem[d.name]= pxTree.col_pres;
-                return pxTree.col_pres;
-            }
-            else {
-                pxTree.node_color_mem[d.name]=pxTree.col_abse;
-                return pxTree.col_abse;
-            }
-        }
-    });
-    /*link.style("stroke", function(d){
-        if (  (d.target.name.indexOf('NODE_')!=0) && d.target.name!='') {
-            return pxTree.node_color_mem[d.target.name];
-        }
-        else {console.log(d.target.name);return pxTree.branch_col}
-    });*/
-    text.style("fill", function(d) {
-        if (d!==undefined && d.name!='' ) {
-            return pxTree.node_color_mem[d.name];
-        }
-    });
-};
-
-//## update gene presence/absence pattern
-function updatePresence(geneIndex, clusterID, gene_tree_id) {
-    if (pxTree.large_output==true) {
-        d3.json(aln_file_path+clusterID+'_patterns.json', function (error,data) {
-            geneGainLoss_Dt=data;
-            call_updatePresence(geneIndex, gene_tree_id);
-        });
-    } else {call_updatePresence(geneIndex, gene_tree_id)};
-};
-
-function gain_loss_link_attr(d,gindex) {
-    if (pxTree.large_output==true) {
-        event_type = geneGainLoss_Dt[d.target.name];
-    } else {
-        event_type = geneGainLoss_Dt[d.target.name][gindex];
-    };
-    return event_type;
-};
-
-function call_updateGainLoss(geneIndex, gene_tree_id) {
-    var gindex= parseInt(geneIndex)-1;
-    var svg=d3.select('#'+gene_tree_id);
-    var gainloss_disabled=0;
-    var link = svg.selectAll('path.tnt_tree_link')
-                .filter(function(d) {
-                if (geneGainLoss_Dt[d.target.name]!==undefined) {return true}
-                else if (gainloss_disabled==0) {gainloss_disabled=1; return false}
-                else { return false};
-            });
-    if (gainloss_disabled==1) { pxTree.wid_gloss=pxTree.wid_link};
-
-    link.style('stroke', function(d) {
-        var event_type;
-        event_type= gain_loss_link_attr(d,gindex);
-        //console.log(event_type,d.target.name);
-        if (event_type==='0' || event_type=='2') {return pxTree.col_abse}
-        else {return pxTree.col_pres};
-    })
-    .style("stroke-width", function (d) {
-        var event_type;
-        event_type= gain_loss_link_attr(d,gindex);
-        if (event_type=='1' || event_type=='2') {return pxTree.wid_gloss}
-        else {return pxTree.wid_link}
-    })
-    .style("stroke-dasharray", function(d) {
-        var event_type;
-        event_type=gain_loss_link_attr(d,gindex);
-        if (event_type=='2'){ return (d.source.parent) ? "6,6" : "1,0"; }
-        else {return 'none' }
-    });
-};
-
-//## update gene gain/loss pattern
-function updateGainLossEvent(geneIndex, clusterID) {
-    if  (pxTree.large_output==true) {
-        //use separated gain/loss pattern if geneGainLossEvent.json not found
-        d3.json(aln_file_path+clusterID+'_patterns.json', function (error,data) {
-            //if both json files are missing, set it to empty
-            if (error===null) { geneGainLoss_Dt=data };
-            call_updateGainLoss(geneIndex);
-        });
-    } else {
-        call_updateGainLoss(geneIndex);
-    }
-};
-
 //## create charts and load geneCluster dataTable
-var chartExample = {
+var render_chart_table = {
     initChart: function (data, table_id, col_select_id,
         count_id, chart1_id, chart2_id, chart3_id,
         coreThreshold_slider_id, coreThreshold_text_id,
-        strain_tree_id, gene_tree_id) {
+        strain_tree_id, gene_tree_id, tool_side) {
         /*"use strict";*/
         var lineChart = dc.lineChart('#'+chart1_id)
                         .xAxisLabel('gene')
@@ -294,7 +177,7 @@ var chartExample = {
 
         //## using core threshold in slider to re-distribute pie chart data
         // update the field
-        var tooltipSlider=coreThreshold_slider_init(coreThreshold_slider_id);
+        var tooltipSlider=slider_coreThreshold_init(coreThreshold_slider_id);
         var coreThresholdField = document.getElementById(coreThreshold_text_id);
         tooltipSlider.noUiSlider.on('update', function( values, handle ){
             if ( parseFloat(values[handle]) !== init_core_threshold) {
@@ -343,7 +226,8 @@ var chartExample = {
 
         var datatable=datatable_configuration(geneCountDimension.top(Infinity), table_id, col_select_id);
 
-        click_table_show_AlnTree(datatable,table_id, gene_tree_id);
+        trigger_action_table.init_action(datatable,table_id,tool_side);
+        trigger_action_table.click_table_show_AlnTree(datatable, trigger_action_table.geneGainLoss_Dt, table_id, strain_tree_id, gene_tree_id, tool_side);
 
         function RefreshTable() {
             dc.events.trigger(function () {
@@ -367,7 +251,6 @@ var chartExample = {
 
         for (var i = 0; i < mylist.length; i++) {
             var chartI = mylist[i];
-            console.log(mylist.length);
             chartI.on('filtered', RefreshTable);
         }
 
@@ -378,29 +261,22 @@ var chartExample = {
     initData: function (path_datatable1, table_id, col_select_id,
         count_id, chart1_id, chart2_id, chart3_id,
         coreThreshold_slider_id, coreThreshold_text_id,
-        strain_tree_id,gene_tree_id) {
+        strain_tree_id,gene_tree_id, tool_side) {
         //## load the data, charts and MSA
         d3.json(path_datatable1, function(error, data) {
             Initial_MsaGV=data[0].msa;
             geneId_GV=data[0].geneId;
             ann_majority=data[0].ann;
-            chartExample.initChart(data, table_id, col_select_id,
+            render_chart_table.initChart(data, table_id, col_select_id,
                 count_id, chart1_id, chart2_id, chart3_id,
                 coreThreshold_slider_id, coreThreshold_text_id,
-                strain_tree_id,gene_tree_id);
-            if ('mytree2'==gene_tree_id) {
-                msaLoad(aln_file_path+Initial_MsaGV+'_aa.aln','taylor');
-            } else {
-                msaLoad(aln_file_path_B+Initial_MsaGV+'_aa.aln','taylor');
-            };
+                strain_tree_id,gene_tree_id, tool_side);
+            var aln_path= (tool_side===0) ? aln_file_path : aln_file_path_B;
+            msaLoad(aln_path+Initial_MsaGV+'_aa.aln','taylor');
             console.log(Initial_MsaGV+'_aa.aln');
             var clusterID=Initial_MsaGV;
             var geneTree_name=clusterID+'_tree.json';
-            if ('mytree2'==gene_tree_id){
-                render_tree(1,gene_tree_id,aln_file_path+geneTree_name,0);
-            } else {
-                render_tree(1,gene_tree_id,aln_file_path_B+geneTree_name,1);
-            };
+            render_tree(1,gene_tree_id,aln_path+geneTree_name,tool_side);
             //## download-link
             var download_geneTree=d3.select('#download-geneTree');
             download_geneTree.append('a')
@@ -414,228 +290,357 @@ var chartExample = {
     }
 };
 
-chartExample.initData(path_datatable1,'dc_data_table1', 'GC_tablecol_select',
+render_chart_table.initData(path_datatable1,'dc_data_table1', 'GC_tablecol_select',
     'dc_data_count','dc_straincount_chart','dc_geneLength_chart','dc_coreAcc_piechart',
     'changeCoreThreshold','coreThreshold',
-    'mytree1','mytree2');
-chartExample.initData(path_datatable11,'dc_data_table2', 'GC_tablecol_select2',
+    'mytree1','mytree2', 0);
+render_chart_table.initData(path_datatable11,'dc_data_table2', 'GC_tablecol_select2',
     'dc_data_count2','dc_straincount_chart2','dc_geneLength_chart2','dc_coreAcc_piechart2',
     'changeCoreThreshold2','coreThreshold2',
-    'compare_tree1','compare_tree2');
+    'compare_tree1','compare_tree2',1);
 
-/**
- * extract all annotations by processing inital condensed all_annotation string
- * e.g.: allAnn='arginine/ornithine_transporter_AotQ#36@arginine/ornithine_transport_protein_AotQ#2@arginine/ornithine_ABC_transporter_permease_AotQ:1'
- * @param  {Object} d : object loaded from datatable json file
- * @return {str}      : all annotation details in HTML format
- */
-function format_annotation ( d ) {
-    // 'd' is the original data object for the row
-    // Example: allAnn='arginine/ornithine_transporter_AotQ#36@arginine/ornithine_transport_protein_AotQ#2@arginine/ornithine_ABC_transporter_permease_AotQ:1'
-    var annSplit = d.allAnn.split("@");
-    var ann_Table_Str='<table cellpadding="5" cellspacing="0" border="0" style="padding-right:50px;">'+
-        '<tr><td>Annotation detail:</td> <td>Counts:</td></tr>';
-    for (var i=0;i<annSplit.length;i++) {
-        var annCountSplit=annSplit[i].split("#");
-        var annInfo=annCountSplit[0];
-        var annCount=annCountSplit[1];
-        ann_Table_Str+='<tr><td>'+annInfo+'</td> <td>'+annCount+'</td>'+'</tr>';
+
+var trigger_action_table= function(){
+
+    var geneGainLoss_Dt;
+    var init_load_geneEvent= function (){
+        /** load gene gain/loss event json */
+        var geneGainLoss_Dt = {};
+        geneEvent_path= geneEvent_path_A; //(tool_side===0) ? geneEvent_path_A : geneEvent_path_B;
+        d3.json(geneEvent_path, function(error, data) {
+            // if geneGainLossEvent.json exists
+            if (error!==null) { pxTree.large_output=true}
+            else {
+                geneGainLoss_Dt=data;
+                trigger_action_table.geneGainLoss_Dt=geneGainLoss_Dt;
+                //console.log(313, trigger_action_table.geneGainLoss_Dt);
+            }
+        });
     }
-    ann_Table_Str+='</table>';
-    return ann_Table_Str;
-    /** HTML structure when unfolding the Plus button in table
-    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
-        '<tr>'+
-            '<td>Full name:</td>'+
-            '<td>'+d.ann+'</td>'+
-        '</tr>'+
-    '</table>';
-     */
-}
 
-/**
- * extract duplicated strain name by processing inital condensed duplication-info string
- * e.g.: dup_detail='gene1#2@gene12#1'
- * @param  {Object} d : object loaded from datatable json file
- * @return {str}      : duplicated strain details in HTML format
- */
-function format_dup_detail(d) {
-    //
-    var dupSplit = d.dup_detail.split("@");
-    var dup_Table_Str='<table cellpadding="5" cellspacing="0" border="0" style="padding-right:50px;">'+
-        '<tr><td>strain name:</td> <td>Counts:</td></tr>';
-    for (var i=0;i<dupSplit.length;i++) {
-        var dupCountSplit=dupSplit[i].split("#");
-        var strainName =dupCountSplit[0];
-        var geneCount=dupCountSplit[1];
-        if (geneCount==undefined) {
-            geneCount='';
+    function call_updatePresence(geneGainLoss_Dt,geneIndex,strain_tree_id) {
+        var svg= d3.select('#'+strain_tree_id),
+            node = svg.selectAll('circle'),
+            link = svg.selectAll('path.tnt_tree_link'),
+            text = svg.selectAll("text");
+
+        node.style('fill', function(d) {
+            if ((d.name.indexOf('NODE_')!=0) && (d.name!='')) {
+                var presence_flag;
+                if (pxTree.large_output==false) { // large_output false
+                    d.genePattern=d.genePresence[parseInt(geneIndex)-1];
+                    presence_flag= (d.genePattern=='1') ? 1 : 0;
+                } else if (pxTree.gain_loss_enabled==true) {
+                    d.genePattern=geneGainLoss_Dt[d.name];
+                    presence_flag= (d.genePattern%2==1) ? 1 : 0;
+                } else if (pxTree.gain_loss_enabled==false) {
+                    d.genePattern= geneGainLoss_Dt[d.name];
+                    presence_flag= (d.genePattern=='0') ? 0 : 1;
+                };
+
+                if (presence_flag==1) {
+                    pxTree.node_color_mem[d.name]= pxTree.col_pres;
+                    return pxTree.col_pres;
+                }
+                else {
+                    pxTree.node_color_mem[d.name]=pxTree.col_abse;
+                    return pxTree.col_abse;
+                }
+            }
+        });
+        /*link.style("stroke", function(d){
+            if (  (d.target.name.indexOf('NODE_')!=0) && d.target.name!='') {
+                return pxTree.node_color_mem[d.target.name];
+            }
+            else {console.log(d.target.name);return pxTree.branch_col}
+        });*/
+        text.style("fill", function(d) {
+            if (d!==undefined && d.name!='' ) {
+                return pxTree.node_color_mem[d.name];
+            }
+        });
+    }
+
+    //## update gene presence/absence pattern
+    function updatePresence(geneGainLoss_Dt,geneIndex, clusterID, strain_tree_id) {
+        if (pxTree.large_output==true) {
+            d3.json(aln_file_path+clusterID+'_patterns.json', function (error,data) {
+                geneGainLoss_Dt=data;
+                call_updatePresence(geneGainLoss_Dt,geneIndex, strain_tree_id);
+            });
+        } else {call_updatePresence(geneGainLoss_Dt,geneIndex, strain_tree_id)};
+    }
+
+    function gain_loss_link_attr(d,geneGainLoss_Dt,gindex) {
+        if (pxTree.large_output==true) {
+            event_type = geneGainLoss_Dt[d.target.name];
+        } else {
+            event_type = geneGainLoss_Dt[d.target.name][gindex];
+        };
+        return event_type;
+    }
+
+    function call_updateGainLoss(geneGainLoss_Dt, geneIndex, strain_tree_id) {
+        var gindex= parseInt(geneIndex)-1;
+        var svg=d3.select('#'+strain_tree_id);
+        var gainloss_disabled=0;
+        var link = svg.selectAll('path.tnt_tree_link')
+                    .filter(function(d) {
+                    if (geneGainLoss_Dt[d.target.name]!==undefined) {return true}
+                    else if (gainloss_disabled==0) {gainloss_disabled=1; return false}
+                    else { return false};
+                });
+        if (gainloss_disabled==1) { pxTree.wid_gloss=pxTree.wid_link};
+
+        link.style('stroke', function(d) {
+            var event_type;
+            event_type= gain_loss_link_attr(d,geneGainLoss_Dt,gindex);
+            //console.log(event_type,d.target.name);
+            if (event_type==='0' || event_type=='2') {return pxTree.col_abse}
+            else {return pxTree.col_pres};
+        })
+        .style("stroke-width", function (d) {
+            var event_type;
+            event_type= gain_loss_link_attr(d,geneGainLoss_Dt,gindex);
+            if (event_type=='1' || event_type=='2') {return pxTree.wid_gloss}
+            else {return pxTree.wid_link}
+        })
+        .style("stroke-dasharray", function(d) {
+            var event_type;
+            event_type=gain_loss_link_attr(d,geneGainLoss_Dt,gindex);
+            if (event_type=='2'){ return (d.source.parent) ? "6,6" : "1,0"; }
+            else {return 'none' }
+        });
+    }
+
+    //## update gene gain/loss pattern
+    function updateGainLossEvent(geneGainLoss_Dt, geneIndex, clusterID, strain_tree_id) {
+        if  (pxTree.large_output==true) {
+            //use separated gain/loss pattern if geneGainLossEvent.json not found
+            d3.json(aln_file_path+clusterID+'_patterns.json', function (error,data) {
+                //if both json files are missing, set it to empty
+                if (error===null) { geneGainLoss_Dt=data };
+                call_updateGainLoss(geneGainLoss_Dt, geneIndex, strain_tree_id);
+            });
+        } else {
+            call_updateGainLoss(geneGainLoss_Dt, geneIndex, strain_tree_id);
         }
-        dup_Table_Str+='<tr><td>'+strainName+'</td> <td>'+geneCount+'</td>'+'</tr>';
     }
-    dup_Table_Str+='</table>';
-    return dup_Table_Str;
-}
-
-/**
- * process all annotation details from inital condensed annotation string
- * e.g.: allGName='arginine/ornithine_transporter_AotQ#36@arginine/ornithine_transport_protein_AotQ#2@arginine/ornithine_ABC_transporter_permease_AotQ:1'
- * @param  {object} d : object loaded from datatable json file
- * @return {str}      : gene name details in HTML format
- */
-function format_geneNames(d) {
-    var geneName_Split = d.allGName.split("@");
-    var geneName_Table_Str='<table cellpadding="5" cellspacing="0" border="0" style="padding-right:50px;">'+
-                            '<tr><td>geneName detail:</td> <td>Counts:</td></tr>';
-    for (var i=0;i<geneName_Split.length;i++) {
-        var geneName_CountSplit=geneName_Split[i].split("#");
-        var geneName_Info=geneName_CountSplit[0];
-        var geneName_Count=geneName_CountSplit[1];
-        geneName_Table_Str+='<tr><td>'+geneName_Info+'</td> <td>'+geneName_Count+'</td>'+'</tr>';
-    }
-    geneName_Table_Str+='</table>';
-    return geneName_Table_Str;
-}
-
-/**
- * click datatable (row, buttons) to show alignment and tree
- * @param  {object} datatable : object loaded from datatable json file
- * @param  {str} table_id     : div ID for datatable
- * @param  {str} gene_tree_id : div ID for gene tree
- */
-function click_table_show_AlnTree (datatable, table_id, gene_tree_id) {
-    /** unfold and fold annotation column in cluster datatable */
-    $('#'+table_id+' tbody').on('click', 'td.ann-details-control', function (e) {
-        var tr = $(this).closest('tr');
-        var row = datatable.row( tr );
-        if ( row.child.isShown() ) {
-            /** close the row, if it's already open */
-            row.child.hide();
-            tr.removeClass('shown');
-        } else {
-            /** Open the row */
-            row.child( format_annotation(row.data()) ).show();
-            tr.addClass('shown');
-        };
-        e.stopPropagation();
-    });
-
-    /** unfold and fold duplication column in cluster datatable */
-    $('#'+table_id+' tbody').on('click', 'td.dup-details-control', function (e) {
-        var tr = $(this).closest('tr');
-        var row = datatable.row( tr );
-        if ( row.child.isShown() ) {
-            /** close the row, if it's already open*/
-            row.child.hide();
-            tr.removeClass('shown');
-        } else {
-            /** Open the row */
-            row.child( format_dup_detail(row.data()) ).show();
-            tr.addClass('shown');
-        };
-        e.stopPropagation();
-    });
-
-    /** unfold and fold gene_name column in cluster datatable */
-    $('#'+table_id+' tbody').on('click', 'td.geneName-details-control', function (e) {
-        var tr = $(this).closest('tr');
-        var row = datatable.row( tr );
-        if ( row.child.isShown() ) {
-            /** close the row, if it's already open*/
-            row.child.hide();
-            tr.removeClass('shown');
-        } else {
-            /** Open the row */
-            row.child( format_geneNames(row.data()) ).show();
-            tr.addClass('shown');
-        };
-        e.stopPropagation();
-    });
 
     /**
-     * [updateTree description]
-     * @param  {object} data      : object loaded from datatable json file
+     * extract all annotations by processing inital condensed all_annotation string
+     * e.g.: allAnn='arginine/ornithine_transporter_AotQ#36@arginine/ornithine_transport_protein_AotQ#2@arginine/ornithine_ABC_transporter_permease_AotQ:1'
+     * @param  {Object} d : object loaded from datatable json file
+     * @return {str}      : all annotation details in HTML format
+     */
+    function format_annotation(d) {
+        // 'd' is the original data object for the row
+        // Example: allAnn='arginine/ornithine_transporter_AotQ#36@arginine/ornithine_transport_protein_AotQ#2@arginine/ornithine_ABC_transporter_permease_AotQ:1'
+        var annSplit = d.allAnn.split("@");
+        var ann_Table_Str='<table cellpadding="5" cellspacing="0" border="0" style="padding-right:50px;">'+
+            '<tr><td>Annotation detail:</td> <td>Counts:</td></tr>';
+        for (var i=0;i<annSplit.length;i++) {
+            var annCountSplit=annSplit[i].split("#");
+            var annInfo=annCountSplit[0];
+            var annCount=annCountSplit[1];
+            ann_Table_Str+='<tr><td>'+annInfo+'</td> <td>'+annCount+'</td>'+'</tr>';
+        }
+        ann_Table_Str+='</table>';
+        return ann_Table_Str;
+        /** HTML structure when unfolding the Plus button in table
+        return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+            '<tr>'+
+                '<td>Full name:</td>'+
+                '<td>'+d.ann+'</td>'+
+            '</tr>'+
+        '</table>';
+         */
+    }
+
+    /**
+     * extract duplicated strain name by processing inital condensed duplication-info string
+     * e.g.: dup_detail='gene1#2@gene12#1'
+     * @param  {Object} d : object loaded from datatable json file
+     * @return {str}      : duplicated strain details in HTML format
+     */
+    function format_dup_detail(d) {
+        //
+        var dupSplit = d.dup_detail.split("@");
+        var dup_Table_Str='<table cellpadding="5" cellspacing="0" border="0" style="padding-right:50px;">'+
+            '<tr><td>strain name:</td> <td>Counts:</td></tr>';
+        for (var i=0;i<dupSplit.length;i++) {
+            var dupCountSplit=dupSplit[i].split("#");
+            var strainName =dupCountSplit[0];
+            var geneCount=dupCountSplit[1];
+            if (geneCount==undefined) {
+                geneCount='';
+            }
+            dup_Table_Str+='<tr><td>'+strainName+'</td> <td>'+geneCount+'</td>'+'</tr>';
+        }
+        dup_Table_Str+='</table>';
+        return dup_Table_Str;
+    }
+
+    /**
+     * process all annotation details from inital condensed annotation string
+     * e.g.: allGName='arginine/ornithine_transporter_AotQ#36@arginine/ornithine_transport_protein_AotQ#2@arginine/ornithine_ABC_transporter_permease_AotQ:1'
+     * @param  {object} d : object loaded from datatable json file
+     * @return {str}      : gene name details in HTML format
+     */
+    function format_geneNames(d) {
+        var geneName_Split = d.allGName.split("@");
+        var geneName_Table_Str='<table cellpadding="5" cellspacing="0" border="0" style="padding-right:50px;">'+
+                                '<tr><td>geneName detail:</td> <td>Counts:</td></tr>';
+        for (var i=0;i<geneName_Split.length;i++) {
+            var geneName_CountSplit=geneName_Split[i].split("#");
+            var geneName_Info=geneName_CountSplit[0];
+            var geneName_Count=geneName_CountSplit[1];
+            geneName_Table_Str+='<tr><td>'+geneName_Info+'</td> <td>'+geneName_Count+'</td>'+'</tr>';
+        }
+        geneName_Table_Str+='</table>';
+        return geneName_Table_Str;
+    }
+
+    function init_action(datatable, table_id, tool_side) {
+        init_load_geneEvent();
+        /** unfold and fold annotation column in cluster datatable */
+        $('#'+table_id+' tbody').on('click', 'td.ann-details-control', function (e) {
+            var tr = $(this).closest('tr');
+            var row = datatable.row( tr );
+            if ( row.child.isShown() ) {
+                /** close the row, if it's already open */
+                row.child.hide();
+                tr.removeClass('shown');
+            } else {
+                /** Open the row */
+                row.child( format_annotation(row.data()) ).show();
+                tr.addClass('shown');
+            };
+            e.stopPropagation();
+        });
+
+        /** unfold and fold duplication column in cluster datatable */
+        $('#'+table_id+' tbody').on('click', 'td.dup-details-control', function (e) {
+            var tr = $(this).closest('tr');
+            var row = datatable.row( tr );
+            if ( row.child.isShown() ) {
+                /** close the row, if it's already open*/
+                row.child.hide();
+                tr.removeClass('shown');
+            } else {
+                /** Open the row */
+                row.child( format_dup_detail(row.data()) ).show();
+                tr.addClass('shown');
+            };
+            e.stopPropagation();
+        });
+
+        /** unfold and fold gene_name column in cluster datatable */
+        $('#'+table_id+' tbody').on('click', 'td.geneName-details-control', function (e) {
+            var tr = $(this).closest('tr');
+            var row = datatable.row( tr );
+            if ( row.child.isShown() ) {
+                /** close the row, if it's already open*/
+                row.child.hide();
+                tr.removeClass('shown');
+            } else {
+                /** Open the row */
+                row.child( format_geneNames(row.data()) ).show();
+                tr.addClass('shown');
+            };
+            e.stopPropagation();
+        });
+    }
+
+    /**
+     * click datatable (row, buttons) to show alignment and tree
+     * @param  {object} datatable : object loaded from datatable json file
      * @param  {str} table_id     : div ID for datatable
      * @param  {str} gene_tree_id : div ID for gene tree
      */
-    function updateTree(data, table_id, gene_tree_id) {
-        var svg2=d3.select('#'+gene_tree_id);
-        svg2.selectAll("*").remove();
-        var clusterID=data['msa'];
-        var geneTree_name=clusterID+'_tree.json';
-        /** update gene tree */
-        render_tree(1,gene_tree_id, aln_file_path+geneTree_name);
-        d3.select('#download_geneTree_href')
-            .attr('href', '/download/dataset/'+speciesAbbr+'/geneCluster/'+clusterID+'.nwk')
+    function click_table_show_AlnTree (datatable, geneGainLoss_Dt, table_id, strain_tree_id, gene_tree_id, tool_side) {
+        /**
+         * [update_geneTree description]
+         * @param  {object} data      : object loaded from datatable json file
+         * @param  {str} gene_tree_id : div ID for gene tree
+         */
+        function update_geneTree(data, gene_tree_id, tool_side) {
+            var svg2=d3.select('#'+gene_tree_id);
+            svg2.selectAll("*").remove();
+            var clusterID=data['msa'];
+            var geneTree_name=clusterID+'_tree.json';
+            /** update gene tree */
+            render_tree(1,gene_tree_id, aln_file_path+geneTree_name, tool_side);
+            d3.select('#download_geneTree_href')
+                .attr('href', '/download/dataset/'+speciesAbbr+'/geneCluster/'+clusterID+'.nwk')
+        }
+
+        /**
+         * update the gene tree color via selected metadata from dropdown list
+         * @param  {str} div_id        : div ID for metadata_selection dropdown (dropdown_select)
+         * @param  {str} valueToSelect : metadata type(e.g.: 'genePresence')
+         */
+        function selectElement(div_id,valueToSelect) {
+            var element = document.getElementById(div_id);
+            element.value = valueToSelect;
+        }
+
+        /**
+         * wrapper function for triggering all events linked with alignment button
+         * @param  {object} data         : object loaded from datatable json file
+         * @param  {str}    aln_type     : type of alignment ('aa' for amino_acid, 'na' for nucleotide)
+         * @param  {str}    gene_tree_id : div ID for gene tree
+         */
+        function trigger_aln_tree(data, geneGainLoss_Dt, aln_type, strain_tree_id, gene_tree_id, tool_side) {
+            var msa_colorScheme =(aln_type=='aa') ? 'taylor' : 'nucleotide';
+            /** load MSA alignment */
+            msaLoad(aln_file_path+data['msa']+'_'+aln_type+'.aln',msa_colorScheme);
+            console.log(data['msa']);
+
+            geneId_GV = data['geneId'];
+            /** majority annotaion */
+            ann_majority = data['ann'];
+            var clusterID=data['msa'];
+            /** call functions to update tree pattern */
+            updatePresence(geneGainLoss_Dt,geneId_GV, clusterID, strain_tree_id);
+            update_geneTree(data, gene_tree_id,tool_side);
+            updateGainLossEvent(geneGainLoss_Dt, geneId_GV, clusterID, strain_tree_id);
+            $('#tree-rotate').bootstrapToggle('off');
+            selectElement("dropdown_select",'genePresence');
+            /** remove metadata legend and set legend_option_value to empty */
+            removeLegend(); legendOptionValue='';
+        }
+
+        /** row-clicking trigger: update MSA amino_acid alignment when clicking datatable row*/
+        $('#'+table_id+' tbody').on('click', 'tr', function (e) {
+            var data = datatable.row( $(this) ).data();
+            /** trigger alignment and tree when clicked */
+            trigger_aln_tree(data, trigger_action_table.geneGainLoss_Dt, 'aa', strain_tree_id, gene_tree_id, tool_side);
+            /** highlight the row when clicked/selected  */
+            $('#'+table_id+' tbody tr').removeClass('row_selected');
+            $(this).addClass('row_selected');
+        });
+
+        /** aa button (amino_acid button in table): update MSA amino_acid alignment and tree*/
+        $('#'+table_id+' tbody').on('click', '.btn.btn-info.btn-xs', function (e) {
+            var data = datatable.row( $(this).parents('tr') ).data();
+            trigger_aln_tree(data, trigger_action_table.geneGainLoss_Dt, 'aa', strain_tree_id, gene_tree_id, tool_side);
+            /** avoid to activate row clicking */
+            e.stopPropagation();
+        });
+
+        /** na button (nucleotide button  in table): update MSA nucleotide alignment and tree*/
+        $('#'+table_id+' tbody').on('click', '.btn.btn-primary.btn-xs', function (e) {
+            var data = datatable.row( $(this).parents('tr') ).data();
+            trigger_aln_tree(data, trigger_action_table.geneGainLoss_Dt, 'na', strain_tree_id, gene_tree_id, tool_side);
+            /** avoid to activate row clicking */
+            e.stopPropagation();
+        });
     }
 
-    /**
-     * update the gene tree color via selected metadata from dropdown list
-     * @param  {str} div_id        : div ID for metadata_selection dropdown (dropdown_select)
-     * @param  {str} valueToSelect : metadata type(e.g.: 'genePresence')
-     */
-    function selectElement(div_id,valueToSelect) {
-        var element = document.getElementById(div_id);
-        element.value = valueToSelect;
-    }
-
-    /**
-     * wrapper function for triggering all events linked with alignment button
-     * @param  {object} data         : object loaded from datatable json file
-     * @param  {str}    aln_type     : type of alignment ('aa' for amino_acid, 'na' for nucleotide)
-     * @param  {str}    gene_tree_id : div ID for gene tree
-     */
-    function trigger_aln_tree(data, aln_type, gene_tree_id) {
-        var msa_colorScheme =(aln_type=='aa') ? 'taylor' : 'nucleotide';
-        /** load MSA alignment */
-        msaLoad(aln_file_path+data['msa']+'_'+aln_type+'.aln',msa_colorScheme);
-        console.log(data['msa']);
-
-        geneId_GV = data['geneId'];
-        /** majority annotaion */
-        ann_majority = data['ann'];
-        var clusterID=data['msa'];
-        /** call functions to update tree pattern */
-        updatePresence(geneId_GV,clusterID);
-        /*console.log(gene_tree_id,'1');*/
-        updateTree(data);
-        //console.log(gene_tree_id,'2');
-        updateGainLossEvent(geneId_GV,clusterID);
-        //console.log(gene_tree_id,'3');
-        $('#tree-rotate').bootstrapToggle('off');/**/
-        //console.log(gene_tree_id,'4');
-        selectElement("dropdown_select",'genePresence');
-        //console.log(gene_tree_id,'5');
-        /** remove metadata legend and set legend_option_value to empty */
-        removeLegend(); legendOptionValue='';
-    }
-
-    /** row-clicking trigger: update MSA amino_acid alignment when clicking datatable row*/
-    $('#'+table_id+' tbody').on('click', 'tr', function (e) {
-        var data = datatable.row( $(this) ).data();
-        /** trigger alignment and tree when clicked */
-        trigger_aln_tree(data, 'aa', gene_tree_id);
-        /** highlight the row when clicked/selected  */
-        $('#'+table_id+' tbody tr').removeClass('row_selected');
-        $(this).addClass('row_selected');
-    });
-
-    /** aa button (amino_acid button in table): update MSA amino_acid alignment and tree*/
-    $('#'+table_id+' tbody').on('click', '.btn.btn-info.btn-xs', function (e) {
-        var data = datatable.row( $(this).parents('tr') ).data();
-        trigger_aln_tree(data, 'aa', gene_tree_id);
-        /** avoid to activate row clicking */
-        e.stopPropagation();
-    });
-
-    /** na button (nucleotide button  in table): update MSA nucleotide alignment and tree*/
-    $('#'+table_id+' tbody').on('click', '.btn.btn-primary.btn-xs', function (e) {
-        var data = datatable.row( $(this).parents('tr') ).data();
-        trigger_aln_tree(data, 'na', gene_tree_id);
-        /** avoid to activate row clicking */
-        e.stopPropagation();
-    });
-};
+    return { init_action:init_action,
+            click_table_show_AlnTree:click_table_show_AlnTree}
+}();
 
 var msa = require('msa');//var aln_path='';
 function msaLoad (aln_path,scheme_type) {
