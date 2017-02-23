@@ -28,8 +28,8 @@ var subtree_node_colorSet = d3.scale.category20c();
  * @param  {str} treeJsonPath path for tree json
  */
 
-var render_tree = function(ind,selected_div,treeJsonPath, tree_side) {
-    //"use strict";
+var render_tree = function(ind,selected_div,treeJsonPath, tool_side) {
+    "use strict";//
     var leaf_count;
     var size_node_leaf= size_node_leaf_init, size_node_inner= size_node_inner_init,
         size_node_leaf_highlight= size_node_leaf_highlight_init;
@@ -47,9 +47,10 @@ var render_tree = function(ind,selected_div,treeJsonPath, tree_side) {
         TreeViewSelect_id:'', LabelsToggle_id:'', InnerNodeToggle_id:'',ScalesToggle_id:'',
         Height_plus_Toggle_id:'',Height_minus_Toggle_id:'',tree_zoom_range_id:'',
         dropdown_list_id:'',download_coreTree_id:'',
-        tree_rotate_div_id:'',tree_rotate_id:''
+        tree_rotate_div_id:'',tree_rotate_id:'',
+        genetree_title_id:''
         }
-    if (tree_side==0){
+    if (tool_side==0){
         for (var k in buttons) {
             buttons[k]=k.split('_id')[0]+'_01'
         }
@@ -61,7 +62,7 @@ var render_tree = function(ind,selected_div,treeJsonPath, tree_side) {
 
     // if it is a gene tree, show the title with geneCluster Id
     if (treeJsonPath.indexOf('tree.json') !== -1) {
-        showViewerTitle(treeJsonPath);
+        showViewerTitle(buttons.genetree_title_id,treeJsonPath);
     };
     /**
      * adjust node size and label height based on leaf_count
@@ -201,7 +202,6 @@ var render_tree = function(ind,selected_div,treeJsonPath, tree_side) {
         d3.select('#'+buttons.tree_rotate_div_id).style('visibility',rotate_vis_state);
 
         var layout = tnt.tree.layout[setLayout]().width(width).scale(d3.select('#'+buttons.ScalesToggle_id).property('checked'))
-
         tree_vis.layout(layout);
         tree_vis.update();
         if (leaf_count>leaf_count_limit) {
@@ -265,7 +265,6 @@ var render_tree = function(ind,selected_div,treeJsonPath, tree_side) {
     });
 
     $('#'+buttons.Height_minus_Toggle_id).on("click", function() {
-        console.log(buttons.Height_minus_Toggle_id);
         var text_vis_state = (d3.select('#'+buttons.LabelsToggle_id).property('checked')==false) ? 'hidden' : 'visible';
         height_nodeLabel-=adjust_height_unit;
         var node_label = tnt.tree.label.text()
@@ -326,8 +325,8 @@ var render_tree = function(ind,selected_div,treeJsonPath, tree_side) {
 };
 
 //## show MSA/Gene tree title with geneCluster Id
-function showViewerTitle(message) {
-    var genetree_viewer=d3.select('#genetree_title');
+function showViewerTitle(genetree_title_id,message) {
+    var genetree_viewer=d3.select('#'+genetree_title_id);/*genetree_title*/
     genetree_viewer.html('Gene tree | '+message.split('/').pop().replace('_tree.json', '')+ ' | ' +ann_majority);
 
     var sequence_viewer=d3.select('#sequence_viewer_title');
