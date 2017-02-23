@@ -316,18 +316,18 @@ var trigger_action_table= function(){
 
         node.style('fill', function(d) {
             if ((d.name.indexOf('NODE_')!=0) && (d.name!='')) {
-                var presence_flag;
+                var presence_flag, genePattern;
                 if (pxTree.large_output==false) { // large_output false
-                    d.genePattern=d.genePresence[parseInt(geneIndex)-1];
+                    genePattern=d.genePattern[parseInt(geneIndex)-1];
                     //presence_flag= (d.genePattern=='1') ? 1 : 0;
                     /** calculated from gain/loss pattern */
-                    presence_flag= ((d.genePattern=='1')|| (d.genePattern=='3')) ? 1 : 0;
+                    presence_flag= ((genePattern=='1')|| (genePattern=='3')) ? 1 : 0;
                 } else if (pxTree.gain_loss_enabled==true) {
-                    d.genePattern=geneGainLoss_Dt[d.name];
-                    presence_flag= (d.genePattern%2==1) ? 1 : 0;
+                    genePattern=geneGainLoss_Dt[d.name];
+                    presence_flag= (genePattern%2==1) ? 1 : 0;
                 } else if (pxTree.gain_loss_enabled==false) {
-                    d.genePattern= geneGainLoss_Dt[d.name];
-                    presence_flag= (d.genePattern=='0') ? 0 : 1;
+                    genePattern= geneGainLoss_Dt[d.name];
+                    presence_flag= (genePattern=='0') ? 0 : 1;
                 };
 
                 if (presence_flag==1) {
@@ -364,7 +364,7 @@ var trigger_action_table= function(){
             //event_type = geneGainLoss_Dt[d.target.name];
         } else {
             //event_type = geneGainLoss_Dt[d.target.name][gindex];
-            event_type = d.target.genePresence[gindex];
+            event_type = d.target.genePattern[gindex];
         };
         return event_type
     }
@@ -512,7 +512,7 @@ var trigger_action_table= function(){
     /**
      * update the gene tree color via selected metadata from dropdown list
      * @param  {str} div_id        : div ID for metadata_selection dropdown (dropdown_select)
-     * @param  {str} valueToSelect : metadata type(e.g.: 'genePresence')
+     * @param  {str} valueToSelect : metadata type(e.g.: 'genePattern')
      */
     function selectElement(div_id,valueToSelect) {
         var element = document.getElementById(div_id);
@@ -539,7 +539,7 @@ var trigger_action_table= function(){
         update_geneTree(data, gene_tree_id,tool_side);
         updateGainLossEvent(geneGainLoss_Dt, geneId_GV, clusterID, strain_tree_id);
         $('#tree-rotate').bootstrapToggle('off');
-        selectElement("dropdown_select",'genePresence');
+        selectElement("dropdown_select",'genePattern');
         /** remove metadata legend and set legend_option_value to empty */
         removeLegend(); legendOptionValue='';
     }
