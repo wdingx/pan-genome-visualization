@@ -614,7 +614,10 @@ var trigger_action_table= function(){
         /** row-clicking trigger: update MSA amino_acid alignment when clicking datatable row*/
         $('#'+table_id+' tbody').on('click', 'tr', function (e) {
             var data = datatable.row( $(this) ).data();
-            /** trigger alignment and tree when clicked */
+            /** trigger alignment and tree when clicked
+             *  use trigger_action_table.geneGainLoss_Dt to ensure that
+             *  fully d3_loaded json has been passed.
+             */
             trigger_aln_tree(data, trigger_action_table.geneGainLoss_Dt, 'aa', strain_tree_id, gene_tree_id, tool_side);
             /** highlight the row when clicked/selected  */
             $('#'+table_id+' tbody tr').removeClass('row_selected');
