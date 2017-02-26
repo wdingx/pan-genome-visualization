@@ -1,8 +1,5 @@
 var winInnerWidth = pgDashbord.winInnerWidth;
-var svg1 = d3.select('#mytree1');
-var svg2 = d3.select('#mytree2');
-var svg_all = d3.select('#mytree1,#mytree2');//var svg_all = d3.select('#all_tree');
-var adjust_height_unit =0.3;//#0.3
+var adjust_height_unit =0.5;//#0.3
 var times_flag=0;
 
 //# node/label size
