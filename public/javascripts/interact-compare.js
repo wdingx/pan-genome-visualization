@@ -639,7 +639,7 @@ var trigger_action_table= function(){
      * @param  {str} table_id          : div ID for datatable
      * @param  {str} strain_tree_id    : div ID for strain tree
      * @param  {str} gene_tree_id      : div ID for gene tree
-     * @param  {int} tool_side         : flag for tool side (0:left; 1:right)
+     * @param  {int} tool_side         : flag for comparative tool side (0:left; 1:right)
      */
     var init_action= function (datatable, table_id, strain_tree_id, gene_tree_id, tool_side) {
         init_loading_geneEvent(datatable, table_id, strain_tree_id, gene_tree_id, tool_side);

@@ -23,11 +23,12 @@ var subtree_node_colorSet = d3.scale.category20c();
 
 /**
  * render the tree viewers
- * @param  {int} tree_index          index of tree viewers(0:core tree;1:gene tree)
- * @param  {str} selected_div div_id
- * @param  {str} treeJsonPath path for tree json
+ * @param  {int} tree_index   : index of tree viewers(0:core tree;1:gene tree)
+ * @param  {str} selected_div : div_id
+ * @param  {str} treeJsonPath : path for tree json file
+ * @param  {str} clusterID    : clusterID required, when applied to gene tree
+ * @param  {int} tool_side    : flag for comparative tool side (0:left; 1:right)
  */
-
 var render_tree = function(tree_index,selected_div,treeJsonPath,clusterID,tool_side) {
     "use strict";//
     var leaf_count;
