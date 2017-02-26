@@ -23,12 +23,12 @@ var subtree_node_colorSet = d3.scale.category20c();
 
 /**
  * render the tree viewers
- * @param  {int} ind          index of tree viewers(0:left;1:right)
+ * @param  {int} tree_index          index of tree viewers(0:core tree;1:gene tree)
  * @param  {str} selected_div div_id
  * @param  {str} treeJsonPath path for tree json
  */
 
-var render_tree = function(ind,selected_div,treeJsonPath, tool_side) {
+var render_tree = function(tree_index,selected_div,treeJsonPath,clusterID,tool_side) {
     "use strict";//
     var leaf_count;
     var size_node_leaf= size_node_leaf_init, size_node_inner= size_node_inner_init,
@@ -46,7 +46,7 @@ var render_tree = function(ind,selected_div,treeJsonPath, tool_side) {
     var buttons={
         TreeViewSelect_id:'', LabelsToggle_id:'', InnerNodeToggle_id:'',ScalesToggle_id:'',
         Height_plus_Toggle_id:'',Height_minus_Toggle_id:'',tree_zoom_range_id:'',
-        dropdown_list_id:'',download_coreTree_id:'',
+        dropdown_list_id:'',download_coreTree_id:'',download_geneTree_id:'',
         tree_rotate_div_id:'',tree_rotate_id:'',
         genetree_title_id:''
         }
@@ -75,11 +75,11 @@ var render_tree = function(ind,selected_div,treeJsonPath, tool_side) {
         size_node_leaf = (count<leaf_count_limit)?3:3//(3 + leaf_count_limit/count);3.5
         size_node_inner = (count<leaf_count_limit)?2.2:2//(2 + 60/count)
         size_node_leaf_highlight = (count<leaf_count_limit)?8:(4 + 240/count)//(4 + 240/count);
-        height_nodeLabel_arr[ind]=height_nodeLabel;
-        size_font_leaf_label_arr[ind]=size_font_leaf_label;
-        size_node_leaf_arr[ind]=size_node_leaf;
-        size_node_inner_arr[ind]=size_node_inner;
-        size_node_leaf_highlight_arr[ind]=size_node_leaf_highlight;
+        height_nodeLabel_arr[tree_index]=height_nodeLabel;
+        size_font_leaf_label_arr[tree_index]=size_font_leaf_label;
+        size_node_leaf_arr[tree_index]=size_node_leaf;
+        size_node_inner_arr[tree_index]=size_node_inner;
+        size_node_leaf_highlight_arr[tree_index]=size_node_leaf_highlight;
         //console.log(height_nodeLabel,size_font_leaf_label,size_node_leaf,size_node_inner,size_node_leaf_highlight)
         //console.log(height_nodeLabel_arr,size_font_leaf_label_arr,size_node_leaf_arr,size_node_inner_arr,size_node_leaf_highlight_arr);
     };
@@ -160,7 +160,7 @@ var render_tree = function(ind,selected_div,treeJsonPath, tool_side) {
             svgTree_Module.mouseout_hide_sub_highlight;
             d.toggle();
             tree_vis.update();
-            svgAction(ind,svg);
+            svgAction(tree_index,svg);
         });
 
         //## The visualization is started at this point
@@ -187,7 +187,7 @@ var render_tree = function(ind,selected_div,treeJsonPath, tool_side) {
             .style({"font-size": "12px"})
             .text(scaleBar);
 
-        svgAction(ind,svg);
+        svgAction(tree_index,svg);
         if (selected_div.indexOf('tree2') !== -1) {
             rotate_tree(svg,set_rotate);
         }
@@ -208,7 +208,7 @@ var render_tree = function(ind,selected_div,treeJsonPath, tool_side) {
             svg.selectAll(".tnt_tree_label").style("visibility", "hidden");
             $('#'+buttons.LabelsToggle_id).bootstrapToggle('off');
         };
-        svgAction(ind,svg);
+        svgAction(tree_index,svg);
         if ((setLayout=='vertical') && ((selected_div.indexOf('tree2') !== -1))) {
             rotate_tree(svg,'left-right');
             $('#'+buttons.tree_rotate_id).bootstrapToggle('on');
@@ -222,7 +222,7 @@ var render_tree = function(ind,selected_div,treeJsonPath, tool_side) {
         var layout = tnt.tree.layout[setLayout]().width(width).scale( d3.select(this).property('checked'))
         tree_vis.layout(layout);
         tree_vis.update();
-        svgAction(ind,svg);
+        svgAction(tree_index,svg);
         if ((setLayout=='vertical') && (selected_div.indexOf('tree2') !== -1)) {
             rotate_tree(svg,'left-right');
             $('#'+buttons.tree_rotate_id).bootstrapToggle('on');
@@ -257,7 +257,7 @@ var render_tree = function(ind,selected_div,treeJsonPath, tool_side) {
                     .color(color_leaf_label);
         tree_vis.label(node_label);
         tree_vis.update();
-        svgAction(ind,svg);
+        svgAction(tree_index,svg);
         if (text_vis_state=='hidden') {
             svg.selectAll(".tnt_tree_label").style("visibility", text_vis_state)
         };
@@ -274,11 +274,31 @@ var render_tree = function(ind,selected_div,treeJsonPath, tool_side) {
                     .color(color_leaf_label);
         tree_vis.label(node_label);
         tree_vis.update();
-        svgAction(ind,svg);
+        svgAction(tree_index,svg);
         if (text_vis_state=='hidden') {
             svg.selectAll(".tnt_tree_label").style("visibility", text_vis_state)
         };
     });
+
+    /** attach tree download_button */
+    if  (tree_index==0) { /** attach core/strain tree download_button */
+        var selected_speciesAbbr= (tool_side==0) ? speciesAbbr : speciesAbbr2;
+        d3.select('#'+buttons.download_coreTree_id)
+            .append('a')
+            .attr('href','/download/dataset/'+selected_speciesAbbr+'/strain_tree.nwk')
+            .append('i')
+            .attr('class','glyphicon glyphicon-download-alt')
+            .attr('aria-hidden','true')
+    } else { /** attach download_tree button */
+        var download_geneTree=d3.select('#'+buttons.download_geneTree_id);
+        var selected_speciesAbbr=(tool_side==0) ? speciesAbbr : speciesAbbr2;
+        download_geneTree.append('a')
+            .attr('id',buttons.download_geneTree_id+'_href')
+            .attr('href','/download/dataset/'+selected_speciesAbbr+'/geneCluster/'+clusterID+'.nwk')
+            .append('i')
+            .attr('class','glyphicon glyphicon-download-alt')
+            .attr('aria-hidden','true')
+    }
 
     function link_two_trees () {
         //get_leaveName
@@ -354,7 +374,7 @@ var svgTree_Module= function(){
             .call(tips_node);
     };
 
-    function mouseover_show_subTree(d, i, ind) {
+    function mouseover_show_subTree(d, i, tree_index) {
         var click_type='';
         if (pgModule.hasOwnProperty(d, 'target' )) {
             click_type='link';
@@ -372,7 +392,7 @@ var svgTree_Module= function(){
             //console.log(pgModule.hasOwnProperty(d, 'target'));
             d3.selectAll("circle.pt" + d.name)
               .style("fill", color_leaf_node_highlight)
-              .attr("r", size_node_leaf_highlight_arr[ind])
+              .attr("r", size_node_leaf_highlight_arr[tree_index])
         }
         else if ((d.name.indexOf('NODE_')==0) || (d.name=="")) {
             this.style.cursor='pointer';
@@ -406,13 +426,13 @@ var svgTree_Module= function(){
                     .style("fill", function(d) {
                         return subtree_node_colorSet(d.name);
                     })
-                    .attr("r", size_node_leaf_highlight_arr[ind]);
+                    .attr("r", size_node_leaf_highlight_arr[tree_index]);
             }
         }
     };
 
-    function mouseout_hide_sub_highlight(d, i, ind) {
-        //console.log(size_node_leaf_arr[ind]);
+    function mouseout_hide_sub_highlight(d, i, tree_index) {
+        //console.log(size_node_leaf_arr[tree_index]);
         var click_type='';
         //d.target!=undefined
         if (pgModule.hasOwnProperty(d, 'target' )) {
@@ -428,7 +448,7 @@ var svgTree_Module= function(){
         if ( (d.name.indexOf('NODE_')!=0) && (d.name!='') ) {
             d3.selectAll("circle.pt" + d.name)
                 .style("fill", pxTree.node_color_mem[d.name])
-                .attr("r", size_node_leaf_arr[ind]);
+                .attr("r", size_node_leaf_arr[tree_index]);
         }
         else if  ( (d.name.indexOf('NODE_')==0) || (d.name=="") ) {
             //#change the color of selected inner nodes
@@ -436,7 +456,7 @@ var svgTree_Module= function(){
                 d3.select(this)
                     .style("stroke-width",'0px')
                     .style("fill", color_inner_node)
-                    .attr("r", size_node_inner_arr[ind]);
+                    .attr("r", size_node_inner_arr[tree_index]);
             } else if (click_type=='link') {
                 d3.select(this)
                     .style('stroke', function () {
@@ -470,7 +490,7 @@ var svgTree_Module= function(){
                     .style("fill", function(d) {
                         return pxTree.node_color_mem[d.name]
                     })
-                    .attr("r", size_node_leaf_arr[ind]);
+                    .attr("r", size_node_leaf_arr[tree_index]);
             }
         }
     };
@@ -538,7 +558,7 @@ var svgTree_Module= function(){
 }();
 
     //## actions on tree (tooltips, select subtree by nodes/links)
-var svgAction = function(ind,svg) {
+var svgAction = function(tree_index,svg) {
     var t0 = performance.now();
     svgTree_Module.tooltip_node(svg);
     var t1 = performance.now();
@@ -613,13 +633,13 @@ rotate_monitor('tree_rotate_01','mytree2');
 rotate_monitor('tree_rotate_02','compare_tree2');
 
 //## strain_tree processing
-render_tree(0,"mytree1",coreTree_path, 0);
-render_tree(0,"compare_tree1",coreTree_path_B, 1);
+render_tree(0, "mytree1", coreTree_path, clusterID=null, 0);
+render_tree(0, "compare_tree1", coreTree_path_B, clusterID=null, 1);
 //render (document.getElementById("mytree2"),treeJsonPath,svg2);
 
 //## search strain
 function search(val) {
-    var ind=1;
+    var tree_index=1;
     var searchStr = val.toLowerCase();
     function nodeMatch(d){
         var name = d.name.toLowerCase();
@@ -635,7 +655,7 @@ function search(val) {
     // adjust style of non matches
     d3.selectAll('circle').filter(function(d){return !nodeMatch(d) && (d.name.indexOf('NODE_')!=0)})
         .style('fill', function (d){ pxTree.node_color_mem[d.name]})
-        .attr('r', function (d){ return size_node_leaf_arr[ind]});
+        .attr('r', function (d){ return size_node_leaf_arr[tree_index]});
 };
 /*
 //## search strain
@@ -663,7 +683,7 @@ var treeButton_tooltip_dict= {
     'Height_plus_Toggle':'increase tree height',
     'Height_minus_Toggle':'decrease tree height',
     'download_coreTree':'download strain tree',
-    'download-geneTree':'download gene tree'}
+    'download_geneTree':'download gene tree'}
 
 
 function button_tooltip2(divID, tooltip_dict) {
@@ -697,15 +717,5 @@ $(window).load(function(){
           $reset: $(".reset")*/
       });
 });
-
-
-//## download strain tree
-d3.select('#download_coreTree')
-    .append('a')
-    .attr('href','/download/dataset/'+speciesAbbr+'/strain_tree.nwk')
-    .append('i')
-    .attr('class','glyphicon glyphicon-download-alt')
-    //.attr('class','fa fa-arrow-circle-down fa-5')
-    .attr('aria-hidden','true')
 
 

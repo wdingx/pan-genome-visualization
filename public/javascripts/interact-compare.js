@@ -277,16 +277,7 @@ var render_chart_table = {
             console.log(Initial_MsaGV+'_aa.aln');
             var clusterID=Initial_MsaGV;
             var geneTree_name=clusterID+'_tree.json';
-            render_tree(1,gene_tree_id,aln_path+geneTree_name,tool_side);
-            //## download-link
-            var download_geneTree=d3.select('#download-geneTree');
-            download_geneTree.append('a')
-                .attr('id','download_geneTree_href')
-                .attr('href','/download/dataset/'+speciesAbbr+'/geneCluster/'+clusterID+'.nwk')
-                .append('i')
-                .attr('class','glyphicon glyphicon-download-alt')
-                //.attr('class','fa fa-arrow-circle-down fa-5')
-                .attr('aria-hidden','true')
+            render_tree(1,gene_tree_id,aln_path+geneTree_name,clusterID,tool_side);
         })
     }
 };
@@ -331,6 +322,7 @@ var trigger_action_table= function(){
                 };
 
                 if (presence_flag==1) {
+
                     pxTree.node_color_mem[d.name]= pxTree.col_pres;
                     return pxTree.col_pres;
                 }
@@ -504,9 +496,7 @@ var trigger_action_table= function(){
         var geneTree_name=clusterID+'_tree.json';
         /** update gene tree */
         var aln_path= (tool_side===0) ? aln_file_path : aln_file_path_B;
-        render_tree(1,gene_tree_id, aln_path+geneTree_name, tool_side);
-        d3.select('#download_geneTree_href')
-            .attr('href', '/download/dataset/'+speciesAbbr+'/geneCluster/'+clusterID+'.nwk')
+        render_tree(1,gene_tree_id, aln_path+geneTree_name, clusterID, tool_side);
     }
 
     /**
