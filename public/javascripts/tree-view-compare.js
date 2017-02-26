@@ -46,7 +46,8 @@ var render_tree = function(tree_index,selected_div,treeJsonPath,clusterID,tool_s
     //## buttons
     var buttons={
         TreeViewSelect_id:'', LabelsToggle_id:'', InnerNodeToggle_id:'',ScalesToggle_id:'',
-        Height_plus_Toggle_id:'',Height_minus_Toggle_id:'',tree_zoom_range_id:'',
+        Height_plus_Toggle_id:'',Height_minus_Toggle_id:'',
+        tree_zoom_range_id:'',tree_zoom_reset_id:'',
         dropdown_list_id:'',download_coreTree_id:'',download_geneTree_id:'',
         tree_rotate_div_id:'',tree_rotate_id:'',
         genetree_title_id:''
@@ -301,47 +302,25 @@ var render_tree = function(tree_index,selected_div,treeJsonPath,clusterID,tool_s
             .attr('aria-hidden','true')
     }
 
-    function link_two_trees () {
-        //get_leaveName
-        function get_leaveName(){
-            var nodes = svg.selectAll("circle")
-            var leaves_list = [];
-            nodes.each(function(d){
-                leaves_list.push(d.name,d.x,d.y);
-                });
-            return leaves_list;
-        }; //console.log(get_leaveName());
-
-        //## get_node_coordinates
-        function get_coordinates(svg){
-            var nodes = svg.selectAll("circle")
-            var coordinates_dict = {};
-            nodes.each(function(d){
-                if (d.children === undefined) { // leaves
-                    coordinates_dict[d.name]=[d.x,d.y];
-                }
-            });
-            return coordinates_dict;
-        };
-        //get_coordinates(svg1);get_coordinates(svg2)
-
-        console.log(get_coordinates(svg1));
-        console.log(get_coordinates(svg2));
-
-        /*var lines = svg1.append("svg").append("line") //svg_all
-                    .style("stroke", "black")
-                    .attr("x1", 22.6)
-                    .attr("y1", 12.7)
-                    .attr("x2", 50)
-                    .attr("y2", 89.7);*/
-
-                    /**/
-        //0: 327.69230769230771: 129.7206154676361
-        //0: 3061: 391.72450724429393
-        //console.log( Object.keys(get_coordinates(svg1)).length );
-        //console.log( Object.keys(get_coordinates(svg2)).length );
-        //Object.keys(myObj).length;
+    /** zoom function */
+    function zoom_setting(strain_tree_id, gene_tree_id, tree_zoom_range_id, tree_zoom_reset_id) {
+        //$("#mytree1,#mytree2").panzoom({
+        $('#'+strain_tree_id+',#'+gene_tree_id).panzoom({
+            //$zoomRange: $(".zoom_range"),
+            $zoomRange: $("#"+tree_zoom_range_id),
+            //$reset: $("#zoom_reset"),
+            $reset: $("#"+tree_zoom_reset_id),
+            transition: true,
+            increment: 0.1,
+            minScale: 0.7,
+            maxScale: 1.5,
+            duration: 50,
+        });
     };
+
+    if (tree_index==0) {
+        zoom_setting(selected_div, selected_div.replace('1','2'), buttons.tree_zoom_range_id, buttons.tree_zoom_reset_id )
+    }
 
 };
 
@@ -558,7 +537,7 @@ var svgTree_Module= function(){
         link_showSubtree_trace:link_showSubtree_trace}
 }();
 
-    //## actions on tree (tooltips, select subtree by nodes/links)
+/** actions on tree (tooltips, select subtree by nodes/links) */
 var svgAction = function(tree_index,svg) {
     var t0 = performance.now();
     svgTree_Module.tooltip_node(svg);
@@ -576,14 +555,8 @@ var svgAction = function(tree_index,svg) {
     if (times_flag==1) {csprint("x2 time: "+ Math.round(t1-t0) +" msec");}
 };
 
-//## rotate tree
+/** rotate tree */
 function rotate_tree(svg, direction) {
-    /*if (direction=="left-right") {
-        d3.select('#'+tree_rotate_id).attr('checked',true);
-    } else {
-        d3.select('#'+tree_rotate_id).attr('checked',false);
-    }*/
-
     svg.selectAll(".tnt_tree_node")
       .attr("transform", function(d) {
               width= winInnerWidth/3.15;
@@ -636,7 +609,6 @@ rotate_monitor('tree_rotate_02','compare_tree2');
 //## strain_tree processing
 render_tree(0, "mytree1", coreTree_path, clusterID=null, 0);
 render_tree(0, "compare_tree1", coreTree_path_B, clusterID=null, 1);
-//render (document.getElementById("mytree2"),treeJsonPath,svg2);
 
 //## search strain
 function search(val) {
@@ -707,16 +679,3 @@ function button_tooltip2(divID, tooltip_dict) {
 };
 button_tooltip2('#all_trees', treeButton_tooltip_dict);
 //button_tooltip2('#LeftTreeButtons', treeButton_tooltip_dict);
-
-// ## zoom function
-$(window).load(function(){
-      //$("#mytree1").panzoom({
-      $("#mytree1,#mytree2").panzoom({
-          $zoomRange: $(".zoom-range")/*,
-          $zoomIn: $(".zoom-in"),
-          $zoomOut: $(".zoom-out"),
-          $reset: $(".reset")*/
-      });
-});
-
-
