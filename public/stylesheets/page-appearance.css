@@ -8,14 +8,14 @@ html {
 }
 
 body {
-  font-family: "proxima-nova", Arial,sans-serif; 
+  font-family: "proxima-nova", Arial,sans-serif;
   font-size: 15px;
   line-height: 1.42857143;
 }/**/
 
 #logo,#logo_footer h3{
   color:  #0000;/* #337AB7; */
-  font: normal 70px 'Cookie', cursive; 
+  font: normal 70px 'Cookie', cursive;
   margin: 0;
 }
 
@@ -85,7 +85,7 @@ table.dataTable thead > tr > th {
 /* treeLoader*/
 #treeLoader{
   color:#428BCA;
-  font-weight: 300; 
+  font-weight: 300;
   padding-left: 5px;
 }
 
@@ -104,7 +104,7 @@ table.dataTable thead > tr > th {
 
 #tree-viewer-button-groups {margin-left:15px}
 
-/* btn size */ 
+/* btn size */
 .btn-xs  {
   font-size:13px;
   /* line-height: 1.4; */
@@ -113,7 +113,7 @@ table.dataTable thead > tr > th {
 
 /*msa-button color
 .smenubar .smenubar_alink {
-  background:  red #337AB7; 
+  background:  red #337AB7;
 }*/
 
 /* alert new */
@@ -168,13 +168,18 @@ table.dataTable thead > tr > th {
 .alert-info hr {
   border-top-color: rgba(0, 0, 0, 0);
 }
-.alert-info .alert-link {
-  color: #d2d2d2;
-}
-.alert-warning {
-  background-color: #f0ad4e;
+.alert-link {
+  background-color: #5cb85c;
   border-color: transparent;
-  color: #ebebeb;
+  color: #FFFFFF;
+}
+/* .alert-info .alert-link {
+  color: #d2d2d2;
+} */
+.alert-warning {
+  background-color: #63BFDA; /*#287CBA #976DDB #f0ad4e */
+  border-color: transparent;
+  color: #FFFFFF;
 }
 .alert-warning hr {
   border-top-color: rgba(0, 0, 0, 0);
@@ -208,11 +213,11 @@ tr.shown td.ann-details-control, tr.shown td.dup-details-control, tr.shown td.ge
     .container{
       /* max-width: 2000px; */
       width:85%;
-      } /* 1160px 970px;  */ 
+      } /* 1160px 970px;  */
 }
 
 /* .x-axis-label {font-size: 1px;} */
-/* #dc-straincount-chart .axis text {
+/* #dc_straincount_chart .axis text {
   font-size: 1px;
 } */
 
@@ -226,12 +231,12 @@ tr.shown td.ann-details-control, tr.shown td.dup-details-control, tr.shown td.ge
 	/*#66AAD6;*/
 }
 /*.carousel .item {background-color: black;}*/
- 
+
 /* .carousel-control.right, .carousel-control.left {
   background-image:none;
 } */
 
-.carousel-control.left, .carousel-control.right{ 
+.carousel-control.left, .carousel-control.right{
 background: none;/*rgba(94,164,233,0.9) ;/*!important; */
 /*filter: progid:none !important; */
 }
@@ -260,10 +265,10 @@ background: none;/*rgba(94,164,233,0.9) ;/*!important; */
 input[type=range] {
     /*removes default webkit styles*/
     -webkit-appearance: none;
-    
+
     /*fix for FF unable to apply focus style bug */
     border: 1px solid white;
-    
+
     /*required for proper track sizing in FF*/
     width: 160px;
     margin-top: 7px
@@ -316,10 +321,10 @@ input[type=range]:-moz-focusring{
 input[type=range]::-ms-track {
     width: 160px;
     height: 5px;
-    
+
     /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
     background: transparent;
-    
+
     /*leave room for the larger thumb to overflow with a transparent border */
     border-color: transparent;
     border-width: 6px 0;
