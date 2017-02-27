@@ -21,19 +21,19 @@ var subtree_node_colorSet = d3.scale.category20c();
 /**
  * render the tree viewers
  * @param  {int} tree_index   : index of tree viewers(0:core tree;1:gene tree)
- * @param  {str} selected_div : div_id
+ * @param  {str} tree_div : div_id
  * @param  {str} treeJsonPath : path for tree json file
  * @param  {str} clusterID    : clusterID required, when applied to gene tree
  * @param  {int} tool_side    : flag for comparative tool side (0:left; 1:right)
  */
-var render_tree = function(tree_index,selected_div,treeJsonPath,clusterID,tool_side) {
+var render_tree = function(tree_index,tree_div,treeJsonPath,clusterID,tool_side) {
     "use strict";//
     var leaf_count;
     var size_node_leaf= size_node_leaf_init, size_node_inner= size_node_inner_init,
         size_node_leaf_highlight= size_node_leaf_highlight_init;
     var size_font_inner_label= size_font_inner_label_init, size_font_leaf_label= size_font_leaf_label_init;
     var height_nodeLabel= height_nodeLabel_init;
-    var svg= d3.select('#'+selected_div);
+    var svg= d3.select('#'+tree_div);
     var tree_vis = tnt.tree();
     var width = winInnerWidth/3; //600; //var height = 360;
     //## initial layout/scale options .property('checked', true);
@@ -167,7 +167,7 @@ var render_tree = function(tree_index,selected_div,treeJsonPath,clusterID,tool_s
         });
 
         //## The visualization is started at this point
-        tree_vis(document.getElementById(selected_div));
+        tree_vis(document.getElementById(tree_div));
 
         //## not display labels on large tree
         if (leaf_count>leaf_count_limit) {
@@ -181,7 +181,7 @@ var render_tree = function(tree_index,selected_div,treeJsonPath,clusterID,tool_s
 
         //## make scale bar
         var scaleBar = tree_vis.scale_bar(50, "pixel").toFixed(3);
-        var legend = d3.select("#"+selected_div);
+        var legend = d3.select("#"+tree_div);
         legend.append("div")
             .style({ width:"50px", height:"2px", "background-color":"steelblue",
                     margin:"6px 5px 5px 25px", float: "left"});
@@ -191,7 +191,7 @@ var render_tree = function(tree_index,selected_div,treeJsonPath,clusterID,tool_s
             .text(scaleBar);
 
         svgAction(tree_index,svg);
-        if (selected_div.indexOf('tree2') !== -1) {
+        if (tree_div.indexOf('tree2') !== -1) {
             rotate_tree(svg,set_rotate);
         }
     };
@@ -212,7 +212,7 @@ var render_tree = function(tree_index,selected_div,treeJsonPath,clusterID,tool_s
             $('#'+buttons.LabelsToggle_id).bootstrapToggle('off');
         };
         svgAction(tree_index,svg);
-        if ((setLayout=='vertical') && ((selected_div.indexOf('tree2') !== -1))) {
+        if ((setLayout=='vertical') && ((tree_div.indexOf('tree2') !== -1))) {
             rotate_tree(svg,'left-right');
             $('#'+buttons.tree_rotate_id).bootstrapToggle('on');
         }
@@ -225,7 +225,7 @@ var render_tree = function(tree_index,selected_div,treeJsonPath,clusterID,tool_s
         tree_vis.layout(layout);
         tree_vis.update();
         svgAction(tree_index,svg);
-        if ((setLayout=='vertical') && (selected_div.indexOf('tree2') !== -1)) {
+        if ((setLayout=='vertical') && (tree_div.indexOf('tree2') !== -1)) {
             rotate_tree(svg,'left-right');
             $('#'+buttons.tree_rotate_id).bootstrapToggle('on');
         }
@@ -319,7 +319,7 @@ var render_tree = function(tree_index,selected_div,treeJsonPath,clusterID,tool_s
     };
 
     if (tree_index==0) {
-        zoom_setting(selected_div, selected_div.replace('1','2'), buttons.tree_zoom_range_id, buttons.tree_zoom_reset_id )
+        zoom_setting(tree_div, tree_div.replace('1','2'), buttons.tree_zoom_range_id, buttons.tree_zoom_reset_id )
     }
 
 };
@@ -424,7 +424,10 @@ var svgTree_Module= function(){
             d=d.target
         }
 
-        makeLegend(legendOptionValue);
+        if ( legendOptionValue!='genePattern') {
+            makeLegend(legendOptionValue)
+        }
+
         if ( (d.name.indexOf('NODE_')!=0) && (d.name!='') ) {
             d3.selectAll("circle.pt" + d.name)
                 .style("fill", pxTree.node_color_mem[d.name])
