@@ -49,7 +49,11 @@ var render_tree = function(tree_index,selected_div,treeJsonPath,clusterID,tool_s
         tree_rotate_div_id:'',tree_rotate_id:'',
         genetree_title_id:''
         }
-    if (tool_side==0){
+    if (tool_side==null) {
+        for (var k in buttons) {
+            buttons[k]=k.split('_id')[0]
+        }
+    } else if (tool_side==0){
         for (var k in buttons) {
             buttons[k]=k.split('_id')[0]+'_01'
         }
@@ -212,7 +216,6 @@ var render_tree = function(tree_index,selected_div,treeJsonPath,clusterID,tool_s
             rotate_tree(svg,'left-right');
             $('#'+buttons.tree_rotate_id).bootstrapToggle('on');
         }
-        //rotate_tree(svg2,'left-right');
     });
 
     // ## Enable scale or not
@@ -281,7 +284,7 @@ var render_tree = function(tree_index,selected_div,treeJsonPath,clusterID,tool_s
 
     /** attach tree download_button */
     if  (tree_index==0) { /** attach core/strain tree download_button */
-        var selected_speciesAbbr= (tool_side==0) ? speciesAbbr : speciesAbbr2;
+        var selected_speciesAbbr= (tool_side==1) ? speciesAbbr2 : speciesAbbr;
         d3.select('#'+buttons.download_coreTree_id)
             .append('a')
             .attr('href','/download/dataset/'+selected_speciesAbbr+'/strain_tree.nwk')
@@ -290,7 +293,7 @@ var render_tree = function(tree_index,selected_div,treeJsonPath,clusterID,tool_s
             .attr('aria-hidden','true')
     } else { /** attach download_tree button */
         var download_geneTree=d3.select('#'+buttons.download_geneTree_id);
-        var selected_speciesAbbr=(tool_side==0) ? speciesAbbr : speciesAbbr2;
+        var selected_speciesAbbr=(tool_side==1) ? speciesAbbr2 : speciesAbbr;
         download_geneTree.append('a')
             .attr('id',buttons.download_geneTree_id+'_href')
             .attr('href','/download/dataset/'+selected_speciesAbbr+'/geneCluster/'+clusterID+'.nwk')
@@ -600,12 +603,6 @@ function rotate_monitor(tree_rotate_id,gene_tree_id){
         rotate_tree(svg2,set_rotate);
     });
 };
-rotate_monitor('tree_rotate_01','mytree2');
-rotate_monitor('tree_rotate_02','compare_tree2');
-
-//## strain_tree processing
-render_tree(0, "mytree1", coreTree_path, clusterID=null, 0);
-render_tree(0, "compare_tree1", coreTree_path_B, clusterID=null, 1);
 
 //## search strain
 function search(val) {

@@ -282,15 +282,6 @@ var render_chart_table = {
     }
 };
 
-render_chart_table.initData(path_datatable1,'dc_data_table1', 'GC_tablecol_select',
-    'dc_data_count','dc_straincount_chart','dc_geneLength_chart','dc_coreAcc_piechart',
-    'changeCoreThreshold','coreThreshold',
-    'mytree1','mytree2', 0);
-render_chart_table.initData(path_datatable11,'dc_data_table2', 'GC_tablecol_select2',
-    'dc_data_count2','dc_straincount_chart2','dc_geneLength_chart2','dc_coreAcc_piechart2',
-    'changeCoreThreshold2','coreThreshold2',
-    'compare_tree1','compare_tree2',1);
-
 /**
  * Module for initializing trigger actions in cluster datatable. It includes:
  * click the Plus/Minus button to unfold/fold annotation/geneName/etc details,
