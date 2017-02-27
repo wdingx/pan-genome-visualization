@@ -272,7 +272,7 @@ var render_chart_table = {
                 count_id, chart1_id, chart2_id, chart3_id,
                 coreThreshold_slider_id, coreThreshold_text_id,
                 strain_tree_id,gene_tree_id, tool_side);
-            var aln_path= (tool_side===0) ? aln_file_path : aln_file_path_B;
+            var aln_path= (tool_side==1) ? aln_file_path_B : aln_file_path;
             msaLoad(aln_path+Initial_MsaGV+'_aa.aln','taylor');
             console.log(Initial_MsaGV+'_aa.aln');
             var clusterID=Initial_MsaGV;
@@ -486,7 +486,7 @@ var trigger_action_table= function(){
         var clusterID=data['msa'];
         var geneTree_name=clusterID+'_tree.json';
         /** update gene tree */
-        var aln_path= (tool_side===0) ? aln_file_path : aln_file_path_B;
+        var aln_path= (tool_side==1) ? aln_file_path_B : aln_file_path;
         render_tree(1,gene_tree_id, aln_path+geneTree_name, clusterID, tool_side);
     }
 
@@ -532,7 +532,7 @@ var trigger_action_table= function(){
     var init_loading_geneEvent= function (datatable, table_id, strain_tree_id, gene_tree_id, tool_side){
         var geneGainLoss_Dt = {};
         //geneEvent_path= geneEvent_path_A;
-        geneEvent_path= (tool_side===0) ? geneEvent_path_A : geneEvent_path_B;
+        geneEvent_path= (tool_side===1) ? geneEvent_path_B : geneEvent_path_A;
         d3.json(geneEvent_path, function(error, geneGainLoss_input) {
             var geneGainLoss_Dt = {};
             /** if geneGainLossEvent.json does not exist */
