@@ -1,8 +1,8 @@
-//npm install gulp-concat gulp-rename gulp-uglify gulp-minify-css --save-dev 
+//npm install gulp-concat gulp-rename gulp-uglify gulp-minify-css --save-dev
 // Dependencies
-var gulp = require('gulp'); 
-var concat = require('gulp-concat');  
-var uglify = require('gulp-uglify');  
+var gulp = require('gulp');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var minifyCSS = require('gulp-minify-css');
 
@@ -60,7 +60,7 @@ gulp.task('miniCSS', function() {
 	'./public/stylesheets/msa-new.css',
 	'./public/stylesheets/d3-tip.css',
   './public/stylesheets/autohiding-navbar2.css',
-  './public/stylesheets/footer-distributed-with-address-and-phones.css'
+  './public/stylesheets/footer.css'
   ])
 	    .pipe(minifyCSS({processImport: false}))
 	    //.pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9'))
