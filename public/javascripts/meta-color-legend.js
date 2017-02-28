@@ -200,7 +200,7 @@ function updateData(meta_type,strain_tree_id,gene_tree_id,coreTree_legend_id,too
 
     legendOptionValue=meta_type;
     var metaColorSet=metaColor_sets[meta_type];
-    removeLegend();
+    removeLegend(coreTree_legend_id);
     makeLegend(meta_type,svg1,tool_side,coreTree_legend_id);
 
     if (meta_type != 'genePattern') {
