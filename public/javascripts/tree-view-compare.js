@@ -129,7 +129,9 @@ var render_tree = function(tree_index,tree_div,treeJsonPath,clusterID,tool_side)
             .stroke( function (node){ if (node.is_leaf()) { return color_node_stroke };})
             .fill( function (node,d){
                     if (node.is_leaf()) {
-                        return (pgModule.hasOwnProperty(pxTree.node_color_mem,node.node_name())) ? pxTree.node_color_mem[node.node_name()] : color_node_fill;
+                        /*return (pgModule.hasOwnProperty(pxTree.node_color_mem,node.node_name())) ? pxTree.node_color_mem[node.node_name()] : color_node_fill;*/
+                        var node_color= pgModule.restore_tree_style(tool_side, 'node_color_mem', node.node_name())
+                        return (node_color!==undefined) ? node_color : color_node_fill;
                     }
                     else {return color_inner_node}
                 });
@@ -163,7 +165,7 @@ var render_tree = function(tree_index,tree_div,treeJsonPath,clusterID,tool_side)
             svgTree_Module.mouseout_hide_sub_highlight;
             d.toggle();
             tree_vis.update();
-            svgAction(tree_index,svg);
+            svgAction(tree_index,svg,tool_side);
         });
 
         //## The visualization is started at this point
@@ -190,7 +192,7 @@ var render_tree = function(tree_index,tree_div,treeJsonPath,clusterID,tool_side)
             .style({"font-size": "12px"})
             .text(scaleBar);
 
-        svgAction(tree_index,svg);
+        svgAction(tree_index,svg,tool_side);
         if (tree_div.indexOf('tree2') !== -1) {
             rotate_tree(svg,set_rotate);
         }
@@ -211,7 +213,7 @@ var render_tree = function(tree_index,tree_div,treeJsonPath,clusterID,tool_side)
             svg.selectAll(".tnt_tree_label").style("visibility", "hidden");
             $('#'+buttons.LabelsToggle_id).bootstrapToggle('off');
         };
-        svgAction(tree_index,svg);
+        svgAction(tree_index,svg,tool_side);
         if ((setLayout=='vertical') && ((tree_div.indexOf('tree2') !== -1))) {
             rotate_tree(svg,'left-right');
             $('#'+buttons.tree_rotate_id).bootstrapToggle('on');
@@ -224,7 +226,7 @@ var render_tree = function(tree_index,tree_div,treeJsonPath,clusterID,tool_side)
         var layout = tnt.tree.layout[setLayout]().width(width).scale( d3.select(this).property('checked'))
         tree_vis.layout(layout);
         tree_vis.update();
-        svgAction(tree_index,svg);
+        svgAction(tree_index,svg,tool_side);
         if ((setLayout=='vertical') && (tree_div.indexOf('tree2') !== -1)) {
             rotate_tree(svg,'left-right');
             $('#'+buttons.tree_rotate_id).bootstrapToggle('on');
@@ -259,7 +261,7 @@ var render_tree = function(tree_index,tree_div,treeJsonPath,clusterID,tool_side)
                     .color(color_leaf_label);
         tree_vis.label(node_label);
         tree_vis.update();
-        svgAction(tree_index,svg);
+        svgAction(tree_index,svg,tool_side);
         if (text_vis_state=='hidden') {
             svg.selectAll(".tnt_tree_label").style("visibility", text_vis_state)
         };
@@ -276,7 +278,7 @@ var render_tree = function(tree_index,tree_div,treeJsonPath,clusterID,tool_side)
                     .color(color_leaf_label);
         tree_vis.label(node_label);
         tree_vis.update();
-        svgAction(tree_index,svg);
+        svgAction(tree_index,svg,tool_side);
         if (text_vis_state=='hidden') {
             svg.selectAll(".tnt_tree_label").style("visibility", text_vis_state)
         };
@@ -354,7 +356,7 @@ var svgTree_Module= function(){
             .call(tips_node);
     };
 
-    function mouseover_show_subTree(d, i, tree_index) {
+    function mouseover_show_subTree(d, i, this_obj, tree_index, tool_side) {
         var click_type='';
         if (pgModule.hasOwnProperty(d, 'target' )) {
             click_type='link';
@@ -375,18 +377,18 @@ var svgTree_Module= function(){
               .attr("r", size_node_leaf_highlight_arr[tree_index])
         }
         else if ((d.name.indexOf('NODE_')==0) || (d.name=="")) {
-            this.style.cursor='pointer';
+            d3.select(this_obj).style('cursor','pointer');
             //# highlight selected inner node
             if (click_type=='node') {
-                d3.select(this)
+                d3.select(this_obj)
                     .style("stroke",color_inner_node_highlight)
                     .style("stroke-width",'20px')
                     .style("fill", "steelblue");
             } else if (click_type=='link') {
-                pxTree.link_color_mem[this.id]=this.style.stroke;
-                pxTree.link_width_mem[this.id]=this.style['stroke-width'];
-                pxTree.link_dash_mem[this.id]=this.style['stroke-dasharray'];
-                d3.select(this)
+                pgModule.store_tree_style(tool_side, 'link_color_mem', this_obj.id, this_obj.style.stroke);
+                pgModule.store_tree_style(tool_side, 'link_width_mem', this_obj.id, this_obj.style['stroke-width']);
+                pgModule.store_tree_style(tool_side, 'link_dash_mem', this_obj.id, this_obj.style['stroke-dasharray']);
+                d3.select(this_obj)
                     .style("stroke", pxTree.branch_col_highlight)
                     .style("stroke-width", pxTree.branch_wid_highlight);
             }
@@ -401,18 +403,16 @@ var svgTree_Module= function(){
             }
 
             //# highlight all subtree leaf nodes
-            for(var i=0;i<innerNd_childrenArr.length;i++) {
-                d3.selectAll("circle.pt" + innerNd_childrenArr[i])
-                    .style("fill", function(d) {
-                        return subtree_node_colorSet(d.name);
-                    })
+            for(var ind=0;ind<innerNd_childrenArr.length;ind++) {
+                d3.selectAll("circle.pt" + innerNd_childrenArr[ind])
+                    /*.style("fill", function(d) {return subtree_node_colorSet(d.name);})*/
+                    .style("fill", function() {return subtree_node_colorSet(ind);})
                     .attr("r", size_node_leaf_highlight_arr[tree_index]);
             }
         }
     };
 
-    function mouseout_hide_sub_highlight(d, i, tree_index) {
-        //console.log(size_node_leaf_arr[tree_index]);
+    function mouseout_hide_sub_highlight(d, i, this_obj, tree_index, tool_side, svg ) {
         var click_type='';
         //d.target!=undefined
         if (pgModule.hasOwnProperty(d, 'target' )) {
@@ -425,37 +425,38 @@ var svgTree_Module= function(){
         }
 
         if ( legendOptionValue!='genePattern') {
-            makeLegend(legendOptionValue)
-        }
+            makeLegend(legendOptionValue,svg,tool_side)
+        };
 
         if ( (d.name.indexOf('NODE_')!=0) && (d.name!='') ) {
-            d3.selectAll("circle.pt" + d.name)
-                .style("fill", pxTree.node_color_mem[d.name])
+            var tool_side_list= (tool_side!=null) ? [0,1] : ['null'];
+            for (var i_tool= 0, tool_len=tool_side_list.length; i_tool < tool_len; i_tool++) {
+                var each_tool_side= tool_side_list[i_tool];
+                d3.selectAll("#pt_"+ each_tool_side+ '_'+ d.name)
+                .style("fill", pgModule.restore_tree_style(each_tool_side, 'node_color_mem', d.name))
                 .attr("r", size_node_leaf_arr[tree_index]);
+            }
         }
         else if  ( (d.name.indexOf('NODE_')==0) || (d.name=="") ) {
             //#change the color of selected inner nodes
             if (click_type=='node') {
-                d3.select(this)
+                d3.select(this_obj)
                     .style("stroke-width",'0px')
                     .style("fill", color_inner_node)
                     .attr("r", size_node_inner_arr[tree_index]);
             } else if (click_type=='link') {
-                d3.select(this)
+                d3.select(this_obj)
                     .style('stroke', function () {
-                        if (pxTree.link_color_mem[this.id]!=undefined ) {
-                            return pxTree.link_color_mem[this.id];
-                        } else { return pxTree.branch_col;}
+                        var link_color= pgModule.restore_tree_style(tool_side, 'link_color_mem', this_obj.id);
+                        return (link_color!=undefined ) ? link_color : pxTree.branch_col;
                     })
                     .style("stroke-width", function () {
-                        if (pxTree.link_width_mem[this.id]!=undefined ) {
-                            return pxTree.link_width_mem[this.id];
-                        } else { return pxTree.link_width;}
+                        var link_width= pgModule.restore_tree_style(tool_side, 'link_width_mem', this_obj.id);
+                        return (link_width!=undefined ) ? link_width : pxTree.link_width;
                     })
                     .style("stroke-dasharray",function () {
-                        if (pxTree.link_dash_mem[this.id]!=undefined ) {
-                            return pxTree.link_dash_mem[this.id];
-                        } else { return pxTree.link_dasharray;}
+                        var link_dash= pgModule.restore_tree_style(tool_side, 'link_dash_mem',  this_obj.id);
+                        return (link_dash!=undefined ) ? link_dash : pxTree.link_dasharray;
                     })
             }
 
@@ -468,12 +469,16 @@ var svgTree_Module= function(){
                 var innerNd_childrenArr= d.toggle_children;
             }
 
-            for(var i=0;i<innerNd_childrenArr.length;i++) {
-                d3.selectAll("circle.pt" + innerNd_childrenArr[i])
+            for(var i_child=0;i_child<innerNd_childrenArr.length;i_child++) {
+                var tool_side_list= (tool_side!=null) ? [0,1] : ['null'];
+                for (var i_tool= 0, tool_len=tool_side_list.length; i_tool < tool_len; i_tool++) {
+                    var each_tool_side= tool_side_list[i_tool];
+                    d3.selectAll("#pt_"+each_tool_side +"_"+ innerNd_childrenArr[i_child])
                     .style("fill", function(d) {
-                        return pxTree.node_color_mem[d.name]
+                        return pgModule.restore_tree_style(each_tool_side, 'node_color_mem', d.name);
                     })
                     .attr("r", size_node_leaf_arr[tree_index]);
+                }
             }
         }
     };
@@ -517,20 +522,32 @@ var svgTree_Module= function(){
     };
 
     //## find the corresponding node in another tree
-    function node_showSubtree_trace(svg){
+    function node_showSubtree_trace(tree_index, svg, tool_side){
+        var each_tool_side= (tool_side!=null) ? tool_side : 'null';
         svg.selectAll("circle") // nodes tracing trick
             .attr("class", function(d,i) {
-                return  "pt" +d.name;
+                return "pt"+ d.name;
             })
-            .on("mouseover", mouseover_show_subTree )
-            .on("mouseout", mouseout_hide_sub_highlight)
+            .attr("id", function(d,i) {
+                return "pt_"+ each_tool_side+ '_'+ d.name;
+            })
+            .on("mouseover", function (d,i) {
+                return mouseover_show_subTree(d,i,this,tree_index, tool_side);
+            })
+            .on("mouseout", function (d,i) {
+                return mouseout_hide_sub_highlight(d,i,this, tree_index, tool_side, svg);
+            })
             .on("click", click_show_sub_metaTable );
     };
     //## select link to show sub-tree
-    function link_showSubtree_trace(svg) {
+    function link_showSubtree_trace(tree_index, svg, tool_side) {
         svg.selectAll('path.tnt_tree_link')
-            .on("mouseover", mouseover_show_subTree )
-            .on("mouseout", mouseout_hide_sub_highlight )
+            .on("mouseover", function (d,i) {
+                return mouseover_show_subTree(d,i,this,tree_index, tool_side);
+            })
+            .on("mouseout", function (d,i) {
+                return mouseout_hide_sub_highlight(d,i,this, tree_index, tool_side, svg);
+            })
             .call(tips_link)
             .on("click", click_show_sub_metaTable );
     };
@@ -541,19 +558,19 @@ var svgTree_Module= function(){
 }();
 
 /** actions on tree (tooltips, select subtree by nodes/links) */
-var svgAction = function(tree_index,svg) {
+var svgAction = function(tree_index, svg, tool_side) {
     var t0 = performance.now();
     svgTree_Module.tooltip_node(svg);
     var t1 = performance.now();
     if (times_flag==1) {csprint("x0 time: "+ Math.round(t1-t0) +" msec");}
 
     var t0 = performance.now();
-    svgTree_Module.node_showSubtree_trace(svg);
+    svgTree_Module.node_showSubtree_trace(tree_index, svg, tool_side);
     var t1 = performance.now();
     if (times_flag==1) {csprint("x1 time: "+ Math.round(t1-t0) +" msec");}
 
     var t0 = performance.now();
-    svgTree_Module.link_showSubtree_trace(svg);
+    svgTree_Module.link_showSubtree_trace(tree_index, svg, tool_side);
     var t1 = performance.now();
     if (times_flag==1) {csprint("x2 time: "+ Math.round(t1-t0) +" msec");}
 };
@@ -624,7 +641,7 @@ function search(val) {
 
     // adjust style of non matches
     d3.selectAll('circle').filter(function(d){return !nodeMatch(d) && (d.name.indexOf('NODE_')!=0)})
-        .style('fill', function (d){ pxTree.node_color_mem[d.name]})
+        .style('fill', function (d){ pgModule.restore_tree_style(tool_side, 'node_color_mem', d.name);})
         .attr('r', function (d){ return size_node_leaf_arr[tree_index]});
 };
 /*
@@ -652,15 +669,13 @@ var treeButton_tooltip_dict= {
     'ScalesToggle':'scale or without scale',*/
     'Height_plus_Toggle':'increase tree height',
     'Height_minus_Toggle':'decrease tree height',
+    'tree_zoom_reset': 'reset zoomed tree',
     'download_coreTree':'download strain tree',
     'download_geneTree':'download gene tree'}
 
 
 function button_tooltip2(divID, tooltip_dict) {
-    d3.selectAll(divID).selectAll('.btn_tooltip')/*, button*/
-    /*.each(function(d,i) {
-      console.log( d3.select(this).attr('id'), i);
-    })*/
+    d3.selectAll(divID).selectAll('.btn_tooltip')
     .on("mouseover", function(d){
         tooltip.text(tooltip_dict[d3.select(this).attr('id')]);
         if (tooltip.text()!="") {
