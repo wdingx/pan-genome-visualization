@@ -62,21 +62,19 @@ for (j = 0; j < meta_types.length; j++) {
 }
 
 //## legend configuration
-var legend = d3.select("#legend")
-                .attr("width", 100)
-                .attr("height", 380);
 var legendRectSize = 15;
 var legendSpacing = 4;
 var legendOptionValue='';
 
 //## clean legend
-function removeLegend() {
+function removeLegend(coreTree_legend_id) {
+    var legend= d3.select('#'+coreTree_legend_id);
     legend.selectAll('.legend')
         .remove();
 }
 
 //## create legend
-function makeLegend(meta_type,svg1,tool_side){ // && legendOptionValue!= "Meta-info"
+function makeLegend(meta_type,svg1,tool_side,coreTree_legend_id){ // && legendOptionValue!= "Meta-info"
     if ( legendOptionValue=='genePattern') {
         var node = svg1.selectAll('circle'),
             link = svg1.selectAll('.tnt_tree_link'),
@@ -107,6 +105,9 @@ function makeLegend(meta_type,svg1,tool_side){ // && legendOptionValue!= "Meta-i
             return pgModule.restore_genePattern_style(tool_side, 'link_dash_mem', d.target.name);
         });
     } else if (legendOptionValue!='') {
+        var legend= d3.select('#'+coreTree_legend_id)
+            .attr('width', pxTree.legend_width)
+            .attr('height', pxTree.legend_height);
         var tmp_leg = legend.selectAll(".legend")
             .data( metaColor_set_keys[meta_type] )
             .enter().append('g')
@@ -189,7 +190,7 @@ function makeLegend(meta_type,svg1,tool_side){ // && legendOptionValue!= "Meta-i
 
 
 //## update legend and coloring nodes by meta-info
-function updateData(meta_type,strain_tree_id,gene_tree_id,tool_side) {
+function updateData(meta_type,strain_tree_id,gene_tree_id,coreTree_legend_id,tool_side) {
     var svg1 = d3.select('#'+strain_tree_id),
         svg2 = d3.select('#'+gene_tree_id);
     //## svg1 for core tree, svg_all for both trees
@@ -200,7 +201,7 @@ function updateData(meta_type,strain_tree_id,gene_tree_id,tool_side) {
     legendOptionValue=meta_type;
     var metaColorSet=metaColor_sets[meta_type];
     removeLegend();
-    makeLegend(meta_type,svg1,tool_side);
+    makeLegend(meta_type,svg1,tool_side,coreTree_legend_id);
 
     if (meta_type != 'genePattern') {
         node.style("fill", function(d) {
@@ -264,7 +265,7 @@ function updateData(meta_type,strain_tree_id,gene_tree_id,tool_side) {
 };
 
 //## creat dropdown-list for meta-info
-var creat_dropdown = function (div, strain_tree_id, gene_tree_id,tool_side) {
+var creat_dropdown = function (div, strain_tree_id, gene_tree_id, coreTree_legend_id, tool_side) {
     var menu_panel = d3.select(div)
 
     var dropdown_meta = menu_panel
@@ -275,7 +276,7 @@ var creat_dropdown = function (div, strain_tree_id, gene_tree_id,tool_side) {
 
     dropdown_meta.on("change", function(d) {
         if (this.value!='Meta-info') {
-            updateData(this.value, strain_tree_id, gene_tree_id,tool_side);
+            updateData(this.value, strain_tree_id, gene_tree_id, coreTree_legend_id, tool_side);
         }
     });
 

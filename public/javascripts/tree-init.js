@@ -85,8 +85,11 @@ var pxTree = {
     treeStyle_tool2: {
         node_color_mem: {}, link_color_mem: {},
         link_width_mem: {}, link_dash_mem:  {}
-    }
+    },
+    legend_width:100,
+    legend_height:380
 };
+
 var treeSwitch= {
     layout_vertical: 'false',
 };

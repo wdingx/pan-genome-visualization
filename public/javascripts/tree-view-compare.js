@@ -368,7 +368,8 @@ var svgTree_Module= function(){
             d=d.target;
         }
 
-        removeLegend();
+        var coreTree_legend_id= (tool_side!=null) ? 'coreTree_legend_0'+(tool_side+1) : 'coreTree_legend';
+        removeLegend(coreTree_legend_id);
 
         //if (pgModule.hasOwnProperty(d, 'name') && d.name!='') {
         if ((d.name.indexOf('NODE_')!=0) && (d.name!='')) {
@@ -425,8 +426,9 @@ var svgTree_Module= function(){
             d=d.target
         }
 
+        var coreTree_legend_id= (tool_side!=null) ? 'coreTree_legend_0'+(tool_side+1) : 'coreTree_legend';
         if ( legendOptionValue!='genePattern') {
-            makeLegend(legendOptionValue,svg,tool_side)
+            makeLegend(legendOptionValue,svg,tool_side,coreTree_legend_id)
         };
 
         if ( (d.name.indexOf('NODE_')!=0) && (d.name!='') ) {
