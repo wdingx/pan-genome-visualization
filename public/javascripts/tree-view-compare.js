@@ -501,7 +501,7 @@ var svgTree_Module= function(){
             innerNd_childrenArr =[d.name];
         }
 
-        d3.json(path_datatable2, function(error, data) {
+        d3.json(path_datatable_meta, function(error, data) {
             var data=data['data']
             for (var i=0;i<data.length;i++) {
                 data[data[i]['accession']]=data[i]
@@ -514,9 +514,9 @@ var svgTree_Module= function(){
                     tmp['accession']=innerNd_childrenArr[i];
                     n.push(tmp);
                 }
-                $('#dc-data-table2').dataTable().fnClearTable();
-                $('#dc-data-table2').dataTable().fnAddData(n);
-                $('#dc-data-table2').dataTable().fnDraw();
+                $('#dc_data_table_meta').dataTable().fnClearTable();
+                $('#dc_data_table_meta').dataTable().fnAddData(n);
+                $('#dc_data_table_meta').dataTable().fnDraw();
             };
             RefreshTreeTable();
         });
