@@ -270,11 +270,11 @@ input[type=range] {
     border: 1px solid white;
 
     /*required for proper track sizing in FF*/
-    width: 160px;
+    width: 60px;
     margin-top: 7px
 }
 input[type=range]::-webkit-slider-runnable-track {
-    width: 160px;
+    width: 60px;
     height: 5px;
     background: #ddd;
     border: none;
@@ -298,7 +298,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 }
 
 input[type=range]::-moz-range-track {
-    width: 160px;
+    width: 60px;
     height: 5px;
     background: #ddd;
     border: none;
@@ -319,7 +319,7 @@ input[type=range]:-moz-focusring{
 }
 
 input[type=range]::-ms-track {
-    width: 160px;
+    width: 60px;
     height: 5px;
 
     /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
