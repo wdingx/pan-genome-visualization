@@ -296,6 +296,7 @@ var render_tree = function(tree_index,tree_div,treeJsonPath,clusterID,tool_side)
     } else { /** attach download_tree button */
         var download_geneTree=d3.select('#'+buttons.download_geneTree_id);
         var selected_speciesAbbr=(tool_side==1) ? speciesAbbr2 : speciesAbbr;
+        download_geneTree.selectAll('a').remove();
         download_geneTree.append('a')
             .attr('id',buttons.download_geneTree_id+'_href')
             .attr('href','/download/dataset/'+selected_speciesAbbr+'/geneCluster/'+clusterID+'.nwk')
