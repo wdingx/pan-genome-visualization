@@ -40,24 +40,24 @@ html
           img(src='images/pan-blue-noReads.svg', style='width:230;height:209px;')
           .col-md-2
         //- data-count
-        #dc-data-count.col-md-2.grid-stack-item(data-gs-x='2', data-gs-y='1', data-gs-width='2', data-gs-height='0')
+        #dc_data_count.col-md-2.grid-stack-item(data-gs-x='2', data-gs-y='1', data-gs-width='2', data-gs-height='0')
           .grid-stack-item-content
           .alert.alert-info(role='alert') Species
           #species-selector
-          .dc-data-count
+          .dc_data_count
         //- straincount-chart
-        #dc-straincount-chart.col-md-3.grid-stack-item(data-gs-x='4', data-gs-y='1', data-gs-width='3', data-gs-height='0')
+        #dc_straincount_chart.col-md-3.grid-stack-item(data-gs-x='4', data-gs-y='1', data-gs-width='3', data-gs-height='0')
           .grid-stack-item-content
           .alert.alert-info(role='alert') Gene count rank distribution
         //- geneLength-chart
-        #dc-geneLength-chart.col-md-3.grid-stack-item(data-gs-x='7', data-gs-y='1', data-gs-width='3', data-gs-height='0')
+        #dc_geneLength_chart.col-md-3.grid-stack-item(data-gs-x='7', data-gs-y='1', data-gs-width='3', data-gs-height='0')
           .grid-stack-item-content
           .alert.alert-info(role='alert') Gene length distribution
         //- coreAcc-piechart
         .col-md-2.grid-stack-item(data-gs-x='11', data-gs-y='1', data-gs-width='2', data-gs-height='0')
           .grid-stack-item-content
           .alert.alert-info(role='alert') Core vs. Accessory
-          #dc-coreAcc-piechart
+          #dc_coreAcc_piechart
           .col-md-4#col-coreThreshold
             span#coreThreshold(data-toggle='tooltip', data-placement='bottom', title='coreThreshold ')
               | cutoff:0.99
