@@ -6,7 +6,7 @@ function assign_color(color_set) {
     var index = meta_detail.indexOf('unknown');
     if (index > -1) {
         meta_detail.splice(index, 1);
-        tmp_meta_color_set['unknown']='#FFFFFF'
+        tmp_meta_color_set['unknown']=pxTree.node_metaunknown_stroke;
     }
     for (i = 0; i < meta_detail.length; i++) {
         var legend_value = meta_detail[i];
@@ -34,7 +34,7 @@ for (j = 0; j < meta_types.length; j++) {
         var index = meta_detail.indexOf('unknown');
         if (index > -1) {
             meta_detail.splice(index, 1);
-            tmp_meta_color_set['unknown']='#FFFFFF'
+            tmp_meta_color_set['unknown']=pxTree.node_metaunknown_stroke;
         }
         var min = Math.min.apply(null, meta_detail),
             max = Math.max.apply(null, meta_detail);
@@ -76,10 +76,36 @@ function removeLegend() {
 }
 
 //## create legend
-function makeLegend(meta_type){ // && legendOptionValue!= "Meta-info"
+function makeLegend(meta_type,svg1,tool_side){ // && legendOptionValue!= "Meta-info"
     if ( legendOptionValue=='genePattern') {
-        updatePresence( geneId_GV );
-        updateGainLossEvent( geneId_GV );
+        var node = svg1.selectAll('circle'),
+            link = svg1.selectAll('.tnt_tree_link'),
+            text = svg1.selectAll("text");
+        /*updatePresence( geneId_GV );
+        updateGainLossEvent( geneId_GV );*/
+        node.style('fill', function(d) {
+            if ((d.name.indexOf('NODE_')!=0) && (d.name!='')) {
+                var node_color= pgModule.restore_genePattern_style(tool_side, 'node_color_mem', d.name);
+                pgModule.store_tree_style(tool_side, 'node_color_mem', d.name, node_color);
+                return node_color;
+            }
+        });
+
+        text.style("fill", function(d) {
+            if (d!==undefined && d.name!='' ) {
+                return pgModule.restore_genePattern_style(tool_side, 'node_color_mem', d.name);
+            }
+        });
+
+        link.style('stroke', function(d) {
+            return pgModule.restore_genePattern_style(tool_side, 'link_color_mem', d.target.name);
+        })
+        .style("stroke-width", function (d) {
+            return pgModule.restore_genePattern_style(tool_side, 'link_width_mem', d.target.name);
+        })
+        .style("stroke-dasharray", function(d) {
+            return pgModule.restore_genePattern_style(tool_side, 'link_dash_mem', d.target.name);
+        });
     } else if (legendOptionValue!='') {
         var tmp_leg = legend.selectAll(".legend")
             .data( metaColor_set_keys[meta_type] )
@@ -95,8 +121,9 @@ function makeLegend(meta_type){ // && legendOptionValue!= "Meta-info"
                 return 'translate(' + horz + ',' + vert + ')';
             });
 
-        function mouseover_lengend(d) {
-            var text_value = d3.select(this).attr("text");
+        function mouseover_lengend(text_value,svg1) {
+            //var text_value = d3.select(this_obj).attr("text");
+            /*console.log(this_obj)*/
             svg1.selectAll("circle")
                 .filter(function(d) {
                     if (d[meta_type] === text_value ) {
@@ -113,8 +140,8 @@ function makeLegend(meta_type){ // && legendOptionValue!= "Meta-info"
                 .attr("r", size_node_leaf_highlight_arr[0]);
         }
 
-        function mouseout_lengend(d) {
-            var text_value = d3.select(this).attr("text");
+        function mouseout_lengend(text_value,svg1) {
+            /*var text_value = d3.select(this_obj).attr("text");*/
             svg1.selectAll("circle")
                 .filter(function(d) {
                     if (d[meta_type] === text_value ) {
@@ -143,8 +170,8 @@ function makeLegend(meta_type){ // && legendOptionValue!= "Meta-info"
                 var col = metaColor_sets[meta_type][d];
                 return d3.rgb(col).darker([0.4]).toString();
             })
-            .on("mouseover", mouseover_lengend)
-            .on("mouseout", mouseout_lengend);
+            .on("mouseover", function(d) {mouseover_lengend(d,svg1)})
+            .on("mouseout",  function(d) {mouseout_lengend(d,svg1)});
 
         tmp_leg.append('text')
             .attr('x', legendRectSize + legendSpacing + 5)
@@ -153,8 +180,8 @@ function makeLegend(meta_type){ // && legendOptionValue!= "Meta-info"
             .text(function(d) {
                 return d.toString();
             })
-            .on("mouseover", mouseover_lengend)
-            .on("mouseout", mouseout_lengend);
+            .on("mouseover", function(d) {mouseover_lengend(d,svg1)})
+            .on("mouseout",  function(d) {mouseout_lengend(d,svg1)});
 
         return tmp_leg;
     }
@@ -162,7 +189,9 @@ function makeLegend(meta_type){ // && legendOptionValue!= "Meta-info"
 
 
 //## update legend and coloring nodes by meta-info
-function updateData(meta_type) {
+function updateData(meta_type,strain_tree_id,gene_tree_id,tool_side) {
+    var svg1 = d3.select('#'+strain_tree_id),
+        svg2 = d3.select('#'+gene_tree_id);
     //## svg1 for core tree, svg_all for both trees
     var node = svg1.selectAll("circle"),
         text = svg1.selectAll("text"),
@@ -171,21 +200,21 @@ function updateData(meta_type) {
     legendOptionValue=meta_type;
     var metaColorSet=metaColor_sets[meta_type];
     removeLegend();
-    makeLegend(meta_type);
+    makeLegend(meta_type,svg1,tool_side);
 
     if (meta_type != 'genePattern') {
         node.style("fill", function(d) {
             if ( (d.name.indexOf('NODE_')!=0) && d.name!='' ) {
                 if ( isNumeric(metaColor_set_keys[meta_type][0])==false ) {
                     var setColor=metaColorSet[d[meta_type]];
-                    pxTree.node_color_mem[d.name]=setColor;
+                    pgModule.store_tree_style(tool_side, 'node_color_mem', d.name, setColor);
                     d3.selectAll("circle.pt" + d.name)
                         .style("fill", setColor);
                     return setColor;
                 } else {
                     if (d[meta_type]=='unknown') {
-                        var setColor='#FFFFFF';
-                        pxTree.node_color_mem[d.name]=setColor;
+                        var setColor=pxTree.node_metaunknown_stroke;
+                        pgModule.store_tree_style(tool_side, 'node_color_mem', d.name, setColor);
                         d3.selectAll("circle.pt" + d.name)
                             .style("fill", setColor);
                         return setColor;
@@ -195,7 +224,7 @@ function updateData(meta_type) {
                         for (i = 1; i <= current_keys.length; i++) {
                             if (  current_meta_value >= current_keys[i-1] && current_meta_value <=  current_keys[i] ) {
                                 var setColor=metaColorSet[current_keys[i]];
-                                pxTree.node_color_mem[d.name]=setColor;
+                                pgModule.store_tree_style(tool_side, 'node_color_mem', d.name, setColor);
                                 d3.selectAll("circle.pt" + d.name)
                                     .style("fill", setColor);
                                 return setColor;
@@ -230,12 +259,12 @@ function updateData(meta_type) {
         //## coloring all leaf nodes in gene Tree with blue
         svg2.selectAll('g.tnt_tree_node.leaf')
             .selectAll("circle")
-            .style("fill", "blue");
+            .style("fill", pxTree.col_pres);
     }
 };
 
 //## creat dropdown-list for meta-info
-var creat_dropdown = function (div) {
+var creat_dropdown = function (div, strain_tree_id, gene_tree_id,tool_side) {
     var menu_panel = d3.select(div)
 
     var dropdown_meta = menu_panel
@@ -246,7 +275,7 @@ var creat_dropdown = function (div) {
 
     dropdown_meta.on("change", function(d) {
         if (this.value!='Meta-info') {
-            updateData(this.value);
+            updateData(this.value, strain_tree_id, gene_tree_id,tool_side);
         }
     });
 
@@ -265,6 +294,3 @@ var creat_dropdown = function (div) {
             .text(meta_display_set[meta_types[i]]);
     }
 }
-creat_dropdown("#dropdown_list");
-creat_dropdown("#dropdown_list_01");
-creat_dropdown("#dropdown_list_02");
