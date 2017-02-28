@@ -7,8 +7,8 @@ rotate_monitor('tree_rotate_01','mytree2');
 rotate_monitor('tree_rotate_02','compare_tree2');
 
 /** create metadata dropdown list */
-creat_dropdown("#dropdown_list_01",'mytree1','mytree2',0);
-creat_dropdown("#dropdown_list_02",'compare_tree1','compare_tree2',1);
+creat_dropdown("#dropdown_list_01",'mytree1','mytree2','coreTree_legend_01',0);
+creat_dropdown("#dropdown_list_02",'compare_tree1','compare_tree2','coreTree_legend_02',1);
 
 /** render interactive charts and datatables */
 render_chart_table.initData(path_datatable1,'dc_data_table1', 'GC_tablecol_select',
