@@ -36,7 +36,6 @@ html
       .grid-stack
         br
         br
-        //- dc-charts(tool A)
         //- data-count(tool A)
         #dc_data_count.col-md-6.grid-stack-item(data-gs-x='0', data-gs-y='1', data-gs-width='6', data-gs-height='0')
           .grid-stack-item-content
@@ -49,16 +48,6 @@ html
             span#coreThreshold(data-toggle='tooltip', data-placement='bottom', title='coreThreshold ')
               | cutoff:0.99
             #changeCoreThreshold
-        //- straincount-chart(tool A)
-        #dc_straincount_chart.col-md-3.grid-stack-item(data-gs-x='0', data-gs-y='3', data-gs-width='3', data-gs-height='0')
-          .grid-stack-item-content
-          .alert.alert-info(role='alert') Gene count rank distribution
-        //- geneLength-chart(tool A)
-        #dc_geneLength_chart.col-md-3.grid-stack-item(data-gs-x='3', data-gs-y='3', data-gs-width='3', data-gs-height='0')
-          .grid-stack-item-content
-          .alert.alert-info(role='alert') Gene length distribution
-
-        //- dc-charts(tool B)
         //- data-count(tool B)
         #dc_data_count2.col-md-6.grid-stack-item(data-gs-x='6', data-gs-y='1', data-gs-width='6', data-gs-height='0')
           .grid-stack-item-content
@@ -71,6 +60,18 @@ html
             span#coreThreshold2(data-toggle='tooltip', data-placement='bottom', title='coreThreshold ')
               | cutoff:0.99
             #changeCoreThreshold2
+        
+        //- dc-charts(tool A)
+        //- straincount-chart(tool A)
+        #dc_straincount_chart.col-md-3.grid-stack-item(data-gs-x='0', data-gs-y='3', data-gs-width='3', data-gs-height='0')
+          .grid-stack-item-content
+          .alert.alert-info(role='alert') Gene count rank distribution
+        //- geneLength-chart(tool A)
+        #dc_geneLength_chart.col-md-3.grid-stack-item(data-gs-x='3', data-gs-y='3', data-gs-width='3', data-gs-height='0')
+          .grid-stack-item-content
+          .alert.alert-info(role='alert') Gene length distribution
+
+        //- dc-charts(tool B)
         //- straincount-chart(tool B)
         #dc_straincount_chart2.col-md-3.grid-stack-item(data-gs-x='6', data-gs-y='3', data-gs-width='3', data-gs-height='0')
           .grid-stack-item-content
@@ -261,6 +262,7 @@ html
     script(src='javascripts/third_party/msa-new.js')
     script(src='javascripts/third_party/tnt.tree.min.js')
     script(src='javascripts/third_party/jquery.panzoom.min.js')
+
     script(src='javascripts/data_path-compare.js')
     script(src='javascripts/tooltips.js')
     script(src='javascripts/datatable-gc.js')
@@ -272,20 +274,20 @@ html
     script(src='javascripts/render_viewer.js')
     script(src='javascripts/datatable-meta.js')
 
-    link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.2.6/gridstack.min.css')
-    script(type='text/javascript', src='//cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.2.6/gridstack.min.js')
+    //- link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.2.6/gridstack.min.css')
+    //- script(type='text/javascript', src='//cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.2.6/gridstack.min.js')
 
-    link(rel="stylesheet", type="text/css", href='stylesheets/gridstack.css')
+    //- link(rel="stylesheet", type="text/css", href='stylesheets/gridstack.css')
     script(type='text/javascript', src='javascripts/gridstack-config.js')
 
-    script(type='text/javascript').
-      $(function () {
-      var options = {
-      cellHeight: 35,//- cell_height: 30,
-      //vertical_margin: 15,
-      //always_show_resize_handle: true,
-      //animate: false,
-      float:true
-      };
-      $('.grid-stack').gridstack(options);
-      });
+    //- script(type='text/javascript').
+    //-   $(function () {
+    //-    var options = {
+    //-   cellHeight: 35,//- cell_height: 30,
+    //-   //vertical_margin: 15,
+    //-   //always_show_resize_handle: true,
+    //-   //animate: false,
+    //-   float:true
+    //-   };
+    //-   $('.grid-stack').gridstack(options);
+    //-   });
