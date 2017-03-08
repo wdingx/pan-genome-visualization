@@ -2,7 +2,7 @@
 render_tree(0, "mytree1", coreTree_path, clusterID=null, null);
 
 /** tree rotate listener */
-rotate_monitor('tree_rotate_01','mytree2');
+rotate_monitor('tree_rotate','mytree2');
 
 /** create metadata dropdown list */
 creat_dropdown("#dropdown_list",'mytree1','mytree2','coreTree_legend',null);
