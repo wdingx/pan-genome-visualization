@@ -9,12 +9,9 @@ var first_registered_list=[];
 var Initial_MsaGV='';
 var geneId_GV='', geneclusterID_GV='';
 var ann_majority= '';
-var chart_width=winInnerWidth/4.5,//(winInnerWidth/4.5>255) ? winInnerWidth/4.5 : 255,
-    chart_width_sm=winInnerWidth/30;
+var chart_width=winInnerWidth/4.5;//(winInnerWidth/4.5>255) ? winInnerWidth/4.5 : 255,
 var lineChart_width=chart_width, lineChart_height=150;
 var barChart_width=chart_width,  barChart_height=150;
-var pie_width=chart_width_sm, pie_height=chart_width_sm,
-    pie_outer_radius=chart_width_sm/2, pie_inner_radius=chart_width_sm/8;
 
 //## core_genome threshold slider
 function slider_coreThreshold_init(coreThreshold_slider_id){
