@@ -128,29 +128,6 @@ html
               svg#coreTree_legend_01
             .col-md-10
               #mytree1
-        //- gene tree (tool A)
-        .col-md-6.grid-stack-item(data-gs-x='0', data-gs-y='28', data-gs-width='6', data-gs-height='0')
-          .grid-stack-item-content
-          .alert.alert-info(role='alert')
-            #genetree_title_01 Gene tree (individual gene)
-          .row
-            .col-md-4
-              #searchStrain-group_01.input-group
-                span#sizing-addon_01.input-group-addon.primary.sm-customized Search strain
-                input.form-control.sm-customized(type='text', placeholder='NCBI accession number', aria-describedby='sizing-addon_01',oninput='search(this.value)')
-            #tree_rotate_div_01.col-md-2
-              input#tree_rotate_01(type='checkbox', data-toggle='toggle', data-style='ios', data-on='left-right', data-off='right-left', data-size='mini', data-onstyle='primary', data-offstyle='info')
-            //#dropdown_list2.col-md-4
-            #download_geneTree_01.col-md-1.btn_tooltip
-          .row
-            .col-md-10
-              #mytree2
-            .col-md-2
-              br
-              br
-              br
-              svg#legend2
-
         //- strain tree (tool B)
         .col-md-6.grid-stack-item(data-gs-x='6', data-gs-y='14', data-gs-width='6', data-gs-height='0')
           .grid-stack-item-content
@@ -180,6 +157,29 @@ html
               svg#coreTree_legend_02
             .col-md-10
               #compare_tree1
+
+        //- gene tree (tool A)
+        .col-md-6.grid-stack-item(data-gs-x='0', data-gs-y='28', data-gs-width='6', data-gs-height='0')
+          .grid-stack-item-content
+          .alert.alert-info(role='alert')
+            #genetree_title_01 Gene tree (individual gene)
+          .row
+            .col-md-4
+              #searchStrain-group_01.input-group
+                span#sizing-addon_01.input-group-addon.primary.sm-customized Search strain
+                input.form-control.sm-customized(type='text', placeholder='NCBI accession number', aria-describedby='sizing-addon_01',oninput='search(this.value)')
+            #tree_rotate_div_01.col-md-2
+              input#tree_rotate_01(type='checkbox', data-toggle='toggle', data-style='ios', data-on='left-right', data-off='right-left', data-size='mini', data-onstyle='primary', data-offstyle='info')
+            //#dropdown_list2.col-md-4
+            #download_geneTree_01.col-md-1.btn_tooltip
+          .row
+            .col-md-10
+              #mytree2
+            .col-md-2
+              br
+              br
+              br
+              svg#legend2
         //- gene tree (tool B)
         .col-md-6.grid-stack-item(data-gs-x='6', data-gs-y='28', data-gs-width='6', data-gs-height='0')
           .grid-stack-item-content
