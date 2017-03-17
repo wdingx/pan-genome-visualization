@@ -1,5 +1,27 @@
 @import url("//fonts.googleapis.com/css?family=Lato:300,400,700");
 
+@media (min-width: 1160px) {
+    div[class^="col"]{
+      padding-left:5px; padding-right:5px; /**/
+    }
+    .container{/* max-width: 2000px; */
+      width:85%;
+      } /* 1160px 970px;  */
+}
+
+body {
+  background-color: rgba(255, 140, 0, 0.03); !important /* rgba(255, 140, 10); */
+  font-family: "proxima-nova", Arial,sans-serif;
+  font-size: 15px;
+  line-height: 1.42857143;
+}/**/
+
+.cs_shadow {
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2), 0 2px 6px 0 rgba(0,0,0,0.19);
+  margin-bottom:5px;
+}
+
+
 /* font */
 html {
   font-family: "proxima-nova", Arial,sans-serif;
@@ -7,11 +29,6 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-body {
-  font-family: "proxima-nova", Arial,sans-serif;
-  font-size: 15px;
-  line-height: 1.42857143;
-}/**/
 
 #logo,#logo_footer h3{
   color:  #0000;/* #337AB7; */
@@ -71,7 +88,6 @@ table.dataTable thead > tr > th {
 /*table.dataTable thead > tr > th {
     text-align: left;
 }*/
-
 
 /* toggle-shape */
 .toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px;font-size:10px; }
@@ -206,14 +222,6 @@ td.ann-details-control, td.dup-details-control, td.geneName-details-control {
 }
 tr.shown td.ann-details-control, tr.shown td.dup-details-control, tr.shown td.geneName-details-control {
     background: url('../images/childRow_details_close.png') no-repeat center center;
-}
-
-@media (min-width: 1160px) {
-	 div[class^="col"]{padding-left:10px; padding-right:10px;} /**/
-    .container{
-      /* max-width: 2000px; */
-      width:85%;
-      } /* 1160px 970px;  */
 }
 
 /* .x-axis-label {font-size: 1px;} */
