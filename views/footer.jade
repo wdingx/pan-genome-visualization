@@ -1,35 +1,46 @@
 footer.footer-distributed
       .footer-left
-        img(src='images/pan-white-out.svg', style='width:233;height:209px')
+        img(src='images/pan-white-out.svg',style='width:80%')
         p.footer-links
           a(href='#') Applications
-          |         | 
-          a(href='#') Pipeline
-          |         | 
+          |         |
+          a(href='#') Methods
+          |         |
           a(href='#') Tutorials
-        p.footer-company-name Software and website: design by Wei Ding and Richard Neher
-        p.footer-company-name Software and website: implementation by Wei Ding
-        p.footer-company-name Logo and website &copy; 2016 Wei Ding
+          p.footer-author Software and website: design by Wei Ding and Richard Neher
+          p.footer-author Software and website: implementation by Wei Ding
+          p.footer-author Logo and website &copy; 2016 Wei Ding
       .footer-center
-        div
-          i.fa.fa-map-marker
-          p
-            span  Max Planck Institute for Developmental Biology
-            span  Spemannstrasse 35, 72076 Tuebingen, Germany
         #contacts
           i.fa.fa-envelope
           p
-            span wei.ding at tuebingen.mpg.de
-            span richard.neher at tuebingen.mpg.de
-        #github
+            span
+              a(href='mailto:wei.ding@tuebingen.mpg.de') wei.ding at tuebingen.mpg.de
+
+            span
+              a(href='mailto:richard.neher@unibas.ch') richard.neher at unibas.ch
+        #address
+          i.fa.fa-map-marker
+          p
+            span
+              br
+            span
+              a(href='http://www.eb.tuebingen.mpg.de/') Max Planck Institute for Developmental Biology
+            span  Spemannstrasse 35, 72076 Tuebingen, Germany
+            span
+              a(href='http://www.biozentrum.unibas.ch/') Biozentrum, University of Basel
+            span  Klingelbergstrasse 50/70, CH-4056 Basel, Switzerland
+        #repo
           i.fa.fa-github
           p
-            a(href='https://github.com/neherlab/pan-genome-analysis') pan-genome-analysis
             span
+              br
+            span
+              a(href='https://github.com/neherlab/pan-genome-analysis') pan-genome-analysis
             span
               a(href='https://github.com/neherlab/pan-genome-visualization/') pan-genome-visualization
       .footer-right
-        p.footer-company-about
+        p.footer-website-about
           span About panX
           |         panX is a powerful interactive platform for pan-genome exploration. It provides multiple different views on annotated genomes and allows rapid search by gene name, diversity, duplications, etc. Strain-specific meta-data is integrated into the phylogenetic tree viewer such that associations between gene presence and phenotypes can be spotted.
           |         Comments, suggestions for improvements, bug reports etc are welcome.

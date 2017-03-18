@@ -30,7 +30,7 @@
 .footer-distributed h3{
 	color:  #ffffff;
 	/*font: normal 36px;*/
-	font: normal 36px 'Cookie', cursive; 
+	font: normal 36px 'Cookie', cursive;
 	font-size: 60px;
 	margin: 0;
 }
@@ -54,9 +54,9 @@
 	color:  inherit;
 }
 
-.footer-distributed .footer-company-name{
+.footer-distributed .footer-author{
 	color:  #FFFFFF;
-	font-size: 14px;
+	font-size: 15px;
 	font-weight: normal;
 	margin: 0;
 }
@@ -95,7 +95,7 @@
 .footer-distributed .footer-center p span{
 	display:block;
 	font-weight: normal;
-	font-size:14px;
+	font-size:15px;
 	line-height:2;
 }
 
@@ -111,15 +111,15 @@
 	width: 30%;
 }
 
-.footer-distributed .footer-company-about{
+.footer-distributed .footer-website-about{
 	/* line-height: 20px; */
 	color:  #ffffff;
-	font-size: 14px;
+	font-size: 15px;
 	font-weight: normal;
 	margin: 0;
 }
 
-.footer-distributed .footer-company-about span{
+.footer-distributed .footer-website-about span{
 	display: block;
 	color:  #ffffff;
 	font-size: 15px;
@@ -153,8 +153,8 @@
 @media (max-width: 1560px) {
 
 	.footer-distributed{
-		font: bold 14px;
-		/* font: bold 14px sans-serif; */
+		font: bold 15px;
+		/* font: bold 15px sans-serif; */
 	}
 
 	.footer-distributed .footer-left,
@@ -170,12 +170,4 @@
 		margin-left: 0;
 	}
 
-}
-/* wding */
-
-text-decoration: underline;
-/* footer style */
-.footer-company-name.author{
-    padding-left: 5em;
-    color:red;
 }

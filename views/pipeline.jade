@@ -5,13 +5,10 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     link(rel='stylesheet', type='text/css', href='stylesheets/bootstrap.min.css', media='screen')
     link(rel='stylesheet', type='text/css', href='stylesheets/autohiding-navbar2.css', media='screen')
-    link(rel='stylesheet', type='text/css', href='stylesheets/footer-distributed-with-address-and-phones.css')
+    link(rel='stylesheet', type='text/css', href='stylesheets/footer.css')
     link(type='text/css', rel='stylesheet', href='stylesheets/page-appearance.css')
-
     link(rel='stylesheet', type='text/css', href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css')
-
-    title Micro-PanGenome-Analysis-Visualization
-
+    title panX
     style.
       body {
       position: relative;
@@ -36,103 +33,59 @@ html
     .container
       br
       br
-      | 
       .row
         nav#myScrollspy.col-sm-2
           ul.nav.nav-pills.nav-stacked
             li.active
               a(href='#section1')  pipeline overview
-            | 
             li
               a(href='#DIAMOND') DIAMOND
-            | 
-            li
-              a(href='#orthAgogue') orthAgogue
-            | 
             li
               a(href='#MCL') MCL
-            // <li><a href="#pan-genome_mapping">pan-genome mapping</a></li>
-            // <li><a href="#etc">etc</a></li>
-        | 
         .col-sm-7
           br
-          | 
           .alert.alert-success(role='alert') Pipeline overview
-          | 
           #section1
             h4  Data source: RefSeq records from NCBI
-            | 
-            h4 Tools: DIAMOND + orthAgogue + MCL
-            | 
+            h4 Tools: DIAMOND + MCL
             br
-            | 
             .item
               figure
                 img(src='./images/pipe-MPAV.png', alt='...', style='width:655px;height:665px;')
-                | 
                 br
-                | 
                 figcaption Fig.1 A overview of pan-genome analysis and mapping pipeline.
-          | 
           #DIAMOND
             .alert.alert-success(role='alert') DIAMOND
-            | 
             p
               | The all-against-all comparison of protein sequences from all strains is performed by the fast and sensitive protein alignment tool
               a(href='https://github.com/bbuchfink/diamond')
                 u DIAMOND
               |  (Buchfink et al. 2015), which applies a double indexing method to compute the list of seed and location information in both queries and references.
-            | 
             .item
               figure
                 img(src='./images/diamond.png', alt='...', style='width:875px;height:470px;')
-                | 
                 figcaption
                   | Fig.2 DIAMOND, a double indexing approach using the list of seed and their location in both queries and references.
-                | 
                 a(href='http://ab.inf.uni-tuebingen.de/teaching/ws14/bioinf/13-BeyondBlast.pdf')
                   u Image credit: Lecture notes by Daniel Huson, Tübingen University
-          | 
-          br
-          br
-          #orthAgogue
-            .alert.alert-success(role='alert') orthAgogue
-            | 
-            p
-              | The all-against-all similarity of ach sequence pair define a graph with nodes denoting protein sequences and edges corresponding to sequence similarity. The quantitative value of sequence similarlity can by used to weight edges and these weighted edges are used to define transition probabilities from one sequence to another and cluster sequences into orthologous gene clusters. This step is conducted by orthAgogue, a computationally efficient re-implementation based on OrthoMCL (Ekseth et al. 2014).
-            //
-              div class="item">
-              <figure>
-              <img src="./images/Tribe-MCL-F2.large.jpg" alt="..." style="width:875px;height:470px;">
-              <figcaption>Fig.3 orthAgogue, building the transition probability matrix from sequence similarities.</figcaption>
-              </figure>
-              <a href="http://nar.oxfordjournals.org/content/30/7/1575.full"><U>Figure origin </U></a>
-              </div
-          | 
           br
           br
           #MCL
             .alert.alert-success(role='alert') MCL
-            | 
             p
-              | After clustering by orthAgogue, we post-process the clusters by splitting clusters that contain a large number of paralogs.
-            | 
+              | After clustering by MCL, we post-process the clusters by splitting clusters that contain a large number of paralogs.
             .item
               figure
                 img(src='./images/mcl-svg.jpg', alt='...', style='width:547px;height:496px;')
-                | 
                 figcaption Fig.4 Graph clustering using Markov chain and flow simulation (MCL).
-              | 
               a(href='http://micans.org/mcl/index.html?sec_thesisetc')
-                u Image Credit: Stijn van Dongen, Graph Clustering by Flow Simulation. PhD thesis, University of Utrecht, May 2000.
-              | 
+                u
+                  | Image Credit: Stijn van Dongen, Graph Clustering by Flow Simulation. PhD thesis, University of Utrecht, May 2000.
               br
               br
-              | 
               a(href='https://www.cs.ucsb.edu/~xyan/classes/CS595D-2009winter/MCL_Presentation2.pdf')
                 u Lecture notes on MCL by Kathy Macropol, Arcadia University
     include footer
-
     script(src='javascripts/third_party/jquery.min.js')
     script(src='javascripts/third_party/bootstrap.min.js')
     script(src='javascripts/third_party/jquery.bootstrap-autohidingnavbar.min.js')

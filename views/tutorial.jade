@@ -1,16 +1,16 @@
 doctype html
 html
   head
-    meta(charset='UTF-8')    
+    meta(charset='UTF-8')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     link(rel='stylesheet', type='text/css', href='stylesheets/bootstrap.min.css', media='screen')
     link(rel='stylesheet', type='text/css', href='stylesheets/autohiding-navbar2.css', media='screen')
-    link(rel='stylesheet', type='text/css', href='stylesheets/footer-distributed-with-address-and-phones.css')
+    link(rel='stylesheet', type='text/css', href='stylesheets/footer.css')
     link(type='text/css', rel='stylesheet', href='stylesheets/page-appearance.css')
 
-    link(rel='stylesheet', type='text/css', href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css')    
-    title Micro-PanGenome-Analysis-Visualization
-    
+    link(rel='stylesheet', type='text/css', href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css')
+    title panX: pan-genome analysis & exploration
+
     style.
       body {
       position: relative;
@@ -33,7 +33,7 @@ html
     include navbar_tutorial
     .container
       br
-      br   
+      br
       .row
         nav#myScrollspy.col-sm-2
           ul.nav.nav-pills.nav-stacked
@@ -53,7 +53,7 @@ html
               a(href='#mutation_inspection') Mapping mutations
             li
               a(href='#meta-info_pattern') Meta-information
-        
+
         .col-sm-10
           br
           #components_interaction
@@ -87,7 +87,7 @@ html
               img(data-gifffer='./images/unique.gif', alt='...', style='width:1180px;height:696px;')
             br
           #annotation_inspection
-            .alert.alert-success(role='alert')  Inspecting the annotation of all genes in each clusters 
+            .alert.alert-success(role='alert')  Inspecting the annotation of all genes in each clusters
             p
             .item
               img(data-gifffer='./images/annotation.gif', alt='...', style='width:1180px;height:696px;')
@@ -101,11 +101,10 @@ html
           #meta-info_pattern
             .alert.alert-success(role='alert') Displaying strain specific meta-information on the core genome tree
             p
-            img(data-gifffer='./images/interactive-metaInfo-pattern.gif', alt='...', style='width:1180px;height:696px;') 
-    
+            img(data-gifffer='./images/interactive-metaInfo-pattern.gif', alt='...', style='width:1180px;height:696px;')
     include footer
 
-    script(src='javascripts/third_party/gifffer.min.js') 
+    script(src='javascripts/third_party/gifffer.min.js')
     script.
       window.onload = function() {
       Gifffer();
