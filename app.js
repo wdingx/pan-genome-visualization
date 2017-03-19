@@ -9,6 +9,13 @@ var routes = requireDir('./routes/'); // www.npmjs.org/package/require-dir
 var app = express();
 var compression = require('compression');
 app.use(compression());
+
+app.get('*aln', function (req, res, next) {
+  req.url = req.url + '.gz';
+  res.set('Content-Encoding', 'gzip');
+  next();
+});
+
 //"save loaded data to the global namespace"
 //"To enable cross-domain requests, have the server set the header Access-Control-Allow-Origin."
 app.all('*', function(req, res, next) {
@@ -43,9 +50,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', require('./routes/index') );
-// initial page  
+// initial page
 /*app.use('/', require('./routes/index') );*/
-for (var i in routes) 
+for (var i in routes)
   {app.use('/'+i, require('./routes/'+i)); //console.log(i)
   }
 
