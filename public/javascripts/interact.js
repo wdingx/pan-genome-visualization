@@ -7,7 +7,7 @@ import {pgDashboard} from "./tree-init.js";
 import species_dt from "./species-list-info";
 import {pie, chart_width} from "./chart_style";
 import * as dtab  from "./datatable-gc";
-import dataTable from "datatable";
+import {geneEvent_path_A, geneEvent_path_B, aln_file_path} from "./data_path";
 
 //import button_tooltip from "./tooltips";
 var  d3 = require("d3");
@@ -258,7 +258,7 @@ export const render_chart_table = {
             dc_data_table_registered=1;
             var mylist= dc.chartRegistry.list();
             first_registered_list=dc.chartRegistry.list();
-            first_registered_list_len=first_registered_list.length;
+            var first_registered_list_len=first_registered_list.length;
         } else {
             var mylist=dc.chartRegistry.list().slice(first_registered_list_len);
         }
@@ -555,7 +555,8 @@ var trigger_action_table= function(){
     var init_loading_geneEvent= function (datatable, table_id, first_cluster, strain_tree_id, gene_tree_id, tool_side){
         var geneGainLoss_Dt = {};
         //geneEvent_path= geneEvent_path_A;
-        geneEvent_path= (tool_side===1) ? geneEvent_path_B : geneEvent_path_A;
+        var geneEvent_path= (tool_side===1) ? geneEvent_path_B : geneEvent_path_A;
+        console.log("geneevent", geneEvent_path);
         d3.json(geneEvent_path, function(error, geneGainLoss_input) {
             var geneGainLoss_Dt = {};
             /** if geneGainLossEvent.json does not exist */
