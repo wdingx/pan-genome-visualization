@@ -1,3 +1,19 @@
+import msa from "msa";
+//import d3 from "d3";
+import dc from "dc";
+import noUiSlider from "nouislider";
+import crossfilter from "crossfilter";
+import {pgDashboard} from "./tree-init.js";
+import species_dt from "./species-list-info";
+import {pie, chart_width} from "./chart_style";
+import * as dtab  from "./datatable-gc";
+import dataTable from "datatable";
+
+//import button_tooltip from "./tooltips";
+var  d3 = require("d3");
+
+console.log("interact:", pgDashboard, d3, msa);
+
 var init_core_threshold=0.99;
 
 /** dc_data_table_registered: flag to record the first loaded dashboard.
@@ -9,7 +25,7 @@ var first_registered_list=[];
 var Initial_MsaGV='';
 var geneId_GV='', geneclusterID_GV='';
 var ann_majority= '';
-var chart_width=winInnerWidth/4.5;//(winInnerWidth/4.5>255) ? winInnerWidth/4.5 : 255,
+var chart_width=pgDashboard.winInnerWidth/4.5;//(winInnerWidth/4.5>255) ? winInnerWidth/4.5 : 255,
 var lineChart_width=chart_width, lineChart_height=150;
 var barChart_width=chart_width,  barChart_height=150;
 
@@ -54,12 +70,13 @@ var creat_dropdown_menu = function (div, species_dt) {
 creat_dropdown_menu('#species-selector', species_dt)
 
 //## create charts and load geneCluster dataTable
-var render_chart_table = {
+export const render_chart_table = {
     initChart: function (data, table_id, col_select_id,
         count_id, chart1_id, chart2_id, chart3_id,
         coreThreshold_slider_id, coreThreshold_text_id,
         first_cluster, strain_tree_id, gene_tree_id, tool_side) {
         /*"use strict";*/
+        console.log("firstcluster", first_cluster);
         var lineChart = dc.lineChart('#'+chart1_id)
                         .xAxisLabel('gene')
                         .yAxisLabel('strain count');
@@ -67,7 +84,6 @@ var render_chart_table = {
                         .yAxisLabel('gene count')
                         .xAxisLabel('gene length');
         var coreYesNoPieChart = dc.pieChart('#'+chart3_id);
-
         //# Create Crossfilter Dimensions and Groups
         var ndx = crossfilter(data);
         var all = ndx.groupAll();
@@ -117,7 +133,7 @@ var render_chart_table = {
 
         lineChart
             .width(lineChart_width).height(lineChart_height) //4.5
-            .x(d3.scale.linear().domain([1,totalGeneNumber] ))
+            .x(d3.scaleLinear().domain([1,totalGeneNumber] ))
             //.x(d3.scale.log().base(10).domain([1,totalGeneNumber] ))
             .transitionDuration(500)
             .dimension(geneCountDimension)
@@ -144,8 +160,8 @@ var render_chart_table = {
             .transitionDuration(500)
             .centerBar(true)
             .gap(1) // bar width Keep increasing to get right then back off.
-            .x(d3.scale.linear().domain([0, geneLengthMax]))
-            //.x(d3.scale.linear().clamp(true).domain([0, 5000]))
+            .x(d3.scaleLinear().domain([0, geneLengthMax]))
+            //.x(d3.scaleLinear().clamp(true).domain([0, 5000]))
             .elasticY(true)
             //.mouseZoomable(true)
             .renderHorizontalGridLines(true)
@@ -153,10 +169,10 @@ var render_chart_table = {
             .xAxis().tickFormat(function(v) {return v;}).ticks(5);
 
         coreYesNoPieChart
-            .width(pie_width)
-            .height(pie_height)
-            .radius(pie_outer_radius)
-            .innerRadius(pie_inner_radius)
+            .width(pie.width)
+            .height(pie.height)
+            .radius(pie.outer_radius)
+            .innerRadius(pie.inner_radius)
             .dimension(coreCount)
             .title(function(d){return d.value;})
             .group(coreCountGroup)
@@ -217,11 +233,11 @@ var render_chart_table = {
             }
         };
 
-        creat_dataTable('#'+table_id,geneCluster_table_columns);
+        dtab.create_dataTable('#'+table_id,dtab.geneCluster_table_columns);
 
-        button_tooltip('#'+table_id+' tr th',clusterTable_tooltip_dict );
+        //button_tooltip('#'+table_id+' tr th',dtab.clusterTable_tooltip_dict );
 
-        var datatable=datatable_configuration(geneCountDimension.top(Infinity), table_id, col_select_id);
+        var datatable=dtab.datatable_configuration(geneCountDimension.top(Infinity), table_id, col_select_id);
 
         /*var trigger_action_table_each= new trigger_action_table();
         trigger_action_table_each.init_action(datatable,table_id,strain_tree_id, gene_tree_id,tool_side);*/
@@ -262,9 +278,11 @@ var render_chart_table = {
         strain_tree_id,gene_tree_id, tool_side) {
         //## load the data, charts and MSA
         d3.json(path_datatable1, function(error, data) {
+            console.log(data[0]);
             Initial_MsaGV=data[0].msa;
             geneId_GV=data[0].geneId;
             ann_majority=data[0].ann;
+            var first_cluster = data[0];
             render_chart_table.initChart(data, table_id, col_select_id,
                 count_id, chart1_id, chart2_id, chart3_id,
                 coreThreshold_slider_id, coreThreshold_text_id,
@@ -647,11 +665,9 @@ var trigger_action_table= function(){
     return { init_action:init_action}
 }();
 
-var msa = require('msa');//var aln_path='';
 function msaLoad (aln_path,scheme_type) {
     var rootDiv = document.getElementById('snippetDiv');
     /* global rootDiv */
-    var msa = require('msa');
     var opts = {
       el: rootDiv,
       importURL: aln_path,

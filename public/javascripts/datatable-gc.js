@@ -1,7 +1,12 @@
+import $ from 'jquery';
+//import dataTable from "datatable";
+// export for others scripts to use
+var DataTable = require("datatable");
+window.$ = $;
 function csprint(data) { console.log(data)};
 
 //## dc_DataTables configuration
-var dc_dataTable_columnDefs_config=[
+export const dc_dataTable_columnDefs_config=[
     {'targets': 0,'defaultContent': '<button type="button" class="btn btn-info btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="amino acid alignment" >aa </button>'},
     {'targets': 1,'defaultContent': '<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="nucleotide alignment" >na </button>'},
     {'targets': 2,'data':'count'},
@@ -23,9 +28,9 @@ var dc_dataTable_columnDefs_config=[
 ];
 
 
-var creat_dataTable = function (div, columns_set) {
-    var datatable = d3.select(div);
-    var thead = datatable.append("thead")
+export const create_dataTable = function (div, columns_set) {
+    var datatable_div = d3.select(div);
+    var thead = datatable_div.append("thead")
         .attr("align", "left");
 
     thead.append("tr")
@@ -38,18 +43,18 @@ var creat_dataTable = function (div, columns_set) {
 
 
 //# create GC table
-var geneCluster_table_columns=['msa','msa','#strain','','duplicated','diversity','events','geneLen','','geneName','','annotation','Id','allAnn','allGName','locus']
+export const geneCluster_table_columns=['msa','msa','#strain','','duplicated','diversity','events','geneLen','','geneName','','annotation','Id','allAnn','allGName','locus']
 
-var clusterTable_tooltip_dict= {'msa':'multiple sequence alignment','msa':'multiple sequence alignment',
+export const clusterTable_tooltip_dict= {'msa':'multiple sequence alignment','msa':'multiple sequence alignment',
     '#strain':'strain count','duplicated':'whether duplicated and duplication count in each strain',
     'diversity':'gene diversity', 'events':'gene gain/loss events count',
     'geneLen':'average gene length', 'geneName':'gene name','annotation':'gene annotation'}
 
 //## pay attention to GC table column order
-var GC_table_dropdown_columns=['amino_acid aln','nucleotide aln','#strain','duplicated','diversity', 'gene gain/loss events','gene length','geneName','annotation'];
+export const GC_table_dropdown_columns=['amino_acid aln','nucleotide aln','#strain','duplicated','diversity', 'gene gain/loss events','gene length','geneName','annotation'];
 
 //## creat multiselect dropdown for dataTables
-var creat_multiselect = function (div, columns_set) {
+export const creat_multiselect = function (div, columns_set) {
     var select_panel = d3.select(div);
 
     for (i = 0; i < columns_set.length; i++) {
@@ -61,10 +66,11 @@ var creat_multiselect = function (div, columns_set) {
 };
 
 
-function datatable_configuration(table_input, table_id, col_select_id) {
+export const datatable_configuration = function(table_input, table_id, col_select_id) {
     "use strict";
     //GC_tablecol_select
     //## datatable configuration
+    console.log("datatable config", $('#'+table_id).DataTable, DataTable);
     var datatable = $('#'+table_id).DataTable({
         responsive: true,
         //dom: 'Bfrtip',

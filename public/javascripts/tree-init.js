@@ -1,4 +1,4 @@
-var pgModule = function(){
+export const pgModule = function(){
     var hasOwnProperty= function(obj, prop){
         return (obj[prop] !== undefined);
     }
@@ -48,11 +48,11 @@ var pgModule = function(){
         }
 }();
 
-var pgDashbord = {
+export const pgDashboard = {
     winInnerWidth: window.innerWidth,
 };
 
-var pxTree = {
+export var pxTree = {
     /**if true, use separated pattern instead of entire pattern */
     large_output: false,
     gain_loss_enabled: true,
@@ -90,11 +90,11 @@ var pxTree = {
     legend_height:380
 };
 
-var treeSwitch= {
+export var treeSwitch= {
     layout_vertical: 'false',
 };
 
-var backup_var= {
+export var backup_var= {
 stroke: '#999',
 'stroke-opacity': .6,
 color_node_stroke:'steelblue',

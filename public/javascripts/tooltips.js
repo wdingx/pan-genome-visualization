@@ -1,10 +1,13 @@
+//import d3 from "d3";
+import d3 from "d3-tip";
+
 // ## tooltip
 var antibiotics_set=[];
 if (0) { //antibiotics_set
     var antibiotics_set = ["amikacin","tigecycline","cefepime" ,"doxycycline","nitrofurantoin","cefoxitin","ampicillin","cefotaxime","ciprofloxacin","imipenem","levofloxacin","ampicillin/sulbactam","trimethoprim/sulfamethoxazole","cephalothin","ertapenem","tetracycline","piperacillin/tazobactam","minocycline","cefazolin","ceftazidime","gentamicin","meropenem"];}
 
 //## tooltip for datatables header
-var tooltip = d3.select("body")
+export const tooltip = d3.select("body")
     .append("div")
     .style("position", "absolute")
     //.style("z-index", "10")
@@ -14,7 +17,7 @@ var tooltip = d3.select("body")
     .style("visibility", "hidden")
     .style("background", "rgba(0,0,0,0.5)"); //255,255,255
 
-function button_tooltip(divID, tooltip_dict) {
+export const button_tooltip = function(divID, tooltip_dict) {
     d3.selectAll(divID)
     .on("mouseover", function(d){
         tooltip.text(tooltip_dict[d]);
@@ -31,7 +34,7 @@ function button_tooltip(divID, tooltip_dict) {
 };
 
 //## d3 tooltip for tree nodes and branches
-var tips_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
+export const tips_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
 
     string = "";
     // safe to assume the following attributes
@@ -88,7 +91,7 @@ var tips_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
     return string;
 });
 
-var tips_link = d3.tip().attr('class', 'd3-tip').html(function(d) {
+export const tips_link = d3.tip().attr('class', 'd3-tip').html(function(d) {
 
     string = "";
     if (typeof d.target.ann != "undefined") {
