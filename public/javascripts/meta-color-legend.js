@@ -1,3 +1,4 @@
+import {more_color_set} from "./colors";
 function isNumeric(num){
     return !isNaN(num)
 }
@@ -25,7 +26,7 @@ var metaColor_set_keys = {}; //## keep the original key order
 //## assign color to each item in each meta-info type
 delete meta_set['strainName']
 var meta_types = Object.keys(meta_set); // ['geo','host']
-for (j = 0; j < meta_types.length; j++) {
+for (var j = 0; j < meta_types.length; j++) {
     var tmp_meta_color_set = {};
     var tmp_meta_color_set_keys = [];
     var meta_type_key = meta_types[j]; // 'geo'
@@ -265,7 +266,7 @@ function updateData(meta_type,strain_tree_id,gene_tree_id,coreTree_legend_id,too
 };
 
 //## creat dropdown-list for meta-info
-var creat_dropdown = function (div, strain_tree_id, gene_tree_id, coreTree_legend_id, tool_side) {
+export const create_dropdown = function (div, strain_tree_id, gene_tree_id, coreTree_legend_id, tool_side) {
     var menu_panel = d3.select(div)
 
     var dropdown_meta = menu_panel
@@ -289,7 +290,7 @@ var creat_dropdown = function (div, strain_tree_id, gene_tree_id, coreTree_legen
         .attr("value", "genePattern")
         .text("gene presence/absence");
 
-    for (i = 0; i < meta_types.length; i++) { // ['geo','host']
+    for (var i = 0; i < meta_types.length; i++) { // ['geo','host']
         dropdown_meta.append("option")
             .attr("value", meta_types[i])
             .text(meta_display_set[meta_types[i]]);

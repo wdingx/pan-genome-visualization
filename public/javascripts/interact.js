@@ -46,7 +46,7 @@ function slider_coreThreshold_init(coreThreshold_slider_id){
 };
 
 //## make dropdown_menu
-var creat_dropdown_menu = function (div, species_dt) {
+var create_dropdown_menu = function (div, species_dt) {
     var menu = d3.select(div);
     var seletor = menu
         .append("select")
@@ -67,7 +67,7 @@ var creat_dropdown_menu = function (div, species_dt) {
         }
     }
 };
-creat_dropdown_menu('#species-selector', species_dt)
+create_dropdown_menu('#species-selector', species_dt)
 
 //## create charts and load geneCluster dataTable
 export const render_chart_table = {
@@ -698,9 +698,9 @@ function msaLoad (aln_path,scheme_type) {
     m.g.on("residue:click", function(data)
         {console.log(data);});*/
 
-    var menuOpts = {};
-    menuOpts.msa = m;
-    var defMenu = new msa.menu.defaultmenu(menuOpts);
-    m.addView('menu', defMenu);
-};//msaLoad(aln_file_path+Initial_MsaGV);
+    // var menuOpts = {};
+    // menuOpts.msa = m;
+    // var defMenu = new msa.menu.defaultmenu(menuOpts);
+    // m.addView('menu', defMenu);
+};
 

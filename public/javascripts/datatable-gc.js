@@ -54,7 +54,7 @@ export const clusterTable_tooltip_dict= {'msa':'multiple sequence alignment','ms
 export const GC_table_dropdown_columns=['amino_acid aln','nucleotide aln','#strain','duplicated','diversity', 'gene gain/loss events','gene length','geneName','annotation'];
 
 //## creat multiselect dropdown for dataTables
-export const creat_multiselect = function (div, columns_set) {
+export const create_multiselect = function (div, columns_set) {
     var select_panel = d3.select(div);
 
     for (var i = 0; i < columns_set.length; i++) {
@@ -116,7 +116,7 @@ export const datatable_configuration = function(table_input, table_id, col_selec
     var non_empty_index_list= indexes_list[0];
     var empty_inde_list = indexes_list[1];
 
-    //creat_multiselect('#'+col_select_id,GC_table_dropdown_columns);
+    //create_multiselect('#'+col_select_id,GC_table_dropdown_columns);
     // $('#'+col_select_id).multiselect({
     //     //enableFiltering: true,
     //     onChange: function(element, checked) {

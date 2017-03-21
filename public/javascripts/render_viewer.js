@@ -1,14 +1,15 @@
 import {render_chart_table} from "./interact";
+//import {create_dropdown} from "./meta-color-legend";
 import * as datapath from "./data_path";
 
 // /** strain_tree processing */
-// render_tree(0, "mytree1", coreTree_path, clusterID=null, null);
+//render_tree(0, "mytree1", coreTree_path, clusterID=null, null);
 
 // /** tree rotate listener */
 // rotate_monitor('tree_rotate','mytree2');
 
-// /** create metadata dropdown list */
-// creat_dropdown("#dropdown_list",'mytree1','mytree2','coreTree_legend',null);
+/** create metadata dropdown list */
+//create_dropdown("#dropdown_list",'mytree1','mytree2','coreTree_legend',null);
 
 /** render interactive charts and datatables */
 console.log("render_viewer:",datapath);
