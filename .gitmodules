@@ -1,0 +1,3 @@
+[submodule "public/phyloTree"]
+	path = public/phyloTree
+	url = https://github.com/nextstrain/phyloTree.git

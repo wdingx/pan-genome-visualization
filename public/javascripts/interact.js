@@ -1,5 +1,5 @@
 import msa from "msa";
-//import d3 from "d3";
+import d3 from "d3";
 import dc from "dc";
 import noUiSlider from "nouislider";
 import crossfilter from "crossfilter";
@@ -7,14 +7,19 @@ import {pgDashboard} from "./tree-init.js";
 import species_dt from "./species-list-info";
 import {pie, chart_width} from "./chart_style";
 import * as dtab  from "./datatable-gc";
+import geneTree from "./geneTree";
 import {geneEvent_path_A, geneEvent_path_B, aln_file_path} from "./data_path";
+import * as datapath from "./data_path";
 
 //import button_tooltip from "./tooltips";
-var  d3 = require("d3");
-
-console.log("interact:", pgDashboard, d3, msa);
 
 var init_core_threshold=0.99;
+var myGeneTree;
+const handleGeneTree = function(newTree){
+    myGeneTree = newTree;
+    console.log("render_viewer:",myGeneTree);
+}
+
 
 /** dc_data_table_registered: flag to record the first loaded dashboard.
  *  important for distinguishing between comparative datatables
@@ -133,7 +138,7 @@ export const render_chart_table = {
 
         lineChart
             .width(lineChart_width).height(lineChart_height) //4.5
-            .x(d3.scaleLinear().domain([1,totalGeneNumber] ))
+            .x(d3.scale.linear().domain([1,totalGeneNumber] ))
             //.x(d3.scale.log().base(10).domain([1,totalGeneNumber] ))
             .transitionDuration(500)
             .dimension(geneCountDimension)
@@ -160,8 +165,8 @@ export const render_chart_table = {
             .transitionDuration(500)
             .centerBar(true)
             .gap(1) // bar width Keep increasing to get right then back off.
-            .x(d3.scaleLinear().domain([0, geneLengthMax]))
-            //.x(d3.scaleLinear().clamp(true).domain([0, 5000]))
+            .x(d3.scale.linear().domain([0, geneLengthMax]))
+            //.x(d3.scale.linear().clamp(true).domain([0, 5000]))
             .elasticY(true)
             //.mouseZoomable(true)
             .renderHorizontalGridLines(true)
@@ -291,8 +296,9 @@ export const render_chart_table = {
             msaLoad(aln_path+Initial_MsaGV+'_aa.aln','taylor');
             console.log(Initial_MsaGV+'_aa.aln');
             var clusterID=Initial_MsaGV;
-            var geneTree_name=clusterID+'_tree.json';
-            //render_tree(1,gene_tree_id,aln_path+geneTree_name,clusterID,tool_side);
+            var geneTree_name=aln_path + clusterID+'_tree.json';
+            console.log("loading geneTree_name", geneTree_name);
+            geneTree("geneTree", geneTree_name, handleGeneTree);
         })
     }
 };
@@ -510,7 +516,7 @@ var trigger_action_table= function(){
         var geneTree_name=clusterID+'_tree.json';
         /** update gene tree */
         var aln_path= (tool_side==1) ? aln_file_path_B : aln_file_path;
-        render_tree(1,gene_tree_id, aln_path+geneTree_name, clusterID, tool_side);
+        geneTree("geneTree", geneTree_name, handleGeneTree);
     }
 
     /**
