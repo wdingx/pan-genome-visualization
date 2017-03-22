@@ -293,8 +293,8 @@ export const render_chart_table = {
                 coreThreshold_slider_id, coreThreshold_text_id,
                 first_cluster=data[0], strain_tree_id,gene_tree_id,tool_side);
             var aln_path= (tool_side==1) ? aln_file_path_B : aln_file_path;
-            msaLoad(aln_path+Initial_MsaGV+'_aa.aln','taylor');
-            console.log(Initial_MsaGV+'_aa.aln');
+            msaLoad(aln_path+Initial_MsaGV+'_aa.aln.fa','taylor');
+            console.log(Initial_MsaGV+'_aa.aln.fa');
             var clusterID=Initial_MsaGV;
             var geneTree_name=aln_path + clusterID+'_tree.json';
             console.log("loading geneTree_name", geneTree_name);
@@ -537,7 +537,7 @@ var trigger_action_table= function(){
     function trigger_aln_tree(data, geneGainLoss_Dt, aln_type, strain_tree_id, gene_tree_id, tool_side) {
         var msa_colorScheme =(aln_type=='aa') ? 'taylor' : 'nucleotide';
         /** load MSA alignment */
-        msaLoad(aln_file_path+data['msa']+'_'+aln_type+'.aln',msa_colorScheme);
+        msaLoad(aln_file_path+data['msa']+'_'+aln_type+'.aln.fa',msa_colorScheme);
         console.log(data['msa']);
 
         geneId_GV = data['geneId'];
