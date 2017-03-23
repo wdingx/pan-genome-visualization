@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import DataTable from 'datatables.net';
+import './third_party/table_plugin/dataTables.bootstrap.min.js'
 window.$ = $;
 window.jQuery = $;
 /*import multiselect from "bootstrap-multiselect";*/
