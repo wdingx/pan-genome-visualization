@@ -6,8 +6,6 @@ window.jQuery = $;
 var multiselect = require('bootstrap-multiselect');
 $.multiselect = multiselect;
 
-function csprint(data) { console.log(data)};
-
 //## dc_DataTables configuration
 export const dc_dataTable_columnDefs_config=[
     {'targets': 0,'defaultContent': '<button type="button" class="btn btn-info btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="amino acid alignment" >aa </button>'},
@@ -73,7 +71,6 @@ export const datatable_configuration = function(table_input, table_id, col_selec
     "use strict";
     //GC_tablecol_select
     //## datatable configuration
-    console.log("datatable config", $('#'+table_id).DataTable, DataTable);
     var datatable = $('#'+table_id).DataTable({
         responsive: true,
         //dom: 'Bfrtip',
