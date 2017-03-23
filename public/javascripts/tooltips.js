@@ -91,8 +91,8 @@ export const tips_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
     return string;
 });
 
-export const tips_link = d3.tip().attr('class', 'd3-tip').html(function(d) {
 
+export const tips_link = d3.tip().attr('class', 'd3-tip').html(function(d) {
     string = "";
     if (typeof d.target.ann != "undefined") {
         string += "<br/>" + "annotation:  " + d.target.ann;

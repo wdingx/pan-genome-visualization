@@ -15,12 +15,6 @@ import * as datapath from "./data_path";
 //import button_tooltip from "./tooltips";
 
 var init_core_threshold=0.99;
-var myGeneTree;
-const handleGeneTree = function(newTree){
-    myGeneTree = newTree;
-    console.log("render_viewer:",myGeneTree);
-}
-
 
 /** dc_data_table_registered: flag to record the first loaded dashboard.
  *  important for distinguishing between comparative datatables
@@ -280,7 +274,7 @@ export const render_chart_table = {
     initData: function (path_datatable1, table_id, col_select_id,
         count_id, chart1_id, chart2_id, chart3_id,
         coreThreshold_slider_id, coreThreshold_text_id,
-        strain_tree_id,gene_tree_id, tool_side) {
+        strain_tree_id,gene_tree_id, tool_side, handleGeneTree) {
         //## load the data, charts and MSA
         d3.json(path_datatable1, function(error, data) {
             Initial_MsaGV=data[0].msa;

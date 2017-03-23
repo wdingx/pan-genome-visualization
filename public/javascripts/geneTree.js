@@ -6,12 +6,15 @@ import {changeLayout, changeDistance, updateGeometry,
         updateBranchAttribute, updateBranchStyle, updateBranches} from "../phyloTree/src/updateTree";
 import {branchLabels, tipLabels, removeLabels} from "../phyloTree/src/labels";
 import d3 from "d3";
+import {pgDashboard} from "./tree-init";
 
-const geneTreeCallbacks = {onBranchClick:function(d){console.log(d.n.strain);},
-                        onBranchHover:function(d){console.log(d.n.strain);},
-                        onBranchLeave:function(d){console.log(d.n.strain);},
-                        onTipHover:function(d){console.log(d.n.strain);},
-                        onTipLeave:function(d){console.log(d.n.strain);}
+const geneTreeCallbacks = {onBranchClick:function(d){console.log(d.n.longName, d.strain);},
+                        onTipHover:function(d){console.log(d.n.longName, d.strain);
+                                                  d.strain.attr("r",10).style("fill", "#5AE");},
+                        onTipLeave:function(d){console.log(d.n.longName, d.strain);
+                                                  d.strain.attr("r",5).style("fill","#BBB");},
+                        onBranchHover:function(d){console.log(d.n.longName, d.strain);},
+                        onBranchLeave:function(d){console.log(d.n.longName, d.strain);}
                         }
 
 /**
@@ -21,10 +24,10 @@ const geneTreeCallbacks = {onBranchClick:function(d){console.log(d.n.strain);},
  * @param  {oject} speciesTree  [description]
  * @return {object}              the new constructed geneTree
  */
-const geneTree = function(tree_svg, treeJsonPath, speciesTree){
+const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, speciesTree){
     var treeplot = d3.select("#"+tree_svg);
-    treeplot.attr("width", 500);
-    treeplot.attr("height", 500);
+    treeplot.attr("width", pgDashboard.winInnerWidth/3.);
+    treeplot.attr("height", pgDashboard.winInnerWidth/3.);
     var myTree;
     d3.json(treeJsonPath, function(err, data){
         console.log(data, err);
@@ -56,6 +59,7 @@ const geneTree = function(tree_svg, treeJsonPath, speciesTree){
         const tipFontSize = function(d){return 4.0;}
         //branchLabels(myTree, branchText, branchFontSize, -5, -5);
         tipLabels(myTree, tipText, tipFontSize, 5, 3);
+        handleGeneTree(myTree);
     });
     if (typeof speciesTree !== "undefined"){
         linkTrees(speciesTree, myTree);
