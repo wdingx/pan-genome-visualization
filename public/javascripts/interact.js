@@ -250,7 +250,7 @@ export const render_chart_table = {
 
         function RefreshTable() {
             dc.events.trigger(function () {
-                alldata = geneCountDimension.top(Infinity);
+                var alldata = geneCountDimension.top(Infinity);
                 $('#'+table_id).dataTable().fnClearTable();
                 $('#'+table_id).dataTable().fnAddData(alldata);
                 $('#'+table_id).dataTable().fnDraw();
