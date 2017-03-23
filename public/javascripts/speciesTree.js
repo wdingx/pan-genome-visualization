@@ -5,22 +5,10 @@ import {changeLayout, changeDistance, updateGeometry,
         updateTipAttribute, updateTipStyle, updateTips,
         updateBranchAttribute, updateBranchStyle, updateBranches} from "../phyloTree/src/updateTree";
 import {branchLabels, tipLabels, removeLabels} from "../phyloTree/src/labels";
+import speciesTreeCallbacks from "./speciesTreeCallbacks";
 import d3 from "d3";
 import {pgDashboard} from "./tree-init";
-//import speciesTreeCallbacks from "./speciesTreeBehavior";
 
-const speciesTreeCallbacks = {onBranchClick:function(d){console.log(d.n.name);},
-                        onBranchHover:function(d){console.log(d.n.name);},
-                        onBranchLeave:function(d){console.log(d.n.name);},
-                        onTipHover:function(d){console.log(d.n.name, d.genes);
-                                            for (var gi=0; gi<d.genes.length; gi++){
-                                                  d.genes[gi].attr("r",10).style("fill", "#5AE");
-                                              }},
-                        onTipLeave:function(d){console.log(d.n.name, d.genes);
-                                            for (var gi=0; gi<d.genes.length; gi++){
-                                                  d.genes[gi].attr("r",4).style("fill", "#BBB");
-                                              }},
-                        }
 
 const speciesTree = function(tree_svg,treeJsonPath, handleResult){
     var treeplot = d3.select("#"+tree_svg);

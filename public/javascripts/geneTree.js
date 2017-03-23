@@ -7,15 +7,8 @@ import {changeLayout, changeDistance, updateGeometry,
 import {branchLabels, tipLabels, removeLabels} from "../phyloTree/src/labels";
 import d3 from "d3";
 import {pgDashboard} from "./tree-init";
+import geneTreeCallbacks from "./geneTreeCallbacks";
 
-const geneTreeCallbacks = {onBranchClick:function(d){console.log(d.n.longName, d.strain);},
-                        onTipHover:function(d){console.log(d.n.longName, d.strain);
-                                                  d.strain.attr("r",10).style("fill", "#5AE");},
-                        onTipLeave:function(d){console.log(d.n.longName, d.strain);
-                                                  d.strain.attr("r",5).style("fill","#BBB");},
-                        onBranchHover:function(d){console.log(d.n.longName, d.strain);},
-                        onBranchLeave:function(d){console.log(d.n.longName, d.strain);}
-                        }
 
 /**
  * Instantiate the gene tree and link it to the species tree
