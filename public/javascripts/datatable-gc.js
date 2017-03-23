@@ -1,7 +1,10 @@
 import $ from 'jquery';
 import DataTable from 'datatables.net';
-//import multiselect from "bootstrap-multiselect";
 window.$ = $;
+window.jQuery = $;
+/*import multiselect from "bootstrap-multiselect";*/
+var multiselect = require('bootstrap-multiselect');
+$.multiselect = multiselect;
 
 function csprint(data) { console.log(data)};
 
@@ -116,34 +119,34 @@ export const datatable_configuration = function(table_input, table_id, col_selec
     var non_empty_index_list= indexes_list[0];
     var empty_inde_list = indexes_list[1];
 
-    //create_multiselect('#'+col_select_id,GC_table_dropdown_columns);
-    // $('#'+col_select_id).multiselect({
-    //     //enableFiltering: true,
-    //     onChange: function(element, checked) {
-    //         //console.log(col_select_id,datatable,element,checked);
-    //         function element_included (arr, number) {
-    //             return (arr.indexOf(number) != -1)
-    //         }
-    //         var col_index = GC_table_dropdown_columns.indexOf(element.val());
-    //         var original_col_index = non_empty_index_list[col_index];
+    create_multiselect('#'+col_select_id,GC_table_dropdown_columns);
+    $('#'+col_select_id).multiselect({
+        //enableFiltering: true,
+        onChange: function(element, checked) {
+            //console.log(col_select_id,datatable,element,checked);
+            function element_included (arr, number) {
+                return (arr.indexOf(number) != -1)
+            }
+            var col_index = GC_table_dropdown_columns.indexOf(element.val());
+            var original_col_index = non_empty_index_list[col_index];
 
-    //         if (checked === true) {
-    //             if ( element_included(empty_inde_list,original_col_index-1)==true ) {
-    //                 var column_expand = datatable.column( original_col_index-1 );
-    //                 column_expand.visible( ! column_expand.visible() );}
-    //             var column_normal = datatable.column( original_col_index );
-    //             column_normal.visible( ! column_normal.visible() );
-    //         }
-    //         else if (checked === false) {
-    //             if ( element_included(empty_inde_list,original_col_index-1)==true ) {
-    //                 var column_expand = datatable.column( original_col_index-1 );
-    //                 column_expand.visible( ! column_expand.visible() );}
-    //             var column_normal = datatable.column( original_col_index );
-    //             column_normal.visible( ! column_normal.visible() );
+            if (checked === true) {
+                if ( element_included(empty_inde_list,original_col_index-1)==true ) {
+                    var column_expand = datatable.column( original_col_index-1 );
+                    column_expand.visible( ! column_expand.visible() );}
+                var column_normal = datatable.column( original_col_index );
+                column_normal.visible( ! column_normal.visible() );
+            }
+            else if (checked === false) {
+                if ( element_included(empty_inde_list,original_col_index-1)==true ) {
+                    var column_expand = datatable.column( original_col_index-1 );
+                    column_expand.visible( ! column_expand.visible() );}
+                var column_normal = datatable.column( original_col_index );
+                column_normal.visible( ! column_normal.visible() );
 
-    //         }
-    //     }
-    //});
+            }
+        }
+    });
 
     return datatable;
 };
