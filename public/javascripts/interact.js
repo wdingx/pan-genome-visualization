@@ -3,7 +3,7 @@ import d3 from "d3";
 import dc from "dc";
 import noUiSlider from "nouislider";
 import crossfilter from "crossfilter";
-import {pgDashboard} from "./tree-init.js";
+import {pgDashboard, pxTree} from "./tree-init.js";
 import species_dt from "./species-list-info";
 import {pie, chart_width} from "./chart_style";
 import * as dtab  from "./datatable-gc";
@@ -81,7 +81,6 @@ export const render_chart_table = {
         coreThreshold_slider_id, coreThreshold_text_id,
         first_cluster, strain_tree_id, gene_tree_id, tool_side) {
         /*"use strict";*/
-        console.log("firstcluster", first_cluster);
         var lineChart = dc.lineChart('#'+chart1_id)
                         .xAxisLabel('gene')
                         .yAxisLabel('strain count');
@@ -283,7 +282,6 @@ export const render_chart_table = {
         strain_tree_id,gene_tree_id, tool_side) {
         //## load the data, charts and MSA
         d3.json(path_datatable1, function(error, data) {
-            console.log(data[0]);
             Initial_MsaGV=data[0].msa;
             geneId_GV=data[0].geneId;
             ann_majority=data[0].ann;
@@ -562,7 +560,6 @@ var trigger_action_table= function(){
         var geneGainLoss_Dt = {};
         //geneEvent_path= geneEvent_path_A;
         var geneEvent_path= (tool_side===1) ? geneEvent_path_B : geneEvent_path_A;
-        console.log("geneevent", geneEvent_path);
         d3.json(geneEvent_path, function(error, geneGainLoss_input) {
             var geneGainLoss_Dt = {};
             /** if geneGainLossEvent.json does not exist */
