@@ -3,6 +3,9 @@ import {render_chart_table} from "./interact";
 import * as datapath from "./data_path";
 import speciesTree from "./speciesTree";
 import  {chartExample2} from "./datatable-meta";
+import {changeLayout} from "../phyloTree/src/updateTree";
+import {buttons} from "./tree-init";
+
 // /** strain_tree processing */
 //render_tree(0, "mytree1", coreTree_path, clusterID=null, null);
 
@@ -16,6 +19,13 @@ const handleSpeciesTree = function(newTree){
         newTree.namesToTips[tip.name] = tip;
     }
     mySpeciesTree = newTree;
+    console.log("button:", buttons.TreeViewSelect_id);
+    $('#'+buttons.TreeViewSelect_id).change(function() {
+        mySpeciesTree.layout =  (d3.select(this).property('checked')==false) ? 'rect' : 'radial';
+        console.log(mySpeciesTree)
+        changeLayout(mySpeciesTree, 1000);
+    });
+
     console.log("render_viewer:",mySpeciesTree);
 }
 var myGeneTree;

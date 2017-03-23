@@ -100,3 +100,13 @@ stroke: '#999',
 color_node_stroke:'steelblue',
 color_node_fill:'white',
 }
+
+
+export const buttons={
+        TreeViewSelect_id:'TreeViewSelect', LabelsToggle_id:'', InnerNodeToggle_id:'',ScalesToggle_id:'',
+        Height_plus_Toggle_id:'',Height_minus_Toggle_id:'',
+        tree_zoom_range_id:'',tree_zoom_reset_id:'',
+        dropdown_list_id:'',download_coreTree_id:'',download_geneTree_id:'',
+        tree_rotate_div_id:'',tree_rotate_id:'',
+        genetree_title_id:''
+        };
