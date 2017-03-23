@@ -1,6 +1,7 @@
 import msa from "msa";
 import d3 from "d3";
 import dc from "dc";
+window.dc = dc;
 import noUiSlider from "nouislider";
 import crossfilter from "crossfilter";
 import {pgDashboard, pxTree} from "./tree-init.js";
