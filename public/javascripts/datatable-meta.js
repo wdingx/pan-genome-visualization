@@ -1,22 +1,24 @@
-//# create meta table
-var meta_table_id='dc_data_table_meta'
-var meta_table_columns= Object.keys(meta_display_set);
-meta_table_columns.unshift('accession');
-creat_dataTable('#'+meta_table_id,meta_table_columns);
-
+import {create_dataTable} from "./datatable-gc";
+import {path_datatable_meta} from './data_path';
 //#DataTable for meta-info
-var chartExample2 = {
+export const chartExample2 = {
     dataTable2Fun: function (meta_table_id) {
 
+        //# create meta table
+        var meta_table_columns= Object.keys(meta_display_set);
+        meta_table_columns.unshift('accession');
+        create_dataTable('#'+meta_table_id,meta_table_columns);
+
+        //# assign data to each column
         var columnDefs_list=[];
-        for (i = 0; i < meta_table_columns.length; i++) {
+        for (var i = 0; i < meta_table_columns.length; i++) {
             columnDefs_list.push({
                 'targets': i,
                 'data': meta_table_columns[i]
             });
         }
 
-        datatable2= $('#'+meta_table_id).DataTable({
+        var datatable2= $('#'+meta_table_id).DataTable({
                 'ajax': path_datatable_meta,
                 'responsive': true,
                 'search':true,
@@ -32,4 +34,4 @@ var chartExample2 = {
             });
     }
 };
-chartExample2.dataTable2Fun(meta_table_id);
+//chartExample2.dataTable2Fun(meta_table_id);
