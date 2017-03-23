@@ -1,8 +1,10 @@
 import $ from 'jquery';
-import DataTable from 'datatables.net';
-import './third_party/table_plugin/dataTables.bootstrap.min.js'
 window.$ = $;
 window.jQuery = $;
+import DataTable from 'datatables.net';
+import './third_party/table_plugin/dataTables.bootstrap.min.js';
+/*bootstrap-toggle for switch button*/
+require('bootstrap-toggle');
 /*import multiselect from "bootstrap-multiselect";*/
 var multiselect = require('bootstrap-multiselect');
 $.multiselect = multiselect;
