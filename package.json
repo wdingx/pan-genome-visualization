@@ -27,6 +27,7 @@
     "jade": "~1.11.0",
     "jade-loader": "^0.8.0",
     "jquery": "^3.2.1",
+    "jquery.panzoom": "^3.2.2",
     "morgan": "~1.6.1",
     "msa": "^1.0.3",
     "nouislider": "^9.2.0",

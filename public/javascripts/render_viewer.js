@@ -5,7 +5,7 @@ import speciesTree from "./speciesTree";
 import  {chartExample2} from "./datatable-meta";
 import {changeLayout, updateTips,updateGeometry} from "../phyloTree/src/updateTree";
 import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
-import {buttons, treeProp, attachButtons, tipText, tipFontSize} from "./tree-init";
+import {buttons, treeProp, attachButtons, tipText, tipFontSize, attachPanzoom} from "./tree-init";
 
 // /** strain_tree processing */
 //render_tree(0, "mytree1", coreTree_path, clusterID=null, null);
@@ -76,7 +76,8 @@ const connectTrees = function(){
 
 
 speciesTree("speciesTree", datapath.coreTree_path, handleSpeciesTree);
-
+attachPanzoom("speciesTree");
+attachPanzoom("geneTree");
 
 // /** tree rotate listener */
 // rotate_monitor('tree_rotate','mytree2');

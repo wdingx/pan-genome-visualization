@@ -1,6 +1,9 @@
 import {changeLayout, changeDistance} from "../phyloTree/src/updateTree";
 import {zoomInY, zoomIntoClade} from "../phyloTree/src/zoom";
 import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
+import panzoom from "jquery.panzoom";
+
+console.log("panzoom", panzoom);
 
 export const pgModule = function(){
     var hasOwnProperty= function(obj, prop){
@@ -191,4 +194,15 @@ export const attachButtons = function(myTree, buttons){
             };
         });
     }
+}
+
+
+export const attachPanzoom = function(treeID){
+    $("#"+treeID).panzoom({
+        transition: true,
+        increment: 0.1,
+        minScale: 0.7,
+        maxScale: 1.5,
+        duration: 50,
+    });
 }
