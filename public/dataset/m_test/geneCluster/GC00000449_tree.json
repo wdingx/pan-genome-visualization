@@ -1,0 +1,1 @@
+{"branch_length": 0.0001, "name": "NODE_0000000", "children": [{"branch_length": 0.00026, "name": "NC_000908|MG_RS02060", "accession": "NC_000908", "muts": "T125C", "aa_muts": "", "annotation": "hypothetical_protein"}, {"branch_length": 0.00026, "name": "NC_018497|CM1_RS02100", "accession": "NC_018497", "muts": "T2362C", "aa_muts": "I788T", "annotation": "hypothetical_protein"}]}
