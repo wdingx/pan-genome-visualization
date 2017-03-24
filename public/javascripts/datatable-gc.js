@@ -3,6 +3,7 @@ window.$ = $;
 window.jQuery = $;
 import DataTable from 'datatables.net';
 import './third_party/table_plugin/dataTables.bootstrap.min.js';
+require("bootstrap");
 /*bootstrap-toggle for switch button*/
 require('bootstrap-toggle');
 /*import multiselect from "bootstrap-multiselect";*/

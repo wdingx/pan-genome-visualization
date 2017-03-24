@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "body-parser": "~1.13.2",
+    "bootstrap": "^3.3.7",
     "bootstrap-multiselect": "^0.9.13-1",
     "bootstrap-toggle": "^2.2.2",
     "compression": "^1.6.2",
