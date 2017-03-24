@@ -3,8 +3,9 @@ import {render_chart_table} from "./interact";
 import * as datapath from "./data_path";
 import speciesTree from "./speciesTree";
 import  {chartExample2} from "./datatable-meta";
-import {changeLayout, updateTips} from "../phyloTree/src/updateTree";
-import {buttons, treeProp, attachButtons} from "./tree-init";
+import {changeLayout, updateTips,updateGeometry} from "../phyloTree/src/updateTree";
+import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
+import {buttons, treeProp, attachButtons, tipText, tipFontSize} from "./tree-init";
 
 // /** strain_tree processing */
 //render_tree(0, "mytree1", coreTree_path, clusterID=null, null);
@@ -95,3 +96,23 @@ connectTrees();
 /** render meta-data datatable */
 var meta_table_id='dc_data_table_meta';
 chartExample2.dataTable2Fun(meta_table_id);
+
+
+window.addEventListener("resize", function(){
+    removeLabels(mySpeciesTree);
+    mySpeciesTree.dimensions.width = window.innerWidth/3;
+    mySpeciesTree.svg.attr("width", window.innerWidth/3);
+    updateGeometry(mySpeciesTree);
+    if (mySpeciesTree.showTipLabels){
+        tipLabels(mySpeciesTree, tipText, tipFontSize, 5, 5);
+    };
+
+    removeLabels(myGeneTree);
+    myGeneTree.dimensions.width = window.innerWidth/3;
+    myGeneTree.svg.attr("width", window.innerWidth/3);
+    updateGeometry(myGeneTree);
+    if (myGeneTree.showTipLabels){
+        tipLabels(myGeneTree, tipText, tipFontSize, 5, 5);
+    };
+});
+
