@@ -3,8 +3,8 @@ import {render_chart_table} from "./interact";
 import * as datapath from "./data_path";
 import speciesTree from "./speciesTree";
 import  {chartExample2} from "./datatable-meta";
-import {changeLayout} from "../phyloTree/src/updateTree";
-import {buttons} from "./tree-init";
+import {changeLayout, updateTips} from "../phyloTree/src/updateTree";
+import {buttons, treeProp, attachButtons} from "./tree-init";
 
 // /** strain_tree processing */
 //render_tree(0, "mytree1", coreTree_path, clusterID=null, null);
@@ -19,13 +19,12 @@ const handleSpeciesTree = function(newTree){
         newTree.namesToTips[tip.name] = tip;
     }
     mySpeciesTree = newTree;
-    console.log("button:", buttons.TreeViewSelect_id);
-    $('#'+buttons.TreeViewSelect_id).change(function() {
-        mySpeciesTree.layout =  (d3.select(this).property('checked')==false) ? 'rect' : 'radial';
-        console.log(mySpeciesTree)
-        changeLayout(mySpeciesTree, 1000);
-    });
-
+    attachButtons(mySpeciesTree, {layout:"TreeViewSelect",
+                                  zoomInY:"Height_plus_Toggle",
+                                  zoomOutY:"Height_minus_Toggle",
+                                  scale:"ScalesToggle",
+                                  tipLabels:"InnerNodeToggle",
+                                  zoomReset:"tree_zoom_reset"});
     console.log("render_viewer:",mySpeciesTree);
 }
 var myGeneTree;
@@ -38,27 +37,36 @@ const handleGeneTree = function(newTree){
 const connectTrees = function(){
     if (mySpeciesTree&&myGeneTree){
         console.log("connecting trees");
-        myGeneTree.namesToTips = {};
         myGeneTree.paralogs = {}
         for (var ti =0; ti<myGeneTree.tips.length; ti++){
             var tip = myGeneTree.tips[ti];
             tip.name = tip.n.name;
-            tip.strain = mySpeciesTree.svg.selectAll("#"+mySpeciesTree.namesToTips[tip.name].tipAttributes.id);
-            myGeneTree.namesToTips[tip.name] = tip;
-            if (myGeneTree.paralogs[tip.name]){
-                myGeneTree.paralogs[tip.name].push(tip);
+            tip.accession = tip.n.accession;
+            tip.strainTip = mySpeciesTree.svg.selectAll("#"+mySpeciesTree.namesToTips[tip.accession].tipAttributes.id);
+            if (myGeneTree.paralogs[tip.accession]){
+                myGeneTree.paralogs[tip.accession].push(tip);
             }else{
-                myGeneTree.paralogs[tip.name] = [tip];
+                myGeneTree.paralogs[tip.accession] = [tip];
             }
         }
+        console.log("connectTrees", myGeneTree);
         for (var ti =0; ti<mySpeciesTree.tips.length; ti++){
             var species = mySpeciesTree.tips[ti];
             species.genes = [];
             for (var gi=0; gi<myGeneTree.paralogs[species.name].length; gi++){
                 species.genes.push(myGeneTree.svg.selectAll("#"+myGeneTree.paralogs[species.name][gi].tipAttributes.id));
             }
+            if (myGeneTree.paralogs[species.name]){
+                species.genePresent = true;
+                species.tipAttributes.fill = treeProp.genePresentFill;
+                species.tipAttributes.r = treeProp.genePresentR;
+            }else{
+                species.genePresent = false;
+                species.tipAttributes.fill = treeProp.geneAbsentFill;
+                species.tipAttributes.r = treeProp.geneAbsentR;
+            }
         }
-
+        updateTips(mySpeciesTree,['r'],['fill'],200);
     }else{
         console.log("trees not available yet, retry", mySpeciesTree, myGeneTree);
         setTimeout(connectTrees, 1000);

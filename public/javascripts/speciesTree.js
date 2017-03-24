@@ -7,7 +7,8 @@ import {changeLayout, changeDistance, updateGeometry,
 import {branchLabels, tipLabels, removeLabels} from "../phyloTree/src/labels";
 import speciesTreeCallbacks from "./speciesTreeCallbacks";
 import d3 from "d3";
-import {pgDashboard} from "./tree-init";
+import {pgDashboard, tipText, tipFontSize} from "./tree-init";
+import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
 
 
 const speciesTree = function(tree_svg,treeJsonPath, handleResult){
@@ -15,6 +16,14 @@ const speciesTree = function(tree_svg,treeJsonPath, handleResult){
     treeplot.attr("width", pgDashboard.winInnerWidth/3.);
     treeplot.attr("height", pgDashboard.winInnerWidth/3.);
     var myTree;
+    speciesTreeCallbacks.onBranchClick = function (d){
+            removeLabels(myTree);
+            zoomIntoClade(myTree, d, 500);
+            if (myTree.showTipLabels){
+                tipLabels(myTree, tipText, tipFontSize, 5, 3);
+            };
+        };
+
     d3.json(treeJsonPath, function(err, data){
         if (data){
             myTree = phyloTree(data, {svg:treeplot, margins:{top:10, bottom:10, left:10, right:10},
@@ -24,25 +33,9 @@ const speciesTree = function(tree_svg,treeJsonPath, handleResult){
             console.log("error loading data",err);
         }
         drawTree(myTree);
-        const branchText = function(d){
-            if (d.n.muts){
-                const tmp = d.n.muts.join(',').slice(0,20);
-                return tmp;
-            }else{
-                return "";
-            }
-        }
-        const branchFontSize = function(d){return d.stats.leafCount>2?3:0;}
-        const tipText = function(d){
-            if (d.n.strain && d.terminal){
-                return d.n.strain;
-            }else{
-                return "";
-            }
-        }
-        const tipFontSize = function(d){return 4.0;}
-        //branchLabels(myTree, branchText, branchFontSize, -5, -5);
+
         tipLabels(myTree, tipText, tipFontSize, 5, 3);
+        myTree.showTipLabels=true;
         // add a look up for tips
         handleResult(myTree);
     });

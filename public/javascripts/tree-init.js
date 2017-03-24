@@ -1,3 +1,7 @@
+import {changeLayout, changeDistance} from "../phyloTree/src/updateTree";
+import {zoomInY, zoomIntoClade} from "../phyloTree/src/zoom";
+import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
+
 export const pgModule = function(){
     var hasOwnProperty= function(obj, prop){
         return (obj[prop] !== undefined);
@@ -101,12 +105,90 @@ color_node_stroke:'steelblue',
 color_node_fill:'white',
 }
 
+export const treeProp = {genePresentFill:"#1A3",
+                         genePresentR:4,
+                         geneAbsentFill:"#CCC",
+                         geneAbsentR:3}
 
-export const buttons={
-        TreeViewSelect_id:'TreeViewSelect', LabelsToggle_id:'', InnerNodeToggle_id:'',ScalesToggle_id:'',
-        Height_plus_Toggle_id:'',Height_minus_Toggle_id:'',
-        tree_zoom_range_id:'',tree_zoom_reset_id:'',
-        dropdown_list_id:'',download_coreTree_id:'',download_geneTree_id:'',
-        tree_rotate_div_id:'',tree_rotate_id:'',
-        genetree_title_id:''
-        };
+
+export const branchText = function(d){
+    if (d.n.muts){
+        const tmp = d.n.muts.join(',').slice(0,20);
+        return tmp;
+    }else{
+        return "";
+    }
+}
+export const branchFontSize = function(d){return d.stats.leafCount>2?3:0;}
+export const tipText = function(d){
+    if (d.n.strain && d.terminal){
+        return d.n.strain;
+    }else{
+        return "";
+    }
+}
+export const tipFontSize = function(d){return 12.0;}
+
+
+export const attachButtons = function(myTree, buttons){
+    if (buttons.layout){
+        console.log("button:", buttons.TreeViewSelect_id);
+        $('#'+buttons.layout).change(function() {
+            myTree.layout =  (d3.select(this).property('checked')==false) ? 'rect' : 'radial';
+            removeLabels(myTree);
+            changeLayout(myTree, 1000);
+            if (myTree.showTipLabels){
+                tipLabels(myTree, tipText, tipFontSize, 5, 3);
+            };
+        });
+    }
+    if (buttons.zoomInY){
+        $('#'+buttons.zoomInY).click(function() {
+            removeLabels(myTree);
+            zoomInY(myTree,1.4,1000);
+            if (myTree.showTipLabels){
+                tipLabels(myTree, tipText, tipFontSize, 5, 3);
+            };
+        });
+    }
+    if (buttons.zoomOutY){
+        $('#'+buttons.zoomOutY).click(function() {
+            removeLabels(myTree);
+            zoomInY(myTree,0.7,1000);
+            if (myTree.showTipLabels){
+                tipLabels(myTree, tipText, tipFontSize, 5, 3);
+            };
+        });
+    }
+    if (buttons.zoomReset){
+        $('#'+buttons.zoomReset).click(function() {
+            console.log("reset zom");
+            removeLabels(myTree);
+            zoomIntoClade(myTree, myTree.nodes[0],1000);
+            if (myTree.showTipLabels){
+                tipLabels(myTree, tipText, tipFontSize, 5, 5);
+            };
+        });
+    }
+    if (buttons.tipLabels){
+        $('#'+buttons.tipLabels).change(function() {
+            myTree.showTipLabels = d3.select(this).property('checked')
+            console.log("tipLabels");
+            if (myTree.showTipLabels){
+                tipLabels(myTree, tipText, tipFontSize, 5, 3);
+            }else{
+                removeLabels(myTree);
+            }
+        });
+    }
+    if (buttons.scale){
+        $('#'+buttons.scale).change(function() {
+            myTree.distance = (d3.select(this).property('checked')===false) ? "level":"div";
+            removeLabels(myTree);
+            changeDistance(myTree, 1000);
+            if (myTree.showTipLabels){
+                tipLabels(myTree, tipText, tipFontSize, 5, 5);
+            };
+        });
+    }
+}
