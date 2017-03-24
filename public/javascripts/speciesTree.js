@@ -18,7 +18,7 @@ const speciesTree = function(tree_svg,treeJsonPath, handleResult){
     var myTree;
     speciesTreeCallbacks.onBranchClick = function (d){
             removeLabels(myTree);
-            zoomIntoClade(myTree, d, 500);
+            zoomIntoClade(myTree, d.terminal?d.parent:d, 500);
             if (myTree.showTipLabels){
                 tipLabels(myTree, tipText, tipFontSize, 5, 3);
             };
