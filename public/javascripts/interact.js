@@ -1,9 +1,10 @@
-import msa from "msa";
 import d3 from "d3";
 import dc from "dc";
 window.dc = dc;
 import noUiSlider from "nouislider";
 import crossfilter from "crossfilter";
+import './third_party/msa-new.js';
+var msa=call_msa('msa');
 import {pgDashboard, pxTree} from "./tree-init.js";
 import species_dt from "./species-list-info";
 import {pie, chart_width} from "./chart_style";
@@ -673,12 +674,12 @@ function msaLoad (aln_path,scheme_type) {
     };
 
     opts.vis = {conserv: false, overviewbox: false, labelId: false};
-    opts.zoomer = {alignmentWidth:'auto',alignmentHeight: 250,rowHeight: 18,
+    /*opts.zoomer = {alignmentWidth:'auto',alignmentHeight: 250,rowHeight: 18,
                     labelWidth: 100, labelNameLength: 150,
                     labelNameFontsize: '10px',labelIdLength: 20, menuFontsize: '12px',
                     menuMarginLeft: '3px', menuPadding: '3px 4px 3px 4px', menuItemFontsize: '14px', menuItemLineHeight: '14px',
         //boxRectHeight: 2,boxRectWidth: 0.1,overviewboxPaddingTop: 20
-    };
+    };*/
     opts.colorscheme={scheme: scheme_type}; //{scheme: 'taylor'};//{scheme: 'nucleotide'};
     opts.config={};
     var m =  msa(opts);    //JSON.stringify
@@ -696,9 +697,9 @@ function msaLoad (aln_path,scheme_type) {
     m.g.on("residue:click", function(data)
         {console.log(data);});*/
 
-    // var menuOpts = {};
-    // menuOpts.msa = m;
-    // var defMenu = new msa.menu.defaultmenu(menuOpts);
-    // m.addView('menu', defMenu);
+    var menuOpts = {};
+    menuOpts.msa = m;
+    var defMenu = new msa.menu.defaultmenu(menuOpts);
+    m.addView('menu', defMenu);
 };
 
