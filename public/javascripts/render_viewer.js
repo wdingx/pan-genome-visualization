@@ -43,7 +43,7 @@ const handleDataTable = function(datatable){
 const tryConnectTrees = function(){
     if (mySpeciesTree&&myGeneTree&&myDatatable){
         connectTrees(mySpeciesTree, myGeneTree);
-        linkTableAlignmentTrees('dc_data_table', myDatatable, mySpeciesTree, myGeneTree);
+        linkTableAlignmentTrees('dc_data_table', myDatatable, mySpeciesTree, handleGeneTree);
     }else{
         console.log("trees not available yet, retry", mySpeciesTree, myGeneTree);
         setTimeout(tryConnectTrees, 1000);
