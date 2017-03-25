@@ -2,7 +2,7 @@ import {render_chart_table} from "./interact";
 //import {create_dropdown} from "./meta-color-legend";
 import * as datapath from "./data_path";
 import speciesTree from "./speciesTree";
-import  {chartExample2} from "./datatable-meta";
+import  {metaDataTable} from "./datatable-meta";
 import {changeLayout, updateTips,updateGeometry} from "../phyloTree/src/updateTree";
 import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
 import {buttons, treeProp, attachButtons, tipText, tipFontSize, attachPanzoom} from "./tree-init";
@@ -96,7 +96,7 @@ connectTrees();
 
 /** render meta-data datatable */
 var meta_table_id='dc_data_table_meta';
-chartExample2.dataTable2Fun(meta_table_id);
+metaDataTable.dataTable2Fun(meta_table_id);
 
 
 window.addEventListener("resize", function(){

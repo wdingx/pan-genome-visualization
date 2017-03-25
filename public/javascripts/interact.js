@@ -3,13 +3,12 @@ import dc from "dc";
 window.dc = dc;
 import noUiSlider from "nouislider";
 import crossfilter from "crossfilter";
-import './third_party/msa-new.js';
-var msa=call_msa('msa');
 import {pgDashboard, pxTree} from "./tree-init.js";
 import species_dt from "./species-list-info";
 import {pie, chart_width} from "./chart_style";
 import * as dtab  from "./datatable-gc";
 import geneTree from "./geneTree";
+import msaLoad from "./msaLoad";
 import {geneEvent_path_A, geneEvent_path_B, aln_file_path} from "./data_path";
 import * as datapath from "./data_path";
 
@@ -539,9 +538,9 @@ var trigger_action_table= function(){
         ann_majority = data['ann'];
         var clusterID=data['msa'];
         /** call functions to update tree pattern */
-        updatePresence(geneGainLoss_Dt, geneId_GV, clusterID, strain_tree_id, tool_side);
+        //updatePresence(geneGainLoss_Dt, geneId_GV, clusterID, strain_tree_id, tool_side);
         update_geneTree(data, gene_tree_id,tool_side);
-        updateGainLossEvent(geneGainLoss_Dt, geneId_GV, clusterID, strain_tree_id, tool_side);
+        //updateGainLossEvent(geneGainLoss_Dt, geneId_GV, clusterID, strain_tree_id, tool_side);
         $('#tree-rotate').bootstrapToggle('off');
         selectElement("dropdown_select",'genePattern');
         /** remove metadata legend and set legend_option_value to empty */
@@ -555,6 +554,7 @@ var trigger_action_table= function(){
     var init_loading_geneEvent= function (datatable, table_id, first_cluster, strain_tree_id, gene_tree_id, tool_side){
         var geneGainLoss_Dt = {};
         //geneEvent_path= geneEvent_path_A;
+        console.log("LINK ", table_id);
         var geneEvent_path= (tool_side===1) ? geneEvent_path_B : geneEvent_path_A;
         d3.json(geneEvent_path, function(error, geneGainLoss_input) {
             var geneGainLoss_Dt = {};
@@ -587,7 +587,9 @@ var trigger_action_table= function(){
             });
 
             /** na button (nucleotide button  in table): update MSA nucleotide alignment and tree*/
+            console.log("na button", $('#'+table_id+' tbody'));
             $('#'+table_id+' tbody').on('click', '.btn.btn-primary.btn-xs', function (e) {
+                console.log("na button");
                 var data = datatable.row( $(this).parents('tr') ).data();
                 trigger_aln_tree(data, geneGainLoss_Dt, 'na', strain_tree_id, gene_tree_id, tool_side);
                 /** avoid to activate row clicking */
@@ -664,42 +666,4 @@ var trigger_action_table= function(){
     }
     return { init_action:init_action}
 }();
-
-function msaLoad (aln_path,scheme_type) {
-    var rootDiv = document.getElementById('snippetDiv');
-    /* global rootDiv */
-    var opts = {
-      el: rootDiv,
-      importURL: aln_path,
-    };
-
-    opts.vis = {conserv: false, overviewbox: false, labelId: false};
-    /*opts.zoomer = {alignmentWidth:'auto',alignmentHeight: 250,rowHeight: 18,
-                    labelWidth: 100, labelNameLength: 150,
-                    labelNameFontsize: '10px',labelIdLength: 20, menuFontsize: '12px',
-                    menuMarginLeft: '3px', menuPadding: '3px 4px 3px 4px', menuItemFontsize: '14px', menuItemLineHeight: '14px',
-        //boxRectHeight: 2,boxRectWidth: 0.1,overviewboxPaddingTop: 20
-    };*/
-    opts.colorscheme={scheme: scheme_type}; //{scheme: 'taylor'};//{scheme: 'nucleotide'};
-    opts.config={};
-    var m =  msa(opts);    //JSON.stringify
-    //m.g.on('row:click', function(data){ console.log(data) });
-    //m.g.on('column:click', function(data){ console.log(data) });
-
-    /*m.g.on('all',function(name,data){
-        var obj = {name: name, data:data};
-        //if(inIframe()){ parent.postMessage(obj, "*") }
-        parent.postMessage(obj, "*")
-    });
-    m.g.on("column:click", function(data){
-        colorBy = "genotype";
-        colorByGenotypePosition([data['rowPos']]);});
-    m.g.on("residue:click", function(data)
-        {console.log(data);});*/
-
-    var menuOpts = {};
-    menuOpts.msa = m;
-    var defMenu = new msa.menu.defaultmenu(menuOpts);
-    m.addView('menu', defMenu);
-};
 

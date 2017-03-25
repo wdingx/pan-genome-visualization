@@ -1,7 +1,7 @@
 import {create_dataTable} from "./datatable-gc";
 import {path_datatable_meta} from './data_path';
 //#DataTable for meta-info
-export const chartExample2 = {
+export const metaDataTable = {
     dataTable2Fun: function (meta_table_id) {
 
         //# create meta table
@@ -34,4 +34,3 @@ export const chartExample2 = {
             });
     }
 };
-//chartExample2.dataTable2Fun(meta_table_id);
