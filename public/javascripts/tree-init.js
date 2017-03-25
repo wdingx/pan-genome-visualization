@@ -222,13 +222,19 @@ export const connectTrees = function(speciesTree, geneTree){
             geneTree.paralogs[tip.accession] = [tip];
         }
     }
-    console.log("connectTrees", geneTree);
+
+    for (var ti =0; ti<geneTree.tips.length; ti++){
+        var tip = geneTree.tips[ti];
+        tip.paralogs = geneTree.paralogs[tip.accession].filter(function(d){return d.name!==tip.name;});
+    }
+
+
     for (var ti =0; ti<speciesTree.tips.length; ti++){
         var species = speciesTree.tips[ti];
         species.genes = [];
         species.elem = speciesTree.svg.selectAll("#"+species.tipAttributes.id);
         for (var gi=0; gi<geneTree.paralogs[species.name].length; gi++){
-            species.genes.push([geneTree.paralogs[species.name][gi], geneTree.svg.selectAll("#"+geneTree.paralogs[species.name][gi].tipAttributes.id)]);
+            species.genes.push(geneTree.paralogs[species.name][gi]);
         }
         if (geneTree.paralogs[species.name]){
             species.genePresent = true;
