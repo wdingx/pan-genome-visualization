@@ -1,10 +1,10 @@
 import {render_chart_table} from "./chartsAndClusterTable";
-//import {create_dropdown} from "./meta-color-legend";
 import * as datapath from "./data_path";
 import speciesTree from "./speciesTree";
 import  {metaDataTable} from "./datatable-meta";
 import {buttons, pxTree, attachButtons, tipText, tipFontSize, attachPanzoom, connectTrees} from "./tree-init";
 import linkTableAlignmentTrees from "./linkTableAlignmentTrees";
+import {create_dropdown, updateData} from "./meta-color-legend";
 
 // /** strain_tree processing */
 //render_tree(0, "mytree1", coreTree_path, clusterID=null, null);
@@ -44,13 +44,21 @@ const tryConnectTrees = function(){
     if (mySpeciesTree&&myGeneTree&&myDatatable){
         connectTrees(mySpeciesTree, myGeneTree);
         linkTableAlignmentTrees('dc_data_table', myDatatable, mySpeciesTree, handleGeneTree);
+        var menu_panel = d3.select("#dropdown_select")
+        menu_panel.on("change", function(d) {
+            if (this.value!='Meta-info') {
+                console.log("trigger meta data color change", this.value, d, menu_panel);
+                updateData(this.value, mySpeciesTree, myGeneTree, 'coreTree_legend', 0);
+            }
+        });
     }else{
         console.log("trees not available yet, retry", mySpeciesTree, myGeneTree);
         setTimeout(tryConnectTrees, 1000);
     }
 }
 
-
+/** create metadata dropdown list */
+create_dropdown("#dropdown_list",mySpeciesTree,'geneTree','coreTree_legend',null);
 speciesTree("speciesTree", datapath.coreTree_path, handleSpeciesTree);
 attachPanzoom("speciesTree");
 attachPanzoom("geneTree");
@@ -58,8 +66,7 @@ attachPanzoom("geneTree");
 // /** tree rotate listener */
 // rotate_monitor('tree_rotate','mytree2');
 
-/** create metadata dropdown list */
-//create_dropdown("#dropdown_list",'mytree1','mytree2','coreTree_legend',null);
+
 
 /** render interactive charts and gene-cluster datatable */
 //console.log("render_viewer:",datapath);

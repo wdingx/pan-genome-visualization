@@ -1,4 +1,6 @@
-import {more_color_set} from "./colors";
+import {more_color_set, safe_color_set} from "./colors";
+import {pxTree} from "./tree-init";
+import {updateTips} from "../phyloTree/src/updateTree";
 function isNumeric(num){
     return !isNaN(num)
 }
@@ -9,7 +11,7 @@ function assign_color(color_set) {
         meta_detail.splice(index, 1);
         tmp_meta_color_set['unknown']=pxTree.node_metaunknown_stroke;
     }
-    for (i = 0; i < meta_detail.length; i++) {
+    for (var i = 0; i < meta_detail.length; i++) {
         var legend_value = meta_detail[i];
         tmp_meta_color_set_keys.push(legend_value);
         tmp_meta_color_set[legend_value]=color_set[i];
@@ -17,20 +19,20 @@ function assign_color(color_set) {
     if (tmp_meta_color_set['unknown']!=undefined){
             tmp_meta_color_set_keys.push('unknown');
     }
-    metaColor_sets[meta_type_key] = tmp_meta_color_set;
-    metaColor_set_keys[meta_type_key] = tmp_meta_color_set_keys;
+    metaColor_sets[metaType_key] = tmp_meta_color_set;
+    metaColor_set_keys[metaType_key] = tmp_meta_color_set_keys;
 }
 
 var metaColor_sets = {}; // dict:{ 'host':hostColor,'country':countryColor}
 var metaColor_set_keys = {}; //## keep the original key order
 //## assign color to each item in each meta-info type
 delete meta_set['strainName']
-var meta_types = Object.keys(meta_set); // ['geo','host']
-for (var j = 0; j < meta_types.length; j++) {
+var metaTypes = Object.keys(meta_set); // ['geo','host']
+for (var j = 0; j < metaTypes.length; j++) {
     var tmp_meta_color_set = {};
     var tmp_meta_color_set_keys = [];
-    var meta_type_key = meta_types[j]; // 'geo'
-    var meta_detail = meta_set[meta_type_key]; // ["human", "rice"]
+    var metaType_key = metaTypes[j]; // 'geo'
+    var meta_detail = meta_set[metaType_key]; // ["human", "rice"]
     if (isNumeric(meta_detail[0])) {
         var index = meta_detail.indexOf('unknown');
         if (index > -1) {
@@ -42,7 +44,7 @@ for (var j = 0; j < meta_types.length; j++) {
         var distance = max - min;
         var num_interval = 5;
         var interval= distance/num_interval;
-        for (i = 0; i <= num_interval; i++) {
+        for (var i = 0; i <= num_interval; i++) {
             // one decimal place
             var legend_value = Math.round( (min+interval*i)*10 )/10;
             tmp_meta_color_set_keys.push(legend_value);
@@ -51,8 +53,8 @@ for (var j = 0; j < meta_types.length; j++) {
         if (tmp_meta_color_set['unknown']!=undefined){
             tmp_meta_color_set_keys.push('unknown');
         }
-        metaColor_sets[meta_type_key] = tmp_meta_color_set;
-        metaColor_set_keys[meta_type_key] = tmp_meta_color_set_keys;
+        metaColor_sets[metaType_key] = tmp_meta_color_set;
+        metaColor_set_keys[metaType_key] = tmp_meta_color_set_keys;
     }
     else {
         assign_color(more_color_set);
@@ -65,7 +67,6 @@ for (var j = 0; j < meta_types.length; j++) {
 //## legend configuration
 var legendRectSize = 15;
 var legendSpacing = 4;
-var legendOptionValue='';
 
 //## clean legend
 function removeLegend(coreTree_legend_id) {
@@ -75,42 +76,33 @@ function removeLegend(coreTree_legend_id) {
 }
 
 //## create legend
-function makeLegend(meta_type,svg1,tool_side,coreTree_legend_id){ // && legendOptionValue!= "Meta-info"
-    if ( legendOptionValue=='genePattern') {
-        var node = svg1.selectAll('circle'),
-            link = svg1.selectAll('.tnt_tree_link'),
-            text = svg1.selectAll("text");
-        /*updatePresence( geneId_GV );
-        updateGainLossEvent( geneId_GV );*/
-        node.style('fill', function(d) {
-            if ((d.name.indexOf('NODE_')!=0) && (d.name!='')) {
-                var node_color= pgModule.restore_genePattern_style(tool_side, 'node_color_mem', d.name);
-                pgModule.store_tree_style(tool_side, 'node_color_mem', d.name, node_color);
-                return node_color;
+function makeLegend(metaType,speciesTree, geneTree,coreTree_legend_id){ // && legendOptionValue!= "Meta-info"
+    if (metaType!='') {
+        var itemCount = {};
+        for (var i=0; i<speciesTree.tips.length; i++){
+            const node = speciesTree.tips[i];
+            if (itemCount[node.n[metaType]]){
+                itemCount[node.n[metaType]]++;
+            }else{
+                itemCount[node.n[metaType]]=1;
             }
-        });
+            node.tipAttributes.fill = d3.rgb(metaColor_sets[metaType][node.n[metaType]]).toString()
+            node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker().toString();
+        }
+        for (var i=0; i<geneTree.tips.length; i++){
+            const node = geneTree.tips[i];
+            const strain = speciesTree.namesToTips[node.n.accession];
+            node.tipAttributes.fill = d3.rgb(metaColor_sets[metaType][strain.n[metaType]]).toString()
+            node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker().toString();
+        }
+        updateTips(geneTree, [], ["fill", "stroke"], 0);
+        updateTips(speciesTree, [], ["fill", "stroke"], 0);
 
-        text.style("fill", function(d) {
-            if (d!==undefined && d.name!='' ) {
-                return pgModule.restore_genePattern_style(tool_side, 'node_color_mem', d.name);
-            }
-        });
-
-        link.style('stroke', function(d) {
-            return pgModule.restore_genePattern_style(tool_side, 'link_color_mem', d.target.name);
-        })
-        .style("stroke-width", function (d) {
-            return pgModule.restore_genePattern_style(tool_side, 'link_width_mem', d.target.name);
-        })
-        .style("stroke-dasharray", function(d) {
-            return pgModule.restore_genePattern_style(tool_side, 'link_dash_mem', d.target.name);
-        });
-    } else if (legendOptionValue!='') {
         var legend= d3.select('#'+coreTree_legend_id)
             .attr('width', pxTree.legend_width)
             .attr('height', pxTree.legend_height);
         var tmp_leg = legend.selectAll(".legend")
-            .data( metaColor_set_keys[meta_type] )
+            .data( metaColor_set_keys[metaType] )
             .enter().append('g')
             .attr('class', 'legend')
             .attr('transform', function(d, i) {
@@ -123,41 +115,22 @@ function makeLegend(meta_type,svg1,tool_side,coreTree_legend_id){ // && legendOp
                 return 'translate(' + horz + ',' + vert + ')';
             });
 
-        function mouseover_lengend(text_value,svg1) {
-            //var text_value = d3.select(this_obj).attr("text");
-            /*console.log(this_obj)*/
-            svg1.selectAll("circle")
-                .filter(function(d) {
-                    if (d[meta_type] === text_value ) {
-                        return d;
-                    } else if ( isNumeric(text_value) ) {
-                        var current_keys = metaColor_set_keys[meta_type];
-                        var current_index = current_keys.indexOf(parseFloat(text_value));
-                        var current_meta_value = Math.round( (d[meta_type])*10 )/10;
-                        if ( current_meta_value > current_keys[current_index-1] && current_meta_value <=  current_keys[current_index] ) {
-                            return d;
-                        }
+        const mouseover_legend = function(metaField, tree){
+            tree.tipElements
+            .attr('r',
+                function(d){
+                    if (d.n[metaType] === metaField){
+                        return d.tipAttributes.r*2;
+                    }else{
+                        return d.tipAttributes.r*0.7;
                     }
                 })
-                .attr("r", size_node_leaf_highlight_arr[0]);
+            .style('fill', function(d){return d3.rgb(d.tipAttributes.fill).brighter();});
         }
-
-        function mouseout_lengend(text_value,svg1) {
-            /*var text_value = d3.select(this_obj).attr("text");*/
-            svg1.selectAll("circle")
-                .filter(function(d) {
-                    if (d[meta_type] === text_value ) {
-                        return d;
-                    } else if ( isNumeric(text_value) ) {
-                        var current_keys = metaColor_set_keys[meta_type];
-                        var current_index = current_keys.indexOf(parseFloat(text_value));
-                        var current_meta_value = Math.round( (d[meta_type])*10 )/10;
-                        if ( current_meta_value > current_keys[current_index-1] && current_meta_value <=  current_keys[current_index] ) {
-                            return d;
-                        }
-                    }
-                })
-                .attr("r", size_node_leaf_arr[0]);
+        const mouseout_legend = function(metaField, tree){
+            tree.tipElements
+                .attr('r', function(d){return d.tipAttributes.r;})
+                .style('fill', function(d){return d.tipAttributes.fill;});
         }
 
         tmp_leg.append('rect')
@@ -165,15 +138,15 @@ function makeLegend(meta_type,svg1,tool_side,coreTree_legend_id){ // && legendOp
             .attr('height', legendRectSize)
             .attr('text', function (d) {return d;} )
             .attr('fill', function (d) {
-                var col = metaColor_sets[meta_type][d];
+                var col = metaColor_sets[metaType][d];
                 return d3.rgb(col).toString();
             })
             .attr('stroke', function (d) {
-                var col = metaColor_sets[meta_type][d];
+                var col = metaColor_sets[metaType][d];
                 return d3.rgb(col).darker([0.4]).toString();
             })
-            .on("mouseover", function(d) {mouseover_lengend(d,svg1)})
-            .on("mouseout",  function(d) {mouseout_lengend(d,svg1)});
+            .on("mouseover", function(d) {mouseover_legend(d,speciesTree)})
+            .on("mouseout",  function(d) {mouseout_legend(d,speciesTree)});
 
         tmp_leg.append('text')
             .attr('x', legendRectSize + legendSpacing + 5)
@@ -182,8 +155,8 @@ function makeLegend(meta_type,svg1,tool_side,coreTree_legend_id){ // && legendOp
             .text(function(d) {
                 return d.toString();
             })
-            .on("mouseover", function(d) {mouseover_lengend(d,svg1)})
-            .on("mouseout",  function(d) {mouseout_lengend(d,svg1)});
+            .on("mouseover", function(d) {mouseover_legend(d,speciesTree)})
+            .on("mouseout",  function(d) {mouseout_legend(d,speciesTree)});
 
         return tmp_leg;
     }
@@ -191,95 +164,21 @@ function makeLegend(meta_type,svg1,tool_side,coreTree_legend_id){ // && legendOp
 
 
 //## update legend and coloring nodes by meta-info
-function updateData(meta_type,strain_tree_id,gene_tree_id,coreTree_legend_id,tool_side) {
-    var svg1 = d3.select('#'+strain_tree_id),
-        svg2 = d3.select('#'+gene_tree_id);
-    //## svg1 for core tree, svg_all for both trees
-    var node = svg1.selectAll("circle"),
-        text = svg1.selectAll("text"),
-        link = svg1.selectAll(".tnt_tree_link");
-
-    legendOptionValue=meta_type;
-    var metaColorSet=metaColor_sets[meta_type];
+export const updateData = function(metaType,speciesTree,geneTree,coreTree_legend_id,tool_side) {
+    var metaColorSet=metaColor_sets[metaType];
     removeLegend(coreTree_legend_id);
-    makeLegend(meta_type,svg1,tool_side,coreTree_legend_id);
-
-    if (meta_type != 'genePattern') {
-        node.style("fill", function(d) {
-            if ( (d.name.indexOf('NODE_')!=0) && d.name!='' ) {
-                if ( isNumeric(metaColor_set_keys[meta_type][0])==false ) {
-                    var setColor=metaColorSet[d[meta_type]];
-                    pgModule.store_tree_style(tool_side, 'node_color_mem', d.name, setColor);
-                    d3.selectAll("circle.pt" + d.name)
-                        .style("fill", setColor);
-                    return setColor;
-                } else {
-                    if (d[meta_type]=='unknown') {
-                        var setColor=pxTree.node_metaunknown_stroke;
-                        pgModule.store_tree_style(tool_side, 'node_color_mem', d.name, setColor);
-                        d3.selectAll("circle.pt" + d.name)
-                            .style("fill", setColor);
-                        return setColor;
-                    } else {
-                        var current_keys = metaColor_set_keys[meta_type];
-                        var current_meta_value = Math.round( (d[meta_type])*10 )/10;
-                        for (i = 1; i <= current_keys.length; i++) {
-                            if (  current_meta_value >= current_keys[i-1] && current_meta_value <=  current_keys[i] ) {
-                                var setColor=metaColorSet[current_keys[i]];
-                                pgModule.store_tree_style(tool_side, 'node_color_mem', d.name, setColor);
-                                d3.selectAll("circle.pt" + d.name)
-                                    .style("fill", setColor);
-                                return setColor;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        link.style("stroke", function(d) {
-            if ( (d.target.name.indexOf('NODE_')!=0) && d.target.name!='') {
-                if ( isNumeric(metaColor_set_keys[meta_type][0])==false ) {
-                    return d3.rgb(metaColorSet[d.target[meta_type]]).darker([0.8]).toString();
-                } else {
-                    var current_keys = metaColor_set_keys[meta_type];
-                    var current_meta_value = Math.round( (d.target[meta_type])*10 )/10;
-                    for (i = 1; i <= current_keys.length; i++) {
-                        if (  current_meta_value >= current_keys[i-1] && current_meta_value <=  current_keys[i] ) {
-                            return d3.rgb(metaColorSet[d.target[meta_type]]).darker([0.8]).toString();
-                            break;
-                        }
-                        // info unknown
-                        return pxTree.branch_col;
-                    }
-
-                }
-            } else { return pxTree.branch_col;}
-        });
-    } else {
-        //## coloring all leaf nodes in gene Tree with blue
-        svg2.selectAll('g.tnt_tree_node.leaf')
-            .selectAll("circle")
-            .style("fill", pxTree.col_pres);
-    }
+    makeLegend(metaType,speciesTree,geneTree,coreTree_legend_id, tool_side);
 };
 
 //## creat dropdown-list for meta-info
-export const create_dropdown = function (div, strain_tree_id, gene_tree_id, coreTree_legend_id, tool_side) {
+export const create_dropdown = function (div, speciesTree, geneTree, coreTree_legend_id, tool_side) {
     var menu_panel = d3.select(div)
 
     var dropdown_meta = menu_panel
         .append("select")
         .attr("id","dropdown_select")
         .attr("class","form-control sm-customized")
-    var meta_types = Object.keys(meta_set);
-
-    dropdown_meta.on("change", function(d) {
-        if (this.value!='Meta-info') {
-            updateData(this.value, strain_tree_id, gene_tree_id, coreTree_legend_id, tool_side);
-        }
-    });
+    var metaTypes = Object.keys(meta_set);
 
     dropdown_meta.append("option")
         .attr("value", "Meta-info")
@@ -290,9 +189,9 @@ export const create_dropdown = function (div, strain_tree_id, gene_tree_id, core
         .attr("value", "genePattern")
         .text("gene presence/absence");
 
-    for (var i = 0; i < meta_types.length; i++) { // ['geo','host']
+    for (var i = 0; i < metaTypes.length; i++) { // ['geo','host']
         dropdown_meta.append("option")
-            .attr("value", meta_types[i])
-            .text(meta_display_set[meta_types[i]]);
+            .attr("value", metaTypes[i])
+            .text(meta_display_set[metaTypes[i]]);
     }
 }
