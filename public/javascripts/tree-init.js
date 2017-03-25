@@ -59,7 +59,7 @@ export const pgDashboard = {
     winInnerWidth: window.innerWidth,
 };
 
-export var pxTree = {
+export const pxTree = {
     /**if true, use separated pattern instead of entire pattern */
     large_output: false,
     gain_loss_enabled: true,
@@ -72,8 +72,10 @@ export var pxTree = {
     branch_wid_highlight: '3px',
     link_width: '1px',
     link_dasharray: '1px, 0px',
-    col_pres: '#005BCC',//'#3A89EA' '#1F69C4' gene presence
-    col_abse: '#E01F1F', // '#D82400' '#EA5833'; gene absence
+    genePresentFill: '#005BCC',//'#3A89EA' '#1F69C4' gene presence
+    geneAbsentFill: '#E01F1F', // '#D82400' '#EA5833'; gene absence
+    genePresentR: 4, // tip radius
+    geneAbsentR:  3,
     node_metaunknown_stroke:'#FFFFFF',
     wid_link: '1.2px',
     wid_gloss: '3px',//gain loss highlight
@@ -108,11 +110,6 @@ color_node_stroke:'steelblue',
 color_node_fill:'white',
 }
 
-export const treeProp = {genePresentFill:"#1A3",
-                         genePresentR:4,
-                         geneAbsentFill:"#CCC",
-                         geneAbsentR:3}
-
 
 export const branchText = function(d){
     if (d.n.muts){
@@ -130,14 +127,23 @@ export const tipText = function(d){
         return "";
     }
 }
-export const tipFontSize = function(d){return 12.0;}
+export const tipFontSize = function(tree){
+    return function(d){
+        const nTips = tree.visibleTips.length;
+        if (nTips<20){
+            return 14.0;
+        }else if (nTips<100){
+            return 14 - 8*((nTips-20)/80.);
+        }else{return 0;}
+    };
+}
 
 
-const applyChange = function(myTree, func, dt){
+export const applyChangeToTree = function(myTree, func, dt){
     removeLabels(myTree);
     func();
     if (myTree.showTipLabels){
-        setTimeout(function() {tipLabels(myTree, tipText, tipFontSize, 5, 3);}, dt?dt:1000);
+        setTimeout(function() {tipLabels(myTree, tipText, tipFontSize(myTree), 3,8);}, dt?dt:1000);
     };
 }
 
@@ -148,22 +154,22 @@ export const attachButtons = function(myTree, buttons){
         console.log("button:", buttons.TreeViewSelect_id);
         $('#'+buttons.layout).change(function() {
             myTree.layout =  (d3.select(this).property('checked')==false) ? 'rect' : 'radial';
-            applyChange(myTree, function(){changeLayout(myTree, dt);}, dt);
+            applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
         });
     }
     if (buttons.zoomInY){
         $('#'+buttons.zoomInY).click(function() {
-            applyChange(myTree, function(){zoomInY(myTree,1.4,dt);},dt);
+            applyChangeToTree(myTree, function(){zoomInY(myTree,1.4,dt);},dt);
         });
     }
     if (buttons.zoomOutY){
         $('#'+buttons.zoomOutY).click(function() {
-            applyChange(myTree, function(){zoomInY(myTree,0.7,dt);},dt);
+            applyChangeToTree(myTree, function(){zoomInY(myTree,0.7,dt);},dt);
         });
     }
     if (buttons.zoomReset){
         $('#'+buttons.zoomReset).click(function() {
-            applyChange(myTree, function(){zoomIntoClade(myTree, myTree.nodes[0],dt);},dt);
+            applyChangeToTree(myTree, function(){zoomIntoClade(myTree, myTree.nodes[0],dt);},dt);
         });
     }
     if (buttons.tipLabels){
@@ -171,7 +177,7 @@ export const attachButtons = function(myTree, buttons){
             myTree.showTipLabels = d3.select(this).property('checked')
             console.log("tipLabels");
             if (myTree.showTipLabels){
-                tipLabels(myTree, tipText, tipFontSize, 5, 3);
+                tipLabels(myTree, tipText, tipFontSize(myTree),  3,8);
             }else{
                 removeLabels(myTree);
             }

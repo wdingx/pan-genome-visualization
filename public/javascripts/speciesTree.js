@@ -7,7 +7,7 @@ import {changeLayout, changeDistance, updateGeometry,
 import {branchLabels, tipLabels, removeLabels} from "../phyloTree/src/labels";
 import speciesTreeCallbacks from "./speciesTreeCallbacks";
 import d3 from "d3";
-import {pgDashboard, tipText, tipFontSize} from "./tree-init";
+import {pgDashboard, tipText, tipFontSize, applyChangeToTree} from "./tree-init";
 import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
 
 
@@ -17,13 +17,11 @@ const speciesTree = function(tree_svg,treeJsonPath, handleResult){
     treeplot.attr("height", pgDashboard.winInnerWidth/3.);
     var myTree;
     speciesTreeCallbacks.onBranchClick = function (d){
-            removeLabels(myTree);
-            zoomIntoClade(myTree, d.terminal?d.parent:d, 500);
-            if (myTree.showTipLabels){
-                tipLabels(myTree, tipText, tipFontSize, 5, 3);
-            };
-        };
+        const dt = 1000;
+        applyChangeToTree(myTree, function(){zoomIntoClade(myTree, d.terminal?d.parent:d, dt);},dt);
+    };
 
+    console.log("loading speciesTree", treeJsonPath);
     d3.json(treeJsonPath, function(err, data){
         if (data){
             myTree = phyloTree(data, {svg:treeplot, margins:{top:10, bottom:10, left:10, right:10},
@@ -34,7 +32,7 @@ const speciesTree = function(tree_svg,treeJsonPath, handleResult){
         }
         drawTree(myTree);
 
-        tipLabels(myTree, tipText, tipFontSize, 5, 3);
+        tipLabels(myTree, tipText, tipFontSize(myTree), 3, 8);
         myTree.showTipLabels=true;
         // add a look up for tips
         handleResult(myTree);

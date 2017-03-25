@@ -5,7 +5,7 @@ import speciesTree from "./speciesTree";
 import  {metaDataTable} from "./datatable-meta";
 import {changeLayout, updateTips,updateGeometry} from "../phyloTree/src/updateTree";
 import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
-import {buttons, treeProp, attachButtons, tipText, tipFontSize, attachPanzoom} from "./tree-init";
+import {buttons, pxTree, attachButtons, tipText, tipFontSize, attachPanzoom} from "./tree-init";
 
 // /** strain_tree processing */
 //render_tree(0, "mytree1", coreTree_path, clusterID=null, null);
@@ -59,12 +59,12 @@ const connectTrees = function(){
             }
             if (myGeneTree.paralogs[species.name]){
                 species.genePresent = true;
-                species.tipAttributes.fill = treeProp.genePresentFill;
-                species.tipAttributes.r = treeProp.genePresentR;
+                species.tipAttributes.fill = pxTree.genePresentFill;
+                species.tipAttributes.r = pxTree.genePresentR;
             }else{
                 species.genePresent = false;
-                species.tipAttributes.fill = treeProp.geneAbsentFill;
-                species.tipAttributes.r = treeProp.geneAbsentR;
+                species.tipAttributes.fill = pxTree.geneAbsentFill;
+                species.tipAttributes.r = pxTree.geneAbsentR;
             }
         }
         updateTips(mySpeciesTree,['r'],['fill'],200);
