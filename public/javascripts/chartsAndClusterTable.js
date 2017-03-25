@@ -269,19 +269,20 @@ export const render_chart_table = {
 
         //## Rendering: render all charts on the page
         dc.renderAll();
-
+        return datatable;
     },
     initData: function (path_datatable1, table_id, col_select_id,
         count_id, chart1_id, chart2_id, chart3_id,
         coreThreshold_slider_id, coreThreshold_text_id,
-        strain_tree_id,gene_tree_id, tool_side, handleGeneTree) {
+        strain_tree_id,gene_tree_id, tool_side, handleDataTable, handleGeneTree) {
         //## load the data, charts and MSA
+        var datatable;
         d3.json(path_datatable1, function(error, data) {
             Initial_MsaGV=data[0].msa;
             geneId_GV=data[0].geneId;
             ann_majority=data[0].ann;
             var first_cluster = data[0];
-            render_chart_table.initChart(data, table_id, col_select_id,
+            datatable = render_chart_table.initChart(data, table_id, col_select_id,
                 count_id, chart1_id, chart2_id, chart3_id,
                 coreThreshold_slider_id, coreThreshold_text_id,
                 first_cluster=data[0], strain_tree_id,gene_tree_id,tool_side);
@@ -291,8 +292,9 @@ export const render_chart_table = {
             var clusterID=Initial_MsaGV;
             var geneTree_name=aln_path + clusterID+'_tree.json';
             console.log("loading geneTree_name", geneTree_name);
+            handleDataTable(datatable);
             geneTree("geneTree", geneTree_name, handleGeneTree);
-        })
+        });
     }
 };
 
@@ -441,6 +443,6 @@ var trigger_action_table= function(){
     var init_action= function (datatable, table_id) {
         init_folding_listener(datatable, table_id);
     }
-    return { init_action:init_action}
+    return { init_action:init_action};
 }();
 

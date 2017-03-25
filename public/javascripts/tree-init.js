@@ -1,4 +1,4 @@
-import {changeLayout, changeDistance} from "../phyloTree/src/updateTree";
+import {changeLayout, changeDistance, updateTips} from "../phyloTree/src/updateTree";
 import {zoomInY, zoomIntoClade} from "../phyloTree/src/zoom";
 import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
 import panzoom from "jquery.panzoom";
@@ -186,7 +186,7 @@ export const attachButtons = function(myTree, buttons){
     if (buttons.scale){
         $('#'+buttons.scale).change(function() {
             myTree.distance = (d3.select(this).property('checked')===false) ? "level":"div";
-            applyChange(myTree, function(){changeDistance(myTree, dt);},dt);
+            applyChangeToTree(myTree, function(){changeDistance(myTree, dt);},dt);
         });
     }
 }
@@ -201,3 +201,39 @@ export const attachPanzoom = function(treeID){
         duration: 50,
     });
 }
+
+
+export const connectTrees = function(speciesTree, geneTree){
+    console.log("connecting trees");
+    geneTree.paralogs = {}
+    for (var ti =0; ti<geneTree.tips.length; ti++){
+        var tip = geneTree.tips[ti];
+        tip.name = tip.n.name;
+        tip.accession = tip.n.accession;
+        tip.strainTip = speciesTree.svg.selectAll("#"+speciesTree.namesToTips[tip.accession].tipAttributes.id);
+        if (geneTree.paralogs[tip.accession]){
+            geneTree.paralogs[tip.accession].push(tip);
+        }else{
+            geneTree.paralogs[tip.accession] = [tip];
+        }
+    }
+    console.log("connectTrees", geneTree);
+    for (var ti =0; ti<speciesTree.tips.length; ti++){
+        var species = speciesTree.tips[ti];
+        species.genes = [];
+        for (var gi=0; gi<geneTree.paralogs[species.name].length; gi++){
+            species.genes.push(geneTree.svg.selectAll("#"+geneTree.paralogs[species.name][gi].tipAttributes.id));
+        }
+        if (geneTree.paralogs[species.name]){
+            species.genePresent = true;
+            species.tipAttributes.fill = pxTree.genePresentFill;
+            species.tipAttributes.r = pxTree.genePresentR;
+        }else{
+            species.genePresent = false;
+            species.tipAttributes.fill = pxTree.geneAbsentFill;
+            species.tipAttributes.r = pxTree.geneAbsentR;
+        }
+    }
+    updateTips(speciesTree,['r'],['fill'],200);
+}
+

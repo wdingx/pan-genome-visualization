@@ -3,14 +3,16 @@ import {render_chart_table} from "./chartsAndClusterTable";
 import * as datapath from "./data_path";
 import speciesTree from "./speciesTree";
 import  {metaDataTable} from "./datatable-meta";
-import {changeLayout, updateTips,updateGeometry} from "../phyloTree/src/updateTree";
-import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
-import {buttons, pxTree, attachButtons, tipText, tipFontSize, attachPanzoom} from "./tree-init";
+import {buttons, pxTree, attachButtons, tipText, tipFontSize, attachPanzoom, connectTrees} from "./tree-init";
+import linkTableAlignmentTrees from "./linkTableAlignmentTrees";
 
 // /** strain_tree processing */
 //render_tree(0, "mytree1", coreTree_path, clusterID=null, null);
 
 var mySpeciesTree;
+var myGeneTree;
+var myDatatable;
+
 const handleSpeciesTree = function(newTree){
     newTree.namesToTips = {};
     for (var ti =0; ti<newTree.tips.length; ti++){
@@ -28,49 +30,23 @@ const handleSpeciesTree = function(newTree){
                                   zoomReset:"tree_zoom_reset"});
     console.log("render_viewer:",mySpeciesTree);
 }
-var myGeneTree;
 const handleGeneTree = function(newTree){
     myGeneTree = newTree;
     console.log("render_viewer:",myGeneTree);
 }
 
+const handleDataTable = function(datatable){
+    myDatatable = datatable;
+    console.log("render_viewer:",myDatatable);
+}
 
-const connectTrees = function(){
-    if (mySpeciesTree&&myGeneTree){
-        console.log("connecting trees");
-        myGeneTree.paralogs = {}
-        for (var ti =0; ti<myGeneTree.tips.length; ti++){
-            var tip = myGeneTree.tips[ti];
-            tip.name = tip.n.name;
-            tip.accession = tip.n.accession;
-            tip.strainTip = mySpeciesTree.svg.selectAll("#"+mySpeciesTree.namesToTips[tip.accession].tipAttributes.id);
-            if (myGeneTree.paralogs[tip.accession]){
-                myGeneTree.paralogs[tip.accession].push(tip);
-            }else{
-                myGeneTree.paralogs[tip.accession] = [tip];
-            }
-        }
-        console.log("connectTrees", myGeneTree);
-        for (var ti =0; ti<mySpeciesTree.tips.length; ti++){
-            var species = mySpeciesTree.tips[ti];
-            species.genes = [];
-            for (var gi=0; gi<myGeneTree.paralogs[species.name].length; gi++){
-                species.genes.push(myGeneTree.svg.selectAll("#"+myGeneTree.paralogs[species.name][gi].tipAttributes.id));
-            }
-            if (myGeneTree.paralogs[species.name]){
-                species.genePresent = true;
-                species.tipAttributes.fill = pxTree.genePresentFill;
-                species.tipAttributes.r = pxTree.genePresentR;
-            }else{
-                species.genePresent = false;
-                species.tipAttributes.fill = pxTree.geneAbsentFill;
-                species.tipAttributes.r = pxTree.geneAbsentR;
-            }
-        }
-        updateTips(mySpeciesTree,['r'],['fill'],200);
+const tryConnectTrees = function(){
+    if (mySpeciesTree&&myGeneTree&&myDatatable){
+        connectTrees(mySpeciesTree, myGeneTree);
+        linkTableAlignmentTrees('dc_data_table', myDatatable, mySpeciesTree, myGeneTree);
     }else{
         console.log("trees not available yet, retry", mySpeciesTree, myGeneTree);
-        setTimeout(connectTrees, 1000);
+        setTimeout(tryConnectTrees, 1000);
     }
 }
 
@@ -87,12 +63,12 @@ attachPanzoom("geneTree");
 
 /** render interactive charts and gene-cluster datatable */
 //console.log("render_viewer:",datapath);
-render_chart_table.initData(datapath.path_datatable1,'dc_data_table', 'GC_tablecol_select',
+myDatatable = render_chart_table.initData(datapath.path_datatable1,'dc_data_table', 'GC_tablecol_select',
     'dc_data_count','dc_straincount_chart','dc_geneLength_chart','dc_coreAcc_piechart',
     'changeCoreThreshold','coreThreshold',
-    'speciesTreeDiv','geneTreeDiv', null, handleGeneTree);
-
-connectTrees();
+    'speciesTreeDiv','geneTreeDiv', null, handleDataTable, handleGeneTree);
+console.log(myDatatable);
+tryConnectTrees();
 
 /** render meta-data datatable */
 var meta_table_id='dc_data_table_meta';
