@@ -133,44 +133,37 @@ export const tipText = function(d){
 export const tipFontSize = function(d){return 12.0;}
 
 
+const applyChange = function(myTree, func, dt){
+    removeLabels(myTree);
+    func();
+    if (myTree.showTipLabels){
+        setTimeout(function() {tipLabels(myTree, tipText, tipFontSize, 5, 3);}, dt?dt:1000);
+    };
+}
+
+
 export const attachButtons = function(myTree, buttons){
+    const dt = 1000;
     if (buttons.layout){
         console.log("button:", buttons.TreeViewSelect_id);
         $('#'+buttons.layout).change(function() {
             myTree.layout =  (d3.select(this).property('checked')==false) ? 'rect' : 'radial';
-            removeLabels(myTree);
-            changeLayout(myTree, 1000);
-            if (myTree.showTipLabels){
-                tipLabels(myTree, tipText, tipFontSize, 5, 3);
-            };
+            applyChange(myTree, function(){changeLayout(myTree, dt);}, dt);
         });
     }
     if (buttons.zoomInY){
         $('#'+buttons.zoomInY).click(function() {
-            removeLabels(myTree);
-            zoomInY(myTree,1.4,1000);
-            if (myTree.showTipLabels){
-                tipLabels(myTree, tipText, tipFontSize, 5, 3);
-            };
+            applyChange(myTree, function(){zoomInY(myTree,1.4,dt);},dt);
         });
     }
     if (buttons.zoomOutY){
         $('#'+buttons.zoomOutY).click(function() {
-            removeLabels(myTree);
-            zoomInY(myTree,0.7,1000);
-            if (myTree.showTipLabels){
-                tipLabels(myTree, tipText, tipFontSize, 5, 3);
-            };
+            applyChange(myTree, function(){zoomInY(myTree,0.7,dt);},dt);
         });
     }
     if (buttons.zoomReset){
         $('#'+buttons.zoomReset).click(function() {
-            console.log("reset zom");
-            removeLabels(myTree);
-            zoomIntoClade(myTree, myTree.nodes[0],1000);
-            if (myTree.showTipLabels){
-                tipLabels(myTree, tipText, tipFontSize, 5, 5);
-            };
+            applyChange(myTree, function(){zoomIntoClade(myTree, myTree.nodes[0],dt);},dt);
         });
     }
     if (buttons.tipLabels){
@@ -187,11 +180,7 @@ export const attachButtons = function(myTree, buttons){
     if (buttons.scale){
         $('#'+buttons.scale).change(function() {
             myTree.distance = (d3.select(this).property('checked')===false) ? "level":"div";
-            removeLabels(myTree);
-            changeDistance(myTree, 1000);
-            if (myTree.showTipLabels){
-                tipLabels(myTree, tipText, tipFontSize, 5, 5);
-            };
+            applyChange(myTree, function(){changeDistance(myTree, dt);},dt);
         });
     }
 }
