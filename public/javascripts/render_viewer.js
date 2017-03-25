@@ -1,4 +1,4 @@
-import {render_chart_table} from "./interact";
+import {render_chart_table} from "./chartsAndClusterTable";
 //import {create_dropdown} from "./meta-color-legend";
 import * as datapath from "./data_path";
 import speciesTree from "./speciesTree";
