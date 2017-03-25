@@ -1,10 +1,12 @@
 const onTipHover = function(d){
-  console.log(d.n.name, d.strainTip);
+  d.elem.attr("r",10).style("fill", "#5AE");
   d.strainTip.attr("r",10).style("fill","#3E4");
 };
 
 const onTipLeave = function(d){
-  console.log(d.n.name, d.strainTip);
+  d.elem
+    .attr("r",function(x){return x.tipAttributes.r;})
+    .style("fill",function(x){return x.tipAttributes.fill;});
   d.strainTip
     .attr("r",function(x){console.log(x); return x.tipAttributes.r;})
     .style("fill",function(x){return x.tipAttributes.fill;});

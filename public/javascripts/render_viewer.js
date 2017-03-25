@@ -32,6 +32,7 @@ const handleSpeciesTree = function(newTree){
 }
 const handleGeneTree = function(newTree){
     myGeneTree = newTree;
+    connectTrees(mySpeciesTree, myGeneTree);
     console.log("render_viewer:",myGeneTree);
 }
 

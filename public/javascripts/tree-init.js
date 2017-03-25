@@ -204,12 +204,17 @@ export const attachPanzoom = function(treeID){
 
 
 export const connectTrees = function(speciesTree, geneTree){
+    if (!(speciesTree&&geneTree)){
+        console.log("trees are not yet in place");
+        return;
+    }
     console.log("connecting trees");
     geneTree.paralogs = {}
     for (var ti =0; ti<geneTree.tips.length; ti++){
         var tip = geneTree.tips[ti];
         tip.name = tip.n.name;
         tip.accession = tip.n.accession;
+        tip.elem = geneTree.svg.selectAll("#"+tip.tipAttributes.id);
         tip.strainTip = speciesTree.svg.selectAll("#"+speciesTree.namesToTips[tip.accession].tipAttributes.id);
         if (geneTree.paralogs[tip.accession]){
             geneTree.paralogs[tip.accession].push(tip);
@@ -221,8 +226,9 @@ export const connectTrees = function(speciesTree, geneTree){
     for (var ti =0; ti<speciesTree.tips.length; ti++){
         var species = speciesTree.tips[ti];
         species.genes = [];
+        species.elem = speciesTree.svg.selectAll("#"+species.tipAttributes.id);
         for (var gi=0; gi<geneTree.paralogs[species.name].length; gi++){
-            species.genes.push(geneTree.svg.selectAll("#"+geneTree.paralogs[species.name][gi].tipAttributes.id));
+            species.genes.push([geneTree.paralogs[species.name][gi], geneTree.svg.selectAll("#"+geneTree.paralogs[species.name][gi].tipAttributes.id)]);
         }
         if (geneTree.paralogs[species.name]){
             species.genePresent = true;
