@@ -15,7 +15,7 @@ const onTipLeave = function(d){
     .attr("r",function(x){return x.tipAttributes.r;})
     .style("fill",function(x){return x.tipAttributes.fill;});
   d.strainTip
-    .attr("r",function(x){console.log(x); return x.tipAttributes.r;})
+    .attr("r",function(x){return x.tipAttributes.r;})
     .style("fill",function(x){return x.tipAttributes.fill;});
   for (var gi=0; gi<d.paralogs.length; gi++){
     d.paralogs[gi].elem

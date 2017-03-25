@@ -175,7 +175,7 @@ export const attachButtons = function(myTree, buttons){
     if (buttons.tipLabels){
         $('#'+buttons.tipLabels).change(function() {
             myTree.showTipLabels = d3.select(this).property('checked')
-            console.log("tipLabels");
+            console.log("tipLabels", myTree.visibleTips, tipFontSize(myTree)());
             if (myTree.showTipLabels){
                 tipLabels(myTree, tipText, tipFontSize(myTree),  3,8);
             }else{
@@ -216,11 +216,10 @@ export const connectTrees = function(speciesTree, geneTree){
         tip.accession = tip.n.accession;
         tip.elem = geneTree.svg.selectAll("#"+tip.tipAttributes.id);
         tip.strainTip = speciesTree.svg.selectAll("#"+speciesTree.namesToTips[tip.accession].tipAttributes.id);
-        if (geneTree.paralogs[tip.accession]){
-            geneTree.paralogs[tip.accession].push(tip);
-        }else{
-            geneTree.paralogs[tip.accession] = [tip];
+        if (!geneTree.paralogs[tip.accession]){
+            geneTree.paralogs[tip.accession] = [];
         }
+        geneTree.paralogs[tip.accession].push(tip);
     }
 
     for (var ti =0; ti<geneTree.tips.length; ti++){
@@ -233,10 +232,13 @@ export const connectTrees = function(speciesTree, geneTree){
         var species = speciesTree.tips[ti];
         species.genes = [];
         species.elem = speciesTree.svg.selectAll("#"+species.tipAttributes.id);
+        if (!geneTree.paralogs[species.name]){
+            geneTree.paralogs[species.name]=[];
+        }
         for (var gi=0; gi<geneTree.paralogs[species.name].length; gi++){
             species.genes.push(geneTree.paralogs[species.name][gi]);
         }
-        if (geneTree.paralogs[species.name]){
+        if (geneTree.paralogs[species.name].length){
             species.genePresent = true;
             species.tipAttributes.fill = pxTree.genePresentFill;
             species.tipAttributes.r = pxTree.genePresentR;

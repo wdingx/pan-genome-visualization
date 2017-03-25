@@ -77,7 +77,25 @@ function removeLegend(coreTree_legend_id) {
 
 //## create legend
 function makeLegend(metaType,speciesTree, geneTree,coreTree_legend_id){ // && legendOptionValue!= "Meta-info"
-    if (metaType!='') {
+    console.log(metaType);
+    if (metaType==="genePattern"){
+        for (var i=0; i<speciesTree.tips.length; i++){
+            const node = speciesTree.tips[i];
+            node.tipAttributes.r = node.genePresent?4:2;
+            node.tipAttributes.fill = node.genePresent?pxTree.genePresentFill:pxTree.geneAbsentFill;
+            node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker().toString();
+        }
+        for (var i=0; i<geneTree.tips.length; i++){
+            const node = geneTree.tips[i];
+            const strain = speciesTree.namesToTips[node.n.accession];
+            node.tipAttributes.fill = "#AAA";
+            node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker().toString();
+        }
+        updateTips(geneTree, [], ["fill", "stroke"], 0);
+        updateTips(speciesTree, ["r"], ["fill", "stroke"], 0);
+
+    }
+    else if (metaType!='') {
         var itemCount = {};
         for (var i=0; i<speciesTree.tips.length; i++){
             const node = speciesTree.tips[i];
