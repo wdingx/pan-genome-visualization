@@ -8,6 +8,7 @@ var requireDir = require('require-dir');
 var routes = requireDir('./routes/'); // www.npmjs.org/package/require-dir
 var app = express();
 var compression = require('compression');
+var staticZip = require('express-static-zip');
 app.use(compression());
 
 app.get('*aln', function (req, res, next) {
@@ -56,6 +57,7 @@ for (var i in routes)
   {app.use('/'+i, require('./routes/'+i)); //console.log(i)
   }
 
+app.use(staticZip('./dataset/Ta1065.zip'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
