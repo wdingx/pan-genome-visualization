@@ -216,8 +216,15 @@ export const attachButtons = function(myTree, buttons){
 }
 
 
-export const attachPanzoom = function(treeID){
-    svgPanZoom("#"+treeID);
+export const attachPanzoom = function(treeID, myTree){
+    const dt=100;
+    svgPanZoom("#"+treeID, {beforeZoom: function(oldZoom, newZoom)
+        {
+            console.log(oldZoom, newZoom);
+            applyChangeToTree(myTree, function(){zoomInY(myTree,newZoom/oldZoom*newZoom/oldZoom,dt, true);},dt);
+            filterMetaDataTable('dc_data_table_meta', myTree);
+        }
+    });
 }
 
 

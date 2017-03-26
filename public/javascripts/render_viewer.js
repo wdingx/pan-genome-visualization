@@ -54,8 +54,8 @@ const tryConnectTrees = function(){
                 updateData(this.value, mySpeciesTree, myGeneTree, 'coreTree_legend', 0);
             }
         });
-        attachPanzoom("speciesTree");
-        attachPanzoom("geneTree");
+        attachPanzoom("speciesTree", mySpeciesTree);
+        attachPanzoom("geneTree", myGeneTree);
     }else{
         console.log("trees not available yet, retry", mySpeciesTree, myGeneTree);
         setTimeout(tryConnectTrees, 1000);
