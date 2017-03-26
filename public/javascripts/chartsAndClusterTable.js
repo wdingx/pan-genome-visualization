@@ -268,6 +268,22 @@ export const render_chart_table = {
 
         //## Rendering: render all charts on the page
         dc.renderAll();
+
+        //## responsive charts: adjust chart width when resizing
+        window.onresize = function() {
+            lineChart
+                .width(window.innerWidth/4.5)
+                //.height(lineChart_height)
+                .rescale()
+                .redraw();
+
+            geneLengthBarChart
+                .width(window.innerWidth/4.5)
+                //.height(lineChart_height)
+                .rescale()
+                .redraw();
+        };
+
         return datatable;
     },
     initData: function (path_datatable1, table_id, col_select_id,
