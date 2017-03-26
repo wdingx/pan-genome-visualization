@@ -9,6 +9,7 @@ import speciesTreeCallbacks from "./speciesTreeCallbacks";
 import d3 from "d3";
 import {pgDashboard, tipText, tipFontSize, applyChangeToTree} from "./tree-init";
 import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
+import {filterMetaDataTable} from "./datatable-meta";
 
 
 const speciesTree = function(tree_svg,treeJsonPath, handleResult){
@@ -18,7 +19,10 @@ const speciesTree = function(tree_svg,treeJsonPath, handleResult){
     var myTree;
     speciesTreeCallbacks.onBranchClick = function (d){
         const dt = 1000;
-        applyChangeToTree(myTree, function(){zoomIntoClade(myTree, d.terminal?d.parent:d, dt);},dt);
+        applyChangeToTree(myTree,
+            function(){zoomIntoClade(myTree, d.terminal?d.parent:d, dt, true);}
+            ,dt);
+            filterMetaDataTable('dc_data_table_meta', myTree);
     };
 
     console.log("loading speciesTree", treeJsonPath);

@@ -80,7 +80,7 @@ tryConnectTrees();
 
 /** render meta-data datatable */
 var meta_table_id='dc_data_table_meta';
-metaDataTable.dataTable2Fun(meta_table_id);
+var myMetaDatatable = metaDataTable.dataTable2Fun(meta_table_id);
 
 
 window.addEventListener("resize", function(){

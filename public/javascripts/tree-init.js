@@ -2,6 +2,7 @@ import {changeLayout, changeDistance, updateTips} from "../phyloTree/src/updateT
 import {zoomInY, zoomIntoClade} from "../phyloTree/src/zoom";
 import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
 import panzoom from "jquery.panzoom";
+import {filterMetaDataTable} from "./datatable-meta";
 
 console.log("panzoom", panzoom);
 
@@ -159,17 +160,20 @@ export const attachButtons = function(myTree, buttons){
     }
     if (buttons.zoomInY){
         $('#'+buttons.zoomInY).click(function() {
-            applyChangeToTree(myTree, function(){zoomInY(myTree,1.4,dt);},dt);
+            applyChangeToTree(myTree, function(){zoomInY(myTree,1.4,dt, true);},dt);
+            filterMetaDataTable('dc_data_table_meta', myTree);
         });
     }
     if (buttons.zoomOutY){
         $('#'+buttons.zoomOutY).click(function() {
-            applyChangeToTree(myTree, function(){zoomInY(myTree,0.7,dt);},dt);
+            applyChangeToTree(myTree, function(){zoomInY(myTree,0.7,dt, true);},dt);
+            filterMetaDataTable('dc_data_table_meta', myTree);
         });
     }
     if (buttons.zoomReset){
         $('#'+buttons.zoomReset).click(function() {
-            applyChangeToTree(myTree, function(){zoomIntoClade(myTree, myTree.nodes[0],dt);},dt);
+            applyChangeToTree(myTree, function(){zoomIntoClade(myTree, myTree.nodes[0],dt, true);},dt);
+            filterMetaDataTable('dc_data_table_meta', myTree);
         });
     }
     if (buttons.tipLabels){

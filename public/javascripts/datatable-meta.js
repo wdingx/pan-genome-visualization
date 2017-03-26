@@ -18,7 +18,7 @@ export const metaDataTable = {
             });
         }
 
-        var datatable2= $('#'+meta_table_id).DataTable({
+        var datatable= $('#'+meta_table_id).DataTable({
                 'ajax': path_datatable_meta,
                 'responsive': true,
                 'search':true,
@@ -32,5 +32,22 @@ export const metaDataTable = {
                 //'bDestroy': true,
                 'columnDefs': columnDefs_list
             });
+        return datatable;
     }
 };
+
+export const filterMetaDataTable = function(dataTableID, tree)
+    {
+        //make a list of all tips currently selected
+        var tipList = [], tip;
+        for (var i=0; i<tree.tips.length; i++){
+            tip = tree.tips[i];
+            if (tip.state.selected){
+                tipList.push(tip.name);
+            }
+        }
+        //search in the table via a messy regex
+        const regex = `(?:[\s]|^)(${tipList.join('|')})(?=[\s]|$)`;
+        $('#'+dataTableID).DataTable().column(0)
+            .search(regex, true).draw();
+    };
