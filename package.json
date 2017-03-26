@@ -32,7 +32,8 @@
     "msa": "^1.0.3",
     "nouislider": "^9.2.0",
     "require-dir": "^0.3.0",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "svg-pan-zoom": "^3.5.0"
   },
   "devDependencies": {
     "babel": "^6.23.0",

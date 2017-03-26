@@ -54,6 +54,8 @@ const tryConnectTrees = function(){
                 updateData(this.value, mySpeciesTree, myGeneTree, 'coreTree_legend', 0);
             }
         });
+        attachPanzoom("speciesTree");
+        attachPanzoom("geneTree");
     }else{
         console.log("trees not available yet, retry", mySpeciesTree, myGeneTree);
         setTimeout(tryConnectTrees, 1000);
@@ -63,9 +65,6 @@ const tryConnectTrees = function(){
 /** create metadata dropdown list */
 create_dropdown("#dropdown_list",mySpeciesTree,'geneTree','coreTree_legend',null);
 speciesTree("speciesTree", datapath.coreTree_path, handleSpeciesTree);
-attachPanzoom("speciesTree");
-attachPanzoom("geneTree");
-
 // /** tree rotate listener */
 // rotate_monitor('tree_rotate','mytree2');
 
