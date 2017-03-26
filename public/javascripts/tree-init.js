@@ -1,5 +1,5 @@
 import {changeLayout, changeDistance, updateTips} from "../phyloTree/src/updateTree";
-import {zoomInY, zoomIntoClade} from "../phyloTree/src/zoom";
+import {zoomInY,  zoomIn, zoomIntoClade} from "../phyloTree/src/zoom";
 import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
 import svgPanZoom from "svg-pan-zoom";
 import {filterMetaDataTable} from "./datatable-meta";
@@ -219,11 +219,11 @@ export const attachButtons = function(myTree, buttons){
 
 export const attachPanzoom = function(treeID, myTree){
     const dt=100;
-    svgPanZoom("#"+treeID, {zoomEnabled:false});
-    $(document).on("mousewheel", "#"+treeID, function(e){
-        applyChangeToTree(myTree, function(){zoomInY(myTree,(e.wheeldelta>0)?1.1:0.9,dt, true);},dt);
-        filterMetaDataTable('dc_data_table_meta', myTree);
-    });
+    svgPanZoom("#"+treeID, {beforeZoom: function(newZoom, oldZoom){
+        applyChangeToTree(myTree, function(){zoomInY(myTree,newZoom/oldZoom,dt, true);},dt);
+        //filterMetaDataTable('dc_data_table_meta', myTree);
+        return false;
+    }});
 
 }
 
