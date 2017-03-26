@@ -4,7 +4,7 @@ import speciesTree from "./speciesTree";
 import  {metaDataTable} from "./datatable-meta";
 import {buttons, pxTree, attachButtons, tipText, tipFontSize, attachPanzoom, connectTrees,applyChangeToTree} from "./tree-init";
 import {updateGeometry} from "../phyloTree/src/updateTree";
-import linkTableAlignmentTrees from "./linkTableAlignmentTrees";
+import {linkTableAlignmentTrees, linkMetaTableTree} from "./linkTableAlignmentTrees";
 import {create_dropdown, updateData} from "./meta-color-legend";
 
 // /** strain_tree processing */
@@ -46,6 +46,7 @@ const tryConnectTrees = function(){
     if (mySpeciesTree&&myGeneTree&&myDatatable){
         connectTrees(mySpeciesTree, myGeneTree);
         linkTableAlignmentTrees('dc_data_table', myDatatable, mySpeciesTree, handleGeneTree);
+        linkMetaTableTree(meta_table_id, myMetaDatatable,mySpeciesTree);
         var menu_panel = d3.select("#dropdown_select")
         menu_panel.on("change", function(d) {
             if (this.value!='Meta-info') {

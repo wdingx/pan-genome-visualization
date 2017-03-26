@@ -111,6 +111,26 @@ color_node_stroke:'steelblue',
 color_node_fill:'white',
 }
 
+export const hideNonSelected =function(tree){
+    tree.tipElements
+        .attr('r',function(d){if (d.state.selected){return d.tipAttributes.r*1.5;}
+                              else {return d.tipAttributes.r*0.5;}
+                             })
+        .style('fill',function(d){if (d.state.selected){ return d.tipAttributes.fill;}
+                                  else {return "#CCC";}
+                            })
+        .style('stroke',function(d){if (d.state.selected){ return d.tipAttributes.stroke;}
+                              else {return "#CCC";}
+                            });
+}
+
+export const undoHideNonSelected =function(tree){
+    tree.tipElements
+        .attr('r',function(d){return d.tipAttributes.r;})
+        .style('fill', function(d){return d.tipAttributes.fill;})
+        .style('stroke', function(d){return d.tipAttributes.stroke;});
+}
+
 
 export const branchText = function(d){
     if (d.n.muts){

@@ -1,6 +1,7 @@
 import msaLoad from './msaLoad';
 import geneTree from "./geneTree";
 import {aln_file_path} from "./data_path";
+import {hideNonSelected} from "./tree-init";
 
 /**
  * Module for initializing trigger actions in cluster datatable. It includes:
@@ -42,5 +43,22 @@ export const linkTableAlignmentTrees = function(tableID, datatable, speciesTree,
 
 };
 
-export default linkTableAlignmentTrees;
+export const linkMetaTableTree = function(tableID, datatable, speciesTree){
+    datatable.on('search.dt', function(){
+        if (speciesTree){
+            speciesTree.tips.forEach(function(d){d.state.selected=false;});
+            var selectedItems = datatable.rows({search:"applied"}).data();
+            selectedItems.each(function(strain,ii){
+                if (speciesTree.namesToTips[strain.accession]){
+                    speciesTree.namesToTips[strain.accession].state.selected=true;
+                }else{
+                    console.log("accession not found", strain);
+                }
+            });
+        }else{
+            console.log("speciesTree not available");
+        }
+        hideNonSelected(speciesTree);
+    });
+}
 
