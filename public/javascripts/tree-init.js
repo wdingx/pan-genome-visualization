@@ -73,10 +73,11 @@ export const pxTree = {
     branch_wid_highlight: '3px',
     link_width: '1px',
     link_dasharray: '1px, 0px',
-    genePresentFill: '#005BCC',//'#3A89EA' '#1F69C4' gene presence
-    geneAbsentFill: '#E01F1F', // '#D82400' '#EA5833'; gene absence
+    genePresentFill: '#3A89EA',//'#3A89EA' '#1F69C4' gene presence
+    geneAbsentFill: '#CCC', // '#D82400' '#EA5833'; gene absence
     genePresentR: 4, // tip radius
     geneAbsentR:  3,
+    strokeToFill: 0.4,  //brightness difference between stroke and fill
     node_metaunknown_stroke:'#FFFFFF',
     wid_link: '1.2px',
     wid_gloss: '3px',//gain loss highlight
@@ -218,13 +219,12 @@ export const attachButtons = function(myTree, buttons){
 
 export const attachPanzoom = function(treeID, myTree){
     const dt=100;
-    svgPanZoom("#"+treeID, {beforeZoom: function(oldZoom, newZoom)
-        {
-            console.log(oldZoom, newZoom);
-            applyChangeToTree(myTree, function(){zoomInY(myTree,newZoom/oldZoom*newZoom/oldZoom,dt, true);},dt);
-            filterMetaDataTable('dc_data_table_meta', myTree);
-        }
+    svgPanZoom("#"+treeID, {zoomEnabled:false});
+    $(document).on("mousewheel", "#"+treeID, function(e){
+        applyChangeToTree(myTree, function(){zoomInY(myTree,(e.wheeldelta>0)?1.1:0.9,dt, true);},dt);
+        filterMetaDataTable('dc_data_table_meta', myTree);
     });
+
 }
 
 
@@ -265,14 +265,22 @@ export const connectTrees = function(speciesTree, geneTree){
         }
         if (geneTree.paralogs[species.name].length){
             species.genePresent = true;
-            species.tipAttributes.fill = pxTree.genePresentFill;
-            species.tipAttributes.r = pxTree.genePresentR;
         }else{
             species.genePresent = false;
-            species.tipAttributes.fill = pxTree.geneAbsentFill;
-            species.tipAttributes.r = pxTree.geneAbsentR;
         }
     }
-    updateTips(speciesTree,['r'],['fill'],200);
+    colorPresenceAbsence(speciesTree);
+}
+
+export const colorPresenceAbsence = function(speciesTree){
+    var node,strain, fill;
+    for (var i=0; i<speciesTree.tips.length; i++){
+        node = speciesTree.tips[i];
+        node.tipAttributes.r = node.genePresent?5:3;
+        fill = node.genePresent?pxTree.genePresentFill:pxTree.geneAbsentFill
+        node.tipAttributes.fill = fill;
+        node.tipAttributes.stroke = d3.rgb(fill).darker(pxTree.strokeToFill).toString();
+    }
+    updateTips(speciesTree, ["r"], ["fill", "stroke"], 0);
 }
 

@@ -2,7 +2,7 @@ import {preOrderIteration} from "../phyloTree/src/treeHelpers";
 
 const onTipHover = function(d){
   d.elem.attr("r",10).style("fill", "#5AE");
-  d.strainTip.attr("r",10).style("fill","#3E4");
+  d.strainTip.attr("r",10).style("fill", function(x){return d3.rgb(x.tipAttributes.fill).brighter();});
   for (var gi=0; gi<d.paralogs.length; gi++){
     d.paralogs[gi].elem
       .attr("r",10)

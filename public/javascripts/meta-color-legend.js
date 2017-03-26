@@ -1,6 +1,7 @@
 import {more_color_set, safe_color_set} from "./colors";
-import {pxTree} from "./tree-init";
 import {updateTips} from "../phyloTree/src/updateTree";
+import {pxTree,colorPresenceAbsence} from "./tree-init";
+
 function isNumeric(num){
     return !isNaN(num)
 }
@@ -77,23 +78,25 @@ function removeLegend(coreTree_legend_id) {
 
 //## create legend
 function makeLegend(metaType,speciesTree, geneTree,coreTree_legend_id){ // && legendOptionValue!= "Meta-info"
+    const strokeToFill = pxTree.strokeToFill;
     console.log(metaType);
     if (metaType==="genePattern"){
-        var node,strain;
+        var node,strain, fill;
         for (var i=0; i<speciesTree.tips.length; i++){
             node = speciesTree.tips[i];
             node.tipAttributes.r = node.genePresent?5:3;
-            node.tipAttributes.fill = node.genePresent?pxTree.genePresentFill:pxTree.geneAbsentFill;
-            node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker().toString();
+            fill = node.genePresent?pxTree.genePresentFill:pxTree.geneAbsentFill
+            node.tipAttributes.fill = fill;
+            node.tipAttributes.stroke = d3.rgb(fill).darker(strokeToFill).toString();
         }
+        colorPresenceAbsence(speciesTree);
         for (var i=0; i<geneTree.tips.length; i++){
             node = geneTree.tips[i];
             strain = speciesTree.namesToTips[node.n.accession];
             node.tipAttributes.fill = "#AAA";
-            node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker().toString();
+            node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
         }
         updateTips(geneTree, [], ["fill", "stroke"], 0);
-        updateTips(speciesTree, ["r"], ["fill", "stroke"], 0);
 
     }
     else if (metaType!='') {
@@ -106,13 +109,13 @@ function makeLegend(metaType,speciesTree, geneTree,coreTree_legend_id){ // && le
                 itemCount[node.n[metaType]]=1;
             }
             node.tipAttributes.fill = d3.rgb(metaColor_sets[metaType][node.n[metaType]]).toString()
-            node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker().toString();
+            node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
         }
         for (var i=0; i<geneTree.tips.length; i++){
             const node = geneTree.tips[i];
             const strain = speciesTree.namesToTips[node.n.accession];
             node.tipAttributes.fill = d3.rgb(metaColor_sets[metaType][strain.n[metaType]]).toString()
-            node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker().toString();
+            node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
         }
         updateTips(geneTree, [], ["fill", "stroke"], 0);
         updateTips(speciesTree, [], ["fill", "stroke"], 0);
@@ -144,7 +147,7 @@ function makeLegend(metaType,speciesTree, geneTree,coreTree_legend_id){ // && le
                         return d.tipAttributes.r*0.7;
                     }
                 })
-            .style('fill', function(d){return d3.rgb(d.tipAttributes.fill).brighter();});
+            .style('fill', function(d){return d3.rgb(d.tipAttributes.fill).brighter(strokeToFill);});
         }
         const mouseout_legend = function(metaField, tree){
             tree.tipElements
