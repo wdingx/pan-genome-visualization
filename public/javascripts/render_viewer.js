@@ -2,7 +2,8 @@ import {render_chart_table} from "./chartsAndClusterTable";
 import * as datapath from "./data_path";
 import speciesTree from "./speciesTree";
 import  {metaDataTable} from "./datatable-meta";
-import {buttons, pxTree, attachButtons, tipText, tipFontSize, attachPanzoom, connectTrees} from "./tree-init";
+import {buttons, pxTree, attachButtons, tipText, tipFontSize, attachPanzoom, connectTrees,applyChangeToTree} from "./tree-init";
+import {updateGeometry} from "../phyloTree/src/updateTree";
 import linkTableAlignmentTrees from "./linkTableAlignmentTrees";
 import {create_dropdown, updateData} from "./meta-color-legend";
 
@@ -84,20 +85,18 @@ var myMetaDatatable = metaDataTable.dataTable2Fun(meta_table_id);
 
 
 window.addEventListener("resize", function(){
-    removeLabels(mySpeciesTree);
-    mySpeciesTree.dimensions.width = window.innerWidth/3;
-    mySpeciesTree.svg.attr("width", window.innerWidth/3);
-    updateGeometry(mySpeciesTree);
-    if (mySpeciesTree.showTipLabels){
-        tipLabels(mySpeciesTree, tipText, tipFontSize, 5, 5);
+    const speciesTreeResize = function(){
+        mySpeciesTree.dimensions.width = window.innerWidth/3;
+        mySpeciesTree.svg.attr("width", window.innerWidth/3);
+        updateGeometry(mySpeciesTree);
     };
+    applyChangeToTree(mySpeciesTree, speciesTreeResize, 0);
 
-    removeLabels(myGeneTree);
-    myGeneTree.dimensions.width = window.innerWidth/3;
-    myGeneTree.svg.attr("width", window.innerWidth/3);
-    updateGeometry(myGeneTree);
-    if (myGeneTree.showTipLabels){
-        tipLabels(myGeneTree, tipText, tipFontSize, 5, 5);
+    const geneTreeResize = function(){
+        myGeneTree.dimensions.width = window.innerWidth/3;
+        myGeneTree.svg.attr("width", window.innerWidth/3);
+        updateGeometry(myGeneTree);
     };
+    applyChangeToTree(myGeneTree, geneTreeResize, 0);
 });
 
