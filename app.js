@@ -11,7 +11,7 @@ var compression = require('compression');
 var staticZip = require('express-static-zip');
 app.use(compression());
 
-app.get('*aln', function (req, res, next) {
+app.get('*aln.fa', function (req, res, next) {
   req.url = req.url + '.gz';
   res.set('Content-Encoding', 'gzip');
   next();
