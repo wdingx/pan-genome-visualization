@@ -224,7 +224,6 @@ export const attachButtons = function(myTree, buttons){
     }
     if (buttons.zoomReset){
         $('#'+buttons.zoomReset).click(function() {
-            console.log('xyz')
             applyChangeToTree(myTree, function(){zoomIntoClade(myTree, myTree.nodes[0],dt, true);},dt);
             filterMetaDataTable('dc_data_table_meta', myTree);
         });
