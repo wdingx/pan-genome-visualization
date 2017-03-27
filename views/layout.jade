@@ -69,16 +69,25 @@ html
             | Strain tree (SNPs in all core genes)
           .row
             #LeftTreeButtons.col-md-5(style='vertical-align: top')
-              input#TreeViewSelect.btn_tooltip.input(type='checkbox', data-toggle='toggle', data-style='ios', data-on='Circular', data-off='Vertical', data-size='mini', data-onstyle='primary', data-offstyle='info', text='layout')
+              .col-md-3.triplet-button-group
+                button.triplet-button-control.triplet-button-toggle.speciesTree(type='button') Layouts
+                    span.fa.fa-plus.triplet-button(aria-hidden='true')
+                ul#options.list-inline
+                  li.option.speciesTree
+                    button#speciesTreeRadial.triplet-button-single.option1(type='button') Radial
+                  li.option.speciesTree
+                    button#speciesTreeVertical.triplet-button-single.option2(type='button') Vertical
+                  li.option.speciesTree
+                    button#speciesTreeUnroot.triplet-button-single.option3(type='button')
+                      img(src='images/unrooted_blue.png')
+              //-input#TreeViewSelect.btn_tooltip.input(type='checkbox', data-toggle='toggle', data-style='ios', data-on='Circular', data-off='Vertical', data-size='mini', data-onstyle='primary', data-offstyle='info', text='layout')
               input#LabelsToggle.btn_tooltip(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Label', data-off='Label', data-size='mini')
               input#InnerNodeToggle.btn_tooltip(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Node', data-off='Node', data-size='mini')
               input#ScalesToggle.btn_tooltip(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Scale', data-off='Scale', data-size='mini')
-              //- input#HeightToggle(type='checkbox', checked='true', data-toggle='toggle', data-style='ios', data-on='H', data-off='H', data-size='mini')
               button#Height_plus_Toggle.btn.btn-xs.btn-primary.btn_tooltip
                 span.glyphicon.glyphicon-resize-full
               button#Height_minus_Toggle.btn.btn-xs.btn-primary.btn_tooltip
                 span.glyphicon.glyphicon-resize-small
-              //- i#Height_plus_Toggle.glyphicon.glyphicon-plus-sign/minus-sign
               //- span#treeLoader
             #tree_zoom.col-md-2.btn_tooltip
               input#tree_zoom_range.col-md-10(type='range', style='padding:0;')
@@ -103,7 +112,7 @@ html
               #searchStrain-group.input-group
                 span#sizing-addon1.input-group-addon.primary.sm-customized Search strain
                 input.form-control.sm-customized(type='text', placeholder='NCBI accession number', aria-describedby='sizing-addon1',oninput='search(this.value)')
-            #tree_rotate_div.col-md-2
+            #tree_rotate_div.col-md-1
               input#tree_rotate(type='checkbox', data-toggle='toggle', data-style='ios', data-on='left-right', data-off='right-left', data-size='mini', data-onstyle='primary', data-offstyle='info')
             //#dropdown_list2.col-md-4
             #download_geneTree.col-md-1.btn_tooltip

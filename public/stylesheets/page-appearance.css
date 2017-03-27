@@ -363,3 +363,58 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 
+/*======== triplet-button-group ============*
+/* no space between elements using list-inline*/
+.list-inline>li {
+  margin-right: -10px;
+}
+.fa.fa-plus.triplet-button{
+  padding-left:4px;
+}
+.triplet-button-control, .triplet-button-single {
+    position: relative;
+    z-index: 1;
+    color: #fff;
+    background: #2C98DE;
+    box-shadow: 0 3px 6px rgba(0,0,0,.275);
+    border: none;
+    outline: none;
+}
+.triplet-button-control{
+    height: 25px;
+    border-radius: 20px;
+}
+.triplet-button-single {
+    z-index: 3;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 4px;
+}
+.triplet-button-toggle.open {
+    -webkit-transform: scale(0.9,0.9);
+    transform:         scale(0.9,0.9);
+}
+.triplet-button-toggle.open span {
+    -webkit-transform: rotate(45deg);
+    transform:         rotate(45deg);
+}
+.option {
+    position: relative;
+    visibility: hidden;
+}
+.option.scale-on {
+    visibility: visible;
+}
+.option.scale-on .option1 {
+    -webkit-transform: translateX(-5px) translateY(2px) translateZ(0);
+    transform:         translateX(-5px) translateY(2px) translateZ(0);
+}
+.option.scale-on .option2 {
+    -webkit-transform: translateX(-5px) translateY(5px) translateZ(0);
+    transform:         translateX(-5px) translateY(5px) translateZ(0);
+}
+.option.scale-on .option3 {
+    -webkit-transform: translateX(-5px) translateY(2px) translateZ(0);
+    transform:         translateX(-5px) translateY(2px) translateZ(0);
+}

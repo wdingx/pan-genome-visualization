@@ -172,10 +172,35 @@ export const applyChangeToTree = function(myTree, func, dt){
 
 export const attachButtons = function(myTree, buttons){
     const dt = 1000;
+
+    // speciesTree triplet-button-group for 3 types of layouts
+    $('.triplet-button-toggle.speciesTree').on("click", function () {
+        $(this).toggleClass('open');
+        $('.option.speciesTree').toggleClass('scale-on');
+    });
+
     if (buttons.layout){
-        console.log("button:", buttons.TreeViewSelect_id);
+        //console.log("button:", buttons.TreeViewSelect_id);
         $('#'+buttons.layout).change(function() {
             myTree.layout =  (d3.select(this).property('checked')==false) ? 'rect' : 'radial';
+            applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
+        });
+    }
+    if (buttons.layout_radial){
+        $('#'+buttons.layout_radial).click(function() {
+            myTree.layout =  'radial';
+            applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
+            });
+    }
+    if (buttons.layout_vertical){
+        $('#'+buttons.layout_vertical).click(function() {
+            myTree.layout =  'rect';
+            applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
+        });
+    }
+    if (buttons.layout_unroot){
+        $('#'+buttons.layout_unroot).click(function() {
+            myTree.layout =  'unrooted';
             applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
         });
     }

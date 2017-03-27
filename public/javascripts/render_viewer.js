@@ -24,6 +24,9 @@ const handleSpeciesTree = function(newTree){
     }
     mySpeciesTree = newTree;
     attachButtons(mySpeciesTree, {layout:"TreeViewSelect",
+                                  layout_radial:"speciesTreeRadial",
+                                  layout_vertical:"speciesTreeVertical",
+                                  layout_unroot:"speciesTreeUnroot",
                                   zoomInY:"Height_plus_Toggle",
                                   zoomOutY:"Height_minus_Toggle",
                                   scale:"ScalesToggle",
@@ -56,6 +59,7 @@ const tryConnectTrees = function(){
         });
         attachPanzoom("speciesTree", mySpeciesTree);
         attachPanzoom("geneTree", myGeneTree);
+
     }else{
         console.log("trees not available yet, retry", mySpeciesTree, myGeneTree);
         setTimeout(tryConnectTrees, 1000);
