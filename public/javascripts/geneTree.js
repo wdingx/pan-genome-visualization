@@ -58,6 +58,10 @@ const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, speciesTree){
                                   layout_radial:"geneTreeRadial",
                                   layout_vertical:"geneTreeVertical",
                                   layout_unroot:"geneTreeUnroot"});
+        attachButtons_geneTree(myTree, {
+                                  layout_radial:"speciesTreeRadial",
+                                  layout_vertical:"speciesTreeVertical",
+                                  layout_unroot:"speciesTreeUnroot"});
     });
     if (typeof speciesTree !== "undefined"){
         linkTrees(speciesTree, myTree);
