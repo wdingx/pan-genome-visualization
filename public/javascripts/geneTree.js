@@ -8,6 +8,7 @@ import {branchLabels, tipLabels, removeLabels} from "../phyloTree/src/labels";
 import d3 from "d3";
 import {pgDashboard} from "./tree-init";
 import geneTreeCallbacks from "./geneTreeCallbacks";
+import {attachButtons_geneTree} from "./tree-init";
 
 
 /**
@@ -53,6 +54,10 @@ const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, speciesTree){
         //branchLabels(myTree, branchText, branchFontSize, -5, -5);
         tipLabels(myTree, tipText, tipFontSize, 5, 3);
         handleGeneTree(myTree);
+        attachButtons_geneTree(myTree, {
+                                  layout_radial:"geneTreeRadial",
+                                  layout_vertical:"geneTreeVertical",
+                                  layout_unroot:"geneTreeUnroot"});
     });
     if (typeof speciesTree !== "undefined"){
         linkTrees(speciesTree, myTree);

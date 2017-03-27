@@ -66,6 +66,14 @@ const tryConnectTrees = function(){
     }
 }
 
+const triplet_button_geneTree = function(){
+    $('.triplet-button-toggle.geneTree').on("click", function () {
+        $(this).toggleClass('open');
+        $('.option.geneTree').toggleClass('scale-on');
+    });
+}
+triplet_button_geneTree();
+
 /** create metadata dropdown list */
 create_dropdown("#dropdown_list",mySpeciesTree,'geneTree','coreTree_legend',null);
 speciesTree("speciesTree", datapath.coreTree_path, handleSpeciesTree);

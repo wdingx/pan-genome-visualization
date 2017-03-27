@@ -114,6 +114,17 @@ html
                 input.form-control.sm-customized(type='text', placeholder='NCBI accession number', aria-describedby='sizing-addon1',oninput='search(this.value)')
             #tree_rotate_div.col-md-1
               input#tree_rotate(type='checkbox', data-toggle='toggle', data-style='ios', data-on='left-right', data-off='right-left', data-size='mini', data-onstyle='primary', data-offstyle='info')
+            .col-md-3.triplet-button-group
+              button.triplet-button-control.triplet-button-toggle.geneTree(type='button') Layouts
+                span.fa.fa-plus.triplet-button(aria-hidden='true')
+              ul#options.list-inline
+                li.option.geneTree
+                  button#geneTreeRadial.triplet-button-single.option1(type='button') Radial
+                li.option.geneTree
+                  button#geneTreeVertical.triplet-button-single.option2(type='button') Vertical
+                li.option.geneTree
+                  button#geneTreeUnroot.triplet-button-single.option3(type='button')
+                    img(src='images/unrooted_blue.png')
             //#dropdown_list2.col-md-4
             #download_geneTree.col-md-1.btn_tooltip
           .row

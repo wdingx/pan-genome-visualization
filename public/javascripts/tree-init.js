@@ -241,6 +241,23 @@ export const attachButtons = function(myTree, buttons){
     }
 }
 
+export const attachButtons_geneTree = function(myTree, buttons){
+    const dt = 1000;
+    if (buttons.layout_radial){
+        $('#'+buttons.layout_radial).click(function() {
+            myTree.layout =  'radial';
+            applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
+        });
+        $('#'+buttons.layout_vertical).click(function() {
+            myTree.layout =  'rect';
+            applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
+        });
+        $('#'+buttons.layout_unroot).click(function() {
+            myTree.layout =  'unrooted';
+            applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
+        });
+    }
+}
 
 export const attachPanzoom = function(treeID, myTree){
     const dt=100;
