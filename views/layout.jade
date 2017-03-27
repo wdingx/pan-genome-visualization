@@ -91,7 +91,7 @@ html
               //- span#treeLoader
             #tree_zoom.col-md-2.btn_tooltip
               input#tree_zoom_range.col-md-10(type='range', style='padding:0;')
-              button#tree_zoom_reset.btn.btn-xs.btn-primary.btn_tooltip
+              button#speciesTreeZoomReset.btn.btn-xs.btn-primary.btn_tooltip
                 span.glyphicon.glyphicon-refresh
             #dropdown_list.col-md-3.btn_tooltip
             #download_coreTree.col-md-1.btn_tooltip
@@ -112,8 +112,10 @@ html
               #searchStrain-group.input-group
                 span#sizing-addon1.input-group-addon.primary.sm-customized Search strain
                 input.form-control.sm-customized(type='text', placeholder='NCBI accession number', aria-describedby='sizing-addon1',oninput='search(this.value)')
-            #tree_rotate_div.col-md-1
-              input#geneTreeOrientation(type='checkbox', data-toggle='toggle', data-style='ios', data-on='left-right', data-off='right-left', data-size='mini', data-onstyle='primary', data-offstyle='info')
+            #tree_rotate_div.col-md-2
+              input#geneTreeOrientation(type='checkbox', data-toggle='toggle', data-style='ios', data-on='left-right', data-off='right-left', data-size='mini', data-onstyle='info', data-offstyle='primary')
+              button#geneTreeZoomReset.btn.btn-xs.btn-primary.btn_tooltip
+                span.glyphicon.glyphicon-refresh
             .col-md-3.triplet-button-group
               button.triplet-button-control.triplet-button-toggle.geneTree(type='button') Layouts
                 span.fa.fa-plus.triplet-button(aria-hidden='true')

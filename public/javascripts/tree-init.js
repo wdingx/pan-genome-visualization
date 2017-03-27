@@ -204,6 +204,12 @@ export const attachButtons = function(myTree, buttons){
             applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
         });
     }
+    if (buttons.layout_unroot){
+            $('#'+buttons.orientation).change(function() {
+            myTree.orientation =  (d3.select(this).property('checked')==false) ? {x:-1, y:1} : {x:1, y:1};
+            applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
+        });
+    }
     if (buttons.zoomInY){
         $('#'+buttons.zoomInY).click(function() {
             applyChangeToTree(myTree, function(){zoomInY(myTree,1.4,dt, true);},dt);
@@ -218,6 +224,7 @@ export const attachButtons = function(myTree, buttons){
     }
     if (buttons.zoomReset){
         $('#'+buttons.zoomReset).click(function() {
+            console.log('xyz')
             applyChangeToTree(myTree, function(){zoomIntoClade(myTree, myTree.nodes[0],dt, true);},dt);
             filterMetaDataTable('dc_data_table_meta', myTree);
         });
@@ -238,29 +245,6 @@ export const attachButtons = function(myTree, buttons){
             myTree.distance = (d3.select(this).property('checked')===false) ? "level":"div";
             applyChangeToTree(myTree, function(){changeDistance(myTree, dt);},dt);
         });
-    }
-}
-
-export const attachButtons_geneTree = function(myTree, buttons){
-    const dt = 1000;
-    if (buttons.layout_radial){
-        $('#'+buttons.layout_radial).click(function() {
-            myTree.layout =  'radial';
-            applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
-        });
-        $('#'+buttons.layout_vertical).click(function() {
-            myTree.layout =  'rect';
-            applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
-        });
-        $('#'+buttons.layout_unroot).click(function() {
-            myTree.layout =  'unrooted';
-            applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
-        });
-        $('#'+buttons.orientation).change(function() {
-            myTree.orientation =  (d3.select(this).property('checked')==false) ? {x:-1, y:1} : {x:1, y:1};
-            applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
-        });
-
     }
 }
 
