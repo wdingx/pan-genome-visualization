@@ -57,7 +57,8 @@ const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, speciesTree){
         attachButtons_geneTree(myTree, {
                                   layout_radial:"geneTreeRadial",
                                   layout_vertical:"geneTreeVertical",
-                                  layout_unroot:"geneTreeUnroot"});
+                                  layout_unroot:"geneTreeUnroot",
+                                  orientation:"geneTreeOrientation"});
         attachButtons_geneTree(myTree, {
                                   layout_radial:"speciesTreeRadial",
                                   layout_vertical:"speciesTreeVertical",

@@ -256,6 +256,11 @@ export const attachButtons_geneTree = function(myTree, buttons){
             myTree.layout =  'unrooted';
             applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
         });
+        $('#'+buttons.orientation).change(function() {
+            myTree.orientation =  (d3.select(this).property('checked')==false) ? {x:-1, y:1} : {x:1, y:1};
+            applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
+        });
+
     }
 }
 
