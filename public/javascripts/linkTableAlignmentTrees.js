@@ -65,26 +65,30 @@ export const linkMetaTableTree = function(tableID, datatable, speciesTree){
 
         $(this).toggleClass('active');
         if ($(this).hasClass( "active" )){
+            // highlight the row
             $(this).addClass('row_selected');
         }else{
             $(this).removeClass('row_selected');
         }
 
         if (speciesTree){
-            speciesTree.tips.forEach(function(d){d.state.selected=false;});
-            var clickedItems= datatable.rows('.active').data();
-            clickedItems.each(function(strain,ii){
-                if (speciesTree.namesToTips[strain.accession]){
-                    speciesTree.namesToTips[strain.accession].state.selected=true;
-                }else{
-                    console.log("accession not found", strain);
-                }
-            });
+            if (datatable.rows('.row_selected').any()) {
+                speciesTree.tips.forEach(function(d){d.state.selected=false;});
+                var clickedItems= datatable.rows('.active').data();
+                clickedItems.each(function(strain,ii){
+                    if (speciesTree.namesToTips[strain.accession]){
+                        speciesTree.namesToTips[strain.accession].state.selected=true;
+                    }else{
+                        console.log("accession not found", strain);
+                    }
+                });
+            }else{
+                speciesTree.tips.forEach(function(d){d.state.selected=true;});
+            }
         }else{
             console.log("speciesTree not available");
         }
         hideNonSelected(speciesTree);
     } );
-
 }
 
