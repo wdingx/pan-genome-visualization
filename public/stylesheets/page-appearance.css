@@ -376,13 +376,13 @@ input[type=range]:focus::-ms-fill-upper {
     z-index: 1;
     color: #fff;
     background: #2C98DE;
-    box-shadow: 0 3px 6px rgba(0,0,0,.275);
     border: none;
     outline: none;
 }
 .triplet-button-control{
     height: 25px;
     border-radius: 20px;
+    font-size: 12px;
 }
 .triplet-button-single {
     z-index: 3;
@@ -390,6 +390,7 @@ input[type=range]:focus::-ms-fill-upper {
     height: 28px;
     border-radius: 50%;
     font-size: 4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,.275);
 }
 .triplet-button-toggle.open {
     -webkit-transform: scale(0.9,0.9);

@@ -16,6 +16,8 @@ html
     link(rel="stylesheet", type="text/css", href='stylesheets/dc.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/dataTables.bootstrap.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/dataTables-customized.css')
+    link(rel="stylesheet", type="text/css", href='stylesheets/select.bootstrap.css')
+    //- link(rel="stylesheet", type="text/css", href='stylesheets/jquery.dataTables.min.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/msa-new.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/d3-tip.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/page-appearance.css')
@@ -74,7 +76,8 @@ html
                     span.fa.fa-plus.triplet-button(aria-hidden='true')
                 ul#options.list-inline
                   li.option.speciesTree
-                    button#speciesTreeRadial.triplet-button-single.option1(type='button') Radial
+                    button#speciesTreeRadial.triplet-button-single.option1(type='button')
+                      img(src='images/radial.png')
                   li.option.speciesTree
                     button#speciesTreeVertical.triplet-button-single.option2(type='button')
                       img(src='images/vertical.png')
@@ -122,12 +125,13 @@ html
                 span.fa.fa-plus.triplet-button(aria-hidden='true')
               ul#options.list-inline
                 li.option.geneTree
-                  button#geneTreeRadial.triplet-button-single.option1(type='button') Radial
+                  button#geneTreeRadial.triplet-button-single.triplet-button-single-toggle.option1(type='button')
+                    img(src='images/radial.png')
                 li.option.geneTree
-                  button#geneTreeVertical.triplet-button-single.option2(type='button')
+                  button#geneTreeVertical.triplet-button-single.triplet-button-single-toggle.option2(type='button')
                     img(src='images/vertical.png')
                 li.option.geneTree
-                  button#geneTreeUnroot.triplet-button-single.option3(type='button')
+                  button#geneTreeUnroot.triplet-button-single.triplet-button-single-toggle.option3(type='button')
                     img(src='images/unrooted.png')
             //#dropdown_list2.col-md-4
             #download_geneTree.col-md-1.btn_tooltip
