@@ -30,7 +30,7 @@ const handleSpeciesTree = function(newTree){
                                   zoomInY:"Height_plus_Toggle",
                                   zoomOutY:"Height_minus_Toggle",
                                   scale:"ScalesToggle",
-                                  tipLabels:"InnerNodeToggle",
+                                  tipLabels:"LabelsToggle",
                                   zoomReset:"speciesTreeZoomReset"});
     console.log("render_viewer:",mySpeciesTree);
 }

@@ -73,7 +73,7 @@ html
             #LeftTreeButtons.col-md-5(style='vertical-align: top')
               .col-md-3.triplet-button-group
                 button.triplet-button-control.triplet-button-toggle.speciesTree(type='button') Layouts
-                    span.fa.fa-plus.triplet-button(aria-hidden='true')
+                    span.fa.fa-plus.triplet-button-space(aria-hidden='true')
                 ul#options.list-inline
                   li.option.speciesTree
                     button#speciesTreeRadial.triplet-button-single.option1(type='button')
@@ -86,17 +86,16 @@ html
                       img(src='images/unrooted.png')
               //-input#TreeViewSelect.btn_tooltip.input(type='checkbox', data-toggle='toggle', data-style='ios', data-on='Circular', data-off='Vertical', data-size='mini', data-onstyle='primary', data-offstyle='info', text='layout')
               input#LabelsToggle.btn_tooltip(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Label', data-off='Label', data-size='mini')
-              input#InnerNodeToggle.btn_tooltip(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Node', data-off='Node', data-size='mini')
               input#ScalesToggle.btn_tooltip(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Scale', data-off='Scale', data-size='mini')
               button#Height_plus_Toggle.btn.btn-xs.btn-primary.btn_tooltip
                 span.glyphicon.glyphicon-resize-full
               button#Height_minus_Toggle.btn.btn-xs.btn-primary.btn_tooltip
                 span.glyphicon.glyphicon-resize-small
-              //- span#treeLoader
-            #tree_zoom.col-md-2.btn_tooltip
-              input#tree_zoom_range.col-md-10(type='range', style='padding:0;')
               button#speciesTreeZoomReset.btn.btn-xs.btn-primary.btn_tooltip
                 span.glyphicon.glyphicon-refresh
+            //- #tree_zoom.col-md-2.btn_tooltip
+            //-   input#tree_zoom_range.col-md-10(type='range', style='padding:0;')
+
             #dropdown_list.col-md-3.btn_tooltip
             #download_coreTree.col-md-1.btn_tooltip
           .row
@@ -122,7 +121,7 @@ html
                 span.glyphicon.glyphicon-refresh
             .col-md-3.triplet-button-group
               button.triplet-button-control.triplet-button-toggle.geneTree(type='button') Layouts
-                span.fa.fa-plus.triplet-button(aria-hidden='true')
+                span.fa.fa-plus.triplet-button-space(aria-hidden='true')
               ul#options.list-inline
                 li.option.geneTree
                   button#geneTreeRadial.triplet-button-single.triplet-button-single-toggle.option1(type='button')

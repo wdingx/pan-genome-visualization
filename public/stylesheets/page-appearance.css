@@ -368,7 +368,7 @@ input[type=range]:focus::-ms-fill-upper {
 .list-inline>li {
   margin-right: -10px;
 }
-.fa.fa-plus.triplet-button{
+.triplet-button-space{
   padding-left:4px;
 }
 .triplet-button-control, .triplet-button-single {
