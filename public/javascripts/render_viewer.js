@@ -27,10 +27,10 @@ const handleSpeciesTree = function(newTree){
                                   layout_radial:"speciesTreeRadial",
                                   layout_vertical:"speciesTreeVertical",
                                   layout_unroot:"speciesTreeUnroot",
-                                  zoomInY:"Height_plus_Toggle",
-                                  zoomOutY:"Height_minus_Toggle",
-                                  scale:"ScalesToggle",
-                                  tipLabels:"LabelsToggle",
+                                  zoomInY:"speciesTree_height_plus",
+                                  zoomOutY:"speciesTree_height_minus",
+                                  scale:"speciesTreeScale",
+                                  tipLabels:"speciesTreeLabels",
                                   zoomReset:"speciesTreeZoomReset"});
     console.log("render_viewer:",mySpeciesTree);
 }

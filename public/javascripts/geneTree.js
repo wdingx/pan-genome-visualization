@@ -58,13 +58,17 @@ const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, speciesTree){
                               layout_radial:"geneTreeRadial",
                               layout_vertical:"geneTreeVertical",
                               layout_unroot:"geneTreeUnroot",
+                              zoomInY:"geneTree_height_plus",
+                              zoomOutY:"geneTree_height_minus",
+                              scale:"geneTreeScale",
                               orientation:"geneTreeOrientation",
                               zoomReset:"geneTreeZoomReset"});
         attachButtons(myTree, {
                               layout_radial:"speciesTreeRadial",
                               layout_vertical:"speciesTreeVertical",
-                              layout_unroot:"speciesTreeUnroot"
-                                });
+                              layout_unroot:"speciesTreeUnroot",
+                              scale:"speciesTreeScale"
+                              });
     });
     if (typeof speciesTree !== "undefined"){
         linkTrees(speciesTree, myTree);
