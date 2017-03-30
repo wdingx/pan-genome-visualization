@@ -111,14 +111,6 @@ html
           .alert.alert-info(role='alert')
             #genetree_title Gene tree (individual gene)
           .row
-            .col-md-4
-              #searchStrain-group.input-group
-                span#sizing-addon1.input-group-addon.primary.sm-customized Search strain
-                input.form-control.sm-customized(type='text', placeholder='NCBI accession number', aria-describedby='sizing-addon1',oninput='search(this.value)')
-            #tree_rotate_div.col-md-2
-              input#geneTreeOrientation(type='checkbox', data-toggle='toggle', data-style='ios', data-on='left-right', data-off='right-left', data-size='mini', data-onstyle='info', data-offstyle='primary')
-              button#geneTreeZoomReset.btn.btn-xs.btn-primary.btn_tooltip
-                span.glyphicon.glyphicon-refresh
             .col-md-3.triplet-button-group
               button.triplet-button-control.triplet-button-toggle.geneTree(type='button') Layouts
                 span.fa.fa-plus.triplet-button-space(aria-hidden='true')
@@ -132,7 +124,15 @@ html
                 li.option.geneTree
                   button#geneTreeUnroot.triplet-button-single.triplet-button-single-toggle.option3(type='button')
                     img(src='images/unrooted.png')
+            #tree_rotate_div.col-md-2
+              input#geneTreeOrientation(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='right-left', data-off='left-right', data-size='mini', data-onstyle='primary', data-offstyle='info')
+              button#geneTreeZoomReset.btn.btn-xs.btn-primary.btn_tooltip
+                span.glyphicon.glyphicon-refresh
             //#dropdown_list2.col-md-4
+            .col-md-4
+              #searchStrain-group.input-group
+                span#sizing-addon1.input-group-addon.primary.sm-customized Search strain
+                input.form-control.sm-customized(type='text', placeholder='NCBI accession number', aria-describedby='sizing-addon1',oninput='search(this.value)')
             #download_geneTree.col-md-1.btn_tooltip
           .row
             .col-md-10
