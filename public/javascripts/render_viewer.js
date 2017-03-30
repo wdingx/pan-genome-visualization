@@ -2,7 +2,7 @@ import {render_chart_table} from "./chartsAndClusterTable";
 import * as datapath from "./data_path";
 import speciesTree from "./speciesTree";
 import  {metaDataTable} from "./datatable-meta";
-import {buttons, pxTree, attachButtons, tipText, tipFontSize, attachPanzoom, connectTrees,applyChangeToTree} from "./tree-init";
+import {buttons, pxTree, attachButtons, tipText, tipFontSize, attachPanzoom, connectTrees, applyChangeToTree, hideNonSelected, undoHideNonSelected} from "./tree-init";
 import {updateGeometry} from "../phyloTree/src/updateTree";
 import {linkTableAlignmentTrees, linkMetaTableTree} from "./linkTableAlignmentTrees";
 import {create_dropdown, updateData} from "./meta-color-legend";
@@ -68,6 +68,32 @@ const tryConnectTrees = function(){
         setTimeout(tryConnectTrees, 1000);
     }
 }
+
+//** search strain via accession number
+const search_accession= function (input_value) {
+    /*var tree_index=1;*/
+    var searchStr = input_value.toLowerCase();
+    function nodeMatch(d, treeType){
+        var name=(treeType=='speciesTree')?d.name.toLowerCase():d.accession.toLowerCase();
+        return ((name.indexOf(searchStr) > -1 ) && (input_value.length != 0));
+    };
+
+    if (input_value=='') {
+        undoHideNonSelected(mySpeciesTree);
+        undoHideNonSelected(myGeneTree);
+    }else{
+        mySpeciesTree.tips.forEach(function(d){
+            d.state.selected=(nodeMatch(d,'speciesTree'))?true:false;
+        })
+        hideNonSelected(mySpeciesTree);
+
+        myGeneTree.tips.forEach(function(d){
+            d.state.selected=(nodeMatch(d,'geneTree'))?true:false;
+        })
+        hideNonSelected(myGeneTree);
+    }
+};
+window.search_accession=search_accession;
 
 const trigger_triplet_button = function(){
 
