@@ -24,7 +24,6 @@ const handleSpeciesTree = function(newTree){
     }
     mySpeciesTree = newTree;
     pxTree.speciesTree= mySpeciesTree;
-    //console.log('xyz',pxTree.speciesTree)
     attachButtons(mySpeciesTree, {
                                   layout_radial:"speciesTreeRadial",
                                   layout_vertical:"speciesTreeVertical",
@@ -34,7 +33,9 @@ const handleSpeciesTree = function(newTree){
                                   scale:"speciesTreeScale",
                                   tipLabels:"speciesTreeLabels",
                                   zoomReset:"speciesTreeZoomReset",
-                                  treeSync:"speciesTreeSynchr"});
+                                  treeSync:"speciesTreeSynchr",
+                                  //nodeLarge:"speciesTree_nodePlus",
+                                  nodeSmaller:"speciesTree_nodeMinus"});
     console.log("render_viewer:",mySpeciesTree);
 }
 const handleGeneTree = function(newTree){

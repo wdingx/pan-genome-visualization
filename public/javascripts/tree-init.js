@@ -3,7 +3,7 @@ import {zoomInY,  zoomIn, zoomIntoClade} from "../phyloTree/src/zoom";
 import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
 import svgPanZoom from "svg-pan-zoom";
 import {filterMetaDataTable} from "./datatable-meta";
-
+import {updateTipAttribute} from "../phyloTree/src/updateTree";
 console.log("panzoom", svgPanZoom);
 
 export const pgModule = function(){
@@ -204,6 +204,29 @@ export const attachButtons = function(myTree, buttons){
             $('#'+buttons.orientation).change(function() {
             myTree.orientation =  (d3.select(this).property('checked')==true) ? {x:-1, y:1} : {x:1, y:1};
             applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
+        });
+    }
+    /*if (buttons.nodeLarge){
+        $('#'+buttons.nodeLarge).click(function() {
+            const treeNodeSizeEnlarge= function(){
+                myTree.tipElements
+                    .attr('r',function(d){
+                    return d.tipAttributes.r*1.5;})
+            }
+            applyChangeToTree(myTree, treeNodeSizeEnlarge, 0);
+        });
+    }*/
+    if (buttons.nodeSmaller){
+        $('#'+buttons.nodeSmaller).click(function() {
+            const treeNodeSizeReduce= function(){
+                myTree.tipElements
+                    .attr('r',function(d){
+                    //console.log(d.tipAttributes.r);
+                    return d.tipAttributes.r*0.5;})
+                /*updateTipAttribute(myTree,'r')
+                updateTipAttribute(myTree,0.5,'r')*/
+            }
+            applyChangeToTree(myTree, treeNodeSizeReduce, 0);
         });
     }
     if (buttons.zoomInY){
