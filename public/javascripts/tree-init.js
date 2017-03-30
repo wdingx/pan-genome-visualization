@@ -62,6 +62,8 @@ export const pgDashboard = {
 
 export const pxTree = {
     /**if true, use separated pattern instead of entire pattern */
+    currentGeneTree: {},
+    speciesTree: {},
     large_output: false,
     gain_loss_enabled: true,
     id: 5,
@@ -173,12 +175,6 @@ export const applyChangeToTree = function(myTree, func, dt){
 export const attachButtons = function(myTree, buttons){
     const dt = 1000;
 
-    // speciesTree triplet-button-group for 3 types of layouts
-    $('.triplet-button-toggle.speciesTree').on("click", function () {
-        $(this).toggleClass('open');
-        $('.option.speciesTree').toggleClass('scale-on');
-    });
-
     if (buttons.layout){
         //console.log("button:", buttons.TreeViewSelect_id);
         $('#'+buttons.layout).change(function() {
@@ -204,7 +200,7 @@ export const attachButtons = function(myTree, buttons){
             applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
         });
     }
-    if (buttons.layout_unroot){
+    if (buttons.orientation){
             $('#'+buttons.orientation).change(function() {
             myTree.orientation =  (d3.select(this).property('checked')==true) ? {x:-1, y:1} : {x:1, y:1};
             applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
@@ -228,10 +224,42 @@ export const attachButtons = function(myTree, buttons){
             filterMetaDataTable('dc_data_table_meta', myTree);
         });
     }
+    if (buttons.treeSync){
+        $('#'+buttons.treeSync).change(function(event) {
+            myTree.treeSync =d3.select(this).property('checked')
+            if (myTree.treeSync){
+                var myGeneTree=pxTree.currentGeneTree;
+                attachButtons(myGeneTree, {
+                                      layout_radial:"speciesTreeRadial",
+                                      layout_vertical:"speciesTreeVertical",
+                                      layout_unroot:"speciesTreeUnroot",
+                                      scale:"speciesTreeScale"
+                                      });
+            }else{
+                $('#'+buttons.layout_radial).off("click");
+                $('#'+buttons.layout_vertical).off("click");
+                $('#'+buttons.layout_unroot).off("click");
+                $('#'+buttons.scale).off("change");
+                event.stopPropagation();
+                var mySpeciesTree=pxTree.speciesTree;
+                attachButtons(mySpeciesTree, {
+                                      layout_radial:"speciesTreeRadial",
+                                      layout_vertical:"speciesTreeVertical",
+                                      layout_unroot:"speciesTreeUnroot",
+                                      zoomInY:"speciesTree_height_plus",
+                                      zoomOutY:"speciesTree_height_minus",
+                                      scale:"speciesTreeScale",
+                                      tipLabels:"speciesTreeLabels",
+                                      zoomReset:"speciesTreeZoomReset",
+                                      treeSync:"speciesTreeSynchr"});
+            }
+        });
+
+    }
     if (buttons.tipLabels){
         $('#'+buttons.tipLabels).change(function() {
             myTree.showTipLabels = d3.select(this).property('checked')
-            console.log("tipLabels", myTree.visibleTips, tipFontSize(myTree)());
+            //-console.log("tipLabels", myTree.visibleTips, tipFontSize(myTree)());
             if (myTree.showTipLabels){
                 tipLabels(myTree, tipText, tipFontSize(myTree),  3,8);
             }else{

@@ -23,7 +23,9 @@ const handleSpeciesTree = function(newTree){
         newTree.namesToTips[tip.name] = tip;
     }
     mySpeciesTree = newTree;
-    attachButtons(mySpeciesTree, {layout:"TreeViewSelect",
+    pxTree.speciesTree= mySpeciesTree;
+    //console.log('xyz',pxTree.speciesTree)
+    attachButtons(mySpeciesTree, {
                                   layout_radial:"speciesTreeRadial",
                                   layout_vertical:"speciesTreeVertical",
                                   layout_unroot:"speciesTreeUnroot",
@@ -31,7 +33,8 @@ const handleSpeciesTree = function(newTree){
                                   zoomOutY:"speciesTree_height_minus",
                                   scale:"speciesTreeScale",
                                   tipLabels:"speciesTreeLabels",
-                                  zoomReset:"speciesTreeZoomReset"});
+                                  zoomReset:"speciesTreeZoomReset",
+                                  treeSync:"speciesTreeSynchr"});
     console.log("render_viewer:",mySpeciesTree);
 }
 const handleGeneTree = function(newTree){
@@ -66,13 +69,20 @@ const tryConnectTrees = function(){
     }
 }
 
-const triplet_button_geneTree = function(){
+const trigger_triplet_button = function(){
+
+    // speciesTree triplet-button-group for 3 types of layouts
+    $('.triplet-button-toggle.speciesTree').on("click", function () {
+        $(this).toggleClass('open');
+        $('.option.speciesTree').toggleClass('scale-on');
+    });
+
     $('.triplet-button-toggle.geneTree').on("click", function () {
         $(this).toggleClass('open');
         $('.option.geneTree').toggleClass('scale-on');
     });
 }
-triplet_button_geneTree();
+trigger_triplet_button();
 
 /** create metadata dropdown list */
 create_dropdown("#dropdown_list",mySpeciesTree,'geneTree','coreTree_legend',null);
