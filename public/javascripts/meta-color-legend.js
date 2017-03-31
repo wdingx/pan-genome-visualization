@@ -103,18 +103,18 @@ function makeLegend(metaType,speciesTree, geneTree,coreTree_legend_id){ // && le
         var itemCount = {};
         for (var i=0; i<speciesTree.tips.length; i++){
             const node = speciesTree.tips[i];
-            if (itemCount[node.n[metaType]]){
-                itemCount[node.n[metaType]]++;
+            if (itemCount[node.n.attr[metaType]]){
+                itemCount[node.n.attr[metaType]]++;
             }else{
-                itemCount[node.n[metaType]]=1;
+                itemCount[node.n.attr[metaType]]=1;
             }
-            node.tipAttributes.fill = d3.rgb(metaColor_sets[metaType][node.n[metaType]]).toString()
+            node.tipAttributes.fill = d3.rgb(metaColor_sets[metaType][node.n.attr[metaType]]).toString()
             node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
         }
         for (var i=0; i<geneTree.tips.length; i++){
             const node = geneTree.tips[i];
             const strain = speciesTree.namesToTips[node.n.accession];
-            node.tipAttributes.fill = d3.rgb(metaColor_sets[metaType][strain.n[metaType]]).toString()
+            node.tipAttributes.fill = d3.rgb(metaColor_sets[metaType][strain.n.attr[metaType]]).toString()
             node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
         }
         updateTips(geneTree, [], ["fill", "stroke"], 0);
@@ -141,7 +141,7 @@ function makeLegend(metaType,speciesTree, geneTree,coreTree_legend_id){ // && le
             tree.tipElements
             .attr('r',
                 function(d){
-                    if (d.n[metaType] === metaField){
+                    if (d.n.attr[metaType] === metaField){
                         return d.tipAttributes.r*2;
                     }else{
                         return d.tipAttributes.r*0.7;
