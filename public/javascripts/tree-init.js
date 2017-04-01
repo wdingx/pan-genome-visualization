@@ -107,6 +107,10 @@ export const tableAccessories = {
     meta_table_unselect: "meta_table_unselect"
 };
 
+export const msaViewerAsset = {
+    selected_rows_set: new Set()
+};
+
 export var treeSwitch= {
     layout_vertical: 'false',
 };
