@@ -102,6 +102,7 @@ export const datatable_configuration = function(table_input, table_id, col_selec
         $('#'+table_id).on('error.dt', function(e, settings, techNote, message) { console.log(message); });
     }
 
+    //# append multiselect button to gene cluster datatable
     $('<span style="display:inline-block; width: 10px;"></span>').appendTo('div#'+table_id+'_length.dataTables_length');
     $('<select id="'+col_select_id+'" multiple="multiple" ></select>').appendTo('div#'+table_id+'_length.dataTables_length');
 

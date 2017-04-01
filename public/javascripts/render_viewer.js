@@ -2,7 +2,7 @@ import {render_chart_table} from "./chartsAndClusterTable";
 import * as datapath from "./data_path";
 import speciesTree from "./speciesTree";
 import  {metaDataTable} from "./datatable-meta";
-import {buttons, pxTree, attachButtons, tipText, tipFontSize, attachPanzoom, connectTrees, applyChangeToTree, hideNonSelected, undoHideNonSelected} from "./tree-init";
+import {  pxTree, attachButtons, tableAccessories, tipText, tipFontSize, attachPanzoom, connectTrees, applyChangeToTree, hideNonSelected, undoHideNonSelected} from "./tree-init";
 import {updateGeometry} from "../phyloTree/src/updateTree";
 import {linkTableAlignmentTrees, linkMetaTableTree} from "./linkTableAlignmentTrees";
 import {create_dropdown, updateData} from "./meta-color-legend";

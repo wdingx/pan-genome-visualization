@@ -1,7 +1,7 @@
 import msaLoad from './msaLoad';
 import geneTree from "./geneTree";
 import {aln_file_path} from "./data_path";
-import {attachButtons, hideNonSelected} from "./tree-init";
+import {attachButtons, tableAccessories, hideNonSelected} from "./tree-init";
 
 /**
  * Module for initializing trigger actions in cluster datatable. It includes:
@@ -92,5 +92,16 @@ export const linkMetaTableTree = function(tableID, datatable, speciesTree){
         }
         hideNonSelected(speciesTree);
     } );
+
+    $('#'+tableAccessories.meta_table_unselect).on( 'click', function () {
+        $('#'+tableID+' tbody'+' tr').removeClass('row_selected');
+        if (speciesTree){
+            speciesTree.tips.forEach(function(d){d.state.selected=true;});
+        }else{
+            console.log("speciesTree not available");
+        }
+        hideNonSelected(speciesTree);
+    } );
+
 }
 

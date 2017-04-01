@@ -1,5 +1,6 @@
 import {create_dataTable} from "./datatable-gc";
 import {path_datatable_meta} from './data_path';
+import {tableAccessories} from './tree-init';
 //#DataTable for meta-info
 export const metaDataTable = {
     dataTable2Fun: function (meta_table_id) {
@@ -32,6 +33,10 @@ export const metaDataTable = {
                 //'bDestroy': true,
                 'columnDefs': columnDefs_list
             });
+
+        $('<span style="display:inline-block; width: 10px;"></span>').appendTo('div#'+meta_table_id+'_length.dataTables_length');
+        $('<button type="button" id="'+tableAccessories.meta_table_unselect+'" class="btn btn-default">unselect all clicked items</button>').appendTo('div#'+meta_table_id+'_length.dataTables_length');
+
         return datatable;
     }
 };

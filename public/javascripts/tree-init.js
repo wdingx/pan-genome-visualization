@@ -103,6 +103,10 @@ export const pxTree = {
     legend_height:380
 };
 
+export const tableAccessories = {
+    meta_table_unselect: "meta_table_unselect"
+};
+
 export var treeSwitch= {
     layout_vertical: 'false',
 };
@@ -170,7 +174,6 @@ export const applyChangeToTree = function(myTree, func, dt){
         setTimeout(function() {tipLabels(myTree, tipText, tipFontSize(myTree), 3,8);}, dt?dt:1000);
     };
 }
-
 
 export const attachButtons = function(myTree, buttons){
     const dt = 1000;
