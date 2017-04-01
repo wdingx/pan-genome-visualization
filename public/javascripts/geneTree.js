@@ -63,7 +63,9 @@ const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, speciesTree){
                               zoomOutY:"geneTree_height_minus",
                               scale:"geneTreeScale",
                               orientation:"geneTreeOrientation",
-                              zoomReset:"geneTreeZoomReset"});
+                              zoomReset:"geneTreeZoomReset"
+                              });
+
         attachButtons(myTree, {
                               layout_radial:"speciesTreeRadial",
                               layout_vertical:"speciesTreeVertical",

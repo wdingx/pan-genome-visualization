@@ -278,7 +278,6 @@ export const attachButtons = function(myTree, buttons){
                                       treeSync:"speciesTreeSynchr"});
             }
         });
-
     }
     if (buttons.tipLabels){
         $('#'+buttons.tipLabels).change(function() {
@@ -296,6 +295,22 @@ export const attachButtons = function(myTree, buttons){
             myTree.distance = (d3.select(this).property('checked')===false) ? "level":"div";
             applyChangeToTree(myTree, function(){changeDistance(myTree, dt);},dt);
         });
+    }
+    if (buttons.download_coreTree){
+        d3.select('#'+buttons.download_coreTree)
+            .append('a')
+            .attr('href','/download/datasets/'+speciesAbbr+'/strain_tree.nwk')
+            .append('i')
+            .attr('class','glyphicon glyphicon-download-alt')
+    }
+    if (buttons.download_geneTree&&buttons.clusterID){
+        var download_geneTree=d3.select('#'+buttons.download_geneTree);
+            download_geneTree.selectAll('a').remove();
+            download_geneTree.append('a')
+                .attr('id','#'+buttons.download_geneTree_id+'_href')
+                .attr('href','/download/datasets/'+speciesAbbr+'/geneCluster/'+buttons.clusterID+'.nwk')
+                .append('i')
+                .attr('class','glyphicon glyphicon-download-alt')
     }
 }
 

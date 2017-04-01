@@ -1,7 +1,7 @@
 import msaLoad from './msaLoad';
 import geneTree from "./geneTree";
 import {aln_file_path} from "./data_path";
-import {hideNonSelected} from "./tree-init";
+import {attachButtons, hideNonSelected} from "./tree-init";
 
 /**
  * Module for initializing trigger actions in cluster datatable. It includes:
@@ -14,7 +14,9 @@ export const loadNewGeneCluster = function(data, handleGeneTree, seqType){
     console.log("loadNewGeneCluster", clusterID, seqType);
     msaLoad(aln_file_path+clusterID+'_'+seqType+'.aln.fa',(seqType=='aa')?'taylor':'nucleotide');
     var geneTree_name=aln_file_path + clusterID+'_tree.json';
-    geneTree("geneTree", geneTree_name, handleGeneTree);
+    var myGeneTree=geneTree("geneTree", geneTree_name, handleGeneTree);
+    attachButtons(myGeneTree, { download_geneTree:"download_geneTree",
+                                clusterID:clusterID });
 }
 
 export const linkTableAlignmentTrees = function(tableID, datatable, speciesTree, handleGeneTree){
