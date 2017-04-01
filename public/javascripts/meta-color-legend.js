@@ -1,4 +1,4 @@
-import {more_color_set, safe_color_set} from "./colors";
+import {sequential_color_set, more_color_set, safe_color_set} from "./colors";
 import {updateTips} from "../phyloTree/src/updateTree";
 import {pxTree,colorPresenceAbsence} from "./tree-init";
 
@@ -6,7 +6,7 @@ function isNumeric(num){
     return !isNaN(num)
 }
 
-function assign_color(color_set) {
+const assign_discrete_color = function(tmp_meta_color_set, tmp_meta_color_set_keys, metaType_key, meta_detail,color_set) {
     var index = meta_detail.indexOf('unknown');
     if (index > -1) {
         meta_detail.splice(index, 1);
@@ -24,46 +24,55 @@ function assign_color(color_set) {
     metaColor_set_keys[metaType_key] = tmp_meta_color_set_keys;
 }
 
-var metaColor_sets = {}; // dict:{ 'host':hostColor,'country':countryColor}
+const assign_continuous_color = function(tmp_meta_color_set, tmp_meta_color_set_keys,metaType_key,meta_detail) {
+    var index = meta_detail.indexOf('unknown');
+    if (index > -1) {
+        meta_detail.splice(index, 1);
+        tmp_meta_color_set['unknown']=pxTree.node_metaunknown_stroke;
+    }
+    var min = Math.min.apply(null, meta_detail),
+        max = Math.max.apply(null, meta_detail);
+    var distance = max - min;
+    var num_interval = 5;
+    var interval= distance/num_interval;
+    for (var i = 0; i <= num_interval; i++) {
+        // one decimal place
+        var legend_value = Math.round( (min+interval*i)*10 )/10;
+        tmp_meta_color_set_keys.push(legend_value);
+        tmp_meta_color_set[legend_value]=sequential_color_set[i];
+    }
+    if (tmp_meta_color_set['unknown']!=undefined){
+        tmp_meta_color_set_keys.push('unknown');
+    }
+    metaColor_sets[metaType_key] = tmp_meta_color_set;
+    metaColor_set_keys[metaType_key] = tmp_meta_color_set_keys;
+}
+
+var metaColor_sets = {};//dict:{'host':hostColor,'country':countryColor}
 var metaColor_set_keys = {}; //## keep the original key order
 //## assign color to each item in each meta-info type
-delete meta_set['strainName']
+//delete meta_set['strainName']
 var metaTypes = Object.keys(meta_set); // ['geo','host']
-for (var j = 0; j < metaTypes.length; j++) {
-    var tmp_meta_color_set = {};
-    var tmp_meta_color_set_keys = [];
-    var metaType_key = metaTypes[j]; // 'geo'
-    var meta_detail = meta_set[metaType_key]; // ["human", "rice"]
-    if (isNumeric(meta_detail[0])) {
-        var index = meta_detail.indexOf('unknown');
-        if (index > -1) {
-            meta_detail.splice(index, 1);
-            tmp_meta_color_set['unknown']=pxTree.node_metaunknown_stroke;
+function assign_metadata_color(){
+    for (var j = 0; j < metaTypes.length; j++) {
+        var tmp_meta_color_set = {};
+        var tmp_meta_color_set_keys = [];
+        var metaType_key = metaTypes[j]; //'host'
+
+        var meta_detail = meta_set[metaType_key]; // ["human", "rice"]
+        //if (isNumeric(meta_detail[0])) {
+        if (meta_display_set['color_options'][metaType_key]['type']=='continuous') {
+            assign_continuous_color(tmp_meta_color_set, tmp_meta_color_set_keys,metaType_key,meta_detail)
         }
-        var min = Math.min.apply(null, meta_detail),
-            max = Math.max.apply(null, meta_detail);
-        var distance = max - min;
-        var num_interval = 5;
-        var interval= distance/num_interval;
-        for (var i = 0; i <= num_interval; i++) {
-            // one decimal place
-            var legend_value = Math.round( (min+interval*i)*10 )/10;
-            tmp_meta_color_set_keys.push(legend_value);
-            tmp_meta_color_set[legend_value]=safe_color_set[i];
+        else {
+            assign_discrete_color(tmp_meta_color_set, tmp_meta_color_set_keys,metaType_key,meta_detail, more_color_set);
+            /*if (meta_detail.length < more_color_set.length ) {
+                assign_color(more_color_set);
+            }*/
         }
-        if (tmp_meta_color_set['unknown']!=undefined){
-            tmp_meta_color_set_keys.push('unknown');
-        }
-        metaColor_sets[metaType_key] = tmp_meta_color_set;
-        metaColor_set_keys[metaType_key] = tmp_meta_color_set_keys;
-    }
-    else {
-        assign_color(more_color_set);
-        /*if (meta_detail.length < more_color_set.length ) {
-            assign_color(more_color_set);
-        }*/
     }
 }
+assign_metadata_color();
 
 //## legend configuration
 var legendRectSize = 15;
@@ -214,6 +223,6 @@ export const create_dropdown = function (div, speciesTree, geneTree, coreTree_le
     for (var i = 0; i < metaTypes.length; i++) { // ['geo','host']
         dropdown_meta.append("option")
             .attr("value", metaTypes[i])
-            .text(meta_display_set[metaTypes[i]]);
+            .text(meta_display_set['color_options'][metaTypes[i]]['menuItem']);
     }
 }
