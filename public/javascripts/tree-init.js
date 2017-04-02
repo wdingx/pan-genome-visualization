@@ -323,12 +323,14 @@ export const attachButtons = function(myTree, buttons){
 
 export const attachPanzoom = function(treeID, myTree){
     const dt=0;
-    svgPanZoom("#"+treeID, {beforeZoom: function(newZoom, oldZoom){
-        applyChangeToTree(myTree, function(){zoomInY(myTree,newZoom/oldZoom,dt, true);},dt);
-        //filterMetaDataTable('dc_data_table_meta', myTree);
-        return false;
-    }});
-
+    svgPanZoom("#"+treeID, {
+        beforeZoom: function(newZoom, oldZoom){
+            applyChangeToTree(myTree, function(){
+                zoomInY(myTree,newZoom/oldZoom,dt, true);}, dt);
+            //filterMetaDataTable('dc_data_table_meta', myTree);
+            return false;
+        }
+    });
 }
 
 
