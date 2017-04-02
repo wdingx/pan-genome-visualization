@@ -7,7 +7,7 @@ export const metaDataTable = {
 
         //# create meta table
         var meta_table_columns= Object.keys(meta_display_set['color_options']);
-        meta_table_columns.unshift('accession');
+        meta_table_columns.unshift('accession','strain');
         create_dataTable('#'+meta_table_id,meta_table_columns);
 
         //# assign data to each column
