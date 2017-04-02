@@ -6,16 +6,16 @@ export const metaDataTable = {
     dataTable2Fun: function (meta_table_id) {
 
         //# create meta table
-        var meta_table_columns= Object.keys(meta_display_set['color_options']);
-        meta_table_columns.unshift('accession','strain');
-        create_dataTable('#'+meta_table_id,meta_table_columns);
+        var meta_display_order = meta_display_set['meta_display_order'];
+        meta_display_order.unshift('accession','strain');
+        create_dataTable('#'+meta_table_id, meta_display_order);
 
         //# assign data to each column
         var columnDefs_list=[];
-        for (var i = 0; i < meta_table_columns.length; i++) {
+        for (var i = 0, len = meta_display_order.length; i < len; i++) {
             columnDefs_list.push({
                 'targets': i,
-                'data': meta_table_columns[i]
+                'data': meta_display_order[i]
             });
         }
 

@@ -209,7 +209,6 @@ export const create_dropdown = function (div, speciesTree, geneTree, coreTree_le
         .append("select")
         .attr("id","dropdown_select")
         .attr("class","form-control sm-customized")
-    var metaTypes = Object.keys(meta_set);
 
     dropdown_meta.append("option")
         .attr("value", "Meta-info")
@@ -220,9 +219,10 @@ export const create_dropdown = function (div, speciesTree, geneTree, coreTree_le
         .attr("value", "genePattern")
         .text("gene presence/absence");
 
-    for (var i = 0; i < metaTypes.length; i++) { // ['geo','host']
+    var meta_display_order = meta_display_set['meta_display_order'];
+    for (var i = 0, len = meta_display_order.length; i < len; i++) {
         dropdown_meta.append("option")
             .attr("value", metaTypes[i])
-            .text(meta_display_set['color_options'][metaTypes[i]]['menuItem']);
+            .text(meta_display_order[i]);
     }
 }
