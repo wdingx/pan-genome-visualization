@@ -419,3 +419,21 @@ input[type=range]:focus::-ms-fill-upper {
     -webkit-transform: translateX(-5px) translateY(2px) translateZ(0);
     transform:         translateX(-5px) translateY(2px) translateZ(0);
 }
+
+/*======== tooltip table style ============*
+/* no space between elements using list-inline*/
+
+.tooltip_table_th{
+  font-weight:bold;
+  text-transform:capitalize;
+  overflow:hidden;
+  white-space:nowrap
+}
+.tooltip_table_td{
+  font-weight:normal;
+  border-top:0px;
+  border-left: 1px solid white;
+}
+
+
+/*td {overflow:hidden; white-space:nowrap}*/
