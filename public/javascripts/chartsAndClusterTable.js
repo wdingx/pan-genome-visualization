@@ -10,8 +10,7 @@ import * as dtab  from "./datatable-gc";
 import {geneEvent_path_A, geneEvent_path_B, aln_file_path} from "./data_path";
 import {loadNewGeneCluster} from "./linkTableAlignmentTrees";
 import * as datapath from "./data_path";
-
-//import button_tooltip from "./tooltips";
+import {tooltip_button} from "./tooltips";
 
 var init_core_threshold=0.99;
 
@@ -233,7 +232,7 @@ export const render_chart_table = {
 
         dtab.create_dataTable('#'+table_id,dtab.geneCluster_table_columns);
 
-        //button_tooltip('#'+table_id+' tr th',dtab.clusterTable_tooltip_dict );
+        tooltip_button('#'+table_id+' tr th',dtab.clusterTable_tooltip_dict );
 
         var datatable=dtab.datatable_configuration(geneCountDimension.top(Infinity), table_id, col_select_id);
 
