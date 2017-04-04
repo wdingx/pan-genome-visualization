@@ -6,6 +6,7 @@ import {  pxTree, attachButtons, tableAccessories, tipText, tipFontSize, attachP
 import {updateGeometry} from "../phyloTree/src/updateTree";
 import {linkTableAlignmentTrees, linkMetaTableTree} from "./linkTableAlignmentTrees";
 import {create_dropdown, updateData} from "./meta-color-legend";
+import {tooltip_node} from './tooltips';
 
 // /** strain_tree processing */
 //render_tree(0, "mytree1", coreTree_path, clusterID=null, null);
@@ -37,6 +38,13 @@ const handleSpeciesTree = function(newTree){
                                   //nodeLarge:"speciesTree_nodePlus",
                                   nodeSmaller:"speciesTree_nodeMinus",
                                   download_coreTree:"download_coreTree"});
+
+    mySpeciesTree.svg
+        .selectAll('.tip')
+        .on('mouseover', function(){tooltip_node.show.apply(this, [...arguments, this])})
+        .on('mouseout', tooltip_node.hide)
+        .call(tooltip_node);
+
     console.log("render_viewer:",mySpeciesTree);
 }
 const handleGeneTree = function(newTree){
@@ -126,7 +134,6 @@ myDatatable = render_chart_table.initData(datapath.path_datatable1,'dc_data_tabl
     'dc_data_count','dc_straincount_chart','dc_geneLength_chart','dc_coreAcc_piechart',
     'changeCoreThreshold','coreThreshold',
     'speciesTreeDiv','geneTreeDiv', null, handleDataTable, handleGeneTree);
-console.log(myDatatable);
 tryConnectTrees();
 
 /** render meta-data datatable */
