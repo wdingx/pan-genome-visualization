@@ -3,9 +3,10 @@ import {pxTree,colorPresenceAbsence} from "./tree-init";
 import {assign_metadata_color} from './meta-color-assignment'
 
 const metaTypes = Object.keys(meta_set);
-var metaColor_sets = {};//# {'host':hostColor,'country':countryColor}
-var metaColor_set_keys = {}; //# keep the original key order
-assign_metadata_color(metaColor_sets,metaColor_set_keys,metaTypes);
+var metaColor_dicts = {},//# {'host':hostColor,'country':countryColor}
+    metaColor_dicts_keys = {}, //# keep the original key order
+    metaColor_reference_dicts= {};
+assign_metadata_color(metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts,metaTypes);
 
 //## legend configuration
 var legendRectSize = 15;
@@ -50,13 +51,20 @@ const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ 
             }else{
                 itemCount[node.n.attr[metaType]]=1;
             }
-            node.tipAttributes.fill = d3.rgb(metaColor_sets[metaType][node.n.attr[metaType]]).toString()
-            node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
+            if (meta_display_set['color_options'][metaType]['type']=='discrete'){
+                node.tipAttributes.fill = d3.rgb(metaColor_dicts[metaType][node.n.attr[metaType]]).toString()
+                node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
+            }else{ //#continuous
+                const lengend_value= metaColor_reference_dicts[metaType][node.n.attr[metaType]];
+                node.tipAttributes.fill = d3.rgb(metaColor_dicts[metaType][lengend_value]).toString()
+                node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
+            }
         }
+
         for (var i=0; i<geneTree.tips.length; i++){
             const node = geneTree.tips[i];
             const strain = speciesTree.namesToTips[node.n.accession];
-            node.tipAttributes.fill = d3.rgb(metaColor_sets[metaType][strain.n.attr[metaType]]).toString()
+            node.tipAttributes.fill = d3.rgb(metaColor_dicts[metaType][strain.n.attr[metaType]]).toString()
             node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
         }
         updateTips(geneTree, [], ["fill", "stroke"], 0);
@@ -66,7 +74,7 @@ const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ 
             .attr('width', pxTree.legend_width)
             .attr('height', pxTree.legend_height);
         var tmp_leg = legend.selectAll(".legend")
-            .data( metaColor_set_keys[metaType] )
+            .data( metaColor_dicts_keys[metaType] )
             .enter().append('g')
             .attr('class', 'legend')
             .attr('transform', function(d, i) {
@@ -83,8 +91,7 @@ const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ 
             tree.tipElements
             .attr('r',
                 function(d){
-                    console.log(metaField,d.n.attr[metaType] )
-                    if (d.n.attr[metaType] == metaField){
+                    if ((d.n.attr[metaType] == metaField)||((metaColor_reference_dicts[metaType]!== undefined)&&(metaColor_reference_dicts[metaType][d.n.attr[metaType]] == metaField))){
                         return d.tipAttributes.r*2;
                     }else{
                         return d.tipAttributes.r*0.7;
@@ -103,11 +110,11 @@ const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ 
             .attr('height', legendRectSize)
             .attr('text', function (d) {return d;} )
             .attr('fill', function (d) {
-                var col = metaColor_sets[metaType][d];
+                var col = metaColor_dicts[metaType][d];
                 return d3.rgb(col).toString();
             })
             .attr('stroke', function (d) {
-                var col = metaColor_sets[metaType][d];
+                var col = metaColor_dicts[metaType][d];
                 return d3.rgb(col).darker([0.4]).toString();
             })
             .on("mouseover", function(d) {mouseover_legend(d,speciesTree)})
@@ -129,7 +136,7 @@ const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ 
 
 //## update legend and coloring nodes by meta-info
 export const updateData = function(metaType,speciesTree,geneTree,coreTree_legend_id,tool_side) {
-    var metaColorSet=metaColor_sets[metaType];
+    var metaColorSet=metaColor_dicts[metaType];
     removeLegend(coreTree_legend_id);
     makeLegend(metaType,speciesTree,geneTree,coreTree_legend_id, tool_side);
 };
