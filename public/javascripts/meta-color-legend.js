@@ -53,18 +53,22 @@ const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ 
             }
             if (meta_display_set['color_options'][metaType]['type']=='discrete'){
                 node.tipAttributes.fill = d3.rgb(metaColor_dicts[metaType][node.n.attr[metaType]]).toString()
-                node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
-            }else{ //#continuous
+            }else{//** continuous
                 const lengend_value= metaColor_reference_dicts[metaType][node.n.attr[metaType]];
                 node.tipAttributes.fill = d3.rgb(metaColor_dicts[metaType][lengend_value]).toString()
-                node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
             }
+            node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
         }
 
         for (var i=0; i<geneTree.tips.length; i++){
             const node = geneTree.tips[i];
             const strain = speciesTree.namesToTips[node.n.accession];
-            node.tipAttributes.fill = d3.rgb(metaColor_dicts[metaType][strain.n.attr[metaType]]).toString()
+            if(meta_display_set['color_options'][metaType]['type']=='discrete'){
+                node.tipAttributes.fill = d3.rgb(metaColor_dicts[metaType][strain.n.attr[metaType]]).toString()
+            }else{//** continuous
+                const lengend_value= metaColor_reference_dicts[metaType][strain.n.attr[metaType]];
+                node.tipAttributes.fill = d3.rgb(metaColor_dicts[metaType][lengend_value]).toString()
+            }
             node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
         }
         updateTips(geneTree, [], ["fill", "stroke"], 0);
