@@ -4,7 +4,8 @@ import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
 import svgPanZoom from "svg-pan-zoom";
 import {filterMetaDataTable} from "./datatable-meta";
 import {updateTipAttribute} from "../phyloTree/src/updateTree";
-console.log("panzoom", svgPanZoom);
+import {discrete_color_set, continuous_color_set} from "./colors";
+//console.log("panzoom", svgPanZoom);
 
 export const pgModule = function(){
     var hasOwnProperty= function(obj, prop){
@@ -102,6 +103,11 @@ export const pxTree = {
     legend_width:100,
     legend_height:380
 };
+
+export const metaLegend = {
+    discrete_colorSet: discrete_color_set,
+    continuous_colorSet: continuous_color_set
+}
 
 export const tableAccessories = {
     meta_table_unselect: "meta_table_unselect"

@@ -1,5 +1,4 @@
-import {pxTree} from "./tree-init";
-import {discrete_color_set, continuous_color_set} from "./colors";
+import {pxTree, metaLegend} from "./tree-init";
 import chroma from 'chroma-js';
 
 const assign_discrete_color = function(metaColor_dicts,metaColor_dicts_keys, metaType_key, meta_detail,color_set) {
@@ -39,7 +38,7 @@ const assign_continuous_color = function(metaColor_dicts,metaColor_dicts_keys,me
     //** create a list of legend values and corresponding colors
     const tmp_num_list = d3.range(num_interval+1).map(function(i){
         const legend_value= parseFloat((min+interval*i));
-        tmp_meta_color_dict[legend_value]=continuous_color_set[i];
+        tmp_meta_color_dict[legend_value]=metaLegend.continuous_colorSet[i];
         return legend_value;
     });
 
@@ -72,7 +71,7 @@ export const assign_metadata_color = function(metaColor_dicts,metaColor_dicts_ke
             assign_continuous_color(metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts,metaType_key,meta_detail)
         }
         else {
-            const discret_color_set=chroma.scale(discrete_color_set).colors(meta_detail.length);
+            const discret_color_set=chroma.scale(metaLegend.discrete_colorSet).colors(meta_detail.length);
             assign_discrete_color(metaColor_dicts,metaColor_dicts_keys,metaType_key,meta_detail, discret_color_set);
         }
     }
