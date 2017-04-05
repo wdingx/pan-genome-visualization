@@ -98,10 +98,16 @@ const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ 
                     if ((d.n.attr[metaType] == metaField)||((metaColor_reference_dicts[metaType]!== undefined)&&(metaColor_reference_dicts[metaType][d.n.attr[metaType]] == metaField))){
                         return d.tipAttributes.r*2;
                     }else{
-                        return d.tipAttributes.r*0.7;
+                        return d.tipAttributes.r;
                     }
                 })
-            .style('fill', function(d){return d3.rgb(d.tipAttributes.fill).brighter(strokeToFill);});
+            .style('fill', function(d){
+                if ((d.n.attr[metaType] == metaField)||((metaColor_reference_dicts[metaType]!== undefined)&&(metaColor_reference_dicts[metaType][d.n.attr[metaType]] == metaField))) {
+                    return d3.rgb(d.tipAttributes.fill).brighter(strokeToFill);
+                }else{
+                    return d.tipAttributes.fill;
+                }
+            });
         }
         const mouseout_legend = function(metaField, tree){
             tree.tipElements
