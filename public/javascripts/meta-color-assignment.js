@@ -1,8 +1,6 @@
 import {pxTree} from "./tree-init";
-import {sequential_color_set, more_color_set, safe_color_set} from "./colors";
+import {discrete_color_set, continuous_color_set} from "./colors";
 import chroma from 'chroma-js';
-/* var scale = chroma.scale(['white', 'red']);
-console.log(scale(0.5).hex());*/
 
 const assign_discrete_color = function(metaColor_dicts,metaColor_dicts_keys, metaType_key, meta_detail,color_set) {
     var tmp_meta_color_dict = {};
@@ -41,7 +39,7 @@ const assign_continuous_color = function(metaColor_dicts,metaColor_dicts_keys,me
     //** create a list of legend values and corresponding colors
     const tmp_num_list = d3.range(num_interval+1).map(function(i){
         const legend_value= parseFloat((min+interval*i));
-        tmp_meta_color_dict[legend_value]=sequential_color_set[i];
+        tmp_meta_color_dict[legend_value]=continuous_color_set[i];
         return legend_value;
     });
 
@@ -68,16 +66,14 @@ const assign_continuous_color = function(metaColor_dicts,metaColor_dicts_keys,me
 
 export const assign_metadata_color = function(metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts,metaTypes){
     for (var j = 0; j < metaTypes.length; j++) {
-        var metaType_key = metaTypes[j]; //'host'
-        var meta_detail = meta_set[metaType_key]; // ["human", "rice"]
+        var metaType_key = metaTypes[j]; //**'host'
+        var meta_detail = meta_set[metaType_key]; //** ["human", "rice"]
         if (meta_display_set['color_options'][metaType_key]['type']=='continuous') {
             assign_continuous_color(metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts,metaType_key,meta_detail)
         }
         else {
-            assign_discrete_color(metaColor_dicts,metaColor_dicts_keys,metaType_key,meta_detail, more_color_set);
-            /*if (meta_detail.length < more_color_set.length ) {
-                assign_color(more_color_set);
-            }*/
+            const discret_color_set=chroma.scale(discrete_color_set).colors(meta_detail.length);
+            assign_discrete_color(metaColor_dicts,metaColor_dicts_keys,metaType_key,meta_detail, discret_color_set);
         }
     }
 }
