@@ -231,16 +231,10 @@ export const attachButtons = function(myTree, buttons){
     }*/
     if (buttons.nodeSmaller){
         $('#'+buttons.nodeSmaller).click(function() {
-            const treeNodeSizeReduce= function(){
-                /*myTree.tipElements
-                    .attr('r',function(d){return d.tipAttributes.r*0.5;})*/
-                myTree.tips.forEach(function(d,i){
-                    d.tipAttributes.r *= 0.5;
-                });
-                /*updateTipAttribute(myTree,'r')
-                updateTipAttribute(myTree,0.5,'r')*/
-            }
-            applyChangeToTree(myTree, treeNodeSizeReduce, 0);
+            myTree.tips.forEach(function(d,i){
+                d.tipAttributes.r *= 0.5;
+            });
+            updateTipAttribute(myTree,'r');
         });
     }
     if (buttons.zoomInY){
