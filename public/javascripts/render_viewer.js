@@ -7,6 +7,7 @@ import {updateGeometry} from "../phyloTree/src/updateTree";
 import {linkTableAlignmentTrees, linkMetaTableTree} from "./linkTableAlignmentTrees";
 import {create_dropdown, updateData} from "./meta-color-legend";
 import {tooltip_node} from './tooltips';
+import speciesTreeCallbacks from "./speciesTreeCallbacks";
 
 // /** strain_tree processing */
 //render_tree(0, "mytree1", coreTree_path, clusterID=null, null);
@@ -41,8 +42,11 @@ const handleSpeciesTree = function(newTree){
 
     mySpeciesTree.svg
         .selectAll('.tip')
-        .on('mouseover', function(){tooltip_node.show.apply(this, [...arguments, this])})
-        .on('mouseout', tooltip_node.hide)
+        .on('mouseover', function(d){speciesTreeCallbacks.onTipHover(d);
+                                     tooltip_node.show.apply(this, [...arguments, this])});
+        // .on('mouseout', tooltip_node.hide)
+
+    mySpeciesTree.svg
         .call(tooltip_node);
 
     console.log("render_viewer:",mySpeciesTree);

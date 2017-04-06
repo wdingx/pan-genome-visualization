@@ -40,7 +40,7 @@ export const tooltip_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
     string +="<br/> <table rules='cols'> "
     if (typeof d.name != "undefined") {
         //string += "NCBI accesion:  " + d.name;
-        string += " <tr> <th class='tooltip_table_th'>NCBI accesion</th> <td class='tooltip_table_td'> " + d.name+" </td> </tr> ";
+        string += " <tr> <th class='tooltip_table_th'>NCBI accession</th> <td class='tooltip_table_td'> " + d.name+" </td> </tr> ";
     }
 
     for (var i=0, len=meta_types.length; i<len ; i++) {
