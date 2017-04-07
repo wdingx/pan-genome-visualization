@@ -159,8 +159,8 @@ export const branchText = function(d){
 }
 export const branchFontSize = function(d){return d.stats.leafCount>2?3:0;}
 export const tipText = function(d){
-    if (d.n.strain && d.terminal){
-        return d.n.strain;
+    if (d.n.attr.strainName && d.terminal){
+        return d.n.attr.strainName;
     }else{
         return "";
     }
@@ -187,7 +187,7 @@ export const applyChangeToTree = function(myTree, func, dt){
 
 export const attachButtons = function(myTree, buttons){
     const dt = 1000;
-
+    const updateSelected=false;
     if (buttons.layout){
         //console.log("button:", buttons.TreeViewSelect_id);
         $('#'+buttons.layout).change(function() {
@@ -239,18 +239,21 @@ export const attachButtons = function(myTree, buttons){
     }
     if (buttons.zoomInY){
         $('#'+buttons.zoomInY).click(function() {
-            applyChangeToTree(myTree, function(){zoomInY(myTree,1.4,dt, true);},dt);
-            filterMetaDataTable('dc_data_table_meta', myTree);
+            applyChangeToTree(myTree, function(){zoomInY(myTree,1.4,dt, updateSelected);},dt);
+            //filterMetaDataTable('dc_data_table_meta', myTree);
         });
     }
     if (buttons.zoomOutY){
         $('#'+buttons.zoomOutY).click(function() {
-            applyChangeToTree(myTree, function(){zoomInY(myTree,0.7,dt, true);},dt);
-            filterMetaDataTable('dc_data_table_meta', myTree);
+            applyChangeToTree(myTree, function(){zoomInY(myTree,0.7,dt, updateSelected);},dt);
+            //filterMetaDataTable('dc_data_table_meta', myTree);
         });
     }
     if (buttons.zoomReset){
         $('#'+buttons.zoomReset).click(function() {
+            if (myTree.panZoom){
+                myTree.panZoom.reset();
+            }
             applyChangeToTree(myTree, function(){zoomIntoClade(myTree, myTree.nodes[0],dt, true);},dt);
             filterMetaDataTable('dc_data_table_meta', myTree);
         });
@@ -323,13 +326,21 @@ export const attachButtons = function(myTree, buttons){
 
 export const attachPanzoom = function(treeID, myTree){
     const dt=0;
-    svgPanZoom("#"+treeID, {
+    const updateSelected = false;
+    myTree.panZoom = svgPanZoom("#"+treeID, {
         beforeZoom: function(newZoom, oldZoom){
             applyChangeToTree(myTree, function(){
-                zoomInY(myTree,newZoom/oldZoom,dt, true);}, dt);
+                zoomInY(myTree,newZoom/oldZoom,dt, updateSelected);}, dt);
             //filterMetaDataTable('dc_data_table_meta', myTree);
             return false;
-        }
+        },
+        // beforePan: function(oldPan, newPan){
+        //     //console.log("panning", oldPan, newPan);
+        //     applyChangeToTree(myTree, function(){
+        //         pan(myTree, newPan.x-oldPan.x, newPan.y-oldPan.y, updateSelected);},dt);
+        //     filterMetaDataTable('dc_data_table_meta', myTree);
+        //     return {x:false, y:false};
+        // }
     });
 }
 

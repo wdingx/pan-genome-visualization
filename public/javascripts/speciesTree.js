@@ -19,6 +19,9 @@ const speciesTree = function(tree_svg,treeJsonPath, handleResult){
     var myTree;
     speciesTreeCallbacks.onBranchClick = function (d){
         const dt = 1000;
+        if (myTree.panZoom){
+            myTree.panZoom.reset();
+        }
         applyChangeToTree(myTree,
             function(){zoomIntoClade(myTree, d.terminal?d.parent:d, dt, true);}
             ,dt);
