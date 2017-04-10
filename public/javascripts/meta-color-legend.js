@@ -1,4 +1,4 @@
-import {updateTips} from "../phyloTree/src/updateTree";
+import {updateTips,updateBranches} from "../phyloTree/src/updateTree";
 import {panXTree} from "./global";
 import {colorPresenceAbsence} from "./tree-init";
 import {assign_metadata_color} from './meta-color-assignment'
@@ -20,9 +20,10 @@ const removeLegend = function(coreTree_legend_id) {
         .remove();
 }
 
+const metaUnknown=panXTree.metaUnknown,
+      strokeToFill = panXTree.strokeToFill;
 //## create legend
 const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ // && legendOptionValue!= "Meta-info"
-    const strokeToFill = panXTree.strokeToFill;
     console.log(metaType);
     if (metaType==="genePattern"){
         var node,strain, fill;
@@ -53,10 +54,14 @@ const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ 
                 itemCount[node.n.attr[metaType]]=1;
             }
             if (meta_display_set['color_options'][metaType]['type']=='discrete'){
-                node.tipAttributes.fill = d3.rgb(metaColor_dicts[metaType][node.n.attr[metaType]]).toString()
+                const fill=metaColor_dicts[metaType][node.n.attr[metaType]];
+                node.tipAttributes.fill =fill;
+                node.branchAttributes["stroke"] = fill || metaUnknown;
             }else{//** continuous
                 const lengend_value= metaColor_reference_dicts[metaType][node.n.attr[metaType]];
-                node.tipAttributes.fill = d3.rgb(metaColor_dicts[metaType][lengend_value]).toString()
+                const fill=metaColor_dicts[metaType][lengend_value];
+                node.tipAttributes.fill = fill;
+                node.branchAttributes["stroke"] = fill || metaUnknown;
             }
             node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
         }
@@ -74,6 +79,7 @@ const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ 
         }
         updateTips(geneTree, [], ["fill", "stroke"], 0);
         updateTips(speciesTree, [], ["fill", "stroke"], 0);
+        updateBranches(speciesTree, [], ["fill", "stroke"], 0);
 
         var legend= d3.select('#'+coreTree_legend_id)
             .attr('width', panXTree.legend_width)

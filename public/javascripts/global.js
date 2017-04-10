@@ -17,14 +17,14 @@ export const panXTree = {
     //link_width: '1px',
     link_dasharray: '1px, 0px',
     tipFillHover:"#55AAEE",
-    tipParalogFillHover:"#314BC6",
+    tiparalogFillHover:"#314BC6",
     genePresentFill: '#3A89EA',//'#3A89EA' '#1F69C4' gene presence
     geneAbsentFill: '#CCC', // '#D82400' '#EA5833'; gene absence
     genePresentR: 4, // tip radius
     geneAbsentR:  3,
     strokeToFill: 0.4,  //brightness difference between stroke and fill
     tipStroke: '#555555',
-    node_metaunknown_stroke:'#FFFFFF',
+    metaUnknown:'#000000',//'#FFFFFF'
     wid_link: '1.2px',
     wid_gloss: '3px',//gain loss highlight
     genePattern_tool1: {
