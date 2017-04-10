@@ -45,22 +45,20 @@ const handleSpeciesTree = function(newTree){
         .selectAll('.tip')
         .on('mouseover', function(d){speciesTreeCallbacks.onTipHover(d);
                                      tooltip_node.show.apply(this, [...arguments, this])});
-        // .on('mouseout', tooltip_node.hide)
 
     mySpeciesTree.svg
         .call(tooltip_node);
-
-    console.log("render_viewer:",mySpeciesTree);
+    //console.log("render_viewer:mySpeciesTree ",mySpeciesTree);
 }
 const handleGeneTree = function(newTree){
     myGeneTree = newTree;
     connectTrees(mySpeciesTree, myGeneTree);
-    console.log("render_viewer:",myGeneTree);
+    //console.log("render_viewer:myGeneTree ",myGeneTree);
 }
 
 const handleDataTable = function(datatable){
     myDatatable = datatable;
-    console.log("render_viewer:",myDatatable);
+    //console.log("render_viewer:myDatatable ",myDatatable);
 }
 
 const tryConnectTrees = function(){
@@ -71,7 +69,7 @@ const tryConnectTrees = function(){
         var menu_panel = d3.select("#dropdown_select")
         menu_panel.on("change", function(d) {
             if (this.value!='Meta-info') {
-                console.log("trigger meta data color change", this.value, d, menu_panel);
+                //console.log("trigger meta data color change", this.value, d, menu_panel);
                 updateData(this.value, mySpeciesTree, myGeneTree, 'coreTree_legend', 0);
             }
         });
@@ -79,7 +77,7 @@ const tryConnectTrees = function(){
         attachPanzoom("geneTree", myGeneTree);
 
     }else{
-        console.log("trees not available yet, retry", mySpeciesTree, myGeneTree);
+        //console.log("trees not available yet, retry", mySpeciesTree, myGeneTree);
         setTimeout(tryConnectTrees, 1000);
     }
 }

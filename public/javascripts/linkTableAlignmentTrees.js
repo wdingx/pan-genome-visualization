@@ -24,7 +24,6 @@ export const loadNewGeneCluster = function(data, handleGeneTree, seqType){
 export const linkTableAlignmentTrees = function(tableID, datatable, speciesTree, handleGeneTree){
     /** row-clicking trigger: update MSA amino_acid alignment when clicking datatable row*/
     $('#'+tableID+' tbody').on('click', 'tr', function (e) {
-        console.log('row');
         var data = datatable.row( $(this) ).data();
         loadNewGeneCluster(data, handleGeneTree, 'aa');
         $('#'+tableID+' tbody tr').removeClass('row_selected');
@@ -32,14 +31,12 @@ export const linkTableAlignmentTrees = function(tableID, datatable, speciesTree,
     });
 
     $('#'+tableID+' tbody').on('click', '.btn.btn-info.btn-xs', function (e) {
-        console.log('aa button');
         var data = datatable.row( $(this).parents('tr') ).data();
         loadNewGeneCluster(data, handleGeneTree, 'aa');
         e.stopPropagation();
     });
 
     $('#'+tableID+' tbody').on('click', '.btn.btn-primary.btn-xs', function (e) {
-        console.log('aa button');
         var data = datatable.row( $(this).parents('tr') ).data();
         loadNewGeneCluster(data, handleGeneTree, 'na');
         e.stopPropagation();

@@ -116,7 +116,6 @@ export const attachButtons = function(myTree, buttons){
     const dt = 1000;
     const updateSelected=false;
     if (buttons.layout){
-        //console.log("button:", buttons.TreeViewSelect_id);
         $('#'+buttons.layout).change(function() {
             myTree.layout =  (d3.select(this).property('checked')==false) ? 'rect' : 'radial';
             applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
@@ -274,10 +273,10 @@ export const attachPanzoom = function(treeID, myTree){
 
 export const connectTrees = function(speciesTree, geneTree){
     if (!(speciesTree&&geneTree)){
-        console.log("trees are not yet in place");
+        //console.log("trees are not yet in place");
         return;
     }
-    console.log("connecting trees");
+    //console.log("connecting trees");
     geneTree.paralogs = {}
     for (var ti =0; ti<geneTree.tips.length; ti++){
         var tip = geneTree.tips[ti];

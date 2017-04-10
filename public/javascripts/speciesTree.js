@@ -29,14 +29,14 @@ const speciesTree = function(tree_svg,treeJsonPath, handleResult){
             filterMetaDataTable('dc_data_table_meta', myTree);
     };
 
-    console.log("loading speciesTree", treeJsonPath);
+    //console.log("loading speciesTree", treeJsonPath);
     d3.json(treeJsonPath, function(err, data){
         if (data){
             myTree = phyloTree(data, {svg:treeplot, margins:{top:10, bottom:10, left:10, right:10}, scaleBar:true,
                                       callbacks:speciesTreeCallbacks, orientation:{x:1, y:1}}
                                );
         }else{
-            console.log("error loading data",err);
+            console.log("error loading speciesTree data",err);
         }
         drawTree(myTree);
 

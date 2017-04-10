@@ -15,11 +15,9 @@ export const tooltip = d3.select("body")
     .style("background", "rgba(0,0,0,0.5)"); //255,255,255
 
 export const tooltip_button = function(divID, tooltip_dict) {
-    console.log('aa',divID,d3.selectAll(divID))
     d3.selectAll(divID)
     .on("mouseover", function(d){
         tooltip.text(tooltip_dict[d]);
-        console.log('aa',d,tooltip_dict[d])
         if (tooltip.text()!="") {
             return tooltip.style("visibility", "visible");
         } else {return tooltip.style("visibility", "hidden");}

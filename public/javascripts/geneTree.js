@@ -25,14 +25,14 @@ const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, speciesTree){
     treeplot.attr("height", panXDashboard.winInnerWidth/3.);
     var myTree;
     d3.json(treeJsonPath, function(err, data){
-        console.log(data, err);
+        //console.log(data, err);
         if (data){
             myTree = phyloTree(data, {svg:treeplot, margins:{top:10, bottom:10, left:10, right:10},scaleBar:true,
                                       callbacks:geneTreeCallbacks, orientation:{x:-1, y:1}}
                                );
-            console.log(myTree);
+            //console.log(myTree);
         }else{
-            console.log("error loading data",err);
+            console.log("error loading geneTree data",err);
         }
         drawTree(myTree);
         const branchText = function(d){
