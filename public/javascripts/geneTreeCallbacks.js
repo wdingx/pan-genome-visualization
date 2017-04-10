@@ -17,10 +17,13 @@ const onTipsHover = function(d){
 };
 
 const onTipHover = function(d){
-  d.elem.attr("r",function(x){return x.tipAttributes.r*2;}).style("fill", tipFillHover);
-  d.strainTip.attr("r",function(x){return x.tipAttributes.r*2;}).style("fill", tipFillHover);
+  d.elem.attr("r",function(x){return x.tipAttributes.r*2;})
+    .style("fill", function(x){return x.tipAttributes.fill;});
+  d.strainTip.attr("r",function(x){return x.tipAttributes.r*2;})
+    .style("fill", function(x){return x.tipAttributes.fill;});
   for (var gi=0,len=d.paralogs.length; gi<len; gi++){
-    d.paralogs[gi].elem.attr("r",function(x){return x.tipAttributes.r*2;}).style("fill",tipParalogFillHover);//"#81E"
+    d.paralogs[gi].elem.attr("r",function(x){return x.tipAttributes.r*2;})
+      .style("fill",function(x){return d3.rgb(x.tipAttributes.fill).darker(panXTree.strokeToFill).toString();});//"#81E"
     }
 };
 

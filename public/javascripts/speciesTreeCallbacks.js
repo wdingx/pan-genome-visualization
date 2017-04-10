@@ -26,9 +26,11 @@ const onTipHover = function(d){
   // TODO
   // d.state.highlight = true;
   // updateTip(d);
-  d.elem.attr("r",function(x){return x.tipAttributes.r*2;}).style("fill", tipFillHover);
+  d.elem.attr("r",function(x){return x.tipAttributes.r*2;})
+    .style("fill", function(x){return x.tipAttributes.fill;});
   for (var gi=0,len=d.genes.length; gi<len; gi++){
-    d.genes[gi].elem.attr("r",function(x){return x.tipAttributes.r*2;}).style("fill", tipFillHover);
+    d.genes[gi].elem.attr("r",function(x){return x.tipAttributes.r*2;})
+    .style("fill", function(x){return x.tipAttributes.fill;});
   }
 };
 
