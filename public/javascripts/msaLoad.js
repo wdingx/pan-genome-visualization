@@ -1,5 +1,6 @@
 import './third_party/msa-new.js';
-import {pxTree, msaViewerAsset, hideNonSelected} from './tree-init'
+import {panXTree} from './global'
+import {msaViewerAsset, hideNonSelected} from './tree-init'
 var msa=call_msa('msa');
 
 const msaLoad = function (aln_path,scheme_type) {
@@ -32,7 +33,7 @@ const msaLoad = function (aln_path,scheme_type) {
         for (var i=0,len=selection.length; i<len; i++){
             msaViewerAsset.selected_rows_set.add(seqID_to_accession_dt[selection[i]])
         }
-        var speciesTree= pxTree.speciesTree;;
+        var speciesTree= panXTree.speciesTree;;
         if (speciesTree){
             speciesTree.tips.forEach(function(d){d.state.selected=false;});
             msaViewerAsset.selected_rows_set.forEach(function(accession){

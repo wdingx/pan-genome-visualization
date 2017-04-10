@@ -1,5 +1,6 @@
 import {updateTips} from "../phyloTree/src/updateTree";
-import {pxTree,colorPresenceAbsence} from "./tree-init";
+import {panXTree} from "./global";
+import {colorPresenceAbsence} from "./tree-init";
 import {assign_metadata_color} from './meta-color-assignment'
 
 const metaTypes = Object.keys(meta_set);
@@ -21,14 +22,14 @@ const removeLegend = function(coreTree_legend_id) {
 
 //## create legend
 const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ // && legendOptionValue!= "Meta-info"
-    const strokeToFill = pxTree.strokeToFill;
+    const strokeToFill = panXTree.strokeToFill;
     console.log(metaType);
     if (metaType==="genePattern"){
         var node,strain, fill;
         for (var i=0; i<speciesTree.tips.length; i++){
             node = speciesTree.tips[i];
             node.tipAttributes.r = node.genePresent?5:3;
-            fill = node.genePresent?pxTree.genePresentFill:pxTree.geneAbsentFill
+            fill = node.genePresent?panXTree.genePresentFill:panXTree.geneAbsentFill
             node.tipAttributes.fill = fill;
             node.tipAttributes.stroke = d3.rgb(fill).darker(strokeToFill).toString();
         }
@@ -75,8 +76,8 @@ const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ 
         updateTips(speciesTree, [], ["fill", "stroke"], 0);
 
         var legend= d3.select('#'+coreTree_legend_id)
-            .attr('width', pxTree.legend_width)
-            .attr('height', pxTree.legend_height);
+            .attr('width', panXTree.legend_width)
+            .attr('height', panXTree.legend_height);
         var tmp_leg = legend.selectAll(".legend")
             .data( metaColor_dicts_keys[metaType] )
             .enter().append('g')

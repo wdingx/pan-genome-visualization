@@ -129,7 +129,7 @@ var render_tree = function(tree_index,tree_div,treeJsonPath,clusterID,tool_side)
             .stroke( function (node){ if (node.is_leaf()) { return color_node_stroke };})
             .fill( function (node,d){
                     if (node.is_leaf()) {
-                        /*return (pgModule.hasOwnProperty(pxTree.node_color_mem,node.node_name())) ? pxTree.node_color_mem[node.node_name()] : color_node_fill;*/
+                        /*return (pgModule.hasOwnProperty(panXTree.node_color_mem,node.node_name())) ? panXTree.node_color_mem[node.node_name()] : color_node_fill;*/
                         var node_color= pgModule.restore_tree_style(tool_side, 'node_color_mem', node.node_name())
                         return (node_color!==undefined) ? node_color : color_node_fill;
                     }
@@ -137,9 +137,9 @@ var render_tree = function(tree_index,tree_div,treeJsonPath,clusterID,tool_side)
                 });
 
         var collapsed_node = tnt.tree.node_display.triangle()
-            .size(pxTree.collapsed_node_size)
-            .fill(pxTree.collapsed_node_fill)
-            .stroke(pxTree.collapsed_node_stroke);
+            .size(panXTree.collapsed_node_size)
+            .fill(panXTree.collapsed_node_fill)
+            .stroke(panXTree.collapsed_node_stroke);
 
         var node_display = tnt.tree.node_display()
             .size(0.1) // This is used for the layout calculation
@@ -153,7 +153,7 @@ var render_tree = function(tree_index,tree_div,treeJsonPath,clusterID,tool_side)
             });
 
         tree_vis
-            .branch_color(pxTree.branch_col)
+            .branch_color(panXTree.branch_col)
             .node_display(node_display)
             .label(node_label)//.label(tnt.tree.label.text().height(2).fontsize(fontSize).color('steelblue'))
             .data(tree_data)
@@ -179,7 +179,7 @@ var render_tree = function(tree_index,tree_div,treeJsonPath,clusterID,tool_side)
 
         /*link width*/
         var links = svg.selectAll(".tnt_tree_link")
-        links.style("stroke-width",pxTree.wid_link)
+        links.style("stroke-width",panXTree.wid_link)
 
         //## make scale bar
         var scaleBar = tree_vis.scale_bar(50, "pixel").toFixed(3);
@@ -391,8 +391,8 @@ var svgTree_Module= function(){
                 pgModule.store_tree_style(tool_side, 'link_width_mem', this_obj.id, this_obj.style['stroke-width']);
                 pgModule.store_tree_style(tool_side, 'link_dash_mem', this_obj.id, this_obj.style['stroke-dasharray']);
                 d3.select(this_obj)
-                    .style("stroke", pxTree.branch_col_highlight)
-                    .style("stroke-width", pxTree.branch_wid_highlight);
+                    .style("stroke", panXTree.branch_col_highlight)
+                    .style("stroke-width", panXTree.branch_wid_highlight);
             }
 
             //# change the color of subtree leaf nodes
@@ -451,15 +451,15 @@ var svgTree_Module= function(){
                 d3.select(this_obj)
                     .style('stroke', function () {
                         var link_color= pgModule.restore_tree_style(tool_side, 'link_color_mem', this_obj.id);
-                        return (link_color!=undefined ) ? link_color : pxTree.branch_col;
+                        return (link_color!=undefined ) ? link_color : panXTree.branch_col;
                     })
                     .style("stroke-width", function () {
                         var link_width= pgModule.restore_tree_style(tool_side, 'link_width_mem', this_obj.id);
-                        return (link_width!=undefined ) ? link_width : pxTree.link_width;
+                        return (link_width!=undefined ) ? link_width : panXTree.link_width;
                     })
                     .style("stroke-dasharray",function () {
                         var link_dash= pgModule.restore_tree_style(tool_side, 'link_dash_mem',  this_obj.id);
-                        return (link_dash!=undefined ) ? link_dash : pxTree.link_dasharray;
+                        return (link_dash!=undefined ) ? link_dash : panXTree.link_dasharray;
                     })
             }
 

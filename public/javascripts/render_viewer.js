@@ -2,7 +2,8 @@ import {render_chart_table} from "./chartsAndClusterTable";
 import * as datapath from "./data_path";
 import speciesTree from "./speciesTree";
 import  {metaDataTable} from "./datatable-meta";
-import {  pxTree, attachButtons, tableAccessories, tipText, tipFontSize, attachPanzoom, connectTrees, applyChangeToTree, hideNonSelected, undoHideNonSelected} from "./tree-init";
+import  {panXTree} from "./global";
+import {attachButtons, tableAccessories, tipText, tipFontSize, attachPanzoom, connectTrees, applyChangeToTree, hideNonSelected, undoHideNonSelected} from "./tree-init";
 import {updateGeometry} from "../phyloTree/src/updateTree";
 import {linkTableAlignmentTrees, linkMetaTableTree} from "./linkTableAlignmentTrees";
 import {create_dropdown, updateData} from "./meta-color-legend";
@@ -25,7 +26,7 @@ const handleSpeciesTree = function(newTree){
         newTree.namesToTips[tip.name] = tip;
     }
     mySpeciesTree = newTree;
-    pxTree.speciesTree= mySpeciesTree;
+    panXTree.speciesTree= mySpeciesTree;
     attachButtons(mySpeciesTree, {
                                   layout_radial:"speciesTreeRadial",
                                   layout_vertical:"speciesTreeVertical",

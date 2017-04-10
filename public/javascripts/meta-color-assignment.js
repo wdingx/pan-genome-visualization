@@ -1,4 +1,5 @@
-import {pxTree, metaLegend} from "./tree-init";
+import {panXTree} from "./global";
+import {metaLegend} from "./tree-init";
 import chroma from 'chroma-js';
 
 const assign_discrete_color = function(metaColor_dicts,metaColor_dicts_keys, metaType_key, meta_detail,color_set) {
@@ -6,7 +7,7 @@ const assign_discrete_color = function(metaColor_dicts,metaColor_dicts_keys, met
     var index = meta_detail.indexOf('unknown');
     if (index > -1) { //** assign color to unknown item
         meta_detail.splice(index, 1);
-        tmp_meta_color_dict['unknown']=pxTree.node_metaunknown_stroke;
+        tmp_meta_color_dict['unknown']=panXTree.node_metaunknown_stroke;
     }
     //** create a list of legend values and corresponding colors
     var tmp_meta_color_dict_keys = meta_detail.map(function(item,ind){
@@ -27,7 +28,7 @@ const assign_continuous_color = function(metaColor_dicts,metaColor_dicts_keys,me
     const index = meta_detail.indexOf('unknown');
     if (index > -1) { //** assign color to unknown item
         meta_detail.splice(index, 1);
-        tmp_meta_color_dict['unknown']=pxTree.node_metaunknown_stroke;
+        tmp_meta_color_dict['unknown']=panXTree.node_metaunknown_stroke;
     }
     const min= parseInt(d3.min(meta_detail), 10),
           max= parseInt(d3.max(meta_detail), 10),

@@ -8,7 +8,9 @@ import {branchLabels, tipLabels, removeLabels} from "../phyloTree/src/labels";
 import d3 from "d3";
 import {pgDashboard} from "./tree-init";
 import geneTreeCallbacks from "./geneTreeCallbacks";
-import {pxTree, attachButtons} from "./tree-init";
+import {panXTree} from "./global";
+import {attachButtons} from "./tree-init";
+
 
 
 /**
@@ -54,7 +56,7 @@ const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, speciesTree){
         //branchLabels(myTree, branchText, branchFontSize, -5, -5);
         tipLabels(myTree, tipText, tipFontSize, 5, 3);
         handleGeneTree(myTree);
-        pxTree.currentGeneTree= myTree;
+        panXTree.currentGeneTree= myTree;
         attachButtons(myTree, {
                               layout_radial:"geneTreeRadial",
                               layout_vertical:"geneTreeVertical",
