@@ -323,9 +323,10 @@ export const colorPresenceAbsence = function(speciesTree){
         node.tipAttributes.r = node.genePresent?5:3;
         fill = node.genePresent?panXTree.genePresentFill:panXTree.geneAbsentFill
         node.tipAttributes.fill = fill;
+        node.tipAttributes['stroke-width'] = 0.5;
         node.tipAttributes.stroke = d3.rgb(fill).darker(panXTree.strokeToFill).toString();
     }
-    updateTips(speciesTree, ["r"], ["fill", "stroke"], 0);
+    updateTips(speciesTree, ["r"], ["fill", "stroke","stroke-width"], 0);
 }
 
 export const styleGainLoss = function(speciesTree){
