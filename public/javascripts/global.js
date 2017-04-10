@@ -2,6 +2,7 @@ import {discrete_color_set, continuous_color_set} from "./colors";
 
 export const panXTree = {
     /**if true, use separated pattern instead of entire pattern */
+    currentClusterID: '',
     currentGeneTree: {},
     speciesTree: {},
     large_output: false,
