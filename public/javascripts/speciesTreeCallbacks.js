@@ -1,23 +1,46 @@
 import {preOrderIteration} from "../phyloTree/src/treeHelpers";
 import {tooltip_node} from './tooltips';
+import {panXTree} from './global';
+
+const subtree_node_colors = d3.scale.category20c();
+const strokeToFill = panXTree.strokeToFill,
+  tipStroke= panXTree.tipStroke,
+  tipFillHover= panXTree.tipFillHover;
+
+const onTipsHover = function(d){
+  // TODO
+  // d.state.highlight = true;
+  // updateTip(d);
+  d.elem.attr("r",function(x){return x.tipAttributes.r*2;})
+    .style("stroke",function(x){return tipStroke;})
+    .style("fill", function(x){return subtree_node_colors(x.n.name);});
+  for (var gi=0,len=d.genes.length; gi<len; gi++){
+    d.genes[gi].elem.attr("r",function(x){return x.tipAttributes.r*2;})
+      .style("stroke-width",0.5)
+      .style("stroke",function(x){return tipStroke;})
+      .style("fill", function(x){return subtree_node_colors(x.n.accession);});
+  }
+};
 
 const onTipHover = function(d){
   // TODO
   // d.state.highlight = true;
   // updateTip(d);
-  d.elem.attr("r",function(x){return x.tipAttributes.r*1.4;}).style("fill", function(x){return d3.rgb(x.tipAttributes.fill).brighter();});
-  for (var gi=0; gi<d.genes.length; gi++){
-    d.genes[gi].elem.attr("r",10).style("fill", function(x){return x.tipAttributes.fill});
+  d.elem.attr("r",function(x){return x.tipAttributes.r*2;}).style("fill", tipFillHover);
+  for (var gi=0,len=d.genes.length; gi<len; gi++){
+    d.genes[gi].elem.attr("r",function(x){return x.tipAttributes.r*2;}).style("fill", tipFillHover);
   }
 };
 
 const onTipLeave = function(d){
   d.elem
     .attr("r",function(x){return x.tipAttributes.r;})
+    .style("stroke",function(x){return x.tipAttributes.fill;})
     .style("fill",function(x){return x.tipAttributes.fill;});
   for (var gi=0; gi<d.genes.length; gi++){
     d.genes[gi].elem
       .attr("r",function(x){return x.tipAttributes.r;})
+      .style("stroke",function(x){return x.tipAttributes.fill;})
       .style("fill",function(x){return x.tipAttributes.fill;});
   }
   tooltip_node.hide();
@@ -25,7 +48,11 @@ const onTipLeave = function(d){
 
 
 const onBranchHover = function(d){
-  preOrderIteration(d, function(x){if (x.terminal){onTipHover(x);}});
+  if (d.n.children==undefined){
+    onTipHover(d);
+  }else{
+    preOrderIteration(d, function(x){if (x.terminal){onTipsHover(x);}});
+  }
 };
 
 const onBranchLeave = function(d){
