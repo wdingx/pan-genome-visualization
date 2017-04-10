@@ -1,4 +1,5 @@
 import {preOrderIteration} from "../phyloTree/src/treeHelpers";
+import {tooltip_node} from './tooltips';
 import {panXTree} from './global';
 
 const tipFillHover = panXTree.tipFillHover,
@@ -39,6 +40,7 @@ const onTipLeave = function(d){
       .attr("r",function(x){return x.tipAttributes.r;})
       .style("fill",function(x){return x.tipAttributes.fill;});
     }
+  tooltip_node.hide();
 };
 
 

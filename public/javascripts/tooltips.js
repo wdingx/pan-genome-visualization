@@ -36,9 +36,15 @@ export const tooltip_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
     var string = "";
     //speicesTree tooltip
     string +="<br/> <table rules='cols'> "
-    if (typeof d.name != "undefined") {
-        //string += "NCBI accesion:  " + d.name;
-        string += " <tr> <th class='tooltip_table_th'>NCBI accession</th> <td class='tooltip_table_td'> " + d.name+" </td> </tr> ";
+    if (d.name != undefined) {
+        if (d.n.accession==undefined){
+            //string += "NCBI accesion:  " + d.name;
+            string += " <tr> <th class='tooltip_table_th'>NCBI accession</th> <td class='tooltip_table_td'> " + d.name+" </td> </tr> ";
+        }else{
+            string += " <tr> <th class='tooltip_table_th'>NCBI accession</th> <td class='tooltip_table_td'> " + d.accession+" </td> </tr> ";
+            string += " <tr> <th class='tooltip_table_th'>gene ID</th> <td class='tooltip_table_td'> " + d.name+" </td> </tr> ";
+
+        }
     }
 
     for (var i=0, len=meta_types.length; i<len ; i++) {

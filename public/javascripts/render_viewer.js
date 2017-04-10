@@ -9,7 +9,7 @@ import {linkTableAlignmentTrees, linkMetaTableTree} from "./linkTableAlignmentTr
 import {create_dropdown, updateData} from "./meta-color-legend";
 import {tooltip_node} from './tooltips';
 import speciesTreeCallbacks from "./speciesTreeCallbacks";
-
+import geneTreeCallbacks from "./geneTreeCallbacks";
 // /** strain_tree processing */
 //render_tree(0, "mytree1", coreTree_path, clusterID=null, null);
 
@@ -45,7 +45,6 @@ const handleSpeciesTree = function(newTree){
         .selectAll('.tip')
         .on('mouseover', function(d){speciesTreeCallbacks.onTipHover(d);
                                      tooltip_node.show.apply(this, [...arguments, this])});
-
     mySpeciesTree.svg
         .call(tooltip_node);
     //console.log("render_viewer:mySpeciesTree ",mySpeciesTree);
@@ -53,6 +52,13 @@ const handleSpeciesTree = function(newTree){
 const handleGeneTree = function(newTree){
     myGeneTree = newTree;
     connectTrees(mySpeciesTree, myGeneTree);
+
+    myGeneTree.svg
+        .selectAll('.tip')
+        .on('mouseover', function(d){geneTreeCallbacks.onTipHover(d);
+                                     tooltip_node.show.apply(this, [...arguments, this])});
+    myGeneTree.svg
+        .call(tooltip_node);
     //console.log("render_viewer:myGeneTree ",myGeneTree);
 }
 
