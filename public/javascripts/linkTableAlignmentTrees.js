@@ -1,7 +1,8 @@
 import msaLoad from './msaLoad';
 import geneTree from "./geneTree";
+import {tableAccessories} from "./global";
 import {aln_file_path} from "./data_path";
-import {attachButtons, tableAccessories, hideNonSelected} from "./tree-init";
+import {attachButtons, hideNonSelected} from "./tree-init";
 
 /**
  * Module for initializing trigger actions in cluster datatable. It includes:

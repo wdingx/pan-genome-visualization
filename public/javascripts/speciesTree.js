@@ -7,15 +7,16 @@ import {changeLayout, changeDistance, updateGeometry,
 import {branchLabels, tipLabels, removeLabels} from "../phyloTree/src/labels";
 import speciesTreeCallbacks from "./speciesTreeCallbacks";
 import d3 from "d3";
-import {pgDashboard, tipText, tipFontSize, applyChangeToTree} from "./tree-init";
+import {panXDashboard} from "./global"
+import {tipText, tipFontSize, applyChangeToTree} from "./tree-init";
 import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
 import {filterMetaDataTable} from "./datatable-meta";
 
 
 const speciesTree = function(tree_svg,treeJsonPath, handleResult){
     var treeplot = d3.select("#"+tree_svg);
-    treeplot.attr("width", pgDashboard.winInnerWidth/3.);
-    treeplot.attr("height", pgDashboard.winInnerWidth/3.);
+    treeplot.attr("width", panXDashboard.winInnerWidth/3.);
+    treeplot.attr("height", panXDashboard.winInnerWidth/3.);
     var myTree;
     speciesTreeCallbacks.onBranchClick = function (d){
         const dt = 1000;

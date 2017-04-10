@@ -6,9 +6,8 @@ import {changeLayout, changeDistance, updateGeometry,
         updateBranchAttribute, updateBranchStyle, updateBranches} from "../phyloTree/src/updateTree";
 import {branchLabels, tipLabels, removeLabels} from "../phyloTree/src/labels";
 import d3 from "d3";
-import {pgDashboard} from "./tree-init";
 import geneTreeCallbacks from "./geneTreeCallbacks";
-import {panXTree} from "./global";
+import {panXTree,panXDashboard} from "./global";
 import {attachButtons} from "./tree-init";
 
 
@@ -22,8 +21,8 @@ import {attachButtons} from "./tree-init";
  */
 const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, speciesTree){
     var treeplot = d3.select("#"+tree_svg);
-    treeplot.attr("width", pgDashboard.winInnerWidth/3.);
-    treeplot.attr("height", pgDashboard.winInnerWidth/3.);
+    treeplot.attr("width", panXDashboard.winInnerWidth/3.);
+    treeplot.attr("height", panXDashboard.winInnerWidth/3.);
     var myTree;
     d3.json(treeJsonPath, function(err, data){
         console.log(data, err);

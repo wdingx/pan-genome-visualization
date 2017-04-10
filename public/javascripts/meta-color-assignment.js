@@ -1,5 +1,4 @@
-import {panXTree} from "./global";
-import {metaLegend} from "./tree-init";
+import {panXTree,metaLegend} from "./global";
 import chroma from 'chroma-js';
 
 const assign_discrete_color = function(metaColor_dicts,metaColor_dicts_keys, metaType_key, meta_detail,color_set) {

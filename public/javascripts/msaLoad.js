@@ -1,6 +1,6 @@
 import './third_party/msa-new.js';
-import {panXTree} from './global'
-import {msaViewerAsset, hideNonSelected} from './tree-init'
+import {panXTree, msaViewerAsset} from './global'
+import {hideNonSelected} from './tree-init'
 var msa=call_msa('msa');
 
 const msaLoad = function (aln_path,scheme_type) {

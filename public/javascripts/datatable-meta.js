@@ -1,6 +1,6 @@
 import {create_dataTable} from "./datatable-gc";
 import {path_datatable_meta} from './data_path';
-import {tableAccessories} from './tree-init';
+import {tableAccessories} from './global';
 //#DataTable for meta-info
 export const metaDataTable = {
     dataTable2Fun: function (meta_table_id) {

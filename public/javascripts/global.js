@@ -1,3 +1,5 @@
+import {discrete_color_set, continuous_color_set} from "./colors";
+
 export const panXTree = {
     /**if true, use separated pattern instead of entire pattern */
     currentGeneTree: {},
@@ -38,4 +40,22 @@ export const panXTree = {
     },
     legend_width:100,
     legend_height:380
+};
+
+
+export const panXDashboard = {
+    winInnerWidth: window.innerWidth,
+};
+
+export const metaLegend = {
+    discrete_colorSet: discrete_color_set,
+    continuous_colorSet: continuous_color_set
+}
+
+export const tableAccessories = {
+    meta_table_unselect: "meta_table_unselect"
+};
+
+export const msaViewerAsset = {
+    selected_rows_set: new Set()
 };

@@ -1,11 +1,10 @@
+import {panXTree} from "./global";
 import {changeLayout, changeDistance, updateTips} from "../phyloTree/src/updateTree";
 import {zoomInY,  zoomIn, zoomIntoClade} from "../phyloTree/src/zoom";
 import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
 import svgPanZoom from "svg-pan-zoom";
 import {filterMetaDataTable} from "./datatable-meta";
 import {updateTipAttribute} from "../phyloTree/src/updateTree";
-import {discrete_color_set, continuous_color_set} from "./colors";
-//console.log("panzoom", svgPanZoom);
 
 export const pgModule = function(){
     var hasOwnProperty= function(obj, prop){
@@ -25,27 +24,27 @@ export const pgModule = function(){
     };
 
     var store_tree_style= function(tool_side, style_type, target_type, current_style) {
-        if (tool_side==1) {//pxTree.genePattern_tool2['node_color_mem'][d.name]=node_color
-            pxTree.treeStyle_tool2[style_type][target_type]=current_style
+        if (tool_side==1) {//panXTree.genePattern_tool2['node_color_mem'][d.name]=node_color
+            panXTree.treeStyle_tool2[style_type][target_type]=current_style
         } else {
-            pxTree.treeStyle_tool1[style_type][target_type]=current_style
+            panXTree.treeStyle_tool1[style_type][target_type]=current_style
         }
     }
 
     var restore_tree_style= function(tool_side, style_type, target_type) {
-        return (tool_side==1) ? pxTree.treeStyle_tool2[style_type][target_type] : pxTree.treeStyle_tool1[style_type][target_type];
+        return (tool_side==1) ? panXTree.treeStyle_tool2[style_type][target_type] : panXTree.treeStyle_tool1[style_type][target_type];
     }
 
     var store_genePattern_style= function(tool_side, style_type, target_type, current_style) {
         if (tool_side==1) {
-            pxTree.genePattern_tool2[style_type][target_type]=current_style
+            panXTree.genePattern_tool2[style_type][target_type]=current_style
         } else {
-            pxTree.genePattern_tool1[style_type][target_type]=current_style
+            panXTree.genePattern_tool1[style_type][target_type]=current_style
         }
     }
 
     var restore_genePattern_style= function(tool_side, style_type, target_type) {
-        return (tool_side==1) ? pxTree.genePattern_tool2[style_type][target_type] : pxTree.genePattern_tool1[style_type][target_type];
+        return (tool_side==1) ? panXTree.genePattern_tool2[style_type][target_type] : panXTree.genePattern_tool1[style_type][target_type];
     }
 
    return{  hasOwnProperty:hasOwnProperty,
@@ -56,77 +55,6 @@ export const pgModule = function(){
             restore_genePattern_style:restore_genePattern_style,
         }
 }();
-
-export const pgDashboard = {
-    winInnerWidth: window.innerWidth,
-};
-
-export const pxTree = {
-    /**if true, use separated pattern instead of entire pattern */
-    currentGeneTree: {},
-    speciesTree: {},
-    large_output: false,
-    gain_loss_enabled: true,
-    id: 5,
-    collapsed_node_size: 4.5,
-    collapsed_node_fill: '#26B629', //'steelblue',
-    collapsed_node_stroke:'steelblue',
-    branch_col: '#4A4A4A',
-    branch_col_highlight: '#2D59B1',
-    branch_wid_highlight: '3px',
-    link_width: '1px',
-    link_dasharray: '1px, 0px',
-    genePresentFill: '#3A89EA',//'#3A89EA' '#1F69C4' gene presence
-    geneAbsentFill: '#CCC', // '#D82400' '#EA5833'; gene absence
-    genePresentR: 4, // tip radius
-    geneAbsentR:  3,
-    strokeToFill: 0.4,  //brightness difference between stroke and fill
-    node_metaunknown_stroke:'#FFFFFF',
-    wid_link: '1.2px',
-    wid_gloss: '3px',//gain loss highlight
-    genePattern_tool1: {
-        node_color_mem: {}, link_color_mem: {},
-        link_width_mem: {}, link_dash_mem:  {}
-    },
-    genePattern_tool2: {
-        node_color_mem: {}, link_color_mem: {},
-        link_width_mem: {}, link_dash_mem:  {}
-    },
-    treeStyle_tool1: {
-        node_color_mem: {}, link_color_mem: {},
-        link_width_mem: {}, link_dash_mem:  {}
-    },
-    treeStyle_tool2: {
-        node_color_mem: {}, link_color_mem: {},
-        link_width_mem: {}, link_dash_mem:  {}
-    },
-    legend_width:100,
-    legend_height:380
-};
-
-export const metaLegend = {
-    discrete_colorSet: discrete_color_set,
-    continuous_colorSet: continuous_color_set
-}
-
-export const tableAccessories = {
-    meta_table_unselect: "meta_table_unselect"
-};
-
-export const msaViewerAsset = {
-    selected_rows_set: new Set()
-};
-
-export var treeSwitch= {
-    layout_vertical: 'false',
-};
-
-export var backup_var= {
-stroke: '#999',
-'stroke-opacity': .6,
-color_node_stroke:'steelblue',
-color_node_fill:'white',
-}
 
 export const hideNonSelected =function(tree){
     tree.tipElements
@@ -147,7 +75,6 @@ export const undoHideNonSelected =function(tree){
         .style('fill', function(d){return d.tipAttributes.fill;})
         .style('stroke', function(d){return d.tipAttributes.stroke;});
 }
-
 
 export const branchText = function(d){
     if (d.n.muts){
@@ -175,7 +102,6 @@ export const tipFontSize = function(tree){
         }else{return 0;}
     };
 }
-
 
 export const applyChangeToTree = function(myTree, func, dt){
     removeLabels(myTree);
@@ -262,7 +188,7 @@ export const attachButtons = function(myTree, buttons){
         $('#'+buttons.treeSync).change(function(event) {
             myTree.treeSync =d3.select(this).property('checked')
             if (myTree.treeSync){
-                var myGeneTree=pxTree.currentGeneTree;
+                var myGeneTree=panXTree.currentGeneTree;
                 attachButtons(myGeneTree, {
                                       layout_radial:"speciesTreeRadial",
                                       layout_vertical:"speciesTreeVertical",
@@ -275,7 +201,7 @@ export const attachButtons = function(myTree, buttons){
                 $('#'+buttons.layout_unroot).off("click");
                 $('#'+buttons.scale).off("change");
                 event.stopPropagation();
-                var mySpeciesTree=pxTree.speciesTree;
+                var mySpeciesTree=panXTree.speciesTree;
                 attachButtons(mySpeciesTree, {
                                       layout_radial:"speciesTreeRadial",
                                       layout_vertical:"speciesTreeVertical",
@@ -394,9 +320,9 @@ export const colorPresenceAbsence = function(speciesTree){
     for (var i=0; i<speciesTree.tips.length; i++){
         node = speciesTree.tips[i];
         node.tipAttributes.r = node.genePresent?5:3;
-        fill = node.genePresent?pxTree.genePresentFill:pxTree.geneAbsentFill
+        fill = node.genePresent?panXTree.genePresentFill:panXTree.geneAbsentFill
         node.tipAttributes.fill = fill;
-        node.tipAttributes.stroke = d3.rgb(fill).darker(pxTree.strokeToFill).toString();
+        node.tipAttributes.stroke = d3.rgb(fill).darker(panXTree.strokeToFill).toString();
     }
     updateTips(speciesTree, ["r"], ["fill", "stroke"], 0);
 }

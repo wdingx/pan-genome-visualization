@@ -3,8 +3,7 @@ import dc from "dc";
 window.dc = dc;
 import noUiSlider from "nouislider";
 import crossfilter from "crossfilter";
-import {panXTree} from "./global.js";
-import {pgDashboard} from "./tree-init.js";
+import {panXTree, panXDashboard} from "./global";
 import species_dt from "./species-list-info";
 import {pie, chart_width} from "./chart_style";
 import * as dtab  from "./datatable-gc";
@@ -24,7 +23,7 @@ var first_registered_list=[];
 var Initial_MsaGV='';
 var geneId_GV='', geneclusterID_GV='';
 var ann_majority= '';
-var chart_width=pgDashboard.winInnerWidth/4.5;//(winInnerWidth/4.5>255) ? winInnerWidth/4.5 : 255,
+var chart_width=panXDashboard.winInnerWidth/4.5;//(winInnerWidth/4.5>255) ? winInnerWidth/4.5 : 255,
 var lineChart_width=chart_width, lineChart_height=150;
 var barChart_width=chart_width,  barChart_height=150;
 
