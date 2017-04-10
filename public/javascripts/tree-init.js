@@ -4,7 +4,8 @@ import {zoomInY,  zoomIn, zoomIntoClade} from "../phyloTree/src/zoom";
 import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
 import svgPanZoom from "svg-pan-zoom";
 import {filterMetaDataTable} from "./datatable-meta";
-import {updateTipAttribute} from "../phyloTree/src/updateTree";
+import {updateTipAttribute,updateBranches} from "../phyloTree/src/updateTree";
+import {aln_file_path} from "./data_path";
 
 export const pgModule = function(){
     var hasOwnProperty= function(obj, prop){
@@ -313,6 +314,7 @@ export const connectTrees = function(speciesTree, geneTree){
         }
     }
     colorPresenceAbsence(speciesTree);
+    styleGainLoss(speciesTree);
 }
 
 export const colorPresenceAbsence = function(speciesTree){
@@ -327,3 +329,20 @@ export const colorPresenceAbsence = function(speciesTree){
     updateTips(speciesTree, ["r"], ["fill", "stroke"], 0);
 }
 
+export const styleGainLoss = function(speciesTree){
+    const patter_path=aln_file_path+panXTree.currentClusterID+'_patterns.json';
+    d3.text(patter_path, function(error, data){
+        speciesTree.nodes.forEach(function(d,i){
+            if (d.n.name!='NODE_0000000'){
+                const event_type=data[i-1];
+                const stroke=(event_type=='0'||event_type=='2')? panXTree.geneAbsentFill: panXTree.genePresentFill;
+                const stroke_width_factor=(event_type=='1'||event_type=='2')? 1.5: 1;
+                const stroke_dasharray= (event_type=='2') ?  "6,6" : "1,0";
+                d.branchAttributes["stroke"] = stroke;
+                d.branchAttributes["stroke-width"] = panXTree.branch_stroke_width*stroke_width_factor;
+                d.branchAttributes["stroke-dasharray"] = stroke_dasharray;
+                updateBranches(speciesTree, [], ['stroke', 'stroke-width','stroke-dasharray'], 0);
+            }
+        });
+    })
+}

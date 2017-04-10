@@ -1,6 +1,6 @@
 import msaLoad from './msaLoad';
 import geneTree from "./geneTree";
-import {tableAccessories} from "./global";
+import {panXTree,tableAccessories} from "./global";
 import {aln_file_path} from "./data_path";
 import {attachButtons, hideNonSelected} from "./tree-init";
 
@@ -12,6 +12,7 @@ import {attachButtons, hideNonSelected} from "./tree-init";
 
 export const loadNewGeneCluster = function(data, handleGeneTree, seqType){
     var clusterID=data.msa;
+    panXTree.currentClusterID=clusterID;
     console.log("loadNewGeneCluster", clusterID, seqType);
     msaLoad(aln_file_path+clusterID+'_'+seqType+'.aln.fa',(seqType=='aa')?'taylor':'nucleotide');
     var geneTree_name=aln_file_path + clusterID+'_tree.json';
