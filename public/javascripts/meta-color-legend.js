@@ -3,11 +3,12 @@ import {panXTree} from "./global";
 import {colorPresenceAbsence} from "./tree-init";
 import {assign_metadata_color} from './meta-color-assignment'
 
-const metaTypes = Object.keys(meta_set);
+//const meta_display_order = Object.keys(meta_set);
+const meta_display_order = meta_display_set["meta_display_order"];
 var metaColor_dicts = {},//# {'host':hostColor,'country':countryColor}
     metaColor_dicts_keys = {}, //# keep the original key order
     metaColor_reference_dicts= {};
-assign_metadata_color(metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts,metaTypes);
+assign_metadata_color(metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts,meta_display_order);
 
 //## legend configuration
 var legendRectSize = 15;
@@ -176,10 +177,12 @@ export const create_dropdown = function (div, speciesTree, geneTree, coreTree_le
         .attr("value", "genePattern")
         .text("gene presence/absence");
 
-    var meta_display_order = meta_display_set['meta_display_order'];
     for (var i = 0, len = meta_display_order.length; i < len; i++) {
-        dropdown_meta.append("option")
-            .attr("value", metaTypes[i])
-            .text(meta_display_order[i]);
+        const metaType= meta_display_order[i];
+        if (!meta_display_set['color_options'][metaType]['display']||meta_display_set['color_options'][metaType]['display']!='no'){
+            dropdown_meta.append("option")
+                .attr("value", metaType)
+                .text(metaType);
+        }
     }
 }
