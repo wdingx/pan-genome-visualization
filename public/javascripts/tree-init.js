@@ -330,19 +330,24 @@ export const colorPresenceAbsence = function(speciesTree){
 }
 
 export const styleGainLoss = function(speciesTree){
-    const patter_path=aln_file_path+panXTree.currentClusterID+'_patterns.json';
-    d3.text(patter_path, function(error, data){
-        speciesTree.nodes.forEach(function(d,i){
-            if (d.n.name!='NODE_0000000'){
-                const event_type=data[i-1];
-                const stroke=(event_type=='0'||event_type=='2')? panXTree.geneAbsentFill: panXTree.genePresentFill;
-                const stroke_width_factor=(event_type=='1'||event_type=='2')? 1.5: 1;
-                const stroke_dasharray= (event_type=='2') ?  "6,6" : "1,0";
-                d.branchAttributes["stroke"] = stroke;
-                d.branchAttributes["stroke-width"] = panXTree.branch_stroke_width*stroke_width_factor;
-                d.branchAttributes["stroke-dasharray"] = stroke_dasharray;
-                updateBranches(speciesTree, [], ['stroke', 'stroke-width','stroke-dasharray'], 0);
+    const pattern_path=aln_file_path+panXTree.currentClusterID+'_patterns.json';
+    var node,stroke,stroke_width_factor,stroke_dasharray,event_type;
+    d3.json(pattern_path, function(error, data){
+        const event_string=data['patterns'];
+        const nodes=speciesTree.nodes;
+        for (var i =0,len=nodes.length; i<len; i++){
+            node=nodes[i];
+            if (node.n.name!='NODE_0000000'){
+                event_type=event_string[i-1];
+                stroke=(event_type=='0'||event_type=='2')? panXTree.geneAbsentFill: panXTree.genePresentFill;
+                stroke_width_factor=(event_type=='1'||event_type=='2')? 1.5: 1;
+                stroke_dasharray= (event_type=='2') ? "6,6" : "1,0";
+                node.branchAttributes["stroke"] = stroke;
+                node.branchAttributes["stroke-width"] = panXTree.branch_stroke_width*stroke_width_factor;
+                node.branchAttributes["stroke-dasharray"] = stroke_dasharray;
             }
-        });
+        }
+        updateBranches(speciesTree, [], ['stroke', 'stroke-width','stroke-dasharray'], 0);
+        //console.log('gain/loss pattern loading finished')
     })
 }
