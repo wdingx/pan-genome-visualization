@@ -29,6 +29,11 @@ const assign_continuous_color = function(metaColor_dicts,metaColor_dicts_keys,me
         meta_detail.splice(index, 1);
         tmp_meta_color_dict['unknown']=panXTree.node_metaunknown_stroke;
     }
+
+    /*var regEx = /<|>|=/g;
+    var testString = "<test><=";
+    console.log(testString.replace(regEx,''));*/
+
     const min= parseInt(d3.min(meta_detail), 10),
           max= parseInt(d3.max(meta_detail), 10),
           distance = max - min,
