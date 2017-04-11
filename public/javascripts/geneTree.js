@@ -8,7 +8,7 @@ import {branchLabels, tipLabels, removeLabels} from "../phyloTree/src/labels";
 import d3 from "d3";
 import geneTreeCallbacks from "./geneTreeCallbacks";
 import {panXTree,panXDashboard} from "./global";
-import {attachButtons} from "./tree-init";
+import {attachButtons,applyChangeToTree} from "./tree-init";
 
 
 
@@ -24,6 +24,17 @@ const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, speciesTree){
     treeplot.attr("width", panXDashboard.winInnerWidth/3.);
     treeplot.attr("height", panXDashboard.winInnerWidth/3.);
     var myTree;
+    geneTreeCallbacks.onBranchClick = function (d){
+        const dt = 1000;
+        if (myTree.panZoom){
+            myTree.panZoom.reset();
+        }
+        applyChangeToTree(myTree,
+            function(){zoomIntoClade(myTree, d.terminal?d.parent:d, dt, true);}
+            ,dt);
+        //filterMetaDataTable('dc_data_table_meta', myTree);
+    };
+
     d3.json(treeJsonPath, function(err, data){
         //console.log(data, err);
         if (data){
