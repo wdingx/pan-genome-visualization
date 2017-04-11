@@ -145,16 +145,14 @@ export const attachButtons = function(myTree, buttons){
             applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
         });
     }
-    /*if (buttons.nodeLarge){
+    if (buttons.nodeLarge){
         $('#'+buttons.nodeLarge).click(function() {
-            const treeNodeSizeEnlarge= function(){
-                myTree.tipElements
-                    .attr('r',function(d){
-                    return d.tipAttributes.r*1.5;})
-            }
-            applyChangeToTree(myTree, treeNodeSizeEnlarge, 0);
+            myTree.tips.forEach(function(d,i){
+            d.tipAttributes.r *= 1.5;
+            });
+            updateTipAttribute(myTree,'r');
         });
-    }*/
+    }
     if (buttons.nodeSmaller){
         $('#'+buttons.nodeSmaller).click(function() {
             myTree.tips.forEach(function(d,i){

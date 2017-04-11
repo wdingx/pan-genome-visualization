@@ -70,7 +70,7 @@ html
           .alert.alert-info(role='alert')
             | Strain tree (SNPs in all core genes)
           .row
-            .col-md-6#LeftTreeButtons(style='vertical-align: top')
+            .col-md-7#LeftTreeButtons(style='vertical-align: top')
               .col-md-3.triplet-button-group
                 button.triplet-button-control.triplet-button-toggle.speciesTree(type='button') Layouts
                     span.fa.fa-plus.triplet-button-space(aria-hidden='true')
@@ -93,8 +93,8 @@ html
                 span.glyphicon.glyphicon-resize-small
               button#speciesTreeZoomReset.btn.btn-xs.btn-primary.btn_tooltip
                 span.glyphicon.glyphicon-refresh
-              //- button#speciesTree_nodePlus.btn.btn-xs.btn-primary.btn_tooltip
-              //-   span.glyphicon.glyphicon-plus
+              button#speciesTree_nodePlus.btn.btn-xs.btn-primary.btn_tooltip
+                span.glyphicon.glyphicon-plus
               button#speciesTree_nodeMinus.btn.btn-xs.btn-primary.btn_tooltip
                 span.glyphicon.glyphicon-minus
               input#speciesTreeSynchr.btn_tooltip(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Synchr', data-off='Synchr', data-size='mini')
@@ -116,7 +116,7 @@ html
           .alert.alert-info(role='alert')
             #genetree_title Gene tree (individual gene)
           .row
-            .col-md-6#genetree_buttons
+            .col-md-7#genetree_buttons
               .col-md-3.triplet-button-group
                 button.triplet-button-control.triplet-button-toggle.geneTree(type='button') Layouts
                   span.fa.fa-plus.triplet-button-space(aria-hidden='true')

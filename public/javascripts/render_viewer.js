@@ -37,7 +37,7 @@ const handleSpeciesTree = function(newTree){
                                   tipLabels:"speciesTreeLabels",
                                   zoomReset:"speciesTreeZoomReset",
                                   treeSync:"speciesTreeSynchr",
-                                  //nodeLarge:"speciesTree_nodePlus",
+                                  nodeLarge:"speciesTree_nodePlus",
                                   nodeSmaller:"speciesTree_nodeMinus",
                                   download_coreTree:"download_coreTree"});
 
