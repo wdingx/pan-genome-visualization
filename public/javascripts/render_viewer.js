@@ -69,7 +69,7 @@ const handleDataTable = function(datatable){
 
 const tryConnectTrees = function(){
     if (mySpeciesTree&&myGeneTree&&myDatatable){
-        connectTrees(mySpeciesTree, myGeneTree);
+        //connectTrees(mySpeciesTree, myGeneTree);
         linkTableAlignmentTrees('dc_data_table', myDatatable, mySpeciesTree, handleGeneTree);
         linkMetaTableTree(meta_table_id, myMetaDatatable,mySpeciesTree);
         var menu_panel = d3.select("#dropdown_select")
