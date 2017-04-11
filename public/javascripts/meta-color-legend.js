@@ -79,7 +79,7 @@ const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ 
         }
         updateTips(geneTree, [], ["fill", "stroke"], 0);
         updateTips(speciesTree, [], ["fill", "stroke"], 0);
-        updateBranches(speciesTree, [], ["fill", "stroke"], 0);
+        updateBranches(speciesTree, [], ["stroke"], 0);
 
         var legend= d3.select('#'+coreTree_legend_id)
             .attr('width', panXTree.legend_width)
