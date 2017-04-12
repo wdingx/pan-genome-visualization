@@ -96,11 +96,10 @@ export const linkMetaTableTree = function(tableID, datatable, speciesTree){
     $('#'+tableAccessories.meta_table_unselect).on( 'click', function () {
         $('#'+tableID+' tbody'+' tr').removeClass('active row_selected');
         if (speciesTree){
-            speciesTree.tips.forEach(function(d){d.state.selected=true;});
+            undoHideNonSelected(speciesTree);
         }else{
             console.log("speciesTree not available");
         }
-        hideNonSelected(speciesTree);
     } );
 
 }
