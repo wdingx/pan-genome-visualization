@@ -78,7 +78,7 @@ export const undoHideNonSelected =function(tree){
         .attr('r',function(d){return d.tipAttributes.r;})
         .style('fill', function(d){return d.tipAttributes.fill;})
         .style('stroke', function(d){return d.tipAttributes.stroke;});
-    //tree.tips.forEach(function(d){d.state.selected=false;});
+    tree.tips.forEach(function(d){d.state.selected=undefined;});
 }
 
 export const branchText = function(d){
