@@ -30,7 +30,6 @@ export const tooltip_button = function(divID, tooltip_dict) {
     })
 };
 
-
 //## tooltip for tree nodes and branches
 export const tooltip_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
     var string = "";
@@ -109,3 +108,37 @@ export const tooltip_link = d3.tip().attr('class', 'd3-tip').html(function(d) {
 
     return string;
 });
+
+//** tree button tooltip
+const treeButton_tooltip_dict= {
+    //**speciesTree
+    'speciesTreeLabels':'show/hide labels',//TODO?
+    'speciesTree_height_plus':'expand species tree horizontally',
+    'speciesTree_height_minus':'shrink species tree horizontally',
+    'speciesTreeZoomReset': 'reset species tree',
+    'speciesTree_nodePlus':'increase node size',
+    'speciesTree_nodeMinus':'decrease node size',
+    'download_coreTree':'download strain tree',
+    //**geneTree
+    'geneTree_height_plus':'expand gene tree horizontally',
+    'geneTree_height_minus':'shrink gene tree horizontally',
+    'geneTreeZoomReset':'reset gene tree',
+    'download_geneTree':'download gene tree'
+    }
+
+function tree_button_tooltip(divID, tooltip_dict) {
+    d3.selectAll(divID).selectAll('.btn_tooltip')
+    .on("mouseover", function(d){
+        tooltip.text(tooltip_dict[d3.select(this).attr('id')]);
+        if (tooltip.text()!="") {
+            return tooltip.style("visibility", "visible");
+        } else {return tooltip.style("visibility", "hidden");}
+    })
+    .on("mousemove", function(){
+        return tooltip.style("top", (d3.event.pageY-40)+"px").style("left",(d3.event.pageX+10)+"px");
+    })
+    .on("mouseout", function(){
+        return tooltip.style("visibility", "hidden");
+    })
+};
+tree_button_tooltip('#all_trees', treeButton_tooltip_dict);
