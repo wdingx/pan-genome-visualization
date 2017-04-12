@@ -17,6 +17,7 @@ export const panXTree = {
     branch_stroke_width:2,
     //link_width: '1px',
     link_dasharray: '1px, 0px',
+    tipUnselected: "#CCC",
     tipFillHover:"#55AAEE",
     tiparalogFillHover:"#314BC6",
     genePresentFill: '#3A89EA',//'#3A89EA' '#1F69C4' gene presence

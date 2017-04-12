@@ -4,8 +4,9 @@ import {panXTree} from './global';
 
 const subtree_node_colors = d3.scale.category20c();
 const strokeToFill = panXTree.strokeToFill,
-  tipStroke= panXTree.tipStroke,
-  tipFillHover= panXTree.tipFillHover;
+      tipStroke= panXTree.tipStroke,
+      tipFillHover= panXTree.tipFillHover,
+      tipUnselected = panXTree.tipUnselected;
 
 const onTipsHover = function(d){
   // TODO
@@ -36,9 +37,10 @@ const onTipHover = function(d){
 
 const onTipLeave = function(d){
   d.elem
-    .attr("r",function(x){return x.tipAttributes.r;})
+    .attr("r",function(x){return x.state.selected ? x.tipAttributes.r*1.5 : x.tipAttributes.r*0.5;})
     .style("stroke",function(x){return x.tipAttributes.fill;})
-    .style("fill",function(x){return x.tipAttributes.fill;});
+    .style("fill",function(x){return x.state.selected ? x.tipAttributes.fill : tipUnselected;});
+    //.style("fill",function(x){return x.tipAttributes.fill;});
   for (var gi=0; gi<d.genes.length; gi++){
     d.genes[gi].elem
       .attr("r",function(x){return x.tipAttributes.r;})

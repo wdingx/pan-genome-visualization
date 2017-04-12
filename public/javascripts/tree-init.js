@@ -7,6 +7,8 @@ import {filterMetaDataTable} from "./datatable-meta";
 import {updateTipAttribute,updateBranches} from "../phyloTree/src/updateTree";
 import {aln_file_path} from "./data_path";
 
+const tipUnselected=panXTree.tipUnselected;
+
 export const pgModule = function(){
     var hasOwnProperty= function(obj, prop){
         return (obj[prop] !== undefined);
@@ -63,18 +65,20 @@ export const hideNonSelected =function(tree){
                               else {return d.tipAttributes.r*0.5;}
                              })
         .style('fill',function(d){if (d.state.selected){ return d.tipAttributes.fill;}
-                                  else {return "#CCC";}
+                                  else {return tipUnselected;}
                             })
         .style('stroke',function(d){if (d.state.selected){ return d.tipAttributes.stroke;}
-                              else {return "#CCC";}
+                              else {return tipUnselected;}
                             });
 }
 
 export const undoHideNonSelected =function(tree){
+
     tree.tipElements
         .attr('r',function(d){return d.tipAttributes.r;})
         .style('fill', function(d){return d.tipAttributes.fill;})
         .style('stroke', function(d){return d.tipAttributes.stroke;});
+    //tree.tips.forEach(function(d){d.state.selected=false;});
 }
 
 export const branchText = function(d){
