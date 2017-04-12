@@ -24,6 +24,7 @@ const handleSpeciesTree = function(newTree){
         tip.name = tip.n.name;
         tip.genes = [];
         newTree.namesToTips[tip.name] = tip;
+        panXTree.speciesTreeTipCount+=1;
     }
     mySpeciesTree = newTree;
     panXTree.speciesTree= mySpeciesTree;
@@ -80,7 +81,7 @@ const tryConnectTrees = function(){
             }
         });
         attachPanzoom("speciesTree", mySpeciesTree);
-        attachPanzoom("geneTree", myGeneTree);
+        //attachPanzoom("geneTree", myGeneTree);
 
     }else{
         //console.log("trees not available yet, retry", mySpeciesTree, myGeneTree);

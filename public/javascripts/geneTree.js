@@ -8,7 +8,7 @@ import {branchLabels, tipLabels, removeLabels} from "../phyloTree/src/labels";
 import d3 from "d3";
 import geneTreeCallbacks from "./geneTreeCallbacks";
 import {panXTree,panXDashboard} from "./global";
-import {attachButtons,applyChangeToTree} from "./tree-init";
+import {attachButtons,attachPanzoom,applyChangeToTree} from "./tree-init";
 
 
 
@@ -20,6 +20,7 @@ import {attachButtons,applyChangeToTree} from "./tree-init";
  * @return {object}              the new constructed geneTree
  */
 const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, speciesTree){
+
     var treeplot = d3.select("#"+tree_svg);
     treeplot.attr("width", panXDashboard.winInnerWidth/3.);
     treeplot.attr("height", panXDashboard.winInnerWidth/3.);
@@ -84,6 +85,7 @@ const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, speciesTree){
                               layout_unroot:"speciesTreeUnroot",
                               scale:"speciesTreeScale"
                               });
+        attachPanzoom("geneTree", myTree);
     });
     if (typeof speciesTree !== "undefined"){
         linkTrees(speciesTree, myTree);
