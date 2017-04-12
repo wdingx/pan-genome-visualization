@@ -26,7 +26,7 @@ const speciesTree = function(tree_svg,treeJsonPath, handleResult){
         applyChangeToTree(myTree,
             function(){zoomIntoClade(myTree, d.terminal?d.parent:d, dt, true);}
             ,dt);
-            filterMetaDataTable('dc_data_table_meta', myTree);
+        filterMetaDataTable('dc_data_table_meta', myTree);
     };
 
     //console.log("loading speciesTree", treeJsonPath);
