@@ -2,7 +2,7 @@ import msaLoad from './msaLoad';
 import geneTree from "./geneTree";
 import {panXTree,tableAccessories} from "./global";
 import {aln_file_path} from "./data_path";
-import {attachButtons, hideNonSelected} from "./tree-init";
+import {attachButtons, hideNonSelected, undoHideNonSelected} from "./tree-init";
 
 /**
  * Module for initializing trigger actions in cluster datatable. It includes:
@@ -83,13 +83,14 @@ export const linkMetaTableTree = function(tableID, datatable, speciesTree){
                         console.log("accession not found", strain);
                     }
                 });
+                hideNonSelected(speciesTree);
             }else{
-                speciesTree.tips.forEach(function(d){d.state.selected=true;});
+                undoHideNonSelected(speciesTree);
             }
         }else{
             console.log("speciesTree not available");
         }
-        hideNonSelected(speciesTree);
+
     } );
 
     $('#'+tableAccessories.meta_table_unselect).on( 'click', function () {
