@@ -182,8 +182,11 @@ export const attachButtons = function(myTree, buttons){
             if (myTree.panZoom){
                 myTree.panZoom.reset();
             }
+            //#subtle:zoomIntoClade (tree, d, dt, setSelected)
+            //#       state.selected are set to true in zoomIntoClade, they are then reset to undefined
             applyChangeToTree(myTree, function(){zoomIntoClade(myTree, myTree.nodes[0],dt, true);},dt);
-            //filterMetaDataTable('dc_data_table_meta', myTree);
+            filterMetaDataTable('dc_data_table_meta', myTree);
+            undoHideNonSelected(myTree);
         });
     }
     if (buttons.treeSync){
