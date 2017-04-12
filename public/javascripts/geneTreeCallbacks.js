@@ -2,17 +2,18 @@ import {preOrderIteration} from "../phyloTree/src/treeHelpers";
 import {tooltip_node} from './tooltips';
 import {panXTree} from './global';
 
-const tipFillHover = panXTree.tipFillHover,
-      tipParalogFillHover = panXTree.tipParalogFillHover;
 const subtree_node_colors = d3.scale.category20c();
+const tipFillHover = panXTree.tipFillHover,
+      tipParalogFillHover = panXTree.tipParalogFillHover,
+      tipUnselected = panXTree.tipUnselected;
 
 const onTipsHover = function(d){
-  d.elem.attr("r",10)
+  d.elem.attr("r",function(x){return x.tipAttributes.r*2;})
     .style("fill", function(x){return subtree_node_colors(x.n.accession);});
-  d.strainTip.attr("r",10)
+  d.strainTip.attr("r",function(x){return x.tipAttributes.r*2;})
     .style("fill", function(x){return subtree_node_colors(x.n.name);});
   for (var gi=0,len=d.paralogs.length; gi<len; gi++){
-    d.paralogs[gi].elem.attr("r",10)
+    d.paralogs[gi].elem.attr("r",function(x){return x.tipAttributes.r*2;})
       .style("fill", function(x){return subtree_node_colors(x.n.accession);});
     }
 };
@@ -30,11 +31,29 @@ const onTipHover = function(d){
 
 const onTipLeave = function(d){
   d.elem
-    .attr("r",function(x){return x.tipAttributes.r;})
+    .attr("r",function(x){
+      if (x.state.selected==undefined){
+        return x.tipAttributes.r;
+      }else{
+        return x.state.selected ? x.tipAttributes.r*1.5 : x.tipAttributes.r*0.5;
+      }
+    })
     .style("fill",function(x){return x.tipAttributes.fill;});
   d.strainTip
-    .attr("r",function(x){return x.tipAttributes.r;})
-    .style("fill",function(x){return x.tipAttributes.fill;});
+    .attr("r",function(x){
+      if (x.state.selected==undefined){
+        return x.tipAttributes.r;
+      }else{
+        return x.state.selected ? x.tipAttributes.r*1.5 : x.tipAttributes.r*0.5;
+      }
+    })
+    .style("fill",function(x){
+      if (x.state.selected==undefined){
+        return x.tipAttributes.fill;
+      }else{
+        return x.state.selected ? x.tipAttributes.fill : tipUnselected;
+      }
+    });
   for (var gi=0; gi<d.paralogs.length; gi++){
     d.paralogs[gi].elem
       .attr("r",function(x){return x.tipAttributes.r;})
