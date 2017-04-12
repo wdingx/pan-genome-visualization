@@ -55,9 +55,21 @@ const onTipLeave = function(d){
     //.style("fill",function(x){return x.tipAttributes.fill;});
   for (var gi=0; gi<d.genes.length; gi++){
     d.genes[gi].elem
-      .attr("r",function(x){return x.tipAttributes.r;})
+      .attr("r",function(x){
+        if (x.state.selected==undefined){
+          return x.tipAttributes.r;
+        }else{
+          return x.state.selected ? x.tipAttributes.r*1.5 : x.tipAttributes.r*0.5;
+        }
+      })
       .style("stroke",function(x){return x.tipAttributes.fill;})
-      .style("fill",function(x){return x.tipAttributes.fill;});
+      .style("fill",function(x){
+        if (x.state.selected==undefined){
+          return x.tipAttributes.fill;
+        }else{
+          return x.state.selected ? x.tipAttributes.fill : tipUnselected;
+        }
+      });
   }
   tooltip_node.hide();
 };
