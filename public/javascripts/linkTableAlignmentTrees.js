@@ -49,6 +49,7 @@ export const linkMetaTableTree = function(tableID, datatable, speciesTree){
         if (speciesTree){
             speciesTree.tips.forEach(function(d){d.state.selected=false;});
             var selectedItems = datatable.rows({search:"applied"}).data();
+            const count_selectedItems = selectedItems.length;
             selectedItems.each(function(strain,ii){
                 if (speciesTree.namesToTips[strain.accession]){
                     speciesTree.namesToTips[strain.accession].state.selected=true;
@@ -56,10 +57,14 @@ export const linkMetaTableTree = function(tableID, datatable, speciesTree){
                     console.log("accession not found", strain);
                 }
             });
+            hideNonSelected(speciesTree);
+
+            if (panXTree.speciesTreeTipCount===count_selectedItems){
+                undoHideNonSelected(speciesTree);
+            }
         }else{
             console.log("speciesTree not available");
         }
-        hideNonSelected(speciesTree);
     });
 
     $('#'+tableID+' tbody').on( 'click', 'tr', function () {

@@ -3,8 +3,9 @@ import {discrete_color_set, continuous_color_set} from "./colors";
 export const panXTree = {
     /**if true, use separated pattern instead of entire pattern */
     currentClusterID: '',
-    currentGeneTree: {},
-    speciesTree: {},
+    currentGeneTree: undefined,
+    speciesTree: undefined, //{}
+    speciesTreeTipCount: 0,
     //large_output: false,
     //gain_loss_enabled: true,
     collapsed_node_size: 4.5,
