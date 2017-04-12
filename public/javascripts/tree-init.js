@@ -179,7 +179,7 @@ export const attachButtons = function(myTree, buttons){
                 myTree.panZoom.reset();
             }
             applyChangeToTree(myTree, function(){zoomIntoClade(myTree, myTree.nodes[0],dt, true);},dt);
-            filterMetaDataTable('dc_data_table_meta', myTree);
+            //filterMetaDataTable('dc_data_table_meta', myTree);
         });
     }
     if (buttons.treeSync){
