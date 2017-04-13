@@ -34,6 +34,12 @@ export const metaDataTable = {
                 'columnDefs': columnDefs_list
             });
 
+        // disable warning
+        $.fn.dataTable.ext.errMode = 'none';
+        if (true){
+            $('#'+meta_table_id).on('error.dt', function(e,settings,techNote,message){console.log(message);});
+        }
+
         $('<span style="display:inline-block; width: 10px;"></span>').appendTo('div#'+meta_table_id+'_length.dataTables_length');
         $('<button type="button" id="'+tableAccessories.meta_table_unselect+'" class="btn btn-default">unselect all clicked items</button>').appendTo('div#'+meta_table_id+'_length.dataTables_length');
 
