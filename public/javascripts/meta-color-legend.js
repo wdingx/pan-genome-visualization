@@ -1,18 +1,11 @@
 import {updateTips,updateBranches} from "../phyloTree/src/updateTree";
 import {panXTree} from "./global";
 import {colorPresenceAbsence} from "./tree-init";
-import {assign_metadata_color} from './meta-color-assignment'
-
-//const meta_display_order = Object.keys(meta_set);
-const meta_display_order = meta_display_set["meta_display_order"];
-var metaColor_dicts = {},//# {'host':hostColor,'country':countryColor}
-    metaColor_dicts_keys = {}, //# keep the original key order
-    metaColor_reference_dicts= {};
-assign_metadata_color(metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts,meta_display_order);
+import {assign_metadata_color,metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts} from './meta-color-assignment';
 
 //## legend configuration
-var legendRectSize = 15;
-var legendSpacing = 4;
+var legendRectSize = 15,
+    legendSpacing = 4;
 
 //## clean legend
 const removeLegend = function(coreTree_legend_id) {
@@ -24,7 +17,7 @@ const removeLegend = function(coreTree_legend_id) {
 const metaUnknown=panXTree.metaUnknown,
       strokeToFill = panXTree.strokeToFill;
 //## create legend
-const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ // && legendOptionValue!= "Meta-info"
+const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ // && legendOptionValue!= "Meta-info"
     console.log(metaType);
     if (metaType==="genePattern"){
         var node,strain, fill;
@@ -153,14 +146,17 @@ const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ 
 }
 
 //## update legend and coloring nodes by meta-info
-export const updateData = function(metaType,speciesTree,geneTree,coreTree_legend_id,tool_side) {
-    var metaColorSet=metaColor_dicts[metaType];
+export const updateMetadata = function(metaType,speciesTree,geneTree,metaConfiguration,coreTree_legend_id,tool_side) {
+    const meta_display_set= metaConfiguration['meta_display'],
+          meta_display_order = meta_display_set["meta_display_order"];
     removeLegend(coreTree_legend_id);
     makeLegend(metaType,speciesTree,geneTree,coreTree_legend_id, tool_side);
 };
 
 //## creat dropdown-list for meta-info
-export const create_dropdown = function (div, speciesTree, geneTree, coreTree_legend_id, tool_side) {
+export const create_dropdown = function (div, speciesTree, geneTree, metaConfiguration,coreTree_legend_id, tool_side) {
+    const meta_display_set=metaConfiguration['meta_display'],
+          meta_display_order=meta_display_set['meta_display_order'];
     var menu_panel = d3.select(div)
 
     var dropdown_meta = menu_panel
@@ -179,7 +175,7 @@ export const create_dropdown = function (div, speciesTree, geneTree, coreTree_le
 
     for (var i = 0, len = meta_display_order.length; i < len; i++) {
         const metaType= meta_display_order[i];
-        if (!meta_display_set['color_options'][metaType]['display']||meta_display_set['color_options'][metaType]['display']!='no'){
+        if (meta_display_set['color_options'][metaType]['display']!==undefined||meta_display_set['color_options'][metaType]['display']!='no'){
             dropdown_meta.append("option")
                 .attr("value", metaType)
                 .text(metaType);
