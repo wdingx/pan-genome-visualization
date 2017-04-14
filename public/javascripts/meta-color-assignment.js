@@ -34,15 +34,15 @@ const assign_continuous_color = function(metaColor_dicts,metaColor_dicts_keys,me
     var testString = "<test><=";
     console.log(testString.replace(regEx,''));*/
 
-    const min= parseInt(d3.min(meta_detail), 10),
-          max= parseInt(d3.max(meta_detail), 10),
-          distance = max - min,
+    const min_val= parseFloat(d3.min(meta_detail)),
+          max_val= parseFloat(d3.max(meta_detail)),
+          distance = max_val - min_val,
           num_interval = 10,
           interval= distance/num_interval;
 
     //** create a list of legend values and corresponding colors
     const tmp_num_list = d3.range(num_interval+1).map(function(i){
-        const legend_value= parseFloat((min+interval*i));
+        const legend_value= parseFloat(min_val+interval*i).toFixed(2);
         tmp_meta_color_dict[legend_value]=metaLegend.continuous_colorSet[i];
         return legend_value;
     });
@@ -50,13 +50,16 @@ const assign_continuous_color = function(metaColor_dicts,metaColor_dicts_keys,me
     //** create upper-/lower-bound for each legend value
     var tmp_bound_list = [];
     tmp_num_list.forEach(function(item,ind) {
-        const result=(tmp_num_list[ind-1]!==undefined) ? [tmp_num_list[ind-1],item] : [0,item]
+        const result=(tmp_num_list[ind-1]!==undefined) ? [tmp_num_list[ind-1],item] : ['0',item]
         tmp_bound_list.push(result);
     });
 
     //** link original value to each legend value
     meta_detail.forEach(function(meta_item){
         tmp_bound_list.forEach(function(bound_item){
+            if (meta_item==bound_item[0]){
+                tmp_meta_color_reference_dicts[meta_item]=bound_item[1]
+            }
             if (meta_item>bound_item[0] && meta_item<=bound_item[1]){
                 tmp_meta_color_reference_dicts[meta_item]=bound_item[1]
             }
