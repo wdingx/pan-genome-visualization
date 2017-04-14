@@ -47,7 +47,7 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
             }else{
                 itemCount[node.n.attr[metaType]]=1;
             }
-            if (meta_display_set['color_options'][metaType]['type']=='discrete'){
+            if (meta_display['color_options'][metaType]['type']=='discrete'){
                 const fill=metaColor_dicts[metaType][node.n.attr[metaType]];
                 node.tipAttributes.fill =fill;
                 node.branchAttributes["stroke"] = fill || metaUnknown;
@@ -63,7 +63,7 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
         for (var i=0; i<geneTree.tips.length; i++){
             const node = geneTree.tips[i];
             const strain = speciesTree.namesToTips[node.n.accession];
-            if(meta_display_set['color_options'][metaType]['type']=='discrete'){
+            if(meta_display['color_options'][metaType]['type']=='discrete'){
                 node.tipAttributes.fill = d3.rgb(metaColor_dicts[metaType][strain.n.attr[metaType]]).toString()
             }else{//** continuous
                 const lengend_value= metaColor_reference_dicts[metaType][strain.n.attr[metaType]];
@@ -146,17 +146,14 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
 }
 
 //## update legend and coloring nodes by meta-info
-export const updateMetadata = function(metaType,speciesTree,geneTree,metaConfiguration,coreTree_legend_id,tool_side) {
-    const meta_display_set= metaConfiguration['meta_display'],
-          meta_display_order = meta_display_set["meta_display_order"];
+export const updateMetadata = function(metaType,speciesTree,geneTree,meta_display,coreTree_legend_id,tool_side) {
     removeLegend(coreTree_legend_id);
     makeLegend(metaType,speciesTree,geneTree,coreTree_legend_id, tool_side);
 };
 
 //## creat dropdown-list for meta-info
-export const create_dropdown = function (div, speciesTree, geneTree, metaConfiguration,coreTree_legend_id, tool_side) {
-    const meta_display_set=metaConfiguration['meta_display'],
-          meta_display_order=meta_display_set['meta_display_order'];
+export const create_dropdown = function (div, speciesTree, geneTree, meta_display,coreTree_legend_id, tool_side) {
+    const meta_display_order=meta_display['meta_display_order'];
     var menu_panel = d3.select(div)
 
     var dropdown_meta = menu_panel
@@ -175,7 +172,7 @@ export const create_dropdown = function (div, speciesTree, geneTree, metaConfigu
 
     for (var i = 0, len = meta_display_order.length; i < len; i++) {
         const metaType= meta_display_order[i];
-        if (meta_display_set['color_options'][metaType]['display']!==undefined||meta_display_set['color_options'][metaType]['display']!='no'){
+        if (meta_display['color_options'][metaType]['display']!==undefined||meta_display['color_options'][metaType]['display']!='no'){
             dropdown_meta.append("option")
                 .attr("value", metaType)
                 .text(metaType);

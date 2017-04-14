@@ -1,7 +1,8 @@
 import d3 from "d3";
 import d3Tip from "d3-tip";
 d3.tip = d3Tip;
-const meta_types =meta_display_set['meta_display_order'];
+
+const meta_types =meta_display['meta_display_order'];
 var antibiotics_set;
 //## tooltip for datatables header
 export const tooltip = d3.select("body")
@@ -29,6 +30,7 @@ export const tooltip_button = function(divID, tooltip_dict) {
         return tooltip.style("visibility", "hidden");
     })
 };
+
 
 //## tooltip for tree nodes and branches
 export const tooltip_node = d3.tip().attr('class', 'd3-tip').html(function(d) {

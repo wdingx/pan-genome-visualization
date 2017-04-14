@@ -18,7 +18,6 @@ var mySpeciesTree,
     myGeneTree,
     myDatatable,
     myMetaDatatable;
-var myMetaConfiguration;
 
 const handleSpeciesTree = function(newTree){
     newTree.namesToTips = {};
@@ -75,10 +74,6 @@ const handleMetaDataTable = function(metaDatatable){
     myMetaDatatable = metaDatatable;
 }
 
-const handleMetaConfiguration = function(metaConfiguration){
-    myMetaConfiguration = metaConfiguration;
-}
-
 const tryConnectTrees = function(){
     if (mySpeciesTree&&myGeneTree&&myDatatable&&myMetaDatatable){
         //connectTrees(mySpeciesTree, myGeneTree);
@@ -87,14 +82,14 @@ const tryConnectTrees = function(){
         attachPanzoom("speciesTree", mySpeciesTree);
         //attachPanzoom("geneTree", myGeneTree);
         /** create metadata dropdown list */
-        create_dropdown("#dropdown_list",mySpeciesTree,'geneTree',myMetaConfiguration,'coreTree_legend',null);
-        assign_metadata_color(myMetaConfiguration);
+        create_dropdown("#dropdown_list",mySpeciesTree,'geneTree',meta_display,'coreTree_legend',null);
+        assign_metadata_color(meta_details,meta_display);
         //** monitor metadata selection and make le
         var menu_panel = d3.select("#dropdown_select")
         menu_panel.on("change", function(d) {
             if (this.value!='Meta-info') {
                 //console.log("trigger meta data color change", this.value, d, menu_panel);
-                updateMetadata(this.value, mySpeciesTree, myGeneTree, myMetaConfiguration, 'coreTree_legend', 0);
+                updateMetadata(this.value, mySpeciesTree, myGeneTree, meta_display, 'coreTree_legend', 0);
             }
         });
     }else{
@@ -159,7 +154,7 @@ render_chart_table.initData(datapath.path_datatable1,'dc_data_table', 'GC_tablec
     'speciesTreeDiv','geneTreeDiv', null, handleDataTable, handleGeneTree);
 /** render meta-data datatable */
 var meta_table_id='dc_data_table_meta';
-metaDataTable.dataTable2Fun(meta_table_id, handleMetaDataTable,handleMetaConfiguration);
+metaDataTable.dataTable2Fun(meta_table_id, handleMetaDataTable);
 tryConnectTrees();
 
 

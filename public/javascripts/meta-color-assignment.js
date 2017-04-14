@@ -75,15 +75,13 @@ const assign_continuous_color = function(metaColor_dicts,metaColor_dicts_keys,me
     metaColor_reference_dicts[metaType_key] = tmp_meta_color_reference_dicts;
 }
 
-export const assign_metadata_color = function(metaConfiguration){
-    const meta_set= metaConfiguration['meta_details'],
-          meta_display_set= metaConfiguration['meta_display'],
-          metaTypes= meta_display_set["meta_display_order"];
+export const assign_metadata_color = function(meta_details,meta_display){
+    const metaTypes= meta_display["meta_display_order"];
 
     for (var j = 0; j < metaTypes.length; j++) {
         var metaType_key = metaTypes[j]; //**'host'
-        var meta_detail = meta_set[metaType_key]; //** ["human", "rice"]
-        if (meta_display_set['color_options'][metaType_key]['type']=='continuous') {
+        var meta_detail = meta_details[metaType_key]; //** ["human", "rice"]
+        if (meta_display['color_options'][metaType_key]['type']=='continuous') {
             assign_continuous_color(metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts,metaType_key,meta_detail)
         }
         else {
