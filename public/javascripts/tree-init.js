@@ -91,8 +91,8 @@ export const branchText = function(d){
 }
 export const branchFontSize = function(d){return d.stats.leafCount>2?3:0;}
 export const tipText = function(d){
-    if (d.n.attr.strain && d.terminal){
-        return d.n.attr.strain;
+    if (d.terminal){
+        return d.n.attr.strain ? d.n.attr.strain: d.n.name ;
     }else{
         return "";
     }
