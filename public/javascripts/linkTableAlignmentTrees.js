@@ -14,7 +14,7 @@ export const loadNewGeneCluster = function(data, handleGeneTree, seqType){
     var clusterID=data.msa;
     panXTree.currentClusterID=clusterID;
     console.log("loadNewGeneCluster", clusterID, seqType);
-    msaLoad(aln_file_path+clusterID+'_'+seqType+'.aln.fa',(seqType=='aa')?'taylor':'nucleotide');
+    msaLoad(aln_file_path+clusterID+'_'+seqType+'_aln.fa',(seqType=='aa')?'taylor':'nucleotide');
     var geneTree_name=aln_file_path + clusterID+'_tree.json';
     var myGeneTree=geneTree("geneTree", geneTree_name, handleGeneTree);
     attachButtons(myGeneTree, { download_geneTree:"download_geneTree",

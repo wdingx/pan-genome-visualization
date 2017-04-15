@@ -91,8 +91,8 @@ export const branchText = function(d){
 }
 export const branchFontSize = function(d){return d.stats.leafCount>2?3:0;}
 export const tipText = function(d){
-    if (d.n.attr.strain && d.terminal){
-        return d.n.attr.strain;
+    if (d.terminal){
+        return d.n.attr.strain ? d.n.attr.strain: d.n.name ;
     }else{
         return "";
     }
@@ -348,6 +348,8 @@ export const styleGainLoss = function(speciesTree){
                 stroke_width_factor=(event_type=='1'||event_type=='2')? 1.5: 1;
                 stroke_dasharray= (event_type=='2') ? "6,6" : "1,0";
                 node.branchAttributes["stroke"] = stroke;
+                //** store gene event color
+                //node.branchAttributes['event_pattern']=stroke;
                 node.branchAttributes["stroke-width"] = panXTree.branch_stroke_width*stroke_width_factor;
                 node.branchAttributes["stroke-dasharray"] = stroke_dasharray;
             }

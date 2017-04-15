@@ -6,16 +6,18 @@ import  {panXTree, tableAccessories} from "./global";
 import {attachButtons, tipText, tipFontSize, attachPanzoom, connectTrees, applyChangeToTree, hideNonSelected, undoHideNonSelected} from "./tree-init";
 import {updateGeometry} from "../phyloTree/src/updateTree";
 import {linkTableAlignmentTrees, linkMetaTableTree} from "./linkTableAlignmentTrees";
-import {create_dropdown, updateData} from "./meta-color-legend";
+import {create_dropdown, updateMetadata} from "./meta-color-legend";
+import {assign_metadata_color} from "./meta-color-assignment";
 import {tooltip_node} from './tooltips';
 import speciesTreeCallbacks from "./speciesTreeCallbacks";
 import geneTreeCallbacks from "./geneTreeCallbacks";
 // /** strain_tree processing */
 //render_tree(0, "mytree1", coreTree_path, clusterID=null, null);
 
-var mySpeciesTree;
-var myGeneTree;
-var myDatatable;
+var mySpeciesTree,
+    myGeneTree,
+    myDatatable,
+    myMetaDatatable;
 
 const handleSpeciesTree = function(newTree){
     newTree.namesToTips = {};
@@ -68,21 +70,28 @@ const handleDataTable = function(datatable){
     //console.log("render_viewer:myDatatable ",myDatatable);
 }
 
+const handleMetaDataTable = function(metaDatatable){
+    myMetaDatatable = metaDatatable;
+}
+
 const tryConnectTrees = function(){
-    if (mySpeciesTree&&myGeneTree&&myDatatable){
+    if (mySpeciesTree&&myGeneTree&&myDatatable&&myMetaDatatable){
         //connectTrees(mySpeciesTree, myGeneTree);
         linkTableAlignmentTrees('dc_data_table', myDatatable, mySpeciesTree, handleGeneTree);
         linkMetaTableTree(meta_table_id, myMetaDatatable,mySpeciesTree);
+        attachPanzoom("speciesTree", mySpeciesTree);
+        //attachPanzoom("geneTree", myGeneTree);
+        /** create metadata dropdown list */
+        create_dropdown("#dropdown_list",mySpeciesTree,'geneTree',meta_display,'coreTree_legend',null);
+        assign_metadata_color(meta_details,meta_display);
+        //** monitor metadata selection and make legend
         var menu_panel = d3.select("#dropdown_select")
         menu_panel.on("change", function(d) {
             if (this.value!='Meta-info') {
                 //console.log("trigger meta data color change", this.value, d, menu_panel);
-                updateData(this.value, mySpeciesTree, myGeneTree, 'coreTree_legend', 0);
+                updateMetadata(this.value, mySpeciesTree, myGeneTree, meta_display, 'coreTree_legend', 0);
             }
         });
-        attachPanzoom("speciesTree", mySpeciesTree);
-        //attachPanzoom("geneTree", myGeneTree);
-
     }else{
         //console.log("trees not available yet, retry", mySpeciesTree, myGeneTree);
         setTimeout(tryConnectTrees, 1000);
@@ -130,8 +139,6 @@ const trigger_triplet_button = function(){
 }
 trigger_triplet_button();
 
-/** create metadata dropdown list */
-create_dropdown("#dropdown_list",mySpeciesTree,'geneTree','coreTree_legend',null);
 speciesTree("speciesTree", datapath.coreTree_path, handleSpeciesTree);
 // /** tree rotate listener */
 // rotate_monitor('tree_rotate','mytree2');
@@ -140,15 +147,16 @@ speciesTree("speciesTree", datapath.coreTree_path, handleSpeciesTree);
 
 /** render interactive charts and gene-cluster datatable */
 //console.log("render_viewer:",datapath);
-myDatatable = render_chart_table.initData(datapath.path_datatable1,'dc_data_table', 'GC_tablecol_select',
+//myDatatable =
+render_chart_table.initData(datapath.path_datatable1,'dc_data_table', 'GC_tablecol_select',
     'dc_data_count','dc_straincount_chart','dc_geneLength_chart','dc_coreAcc_piechart',
     'changeCoreThreshold','coreThreshold',
     'speciesTreeDiv','geneTreeDiv', null, handleDataTable, handleGeneTree);
-tryConnectTrees();
-
 /** render meta-data datatable */
 var meta_table_id='dc_data_table_meta';
-var myMetaDatatable = metaDataTable.dataTable2Fun(meta_table_id);
+metaDataTable.dataTable2Fun(meta_table_id, handleMetaDataTable);
+tryConnectTrees();
+
 
 
 window.addEventListener("resize", function(){

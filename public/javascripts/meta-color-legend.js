@@ -1,18 +1,12 @@
 import {updateTips,updateBranches} from "../phyloTree/src/updateTree";
 import {panXTree} from "./global";
-import {colorPresenceAbsence} from "./tree-init";
-import {assign_metadata_color} from './meta-color-assignment'
-
-//const meta_display_order = Object.keys(meta_set);
-const meta_display_order = meta_display_set["meta_display_order"];
-var metaColor_dicts = {},//# {'host':hostColor,'country':countryColor}
-    metaColor_dicts_keys = {}, //# keep the original key order
-    metaColor_reference_dicts= {};
-assign_metadata_color(metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts,meta_display_order);
+import {colorPresenceAbsence,styleGainLoss} from "./tree-init";
+import {assign_metadata_color,metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts} from './meta-color-assignment';
+import {preOrderIteration} from "../phyloTree/src/treeHelpers";
 
 //## legend configuration
-var legendRectSize = 15;
-var legendSpacing = 4;
+var legendRectSize = 15,
+    legendSpacing = 4;
 
 //## clean legend
 const removeLegend = function(coreTree_legend_id) {
@@ -24,7 +18,7 @@ const removeLegend = function(coreTree_legend_id) {
 const metaUnknown=panXTree.metaUnknown,
       strokeToFill = panXTree.strokeToFill;
 //## create legend
-const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ // && legendOptionValue!= "Meta-info"
+const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ // && legendOptionValue!= "Meta-info"
     console.log(metaType);
     if (metaType==="genePattern"){
         var node,strain, fill;
@@ -36,6 +30,7 @@ const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ 
             node.tipAttributes.stroke = d3.rgb(fill).darker(strokeToFill).toString();
         }
         colorPresenceAbsence(speciesTree);
+        styleGainLoss(speciesTree);
         for (var i=0; i<geneTree.tips.length; i++){
             node = geneTree.tips[i];
             strain = speciesTree.namesToTips[node.n.accession];
@@ -54,7 +49,7 @@ const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ 
             }else{
                 itemCount[node.n.attr[metaType]]=1;
             }
-            if (meta_display_set['color_options'][metaType]['type']=='discrete'){
+            if (meta_display['color_options'][metaType]['type']=='discrete'){
                 const fill=metaColor_dicts[metaType][node.n.attr[metaType]];
                 node.tipAttributes.fill =fill;
                 node.branchAttributes["stroke"] = fill || metaUnknown;
@@ -70,7 +65,7 @@ const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ 
         for (var i=0; i<geneTree.tips.length; i++){
             const node = geneTree.tips[i];
             const strain = speciesTree.namesToTips[node.n.accession];
-            if(meta_display_set['color_options'][metaType]['type']=='discrete'){
+            if(meta_display['color_options'][metaType]['type']=='discrete'){
                 node.tipAttributes.fill = d3.rgb(metaColor_dicts[metaType][strain.n.attr[metaType]]).toString()
             }else{//** continuous
                 const lengend_value= metaColor_reference_dicts[metaType][strain.n.attr[metaType]];
@@ -78,6 +73,27 @@ const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ 
             }
             node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
         }
+
+        //** assign internal branch color
+        for (var i=0; i<speciesTree.internals.length; i++){
+            const inner_node = speciesTree.internals[i];
+            var color_compare='',consistent_flag=0,fill;
+            preOrderIteration(inner_node, function(d){if (d.terminal){
+                if (color_compare==''){ fill=d.tipAttributes.fill}
+                if (color_compare!==d.tipAttributes.fill) {consistent_flag+=1}
+                color_compare=d.tipAttributes.fill;}
+            });
+            if (consistent_flag==1) {
+                inner_node.branchAttributes["stroke"] = fill|| metaUnknown;
+            }else{
+                //** use gene event color for internal branch color
+                //inner_node.branchAttributes["stroke"] = inner_node.branchAttributes['event_pattern'];
+                inner_node.branchAttributes["stroke"] = panXTree.branchStroke_default;
+            }
+
+        }
+
+
         updateTips(geneTree, [], ["fill", "stroke"], 0);
         updateTips(speciesTree, [], ["fill", "stroke"], 0);
         updateBranches(speciesTree, [], ["stroke"], 0);
@@ -99,24 +115,23 @@ const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ 
                 return 'translate(' + horz + ',' + vert + ')';
             });
 
+        const meta_coloring_type= meta_display['color_options'][metaType]['type'];
         const mouseover_legend = function(metaField, tree){
             tree.tipElements
-            .attr('r',
-                function(d){
-                    if ((d.n.attr[metaType] == metaField)||((metaColor_reference_dicts[metaType]!== undefined)&&(metaColor_reference_dicts[metaType][d.n.attr[metaType]] == metaField))){
-                        return d.tipAttributes.r*2;
-                    }else{
-                        return d.tipAttributes.r;
+            .filter(function(d){
+                    if (meta_coloring_type=='discrete'&&d.n.attr[metaType] == metaField){
+                        return true;
+                    } else if (meta_coloring_type!='discrete'&&((metaColor_reference_dicts[metaType]!== undefined)&&(metaColor_reference_dicts[metaType][d.n.attr[metaType]] == metaField))){
+                        return true;
                     }
-                })
-            .style('fill', function(d){
-                if ((d.n.attr[metaType] == metaField)||((metaColor_reference_dicts[metaType]!== undefined)&&(metaColor_reference_dicts[metaType][d.n.attr[metaType]] == metaField))) {
-                    return d3.rgb(d.tipAttributes.fill).brighter(strokeToFill);
-                }else{
-                    return d.tipAttributes.fill;
-                }
-            });
+                    //** avoid over-selecting problem in mixed_continuous log_scale
+                    //** { 2.00: "1.00", 4.00: "2.00"}
+                    //** when mousehovering 2.00: nodes with 2.00 and 4.00 are selected in previous code
+            })
+            .attr('r',function(d){return d.tipAttributes.r*2;})
+            .style('fill', function(d){return d3.rgb(d.tipAttributes.fill).brighter(strokeToFill);});
         }
+
         const mouseout_legend = function(metaField, tree){
             tree.tipElements
                 .attr('r', function(d){return d.tipAttributes.r;})
@@ -153,14 +168,14 @@ const makeLegend = function(metaType,speciesTree, geneTree,coreTree_legend_id){ 
 }
 
 //## update legend and coloring nodes by meta-info
-export const updateData = function(metaType,speciesTree,geneTree,coreTree_legend_id,tool_side) {
-    var metaColorSet=metaColor_dicts[metaType];
+export const updateMetadata = function(metaType,speciesTree,geneTree,meta_display,coreTree_legend_id,tool_side) {
     removeLegend(coreTree_legend_id);
     makeLegend(metaType,speciesTree,geneTree,coreTree_legend_id, tool_side);
 };
 
 //## creat dropdown-list for meta-info
-export const create_dropdown = function (div, speciesTree, geneTree, coreTree_legend_id, tool_side) {
+export const create_dropdown = function (div, speciesTree, geneTree, meta_display,coreTree_legend_id, tool_side) {
+    const meta_display_order=meta_display['meta_display_order'];
     var menu_panel = d3.select(div)
 
     var dropdown_meta = menu_panel
@@ -179,7 +194,7 @@ export const create_dropdown = function (div, speciesTree, geneTree, coreTree_le
 
     for (var i = 0, len = meta_display_order.length; i < len; i++) {
         const metaType= meta_display_order[i];
-        if (!meta_display_set['color_options'][metaType]['display']||meta_display_set['color_options'][metaType]['display']!='no'){
+        if (meta_display['color_options'][metaType]['display']==undefined || meta_display['color_options'][metaType]['display']!='no'){
             dropdown_meta.append("option")
                 .attr("value", metaType)
                 .text(metaType);

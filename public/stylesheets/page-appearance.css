@@ -373,7 +373,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 .triplet-button-control, .triplet-button-single {
     position: relative;
-    z-index: 1;
+    /*z-index: 1;*/
     color: #fff;
     background: #2C98DE;
     border: none;
@@ -385,7 +385,7 @@ input[type=range]:focus::-ms-fill-upper {
     font-size: 12px;
 }
 .triplet-button-single {
-    z-index: 3;
+    /*z-index: 3;*/
     width: 26px;
     height: 26px;
     border-radius: 50%;

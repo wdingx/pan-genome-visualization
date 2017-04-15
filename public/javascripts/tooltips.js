@@ -1,7 +1,8 @@
 import d3 from "d3";
 import d3Tip from "d3-tip";
 d3.tip = d3Tip;
-const meta_types =meta_display_set['meta_display_order'];
+
+const meta_types =meta_display['meta_display_order'];
 var antibiotics_set;
 //## tooltip for datatables header
 export const tooltip = d3.select("body")
@@ -30,10 +31,11 @@ export const tooltip_button = function(divID, tooltip_dict) {
     })
 };
 
+
 //## tooltip for tree nodes and branches
 export const tooltip_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
     var string = "";
-    //speicesTree tooltip
+    //** speicesTree tooltip
     string +="<br/> <table rules='cols'> "
     if (d.name != undefined) {
         if (d.n.accession==undefined){
@@ -56,8 +58,8 @@ export const tooltip_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
                 }
         }
     }
-    string +="</table>"
 
+    //** antibiotics specific table
     if (antibiotics_set) {
         string +="<br/><br/> <table> "
         for (var i = 0; i < antibiotics_set.length; i++){
@@ -68,10 +70,9 @@ export const tooltip_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
         string +="</table>"
     }
 
-    //# geneTree tooltip
-    if (typeof d.ann != "undefined") {
-        //string += " <tr> <th class='tooltip_table_th'>annotation</th> <td class='tooltip_table_td'> " + d.ann+" </td> </tr> ";
-        string += "<br/>" + "annotation:  " + d.ann;
+    //** geneTree tooltip
+    if (typeof d.n.annotation != "undefined") {
+        string += " <tr> <th class='tooltip_table_th'>annotation</th> <td class='tooltip_table_td'> " + d.n.annotation+" </td> </tr> ";
     }
     if (typeof d.muts != "undefined") {
         var muts_str=d.muts
@@ -83,8 +84,14 @@ export const tooltip_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
         if (aa_muts_str.length>50) { aa_muts_str=aa_muts_str.substr(0,50)+'...'}
         string += "<br/>" + "amino acid mutations:  " + aa_muts_str;
     }
+    if (typeof d.aa_muts != "undefined") {
+        var aa_muts_str=d.aa_muts
+        if (aa_muts_str.length>50) { aa_muts_str=aa_muts_str.substr(0,50)+'...'}
+        string += "<br/>" + "amino acid mutations:  " + aa_muts_str;
+    }
     string += "<div class=\"smallspacer\"></div>";
 
+    string +="</table>"
     return string;
 });
 

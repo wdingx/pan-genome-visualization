@@ -7,7 +7,9 @@ export const colorblind_safe_set = ['#006E82','#8214A0','#005AC8','#00A0FA','#FA
 export const discrete_color_set = ['#F02132','#EA761F','#F5B223','#38A920','#2195C3','#1D52D3','#9E04A9']
 
 //** 11-color palette for diverging scheme (colorbind safe, RdYlBu) from http://colorbrewer2.org
-export const continuous_color_set= ['#313695','#4575b4','#74add1','#abd9e9','#e0f3f8','#ffffbf','#fee090','#fdae61','#f46d43','#d73027','#a50026']
+export const continuous_color_set= ['#313695','#4575b4','#74add1','#98CCDD','#BCE1EE','#FFF38B','#FDD97B','#fdae61','#f46d43','#d73027','#a50026']
+//small set (when items<10) ['#d7191c','#fdae61','#abd9e9','#2c7bb6']
+//original 11-color ['#313695','#4575b4','#74add1','#abd9e9','#e0f3f8','#ffffbf','#fee090','#fdae61','#f46d43','#d73027','#a50026']
 //** other
 //** 9-class YlGnBu
 //** ['#ffffd9','#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58']

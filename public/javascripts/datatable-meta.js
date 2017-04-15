@@ -1,12 +1,13 @@
 import {create_dataTable} from "./datatable-gc";
 import {path_datatable_meta} from './data_path';
 import {tableAccessories} from './global';
+
 //#DataTable for meta-info
 export const metaDataTable = {
-    dataTable2Fun: function (meta_table_id) {
-
+    dataTable2Fun: function (meta_table_id, handleMetaDataTable) {
+        var metaDatatable, metaConfiguration;
         //# create meta table
-        var meta_display_order = meta_display_set['meta_display_order'];
+        var meta_display_order = meta_display['meta_display_order'].slice();
         meta_display_order.unshift('accession','strain');
         create_dataTable('#'+meta_table_id, meta_display_order);
 
@@ -19,7 +20,7 @@ export const metaDataTable = {
             });
         }
 
-        var datatable= $('#'+meta_table_id).DataTable({
+        metaDatatable= $('#'+meta_table_id).DataTable({
                 'ajax': path_datatable_meta,
                 'responsive': true,
                 'search':true,
@@ -34,10 +35,16 @@ export const metaDataTable = {
                 'columnDefs': columnDefs_list
             });
 
+        // disable warning
+        $.fn.dataTable.ext.errMode = 'none';
+        if (true){
+            $('#'+meta_table_id).on('error.dt', function(e,settings,techNote,message){console.log(message);});
+        }
+
         $('<span style="display:inline-block; width: 10px;"></span>').appendTo('div#'+meta_table_id+'_length.dataTables_length');
         $('<button type="button" id="'+tableAccessories.meta_table_unselect+'" class="btn btn-default">unselect all clicked items</button>').appendTo('div#'+meta_table_id+'_length.dataTables_length');
 
-        return datatable;
+        handleMetaDataTable(metaDatatable);
     }
 };
 

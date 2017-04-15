@@ -1,8 +1,6 @@
 ## Usage: bash add-new-pages-repo.sh your_species_prefix
-#species_prefix
 
 species=$1
-
 # process jade (in folder ./views/)
 mkdir -p ./public/dataset/$species
 mkdir -p ./public/dataset/$species/geneCluster
