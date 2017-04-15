@@ -92,24 +92,23 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
                 return 'translate(' + horz + ',' + vert + ')';
             });
 
+        const meta_coloring_type= meta_display['color_options'][metaType]['type'];
         const mouseover_legend = function(metaField, tree){
             tree.tipElements
-            .attr('r',
-                function(d){
-                    if ((d.n.attr[metaType] == metaField)||((metaColor_reference_dicts[metaType]!== undefined)&&(metaColor_reference_dicts[metaType][d.n.attr[metaType]] == metaField))){
-                        return d.tipAttributes.r*2;
-                    }else{
-                        return d.tipAttributes.r;
+            .filter(function(d){
+                    if (meta_coloring_type=='discrete'&&d.n.attr[metaType] == metaField){
+                        return true;
+                    } else if (meta_coloring_type!='discrete'&&((metaColor_reference_dicts[metaType]!== undefined)&&(metaColor_reference_dicts[metaType][d.n.attr[metaType]] == metaField))){
+                        return true;
                     }
-                })
-            .style('fill', function(d){
-                if ((d.n.attr[metaType] == metaField)||((metaColor_reference_dicts[metaType]!== undefined)&&(metaColor_reference_dicts[metaType][d.n.attr[metaType]] == metaField))) {
-                    return d3.rgb(d.tipAttributes.fill).brighter(strokeToFill);
-                }else{
-                    return d.tipAttributes.fill;
-                }
-            });
+                    //** avoid over-selecting problem in mixed_continuous log_scale
+                    //** { 2.00: "1.00", 4.00: "2.00"}
+                    //** when mousehovering 2.00: nodes with 2.00 and 4.00 are selected in previous code
+            })
+            .attr('r',function(d){return d.tipAttributes.r*2;})
+            .style('fill', function(d){return d3.rgb(d.tipAttributes.fill).brighter(strokeToFill);});
         }
+
         const mouseout_legend = function(metaField, tree){
             tree.tipElements
                 .attr('r', function(d){return d.tipAttributes.r;})
@@ -172,7 +171,7 @@ export const create_dropdown = function (div, speciesTree, geneTree, meta_displa
 
     for (var i = 0, len = meta_display_order.length; i < len; i++) {
         const metaType= meta_display_order[i];
-        if (meta_display['color_options'][metaType]['display']!==undefined||meta_display['color_options'][metaType]['display']!='no'){
+        if (meta_display['color_options'][metaType]['display']==undefined || meta_display['color_options'][metaType]['display']!='no'){
             dropdown_meta.append("option")
                 .attr("value", metaType)
                 .text(metaType);
