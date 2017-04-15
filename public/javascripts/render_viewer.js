@@ -84,7 +84,7 @@ const tryConnectTrees = function(){
         /** create metadata dropdown list */
         create_dropdown("#dropdown_list",mySpeciesTree,'geneTree',meta_display,'coreTree_legend',null);
         assign_metadata_color(meta_details,meta_display);
-        //** monitor metadata selection and make le
+        //** monitor metadata selection and make legend
         var menu_panel = d3.select("#dropdown_select")
         menu_panel.on("change", function(d) {
             if (this.value!='Meta-info') {

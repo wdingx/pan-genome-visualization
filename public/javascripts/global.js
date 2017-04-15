@@ -26,6 +26,7 @@ export const panXTree = {
     geneAbsentR:  3,
     strokeToFill: 0.4,  //brightness difference between stroke and fill
     tipStroke: '#555555',
+    branchStroke_default: '#555555',
     metaUnknown:'#000000',//'#FFFFFF'
     wid_link: '1.2px',
     wid_gloss: '3px',//gain loss highlight
