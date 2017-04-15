@@ -1,6 +1,6 @@
 import {updateTips,updateBranches} from "../phyloTree/src/updateTree";
 import {panXTree} from "./global";
-import {colorPresenceAbsence} from "./tree-init";
+import {colorPresenceAbsence,styleGainLoss} from "./tree-init";
 import {assign_metadata_color,metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts} from './meta-color-assignment';
 import {preOrderIteration} from "../phyloTree/src/treeHelpers";
 
@@ -82,7 +82,14 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
                 if (color_compare!==d.tipAttributes.fill) {consistent_flag+=1}
                 color_compare=d.tipAttributes.fill;}
             });
-            if (consistent_flag==1) {inner_node.branchAttributes["stroke"] = fill|| metaUnknown;}
+            if (consistent_flag==1) {
+                inner_node.branchAttributes["stroke"] = fill|| metaUnknown;
+            }else{
+                //** use gene event color for internal branch color
+                //inner_node.branchAttributes["stroke"] = inner_node.branchAttributes['event_pattern'];
+                inner_node.branchAttributes["stroke"] = panXTree.branchStroke_default;
+            }
+
         }
 
 
