@@ -2,6 +2,7 @@ import {updateTips,updateBranches} from "../phyloTree/src/updateTree";
 import {panXTree} from "./global";
 import {colorPresenceAbsence} from "./tree-init";
 import {assign_metadata_color,metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts} from './meta-color-assignment';
+import {preOrderIteration} from "../phyloTree/src/treeHelpers";
 
 //## legend configuration
 var legendRectSize = 15,
@@ -71,6 +72,20 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
             }
             node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
         }
+
+        //** assign internal branch color
+        for (var i=0; i<speciesTree.internals.length; i++){
+            const inner_node = speciesTree.internals[i];
+            var color_compare='',consistent_flag=0,fill;
+            preOrderIteration(inner_node, function(d){if (d.terminal){
+                if (color_compare==''){ fill=d.tipAttributes.fill}
+                if (color_compare!==d.tipAttributes.fill) {consistent_flag+=1}
+                color_compare=d.tipAttributes.fill;}
+            });
+            if (consistent_flag==1) {inner_node.branchAttributes["stroke"] = fill|| metaUnknown;}
+        }
+
+
         updateTips(geneTree, [], ["fill", "stroke"], 0);
         updateTips(speciesTree, [], ["fill", "stroke"], 0);
         updateBranches(speciesTree, [], ["stroke"], 0);
