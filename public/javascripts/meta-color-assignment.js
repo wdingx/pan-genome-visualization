@@ -27,7 +27,7 @@ const assign_continuous_color = function(metaColor_dicts,metaColor_dicts_keys,me
     const index = meta_detail.indexOf('unknown');
     if (index > -1) { //** assign color to unknown item
         meta_detail.splice(index, 1);
-        tmp_meta_color_dict['unknown']=panXTree.node_metaunknown_stroke;
+        tmp_meta_color_dict['unknown']=panXTree.metaUnknown;
     }
 
     /*var regEx = /<|>|=/g;

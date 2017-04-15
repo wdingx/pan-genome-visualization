@@ -112,16 +112,16 @@ export const tooltip_link = d3.tip().attr('class', 'd3-tip').html(function(d) {
 //** tree button tooltip
 const treeButton_tooltip_dict= {
     //**speciesTree
-    'speciesTreeLabels':'show/hide labels',//TODO?
-    'speciesTree_height_plus':'expand species tree horizontally',
-    'speciesTree_height_minus':'shrink species tree horizontally',
+    'speciesTreeLabels':'show/hide labels',
+    'speciesTree_height_plus':'expand species tree vertically',
+    'speciesTree_height_minus':'shrink species tree vertically',
     'speciesTreeZoomReset': 'reset species tree',
-    'speciesTree_nodePlus':'increase node size',
-    'speciesTree_nodeMinus':'decrease node size',
+    'speciesTree_nodePlus':'increase tip size',
+    'speciesTree_nodeMinus':'decrease tip size',
     'download_coreTree':'download strain tree',
     //**geneTree
-    'geneTree_height_plus':'expand gene tree horizontally',
-    'geneTree_height_minus':'shrink gene tree horizontally',
+    'geneTree_height_plus':'expand gene tree vertically',
+    'geneTree_height_minus':'shrink gene tree vertically',
     'geneTreeZoomReset':'reset gene tree',
     'download_geneTree':'download gene tree'
     }
