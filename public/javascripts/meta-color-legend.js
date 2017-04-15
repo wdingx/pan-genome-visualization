@@ -30,6 +30,7 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
             node.tipAttributes.stroke = d3.rgb(fill).darker(strokeToFill).toString();
         }
         colorPresenceAbsence(speciesTree);
+        styleGainLoss(speciesTree);
         for (var i=0; i<geneTree.tips.length; i++){
             node = geneTree.tips[i];
             strain = speciesTree.namesToTips[node.n.accession];
