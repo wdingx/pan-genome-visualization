@@ -9,7 +9,7 @@ var legendRectSize = 15,
     legendSpacing = 4;
 
 //## clean legend
-const removeLegend = function(coreTree_legend_id) {
+export const removeLegend = function(coreTree_legend_id) {
     var legend= d3.select('#'+coreTree_legend_id);
     legend.selectAll('.legend')
         .remove();

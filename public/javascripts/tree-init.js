@@ -4,6 +4,7 @@ import {zoomInY,  zoomIn, zoomIntoClade} from "../phyloTree/src/zoom";
 import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
 import svgPanZoom from "svg-pan-zoom";
 import {filterMetaDataTable} from "./datatable-meta";
+import {removeLegend} from './meta-color-legend';
 import {updateTipAttribute,updateBranches} from "../phyloTree/src/updateTree";
 import {aln_file_path} from "./data_path";
 
@@ -317,6 +318,7 @@ export const connectTrees = function(speciesTree, geneTree){
             species.genePresent = false;
         }
     }
+    removeLegend('coreTree_legend');
     colorPresenceAbsence(speciesTree);
     styleGainLoss(speciesTree);
 }
