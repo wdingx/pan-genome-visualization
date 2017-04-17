@@ -217,19 +217,6 @@ export const render_chart_table = {
                 all: 'All records selected. Please click on the graph to apply filters.'
             });
 
-        var buttonCommon = {
-            exportOptions: {
-                format: {
-                    body: function ( data, column, row, node ) {
-                        // Strip $ from salary column to make it numeric
-                        return column === 5 ?
-                            data.replace( /[$,]/g, '' ) :
-                            data;
-                    }
-                }
-            }
-        };
-
         dtab.create_dataTable('#'+table_id,dtab.geneCluster_table_columns);
 
         tooltip_button('#'+table_id+' tr th',dtab.clusterTable_tooltip_dict );
@@ -401,7 +388,9 @@ var trigger_action_table= function(){
                 row.child( format_annotation(row.data()) ).show();
                 tr.addClass('shown');
             };
-            e.stopPropagation();
+            if ($(this).closest('tr').hasClass("row_selected")){
+                e.stopPropagation();
+            }
         });
 
         /** unfold and fold duplication column in cluster datatable */
@@ -417,7 +406,9 @@ var trigger_action_table= function(){
                 row.child( format_dup_detail(row.data()) ).show();
                 tr.addClass('shown');
             };
-            e.stopPropagation();
+            if ($(this).closest('tr').hasClass("row_selected")){
+                e.stopPropagation();
+            }
         });
 
         /** unfold and fold gene_name column in cluster datatable */
@@ -433,7 +424,9 @@ var trigger_action_table= function(){
                 row.child( format_geneNames(row.data()) ).show();
                 tr.addClass('shown');
             };
-            e.stopPropagation();
+            if ($(this).closest('tr').hasClass("row_selected")){
+                e.stopPropagation();
+            }
         });
     };
 
