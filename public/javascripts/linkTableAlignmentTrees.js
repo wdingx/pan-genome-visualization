@@ -24,10 +24,23 @@ export const loadNewGeneCluster = function(data, handleGeneTree, seqType){
 export const linkTableAlignmentTrees = function(tableID, datatable, speciesTree, handleGeneTree){
     /** row-clicking trigger: update MSA amino_acid alignment when clicking datatable row*/
     $('#'+tableID+' tbody').on('click', 'tr', function (e) {
-        var data = datatable.row( $(this) ).data();
-        loadNewGeneCluster(data, handleGeneTree, 'aa');
-        $('#'+tableID+' tbody tr').removeClass('row_selected');
-        $(this).addClass('row_selected');
+        var data = datatable.row($(this)).data();
+        if (data){ //** fetch alignment filename from the table row
+            loadNewGeneCluster(data, handleGeneTree, 'aa');
+            $('#'+tableID+' tbody tr').removeClass('row_selected');
+            $(this).addClass('row_selected');
+        } else{ //** when rows in nested table cliked
+            const row_index=$(this).index(),
+                  cell=$(this).find('td').first(),
+                  cell_text=cell.text(),
+                  is_colspan=cell.attr('colspan');
+            //** when clicking data cells (not the title & not the entire expanded cell)
+            if ( row_index!==0 && !is_colspan){
+                $('#'+tableID+' tbody tr').removeClass('row_selected');
+                $(this).addClass('row_selected');
+                e.stopPropagation();
+            }
+        }
     });
 
     $('#'+tableID+' tbody').on('click', '.btn.btn-info.btn-xs', function (e) {
