@@ -21,6 +21,24 @@ export const loadNewGeneCluster = function(data, handleGeneTree, seqType){
                                 clusterID:clusterID });
 }
 
+const table_select_tip_annotation= function (input_annotation,myGeneTree) {
+    /*var tree_index=1;*/
+    var searchStr = input_annotation.toLowerCase();
+    function nodeMatch(d, treeType){
+        var annotation=d.n.annotation.toLowerCase();
+        return ((annotation.indexOf(searchStr) > -1 ) && (input_annotation.length != 0));
+    };
+
+    if (input_annotation=='') {
+        undoHideNonSelected(myGeneTree);
+    }else{
+        myGeneTree.tips.forEach(function(d){
+            d.state.selected=(nodeMatch(d,'geneTree'))?true:false;
+        })
+        hideNonSelected(myGeneTree);
+    }
+};
+
 export const linkTableAlignmentTrees = function(tableID, datatable, speciesTree, handleGeneTree){
     /** row-clicking trigger: update MSA amino_acid alignment when clicking datatable row*/
     $('#'+tableID+' tbody').on('click', 'tr', function (e) {
@@ -30,14 +48,27 @@ export const linkTableAlignmentTrees = function(tableID, datatable, speciesTree,
             $('#'+tableID+' tbody tr').removeClass('row_selected');
             $(this).addClass('row_selected');
         } else{ //** when rows in nested table cliked
+            const myGeneTree=panXTree.currentGeneTree;
             const row_index=$(this).index(),
                   cell=$(this).find('td').first(),
                   cell_text=cell.text(),
                   is_colspan=cell.attr('colspan');
             //** when clicking data cells (not the title & not the entire expanded cell)
             if ( row_index!==0 && !is_colspan){
-                $('#'+tableID+' tbody tr').removeClass('row_selected');
-                $(this).addClass('row_selected');
+                const is_annotation=$(this).parents('tr').text().startsWith('Annotation');
+                if (!$(this).hasClass("row_selected")){
+                    $('#'+tableID+' tbody tr').removeClass('row_selected');
+                    $(this).addClass('row_selected');
+                    //** select related tips in geneTree with the same annotation
+                    if (is_annotation){
+                        table_select_tip_annotation(cell_text,myGeneTree);
+                    }
+                }else{
+                    $('#'+tableID+' tbody tr').removeClass('row_selected');
+                    if (is_annotation){
+                        undoHideNonSelected(myGeneTree);
+                    }
+                }
                 e.stopPropagation();
             }
         }

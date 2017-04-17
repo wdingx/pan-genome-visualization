@@ -54,6 +54,7 @@ const handleSpeciesTree = function(newTree){
 }
 const handleGeneTree = function(newTree){
     myGeneTree = newTree;
+    //** connecting both trees when new cluster clicked
     connectTrees(mySpeciesTree, myGeneTree);
 
     myGeneTree.svg
