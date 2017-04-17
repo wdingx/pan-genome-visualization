@@ -1,6 +1,7 @@
 {
-  "name": "test-front-d3",
-  "version": "0.0.0",
+  "name": "panX-visualization",
+  "version": "1.5.0",
+  "description": "pan-genome-visualization",
   "private": true,
   "scripts": {
     "build": "npm run clean && npm run build:webpack",
@@ -43,7 +44,7 @@
     "gulp-minify-css": "^1.2.4",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.5.4",
-    "webpack": "^2.2.1",
+    "webpack": "^2.1.0-beta.22",
     "webpack-dev-middleware": "^1.10.1",
     "webpack-hot-middleware": "^2.17.1"
   }

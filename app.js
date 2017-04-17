@@ -10,6 +10,15 @@ var app = express();
 var compression = require('compression');
 app.use(compression());
 
+var webpack = require('webpack');
+var webpackConfig = require('./webpack.config.dev');
+var compiler = webpack(webpackConfig);
+//app.use('/pubic', express.static('pubic'))
+app.use(require("webpack-dev-middleware")(compiler, {
+    noInfo: true, publicPath: webpackConfig.output.publicPath
+}));
+app.use(require("webpack-hot-middleware")(compiler));
+
 app.get('*aln.fa', function (req, res, next) {
   req.url = req.url + '.gz';
   res.set('Content-Encoding', 'gzip');
