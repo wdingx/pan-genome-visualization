@@ -76,6 +76,8 @@ const onTipLeave = function(d){
 
 
 const onBranchHover = function(d){
+  d3.select('#coreTree_legend')
+    .style('visibility','hidden');
   if (d.n.children==undefined){
     onTipHover(d);
   }else{
@@ -84,6 +86,8 @@ const onBranchHover = function(d){
 };
 
 const onBranchLeave = function(d){
+  d3.select('#coreTree_legend')
+    .style('visibility','visible');
   preOrderIteration(d, function(x){if (x.terminal){onTipLeave(x);}});
 };
 
