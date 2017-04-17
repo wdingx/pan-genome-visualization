@@ -124,6 +124,26 @@ const search_accession= function (input_value) {
 };
 window.search_accession=search_accession;
 
+//** search strain via annotation
+const search_annotation= function (input_value) {
+    /*var tree_index=1;*/
+    var searchStr = input_value.toLowerCase();
+    function nodeMatch(d, treeType){
+        var annotation=d.n.annotation.toLowerCase();
+        return ((annotation.indexOf(searchStr) > -1 ) && (input_value.length != 0));
+    };
+
+    if (input_value=='') {
+        undoHideNonSelected(myGeneTree);
+    }else{
+        myGeneTree.tips.forEach(function(d){
+            d.state.selected=(nodeMatch(d,'geneTree'))?true:false;
+        })
+        hideNonSelected(myGeneTree);
+    }
+};
+window.search_annotation=search_annotation;
+
 const trigger_triplet_button = function(){
 
     // speciesTree triplet-button-group for 3 types of layouts

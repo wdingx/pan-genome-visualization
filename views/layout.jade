@@ -139,10 +139,16 @@ html
                 span.glyphicon.glyphicon-refresh
               input#geneTreeOrientation(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='right-left', data-off='left-right', data-size='mini', data-onstyle='primary', data-offstyle='info')
             //#dropdown_list2.col-md-4
-            .col-md-4
-              #searchStrain-group.input-group
-                span#sizing-addon1.input-group-addon.primary.sm-customized Search strain
-                input.form-control.sm-customized(type='text', placeholder='NCBI accession number', aria-describedby='sizing-addon1',oninput='search_accession(this.value)')
+            .col-md-2
+              #searchAccession-group.input-group
+                span.input-group-addon.primary.sm-customized
+                  span.glyphicon.glyphicon-search
+                input.form-control.sm-customized(type='text', placeholder='accession', aria-describedby='sizing-addon1',oninput='search_accession(this.value)')
+            .col-md-2
+              #searchAnnotation-group.input-group
+                span.input-group-addon.primary.sm-customized
+                  span.glyphicon.glyphicon-search
+                input.form-control.sm-customized(type='text', placeholder='annotation', aria-describedby='sizing-addon1',oninput='search_annotation(this.value)')
             #download_geneTree.col-md-1.btn_tooltip
           .row
             .col-md-10
