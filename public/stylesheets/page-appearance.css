@@ -9,6 +9,10 @@
       } /* 1160px 970px;  */
 }
 
+.container.home{
+  width:60%;}
+.modal-lg {width:85%;}
+
 body {
   background-color: rgba(255, 140, 0, 0.03); !important /* rgba(255, 140, 10); */
   font-family: "proxima-nova", Arial,sans-serif;

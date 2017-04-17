@@ -3,40 +3,102 @@ html
   head
     meta(charset='UTF-8')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    //- link(rel="stylesheet", type="text/css", href="dist/all-edge.css")
     link(rel='stylesheet', type='text/css', href='stylesheets/bootstrap.min.css', media='screen')
     link(rel='stylesheet', type='text/css', href='stylesheets/autohiding-navbar2.css', media='screen')
-    link(rel='stylesheet', type='text/css', href='stylesheets/footer-distributed-with-address-and-phones.css')
+    link(rel='stylesheet', type='text/css', href='stylesheets/footer.css')
     link(type='text/css', rel='stylesheet', href='stylesheets/page-appearance.css')
-
     link(rel='stylesheet', type='text/css', href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css')
-    title Micro-PanGenome-Analysis-Mapping
+    title panX
 
   body
     include navbar
-    .container
+    .container.home
       .row
         br
         br
         br
-        .col-sm-1
-        .col-sm-10
+        .col-md-1
+      .row
+        .col-md-6
           br
-          #components_interaction
-            .alert.alert-success(role='alert')
-              | Interactive pan-genomic data visualization
-            .item
-              img(data-gifffer='./images/overall2.gif', style='width:1180px;height:696px;')
-            br           
-        
+          p panX is a software package for comprehensive pan-genome analysis and web-based interactive visualization and dynamic exploration.
+          p It encompasses various interconnected viewers, allows rapid search via gene name, diversity, duplications, annotation, integrates strain-associated meta-data, gene presence/absence pattern, gene gain/loss event on phylogeny.
+          p panX helps users to gain insights into bacterial genomic diversity and the dynamics of the accessory genes linked with habitat adaptation, antibiotic resistance, virulence, as well as epidemiological markers.
+        .col-md-6
+          img(src='./images/Pm.jpg', style='width:100%;')
+          //-#components_interaction
+            //- .alert.alert-success(role='alert') Interactive pan-genomic data visualization
+            //- .item
+            //-   img(data-gifffer='./images/overall2.gif', style='width:1180px;height:696px;')
+            //- br
+      .row
+        .col-md-4
+          .thumbnail.shadow_homepagex
+            img(src='./images/Pm-compare.jpg', alt='...', style='width:100%;')
+            .caption
+              h4 P. marinus presence/absence, gain/loss pattern
+              p details...
+              p
+                a.btn.btn-info(href='#', role='button', data-toggle='modal', data-target='#myModal') Demo
+                a.btn.btn-default(href='./P_marinus', role='button') Explore
+        .col-md-4
+          .thumbnail.shadow_homepagex
+            img(src='./images/Pm-compare.jpg', alt='...', style='width:100%;')
+            .caption
+              h4 S.pneumoniae metadata associated with the phylogeny
+              p details...
+              p
+                a.btn.btn-info(href='#', role='button', data-toggle='modal', data-target='#myModal') Demo
+                a.btn.btn-default(href='#', role='button') Explore
+        .col-md-4
+          .thumbnail.shadow_homepagex
+            img(src='./images/comparative-dashborad.jpg', alt='...', style='width:100%;')
+            .caption
+              h4 Comparative dashborad
+              p details...
+              p
+                a.btn.btn-info(href='#', role='button', data-toggle='modal', data-target='#myModal') Demo
+                a.btn.btn-default(href='#', role='button') Explore
+      .row
+        .col-md-6
+          .thumbnail.shadow_homepagex
+            img(src='./images/comparative-dashborad.jpg', alt='...', style='width:100%;')
+            .caption
+              h4 Tutorial 1
+              p details...
+              p
+                a.btn.btn-info(href='#', role='button', data-toggle='modal', data-target='#myModal') Demo
+                a.btn.btn-default(href='#', role='button') Explore
+        .col-md-6
+          .thumbnail.shadow_homepagex
+            img(src='./images/comparative-dashborad.jpg', alt='...', style='width:100%;')
+            .caption
+              h4 Tutorial 2
+              p details...
+              p
+                a.btn.btn-info(href='#', role='button', data-toggle='modal', data-target='#myModal') Demo
+                a.btn.btn-default(href='#', role='button') Explore
+
+      #myModal.modal.fade(role='dialog')
+        .modal-dialog.modal-lg
+          .modal-content
+            .modal-header
+              button.close(type='button', data-dismiss='modal') ×
+              h4.modal-title Gene presence/absence, gain/loss pattern
+            .modal-body
+              img(src='./images/interact.gif', style='width:100%;')
+            .modal-footer
+              button.btn.btn-info(type='button', data-dismiss='modal') Close
     include footer
 
-    script(src='javascripts/gifffer.min.js') 
+    script(src='javascripts/third_party/gifffer.min.js')
     script.
       window.onload = function() {
       Gifffer();
       }
 
-    script(src='javascripts/jquery.min.js')
-    script(src='javascripts/bootstrap.min.js')
-    script(src='javascripts/jquery.bootstrap-autohidingnavbar.min.js')
-    script(src='javascripts/call-autohidingnavbar.js')
+    script(src='javascripts/third_party/jquery.min.js')
+    script(src='javascripts/third_party/bootstrap.min.js')
+    script(src='javascripts/third_party/jquery.bootstrap-autohidingnavbar.min.js')
+    script(src='javascripts/third_party/call-autohidingnavbar.js')
