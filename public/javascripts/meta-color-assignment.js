@@ -60,14 +60,15 @@ const assign_continuous_color = function(metaColor_dicts,metaColor_dicts_keys,me
 
     //** link original value to each legend value
     meta_detail.forEach(function(meta_item){
-        tmp_bound_list.forEach(function(bound_item){
+        for (const bound_item of tmp_bound_list) {
             if (meta_item==bound_item[0]){
-                tmp_meta_color_reference_dicts[meta_item]=bound_item[1]
+                tmp_meta_color_reference_dicts[meta_item]=bound_item[1];
+                break;
+            }else if (meta_item>bound_item[0] && meta_item<=bound_item[1]){
+                tmp_meta_color_reference_dicts[meta_item]=bound_item[1];
+                break;
             }
-            if (meta_item>bound_item[0] && meta_item<=bound_item[1]){
-                tmp_meta_color_reference_dicts[meta_item]=bound_item[1]
-            }
-        })
+        }
     });
 
     metaColor_dicts[metaType_key] = tmp_meta_color_dict;
@@ -83,14 +84,12 @@ const assign_mixed_continuous_color = function(metaColor_dicts,metaColor_dicts_k
     for (var i=0,len=raw_meta_detail.length; i < len; i++) {
         meta_detail.push(raw_meta_detail[i][1]);
     }
-    //console.log(0,raw_meta_detail,meta_detail)
     const index = meta_detail.indexOf('unknown');
     if (index > -1) { //** assign color to unknown item
         meta_detail.splice(index, 1);
         raw_meta_detail.splice(index, 1);
         tmp_meta_color_dict['unknown']=panXTree.node_metaunknown_stroke;
     }
-
     const min_val= parseFloat(d3.min(meta_detail)),
           max_val= parseFloat(d3.max(meta_detail)),
           distance = max_val - min_val,
@@ -115,8 +114,7 @@ const assign_mixed_continuous_color = function(metaColor_dicts,metaColor_dicts_k
 
     //** link original value to each legend value
     meta_detail.forEach(function(meta_item,ind){
-        for (var i=0,len=tmp_bound_list.length; i < len; i++) {
-            const bound_item= tmp_bound_list[i];
+        for (const bound_item of tmp_bound_list) {
             //** convert log-transformed number back
             const meta_item_raw= parseFloat(Math.pow(2,meta_item).toFixed(3));
             if (meta_item_raw==bound_item[0]){

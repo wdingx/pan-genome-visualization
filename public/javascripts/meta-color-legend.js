@@ -51,12 +51,12 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
             }
             if (meta_display['color_options'][metaType]['type']=='discrete'){
                 const fill=metaColor_dicts[metaType][node.n.attr[metaType]];
-                node.tipAttributes.fill =fill;
+                node.tipAttributes.fill = fill || metaUnknown;
                 node.branchAttributes["stroke"] = fill || metaUnknown;
             }else{//** continuous
-                const lengend_value= metaColor_reference_dicts[metaType][node.n.attr[metaType]];
-                const fill=metaColor_dicts[metaType][lengend_value];
-                node.tipAttributes.fill = fill;
+                const lengend_value= metaColor_reference_dicts[metaType][node.n.attr[metaType]],
+                      fill= metaColor_dicts[metaType][lengend_value];
+                node.tipAttributes.fill = fill|| metaUnknown;
                 node.branchAttributes["stroke"] = fill || metaUnknown;
             }
             node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
@@ -66,10 +66,12 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
             const node = geneTree.tips[i];
             const strain = speciesTree.namesToTips[node.n.accession];
             if(meta_display['color_options'][metaType]['type']=='discrete'){
-                node.tipAttributes.fill = d3.rgb(metaColor_dicts[metaType][strain.n.attr[metaType]]).toString()
+                const fill= metaColor_dicts[metaType][strain.n.attr[metaType]];
+                node.tipAttributes.fill = fill || metaUnknown;
             }else{//** continuous
                 const lengend_value= metaColor_reference_dicts[metaType][strain.n.attr[metaType]];
-                node.tipAttributes.fill = d3.rgb(metaColor_dicts[metaType][lengend_value]).toString()
+                      fill =metaColor_dicts[metaType][lengend_value];
+                node.tipAttributes.fill = fill || metaUnknown;
             }
             node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
         }
