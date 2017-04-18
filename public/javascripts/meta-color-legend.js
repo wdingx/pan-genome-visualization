@@ -51,11 +51,17 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
             }
             if (meta_display['color_options'][metaType]['type']=='discrete'){
                 const fill=metaColor_dicts[metaType][node.n.attr[metaType]];
+                //node.tipAttributes.is_metaUnknown= fill ? false :true;
+                //node.tipAttributes.r*= fill? 1: 0.5;
+                node.tipAttributes.opacity= fill ? 1 :0.5;
                 node.tipAttributes.fill = fill || metaUnknown;
                 node.branchAttributes["stroke"] = fill || metaUnknown;
             }else{//** continuous
                 const lengend_value= metaColor_reference_dicts[metaType][node.n.attr[metaType]],
                       fill= metaColor_dicts[metaType][lengend_value];
+                //node.tipAttributes.is_metaUnknown= fill ? false :true;
+                //node.tipAttributes.r*= fill ? 1 :0.8;
+                node.tipAttributes.opacity= fill ? 1 :0.5;
                 node.tipAttributes.fill = fill|| metaUnknown;
                 node.branchAttributes["stroke"] = fill || metaUnknown;
             }
@@ -95,9 +101,8 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
 
         }
 
-
         updateTips(geneTree, [], ["fill", "stroke"], 0);
-        updateTips(speciesTree, [], ["fill", "stroke"], 0);
+        updateTips(speciesTree, ['opacity'], ["fill", "stroke"], 0);
         updateBranches(speciesTree, [], ["stroke"], 0);
 
         var legend= d3.select('#'+coreTree_legend_id)
