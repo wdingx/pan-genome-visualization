@@ -99,7 +99,9 @@ const assign_mixed_continuous_color = function(metaColor_dicts,metaColor_dicts_k
 
     //** create a list of legend values and corresponding colors
     const tmp_num_list = d3.range(num_interval+1).map(function(i){
-        const legend_value= parseFloat(min_val+interval*i).toFixed(2);
+        const partition_value= min_val+interval*i;
+        //** convert log-transformed number back for legend display
+        const legend_value= parseFloat(Math.pow(2,partition_value).toFixed(3));
         tmp_meta_color_dict[legend_value]=metaLegend.continuous_colorSet[i];
         return legend_value;
     });
@@ -114,11 +116,13 @@ const assign_mixed_continuous_color = function(metaColor_dicts,metaColor_dicts_k
     //** link original value to each legend value
     meta_detail.forEach(function(meta_item,ind){
         for (var i=0,len=tmp_bound_list.length; i < len; i++) {
-            const bound_item=tmp_bound_list[i];
-            if (meta_item==bound_item[0]){
+            const bound_item= tmp_bound_list[i];
+            //** convert log-transformed number back
+            const meta_item_raw= parseFloat(Math.pow(2,meta_item).toFixed(3));
+            if (meta_item_raw==bound_item[0]){
                 tmp_meta_color_reference_dicts[raw_meta_detail[ind][0]]=bound_item[1];
                 break;
-            }else if (meta_item>bound_item[0] && meta_item<=bound_item[1]){
+            }else if (meta_item_raw>bound_item[0] && meta_item_raw<=bound_item[1]){
                 tmp_meta_color_reference_dicts[raw_meta_detail[ind][0]]=bound_item[1];
                 break;
             }
