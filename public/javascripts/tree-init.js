@@ -10,56 +10,6 @@ import {aln_file_path} from "./data_path";
 
 const tipUnselected=panXTree.tipUnselected;
 
-export const pgModule = function(){
-    var hasOwnProperty= function(obj, prop){
-        return (obj[prop] !== undefined);
-    }
-    /*function hasOwnProperty(obj, prop) {
-        var proto = obj.__proto__ || obj.constructor.prototype;
-        return (prop in obj) &&
-            (!(prop in proto) || proto[prop] !== obj[prop]);
-    }*/
-
-    var isEmptyObj= function(obj) {
-        for (var key in obj) {
-            if (obj.hasOwnProperty(key)) { return false; }
-        }
-        return true;
-    };
-
-    var store_tree_style= function(tool_side, style_type, target_type, current_style) {
-        if (tool_side==1) {//panXTree.genePattern_tool2['node_color_mem'][d.name]=node_color
-            panXTree.treeStyle_tool2[style_type][target_type]=current_style
-        } else {
-            panXTree.treeStyle_tool1[style_type][target_type]=current_style
-        }
-    }
-
-    var restore_tree_style= function(tool_side, style_type, target_type) {
-        return (tool_side==1) ? panXTree.treeStyle_tool2[style_type][target_type] : panXTree.treeStyle_tool1[style_type][target_type];
-    }
-
-    var store_genePattern_style= function(tool_side, style_type, target_type, current_style) {
-        if (tool_side==1) {
-            panXTree.genePattern_tool2[style_type][target_type]=current_style
-        } else {
-            panXTree.genePattern_tool1[style_type][target_type]=current_style
-        }
-    }
-
-    var restore_genePattern_style= function(tool_side, style_type, target_type) {
-        return (tool_side==1) ? panXTree.genePattern_tool2[style_type][target_type] : panXTree.genePattern_tool1[style_type][target_type];
-    }
-
-   return{  hasOwnProperty:hasOwnProperty,
-            isEmptyObj:isEmptyObj,
-            store_tree_style:store_tree_style,
-            restore_tree_style:restore_tree_style,
-            store_genePattern_style:store_genePattern_style,
-            restore_genePattern_style:restore_genePattern_style,
-        }
-}();
-
 export const hideNonSelected =function(tree){
     tree.tipElements
         .attr('r',function(d){if (d.state.selected){return d.tipAttributes.r*1.5;}
