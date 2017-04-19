@@ -1,4 +1,4 @@
-import {render_chart_table} from "./chartsAndClusterTable";
+import {render_chart_table,create_dropdown_menu} from "./chartsAndClusterTable";
 import * as datapath from "./data_path";
 import speciesTree from "./speciesTree";
 import  {metaDataTable} from "./datatable-meta";
@@ -144,6 +144,9 @@ const search_annotation= function (input_value) {
     }
 };
 window.search_annotation=search_annotation;
+
+//** create dropdown menu for species selection
+create_dropdown_menu('#species-selector', species_dt);
 
 const trigger_triplet_button = function(){
 
