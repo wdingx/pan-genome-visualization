@@ -4,7 +4,6 @@ window.dc = dc;
 import noUiSlider from "nouislider";
 import crossfilter from "crossfilter";
 import {panXTree, panXDashboard} from "./global";
-import species_dt from "./species-list-info";
 import {pie, chart_width} from "./chart_style";
 import * as dtab  from "./datatable-gc";
 import {geneEvent_path_A, geneEvent_path_B, aln_file_path} from "./data_path";
@@ -279,6 +278,9 @@ export const render_chart_table = {
         //## load the data, charts and MSA
         var datatable;
         d3.json(path_datatable1, function(error, data) {
+            if(error){
+                alert('Special characters are found in your geneCluster.json. Please harmonize it and try again. Error detail: '+error);
+            }
             var first_cluster = data[0];
             datatable = render_chart_table.initChart(data, table_id, col_select_id,
                 count_id, chart1_id, chart2_id, chart3_id,
