@@ -20,11 +20,12 @@ html
         br
         .col-md-1
       .row
-        .col-md-6
+        .col-md-6.panX_text
           br
           p panX is a software package for comprehensive pan-genome analysis and web-based interactive visualization and dynamic exploration.
           p It encompasses various interconnected viewers, allows rapid search via gene name, diversity, duplications, annotation, integrates strain-associated meta-data, gene presence/absence pattern, gene gain/loss event on phylogeny.
           p panX helps users to gain insights into bacterial genomic diversity and the dynamics of the accessory genes linked with habitat adaptation, antibiotic resistance, virulence, as well as epidemiological markers.
+        br
         .col-md-6
           img(src='./images/Pm.jpg', style='width:100%;')
           //-#components_interaction
@@ -32,7 +33,7 @@ html
             //- .item
             //-   img(data-gifffer='./images/overall2.gif', style='width:1180px;height:696px;')
             //- br
-      .row
+      .row.panX_text
         .col-md-4
           .thumbnail.shadow_homepagex
             img(src='./images/Pm-compare.jpg', alt='...', style='width:100%;')
@@ -60,7 +61,7 @@ html
               p
                 a.btn.btn-info(href='#', role='button', data-toggle='modal', data-target='#myModal') Demo
                 a.btn.btn-default(href='#', role='button') Explore
-      .row
+      .row.panX_text
         .col-md-6
           .thumbnail.shadow_homepagex
             img(src='./images/comparative-dashborad.jpg', alt='...', style='width:100%;')
@@ -87,7 +88,7 @@ html
               button.close(type='button', data-dismiss='modal') ×
               h4.modal-title Gene presence/absence, gain/loss pattern
             .modal-body
-              img(src='./images/interact.gif', style='width:100%;')
+              img(src='./images/Demo-Sp616.gif', style='width:100%;')
             .modal-footer
               button.btn.btn-info(type='button', data-dismiss='modal') Close
     include footer
