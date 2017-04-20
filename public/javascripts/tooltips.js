@@ -74,20 +74,19 @@ export const tooltip_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
     if (typeof d.n.annotation != "undefined") {
         string += " <tr> <th class='tooltip_table_th'>annotation</th> <td class='tooltip_table_td'> " + d.n.annotation+" </td> </tr> ";
     }
-    if (typeof d.muts != "undefined") {
-        var muts_str=d.muts
-        if (muts_str.length>50) { muts_str=muts_str.substr(0,50)+'...'}
-        string += "<br/>" + "nucleotide mutations:  " + muts_str
+    if (typeof d.n.muts != "undefined") {
+        const na_muts= d.n.muts, na_muts_len= na_muts.length;
+        if (na_muts_len!==0) {
+            const na_muts_str= (na_muts_len>25) ?na_muts.substr(0,25)+'...' :na_muts;
+            string += " <tr> <th class='tooltip_table_th'>nucleotide mutations:</th> <td class='tooltip_table_td'> " + na_muts_str+" </td> </tr> ";
+        }
     }
-    if (typeof d.aa_muts != "undefined") {
-        var aa_muts_str=d.aa_muts
-        if (aa_muts_str.length>50) { aa_muts_str=aa_muts_str.substr(0,50)+'...'}
-        string += "<br/>" + "amino acid mutations:  " + aa_muts_str;
-    }
-    if (typeof d.aa_muts != "undefined") {
-        var aa_muts_str=d.aa_muts
-        if (aa_muts_str.length>50) { aa_muts_str=aa_muts_str.substr(0,50)+'...'}
-        string += "<br/>" + "amino acid mutations:  " + aa_muts_str;
+    if (typeof d.n.aa_muts != "undefined") {
+        const aa_muts= d.n.muts, aa_muts_len= aa_muts.length;
+        if (aa_muts_len!==0) {
+            const aa_muts_str= (aa_muts_len>25) ?aa_muts.substr(0,25)+'...' :aa_muts;
+            string += " <tr> <th class='tooltip_table_th'>amino acid mutations:</th> <td class='tooltip_table_td'> " + aa_muts_str+" </td> </tr> ";
+        }
     }
     string += "<div class=\"smallspacer\"></div>";
 
