@@ -4,31 +4,27 @@ In addition to vertical inheritance, bacteria frequently lose genes or take gene
 This mix of inheritance patterns makes phylogenetic analysis of bacteria challenging.
 
 Although several stand-alone software are available for pan-genome analysis, visualization, analysis and exploration of pan-genomes remains challenging.
-
 Pan-genome Analysis and Exploration (panX) is meant to facilitate pan-genome research with an easy-to-use and interactive platform to explore and analyze pan-genomic data.
 
 panX displays the pan-genome using connected visual components including a gene table viewer, multiple alignment viewer, and phylogenetic tree viewers. The pan-genome data structures are prepared by our [pan-genome-analysis](https://github.com/neherlab/pan-genome-analysis) pipeline, that efficiently identifies orthologous clusters from large sets of genome sequences and pre-computes alignments, trees, and a number of informative statistics.
 
 panX is available online at [pangenome.de](http://pangenome.de)
 
-This repository refers to pan-genome visualization.
-
-## Install npm packages:
+### Install npm packages:
 ```
 npm install
 ```
-## Start the server:
+### Start the server:
 ```
 npm start
 ```
-## Have fun!
+### Have fun!
 ```
 http://localhost:8000/
 ```
 The example page shows the beauty and power of the panX visualization and exploration, even though [only a few gene clusters](https://github.com/neherlab/pan-genome-visualization/tree/master/public/dataset/Sa/geneCluster) are included in the repository.
 
-
-## Demo
+### Demo
 based on post-vaccine epidemiology of 616 S. pneumoniae strains ([Croucher et al. 2015](https://www.nature.com/articles/sdata201558))
 
 ![panX](/public/images/Demo-Sp616.gif)
