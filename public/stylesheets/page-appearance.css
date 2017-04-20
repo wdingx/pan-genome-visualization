@@ -465,7 +465,7 @@ input[type=range]:focus::-ms-fill-upper {
 /*td {overflow:hidden; white-space:nowrap}*/
 
 /** css for pipeline.jade **/
-p.pipeline_text{
+.panX_text{
   font-size: 16px;
 }
 
