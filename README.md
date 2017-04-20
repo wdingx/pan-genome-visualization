@@ -17,13 +17,9 @@ This repository refers to pan-genome visualization.
 ```
 npm install
 ```
-## Prepare JS and CSS files:
-```
-gulp
-```
 ## Start the server:
 ```
-node ./bin/www
+npm start
 ```
 ## Have fun!
 ```
