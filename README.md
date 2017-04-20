@@ -1,23 +1,17 @@
 # Pan-genome analysis and visualization
 
-In addition to vertical inheritance, bacteria frequently gain and lose genes from the environment. Even closely related bacterial genomes can differ in the presence of hundreds of genes and different genes don't necessarily share a common phylogeny since individual genes can been acquired from distant strains and species.
+Even closely related bacterial genomes can differ in the presence of hundreds of genes and different genes don't necessarily share a common phylogeny since individual genes can be horizontally acquired from distant strains and species.
 This mix of inheritance patterns makes phylogenetic analysis of bacteria challenging.
 
 Although several stand-alone software are available for pan-genome analysis, visualization, analysis and exploration of pan-genomes remains challenging.
-Pan-genome Analysis and Exploration (panX) is meant to facilitate pan-genome research with an easy-to-use and interactive platform to explore and analyze pan-genomic data.
+**panX** (Pan-genome Analysis and Exploration) is meant to facilitate pan-genome research with an easy-to-use and interactive platform to analyze and explore pan-genomic data.
 
 panX displays the pan-genome using interconnected visual components including a gene table viewer, multiple alignment viewer, phylogenetic tree viewers and strain metadata viewer. The pan-genome data structures are prepared by our [pan-genome-analysis](https://github.com/neherlab/pan-genome-analysis) analysis pipeline, which efficiently identifies orthologous clusters from large sets of genome sequences and pre-computes alignments, trees, and a number of informative statistics.
 **panX is available online at [pangenome.de](http://pangenome.de)**
-### Install npm packages:
+### Install npm packages and start the server:
 ```
 npm install
-```
-### Start the server:
-```
 npm start
-```
-### Have fun!
-```
 http://localhost:8000/
 ```
 The example page shows the beauty and power of the panX visualization and exploration, even though [only a few gene clusters](https://github.com/neherlab/pan-genome-visualization/tree/master/public/dataset/Sa/geneCluster) are included in the repository.
