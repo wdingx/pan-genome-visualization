@@ -48,12 +48,13 @@ export const create_dataTable = function (div, columns_set) {
 
 
 //# create GC table
-export const geneCluster_table_columns=['msa','msa','#strain','','duplicated','diversity','events','geneLen','','geneName','','annotation','Id','allAnn','allGName','locus']
+export const geneCluster_table_columns=['MSA','MSA','#Strain','','Duplicated','Diversity','Events','Length','','Name','','Annotation','Id','allAnn','allGName','locus']
 
-export const clusterTable_tooltip_dict= {'msa':'multiple sequence alignment','msa':'multiple sequence alignment',
-    '#strain':'strain count','duplicated':'whether duplicated and duplication count in each strain',
-    'diversity':'gene diversity', 'events':'gene gain/loss events count',
-    'geneLen':'average gene length', 'geneName':'gene name','annotation':'gene annotation'}
+export const clusterTable_tooltip_dict= {
+    'MSA':'multiple sequence alignment','MSA':'multiple sequence alignment',
+    '#Strain':'strain count','Duplicated':'whether duplicated and duplication count in each strain',
+    'Diversity':'gene diversity', 'Events':'gene gain/loss events count',
+    'Length':'average gene length', 'Name':'gene name','Annotation':'gene annotation'}
 
 //## pay attention to GC table column order
 export const GC_table_dropdown_columns=['amino_acid aln','nucleotide aln','#strain','duplicated','diversity', 'gene gain/loss events','gene length','geneName','annotation'];
