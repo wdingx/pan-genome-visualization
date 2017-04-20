@@ -27,6 +27,7 @@ http://localhost:8000/
 ```
 It shows the beauty and power of the panX visualization and exploration, even though  [only one gene cluster](https://github.com/neherlab/pan-genome-visualization/tree/master/public/dataset/Sa/geneCluster) is included in the repository.
 
+## Demo based on post-vaccine epidemiology of 616 S. pneumoniae strains ([Croucher et al. 2015](https://www.nature.com/articles/sdata201558))
 ![panX](/public/images/Demo-Sp616.gif)
 
 Moreover, for your own pan-genome:
