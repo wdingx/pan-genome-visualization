@@ -43,6 +43,7 @@ html
         #dc_data_count.col-md-2
           .alert.alert-info(role='alert') Species
           #species-selector
+          br
           .dc_data_count
         .col-md-2
           .alert.alert-info(role='alert') Core vs. Accessory
@@ -137,6 +138,10 @@ html
                 span.glyphicon.glyphicon-resize-small
               button#geneTreeZoomReset.btn.btn-xs.btn-primary.btn_tooltip
                 span.glyphicon.glyphicon-refresh
+              button#geneTree_nodePlus.btn.btn-xs.btn-primary.btn_tooltip
+                span.glyphicon.glyphicon-plus
+              button#geneTree_nodeMinus.btn.btn-xs.btn-primary.btn_tooltip
+                span.glyphicon.glyphicon-minus
               input#geneTreeOrientation(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='right-left', data-off='left-right', data-size='mini', data-onstyle='primary', data-offstyle='info')
             //#dropdown_list2.col-md-4
             .col-md-2
