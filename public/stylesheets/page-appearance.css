@@ -138,6 +138,7 @@ table.dataTable thead>tr>td.sorting {
 
 .form-control.sm-customized.tree_search {
   border-radius: 0px 20px 20px 0px;
+  z-index: 0;
 }
 
 /*#meta-info dropdown_list;*/
