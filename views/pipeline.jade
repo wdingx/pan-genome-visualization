@@ -10,24 +10,21 @@ html
     link(rel='stylesheet', type='text/css', href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css')
     title panX
     style.
-      body {
-      position: relative;
-      }
+      //- body {
+      //- position: relative;
+      //- }
       ul.nav-pills {
       top: 60px;
       position: fixed;
       }
-      div.col-sm-7 div {
-      /* height: 500px; */
+      div.col-sm-6 div {
       font-size: 16px;
-      }
-      #section1,#DIAMOND,#orthAgogue,#MCL,#pan-genome_mapping,#etc {
-      color: #337AB7; background-color: #fff;}
+      }/*
       @media screen and (max-width: 810px) {
-      #section1, #DIAMOND, #orthAgogue, #MCL,#pan-genome_mapping,#etc {
-      margin-left: 20px;
+      #section1, #DIAMOND,#MCL,#etc {
+        margin-left: 20px;
       }
-      }
+      }*/
   body
     include navbar_pipeline
     .container
@@ -37,46 +34,86 @@ html
         nav#myScrollspy.col-sm-2
           ul.nav.nav-pills.nav-stacked
             li.active
-              a(href='#section1')  pipeline overview
+              a(href='#JS') JavaScript libraries
+            li
+              a(href='#overview')  pipeline overview
             li
               a(href='#DIAMOND') DIAMOND
             li
               a(href='#MCL') MCL
-        .col-sm-7
+        .col-sm-6
           br
-          .alert.alert-success(role='alert') Pipeline overview
-          #section1
-            h4  Data source: RefSeq records from NCBI
-            h4 Tools: DIAMOND + MCL
+          .alert.alert-info(role='alert') JavaScript libraries
+          #JS
+            p
+              b Interactive charts:
+              a(href='https://dc-js.github.io/dc.js/')
+                u dc.js
+              |  (interactive charting JS library based on
+              a(href="http://square.github.io/crossfilter/")
+                u crossfilter
+              |  and
+              a(href="https://d3js.org/")
+                u d3
+              | )
+              i.fa.fa-heart(aria-hidden='true',style='color:red;')
+              a(href="https://github.com/gordonwoodhull")
+                u Gordon Woodhull's
+              |  support and advice highly appreciated!
+            p
+              b Data tables:
+              a(href="https://datatables.net/")
+                u DataTables
+              |  plug-in for the enhancement of data accessibility
+            p
+              b Alignment:
+              a(href="http://msa.biojs.net/")
+                u MSA
+              |  (multiple sequence alignment JS library)
+            p
+              b Phylogenetic tree:
+              a(href="https://github.com/nextstrain/phyloTree")
+                u PhyloTree
+              |  (highly flexible tree visualization JS library) built by
+              a(href="http://neherlab.org/")
+               u Richard Neher
             br
-            .item
+          .alert.alert-info(role='alert') Analysis pipeline overview
+          #overview
+            p Data source: RefSeq records from NCBI
+            p
+              b DIAMOND + MCL + phylogeny-based post-processing
+            //-br
+            //-.item
               figure
                 img(src='./images/pipe-MPAV.png', alt='...', style='width:655px;height:665px;')
                 br
                 figcaption Fig.1 A overview of pan-genome analysis and mapping pipeline.
+          br
           #DIAMOND
-            .alert.alert-success(role='alert') DIAMOND
+            .alert.alert-info(role='alert') DIAMOND
             p
               | The all-against-all comparison of protein sequences from all strains is performed by the fast and sensitive protein alignment tool
               a(href='https://github.com/bbuchfink/diamond')
                 u DIAMOND
-              |  (Buchfink et al. 2015), which applies a double indexing method to compute the list of seed and location information in both queries and references.
+              a(href='http://www.nature.com/nmeth/journal/v12/n1/full/nmeth.3176.html')
+                u (Buchfink et al. 2015 Nature Methods)
+              | , which applies a double indexing method to compute the list of seed and location information in both queries and references.
             .item
               figure
-                img(src='./images/diamond.png', alt='...', style='width:875px;height:470px;')
+                img(src='./images/diamond.png', alt='...', style='width:100%')
                 figcaption
                   | Fig.2 DIAMOND, a double indexing approach using the list of seed and their location in both queries and references.
                 a(href='http://ab.inf.uni-tuebingen.de/teaching/ws14/bioinf/13-BeyondBlast.pdf')
                   u Image credit: Lecture notes by Daniel Huson, Tübingen University
           br
-          br
           #MCL
-            .alert.alert-success(role='alert') MCL
+            .alert.alert-info(role='alert') MCL
             p
               | After clustering by MCL, we post-process the clusters by splitting clusters that contain a large number of paralogs.
             .item
               figure
-                img(src='./images/mcl-svg.jpg', alt='...', style='width:547px;height:496px;')
+                img(src='./images/mcl-svg.jpg', style='width:547px;height:496px;')
                 figcaption Fig.4 Graph clustering using Markov chain and flow simulation (MCL).
               a(href='http://micans.org/mcl/index.html?sec_thesisetc')
                 u
