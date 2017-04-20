@@ -116,6 +116,10 @@ table.dataTable thead > tr > th {
   background-color: #428BCA;
   border-color: #428BCA; }
 
+.form-control.sm-customized.tree_search {
+  border-radius: 0px 20px 20px 0px;
+}
+
 /*#meta-info dropdown_list;*/
 .sm-customized, .form-control.sm-customized {
   height: 24px;
