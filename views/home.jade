@@ -20,13 +20,13 @@ html
         br
         .col-md-1
       .row
-        .col-md-6.panX_text
+        .col-md-8.panX_text
           br
           p panX is a software package for comprehensive pan-genome analysis and web-based interactive visualization and dynamic exploration.
           p It encompasses various interconnected viewers, allows rapid search via gene name, diversity, duplications, annotation, integrates strain-associated meta-data, gene presence/absence pattern, gene gain/loss event on phylogeny.
           p panX helps users to gain insights into bacterial genomic diversity and the dynamics of the accessory genes linked with habitat adaptation, antibiotic resistance, virulence, as well as epidemiological markers.
         br
-        .col-md-6
+        //.col-md-6
           img(src='./images/Pm.jpg', style='width:100%;')
           //-#components_interaction
             //- .alert.alert-success(role='alert') Interactive pan-genomic data visualization
@@ -34,7 +34,17 @@ html
             //-   img(data-gifffer='./images/overall2.gif', style='width:1180px;height:696px;')
             //- br
       .row.panX_text
-        .col-md-4
+        .col-md-8
+          .thumbnail.shadow_homepagex
+            img(src='./images/Demo-Sp616.gif', alt='...', style='width:100%;')
+            .caption
+              h4 Epidemiology of 616 Streptococcus pneumoniae strains
+              p Croucher et al. 2015
+              p
+                a.btn.btn-info(href='#', role='button', data-toggle='modal', data-target='#myModal') Demo
+                a.btn.btn-default(href='./S_pneumoniae616', role='button') Explore
+
+        //.col-md-4
           .thumbnail.shadow_homepagex
             img(src='./images/Pm-compare.jpg', alt='...', style='width:100%;')
             .caption
@@ -43,16 +53,7 @@ html
               p
                 a.btn.btn-info(href='#', role='button', data-toggle='modal', data-target='#myModal') Demo
                 a.btn.btn-default(href='./P_marinus', role='button') Explore
-        .col-md-4
-          .thumbnail.shadow_homepagex
-            img(src='./images/Pm-compare.jpg', alt='...', style='width:100%;')
-            .caption
-              h4 S.pneumoniae metadata associated with the phylogeny
-              p details...
-              p
-                a.btn.btn-info(href='#', role='button', data-toggle='modal', data-target='#myModal') Demo
-                a.btn.btn-default(href='#', role='button') Explore
-        .col-md-4
+        //.col-md-4
           .thumbnail.shadow_homepagex
             img(src='./images/comparative-dashborad.jpg', alt='...', style='width:100%;')
             .caption
@@ -61,7 +62,7 @@ html
               p
                 a.btn.btn-info(href='#', role='button', data-toggle='modal', data-target='#myModal') Demo
                 a.btn.btn-default(href='#', role='button') Explore
-      .row.panX_text
+      //.row.panX_text
         .col-md-6
           .thumbnail.shadow_homepagex
             img(src='./images/comparative-dashborad.jpg', alt='...', style='width:100%;')
