@@ -4,7 +4,7 @@ export const colorblind_safe_set = ['#006E82','#8214A0','#005AC8','#00A0FA','#FA
 //** More:15-color palette for common color blindness types from http://mkweb.bcgsc.ca/biovis2012/
 // d3.scale.category20();// d3.range(20).map(d3.scale.category20())
 
-export const discrete_color_set = ['#F02132','#EA761F','#F5B223','#38A920','#2195C3','#1D52D3','#9E04A9']
+export const discrete_color_set = ['#F02132','#EA761F','#F5B223','#38A920','#2195C3','#1D52D3','#4514A1']
 
 //** 11-color palette for diverging scheme (colorbind safe, RdYlBu) from http://colorbrewer2.org
 export const continuous_color_set=[
