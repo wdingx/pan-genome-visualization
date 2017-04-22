@@ -11,24 +11,6 @@ html
     link(rel='stylesheet', type='text/css', href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css')
     title panX: pan-genome analysis & exploration
 
-    style.
-      body {
-      position: relative;
-      }
-      ul.nav-pills {
-      top: 60px;
-      position: fixed;
-      }
-      div.col-sm-8 div {
-      font-size: 19px;
-      }
-      #components_interaction, #search_functions, #duplicated_genes, #diverse_genes, #unique_genes, #annotation_inspection, #mutation_inspection, #meta-info_pattern, #user-data_integration, #snp_integration, #diverse_genes1,#diverse_genes2  {
-      color: #337AB7; background-color: #fff;}
-      @media screen and (max-width: 810px) {
-      #components_interaction, #search_functions, #duplicated_genes, #diverse_genes, #unique_genes, #annotation_inspection, #mutation_inspection, #meta-info_pattern, #user-data_integration, #snp_integration, #diverse_genes1, #diverse_genes2  {
-      margin-left: 20px;
-      }
-      }
   body(data-spy='scroll', data-target='#myScrollspy', data-offset='100')
     include navbar_tutorial
     .container
@@ -36,7 +18,7 @@ html
       br
       .row
         nav#myScrollspy.col-sm-2
-          ul.nav.nav-pills.nav-stacked
+          ul.nav.nav-pills.nav-stacked.fixed-dropdown
             li.active
               a(href='#components_interaction') Interactive components
             li

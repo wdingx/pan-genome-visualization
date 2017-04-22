@@ -9,22 +9,7 @@ html
     link(type='text/css', rel='stylesheet', href='stylesheets/page-appearance.css')
     link(rel='stylesheet', type='text/css', href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css')
     title panX
-    style.
-      //- body {
-      //- position: relative;
-      //- }
-      ul.nav-pills {
-      top: 60px;
-      position: fixed;
-      }
-      div.col-sm-6 div {
-      font-size: 16px;
-      }/*
-      @media screen and (max-width: 810px) {
-      #section1, #DIAMOND,#MCL,#etc {
-        margin-left: 20px;
-      }
-      }*/
+
   body
     include navbar_pipeline
     .container
@@ -32,7 +17,7 @@ html
       br
       .row
         nav#myScrollspy.col-sm-2
-          ul.nav.nav-pills.nav-stacked
+          ul.nav.nav-pills.nav-stacked.fixed-dropdown
             li.active
               a(href='#JS') JavaScript libraries
             li
@@ -41,7 +26,7 @@ html
               a(href='#DIAMOND') DIAMOND
             li
               a(href='#MCL') MCL
-        .col-sm-6
+        .col-sm-6.panX-text
           br
           .alert.alert-info(role='alert') JavaScript libraries
           #JS
@@ -74,15 +59,15 @@ html
               b Phylogenetic tree:
               a(href="https://github.com/nextstrain/phyloTree")
                 u PhyloTree
-              |  (highly flexible tree visualization JS library) built by
+              |  (highly flexible tree visualization JS library) crafted by
               a(href="https://github.com/neherlab")
                u Richard Neher
             br
-          .alert.alert-info(role='alert') Analysis pipeline overview
+          .alert.alert-info(role='alert') Pipeline overview
           #overview
-            p Data source: RefSeq records from NCBI
+            p Input: RefSeq records from NCBI/ annotated genome sequences (via Prokka)
             p
-              b DIAMOND + MCL + phylogeny-based post-processing
+              b Clustering: DIAMOND + MCL + phylogeny-based post-processing
             br
             .item
               figure
