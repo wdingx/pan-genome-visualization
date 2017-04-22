@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('S_pneumoniae', { title: '' });
+  res.render('S_pneumoniae616', { title: '' });
   //res.sendfile(__dirname + '/public/clienthtml/index.html');
 });
 
