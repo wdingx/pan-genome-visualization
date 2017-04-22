@@ -62,21 +62,23 @@ const assign_continuous_color = function(metaColor_dicts,metaColor_dicts_keys,me
     });
 
     //** link original value to each legend value
+    var index_found_list=[];
     meta_detail.forEach(function(meta_item){
         const meta_item_numeric= parseFloat(meta_item);
         for (const bound_item of tmp_bound_list) {
-            if (meta_item_numeric==bound_item[0]){//case of 0 (0.00=='0' is true)
-                tmp_meta_color_reference_dicts[meta_item]=bound_item[1];
-                break;
-            }else if (meta_item_numeric>bound_item[0] && meta_item_numeric<=bound_item[1]){
+            //meta_item_numeric==bound_item[0]: case of 0 (0.00=='0' is true)
+            if ((meta_item_numeric==bound_item[0]) || (meta_item_numeric>bound_item[0] && meta_item_numeric<=bound_item[1])){
+                const index_found= tmp_bound_list.indexOf(bound_item);
+                index_found_list.push(index_found);
                 tmp_meta_color_reference_dicts[meta_item]=bound_item[1];
                 break;
             }
         }
     });
 
+    const tmp_num_list_filterd= tmp_num_list.filter((i,index)=>(index_found_list.indexOf(index) != -1));
     metaColor_dicts[metaType_key] = tmp_meta_color_dict;
-    metaColor_dicts_keys[metaType_key] = tmp_num_list;
+    metaColor_dicts_keys[metaType_key] = tmp_num_list_filterd;
     metaColor_reference_dicts[metaType_key] = tmp_meta_color_reference_dicts;
 }
 
@@ -119,22 +121,24 @@ const assign_mixed_continuous_color = function(metaColor_dicts,metaColor_dicts_k
         tmp_bound_list.push(result);
     });
 
+    var index_found_list=[];
     //** link original value to each legend value
     meta_detail.forEach(function(meta_item,ind){
         for (const bound_item of tmp_bound_list) {
             //** convert log-transformed number back
             const meta_item_raw= parseFloat(Math.pow(2,meta_item).toFixed(3));
-            if (meta_item_raw==bound_item[0]){
-                tmp_meta_color_reference_dicts[raw_meta_detail[ind][0]]=bound_item[1];
-                break;
-            }else if (meta_item_raw>bound_item[0] && meta_item_raw<=bound_item[1]){
+            if ((meta_item_raw==bound_item[0]) || (meta_item_raw>bound_item[0] && meta_item_raw<=bound_item[1])){
+                const index_found= tmp_bound_list.indexOf(bound_item);
+                index_found_list.push(index_found);
                 tmp_meta_color_reference_dicts[raw_meta_detail[ind][0]]=bound_item[1];
                 break;
             }
         }
     });
+
+    const tmp_num_list_filterd= tmp_num_list.filter((i,index)=>(index_found_list.indexOf(index) != -1));
     metaColor_dicts[metaType_key] = tmp_meta_color_dict;
-    metaColor_dicts_keys[metaType_key] = tmp_num_list;
+    metaColor_dicts_keys[metaType_key] = tmp_num_list_filterd;
     metaColor_reference_dicts[metaType_key] = tmp_meta_color_reference_dicts;
 }
 
