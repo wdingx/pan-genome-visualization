@@ -38,10 +38,11 @@ const assign_continuous_color = function(metaColor_dicts,metaColor_dicts_keys,me
     var testString = "<test><=";
     console.log(testString.replace(regEx,''));*/
 
-    const min_val= parseFloat(d3.min(meta_detail)),
-          max_val= parseFloat(d3.max(meta_detail)),
+    const meta_detail_numerical= meta_detail.map((i)=> parseFloat(i));
+    const min_val= parseFloat(d3.min(meta_detail_numerical)),
+          max_val= parseFloat(d3.max(meta_detail_numerical)),
           distance = max_val - min_val,
-          meta_item_count= meta_detail.length,
+          meta_item_count= meta_detail_numerical.length,
           num_interval = meta_item_count<=10 ? meta_item_count-1 :10,
           color_set_index= num_interval,
           interval= distance/num_interval;
@@ -62,11 +63,12 @@ const assign_continuous_color = function(metaColor_dicts,metaColor_dicts_keys,me
 
     //** link original value to each legend value
     meta_detail.forEach(function(meta_item){
+        const meta_item_numeric= parseFloat(meta_item);
         for (const bound_item of tmp_bound_list) {
-            if (meta_item==bound_item[0]){
+            if (meta_item_numeric==bound_item[0]){//case of 0 (0.00=='0' is true)
                 tmp_meta_color_reference_dicts[meta_item]=bound_item[1];
                 break;
-            }else if (meta_item>bound_item[0] && meta_item<=bound_item[1]){
+            }else if (meta_item_numeric>bound_item[0] && meta_item_numeric<=bound_item[1]){
                 tmp_meta_color_reference_dicts[meta_item]=bound_item[1];
                 break;
             }
@@ -92,10 +94,11 @@ const assign_mixed_continuous_color = function(metaColor_dicts,metaColor_dicts_k
         raw_meta_detail.splice(index, 1);
         tmp_meta_color_dict['unknown']=panXTree.node_metaunknown_stroke;
     }
-    const min_val= parseFloat(d3.min(meta_detail)),
-          max_val= parseFloat(d3.max(meta_detail)),
+    const meta_detail_numerical= meta_detail.map((i)=> parseFloat(i));
+    const min_val= parseFloat(d3.min(meta_detail_numerical)),
+          max_val= parseFloat(d3.max(meta_detail_numerical)),
           distance = max_val - min_val,
-          meta_item_count= meta_detail.length,
+          meta_item_count= meta_detail_numerical.length,
           num_interval = meta_item_count<=10 ? meta_item_count-1 :10,
           color_set_index= num_interval,
           interval= distance/num_interval;
