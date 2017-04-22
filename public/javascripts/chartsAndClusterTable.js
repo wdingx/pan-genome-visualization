@@ -45,22 +45,25 @@ function slider_coreThreshold_init(coreThreshold_slider_id){
 //## make dropdown_menu
 export const create_dropdown_menu = function (div, species_dt) {
     var menu = d3.select(div);
-    var seletor = menu
+
+    var selector = menu
         .append("select")
         .attr("class", "form-control")
         .attr("id", "sel1")
         .attr("onchange", "location = this.options[this.selectedIndex].value;");
 
-    seletor.append("option")
+    selector
+        .append("option")
         .attr("value", speciesAbbr)
         .text(species_dt[speciesAbbr]);
 
     for(var key in species_dt) {
         var value = species_dt[key];
-        if (key!=speciesAbbr) {
-            seletor.append("option")
-                .attr("value", key)
-                .text(value);
+        if (key.startsWith('optgroup')){
+            let optgroup= selector.append("optgroup").attr("label",value['label']);
+            for (let species of value['members']){
+                optgroup.append("option").attr("value", species).text(species_dt[species]);
+            }
         }
     }
 };
