@@ -41,13 +41,15 @@ const assign_continuous_color = function(metaColor_dicts,metaColor_dicts_keys,me
     const min_val= parseFloat(d3.min(meta_detail)),
           max_val= parseFloat(d3.max(meta_detail)),
           distance = max_val - min_val,
-          num_interval = 10,
+          meta_item_count= meta_detail.length,
+          num_interval = meta_item_count<=10 ? meta_item_count-1 :10,
+          color_set_index= num_interval,
           interval= distance/num_interval;
 
     //** create a list of legend values and corresponding colors
     const tmp_num_list = d3.range(num_interval+1).map(function(i){
         const legend_value= parseFloat(min_val+interval*i).toFixed(2);
-        tmp_meta_color_dict[legend_value]=metaLegend.continuous_colorSet[i];
+        tmp_meta_color_dict[legend_value]=metaLegend.continuous_colorSet[color_set_index][i];
         return legend_value;
     });
 
@@ -93,7 +95,9 @@ const assign_mixed_continuous_color = function(metaColor_dicts,metaColor_dicts_k
     const min_val= parseFloat(d3.min(meta_detail)),
           max_val= parseFloat(d3.max(meta_detail)),
           distance = max_val - min_val,
-          num_interval = 10,
+          meta_item_count= meta_detail.length,
+          num_interval = meta_item_count<=10 ? meta_item_count-1 :10,
+          color_set_index= num_interval,
           interval= distance/num_interval;
 
     //** create a list of legend values and corresponding colors
@@ -101,7 +105,7 @@ const assign_mixed_continuous_color = function(metaColor_dicts,metaColor_dicts_k
         const partition_value= min_val+interval*i;
         //** convert log-transformed number back for legend display
         const legend_value= parseFloat(Math.pow(2,partition_value).toFixed(3));
-        tmp_meta_color_dict[legend_value]=metaLegend.continuous_colorSet[i];
+        tmp_meta_color_dict[legend_value]=metaLegend.continuous_colorSet[color_set_index][i];
         return legend_value;
     });
 
