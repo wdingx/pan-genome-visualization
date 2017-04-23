@@ -65,7 +65,9 @@ html
             br
           .alert.alert-info(role='alert') Pipeline overview
           #overview
-            p Input: RefSeq records from NCBI/ annotated genome sequences (via Prokka)
+            p
+              b Input:
+              |  RefSeq records from NCBI/ annotated genome sequences (via Prokka)
             p
               b Clustering: DIAMOND + MCL + phylogeny-based post-processing
             br
@@ -78,7 +80,8 @@ html
           #DIAMOND
             .alert.alert-info(role='alert') DIAMOND
             p
-              | The all-against-all comparison of protein sequences from all strains is performed by the fast and sensitive protein alignment tool
+              b The all-against-all comparison of protein sequences
+              |  from all strains is performed by the fast and sensitive protein alignment tool
               a(href='https://github.com/bbuchfink/diamond')
                 u DIAMOND
               a(href='http://www.nature.com/nmeth/journal/v12/n1/full/nmeth.3176.html')
@@ -94,8 +97,8 @@ html
           br
           #MCL
             .alert.alert-info(role='alert') MCL
-            p
-              | After clustering by MCL, we post-process the clusters by splitting clusters that contain a large number of paralogs.
+            p The sequence similarly matrix using bit-score from the DIAMOND output serves as input for the Markov Clustering Algorithm (MCL) to create the clusters of homologous genes.
+            p Afterwards, the clusters are post-processed by splitting clusters that involve distantly related sequences and contain a large number of paralogs.
             .item
               figure
                 img(src='./images/mcl-svg.jpg', style='width:547px;height:496px;')
