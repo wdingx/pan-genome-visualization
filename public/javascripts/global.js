@@ -1,4 +1,3 @@
-import {discrete_color_set, continuous_color_set} from "./colors";
 
 export const panXTree = {
     /**if true, use separated pattern instead of entire pattern */
@@ -46,9 +45,7 @@ export const panXTree = {
     treeStyle_tool2: {
         node_color_mem: {}, link_color_mem: {},
         link_width_mem: {}, link_dash_mem:  {}
-    },
-    legend_width:100,
-    legend_height:380
+    }
 };
 
 
@@ -57,8 +54,11 @@ export const panXDashboard = {
 };
 
 export const metaLegend = {
-    discrete_colorSet: discrete_color_set,
-    continuous_colorSet: continuous_color_set
+    legend_width:110,
+    legend_height:580,
+    common_color: true, //false for colorblind safe color
+    //discrete_colorSet: discrete_color_set,
+    //continuous_colorSet: continuous_color_set
 }
 
 export const tableAccessories = {
