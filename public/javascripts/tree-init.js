@@ -167,7 +167,8 @@ export const attachButtons = function(myTree, buttons){
                                       scale:"speciesTreeScale",
                                       tipLabels:"speciesTreeLabels",
                                       zoomReset:"speciesTreeZoomReset",
-                                      treeSync:"speciesTreeSynchr"});
+                                      treeSync:"speciesTreeSynchr"
+                                      });
             }
         });
     }

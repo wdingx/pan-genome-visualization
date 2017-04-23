@@ -113,7 +113,7 @@ table.dataTable thead>tr>td.sorting {
     text-align: left;
 }*/
 
-/* toggle-shape */
+/* bootstrap toggle button shape */
 .toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px;font-size:10px; }
 /*.toggle.ios .toggle-handle { border-radius: 20px;font-weight: 100; }*/
 #zoomin,#zoomout,.btn {border-radius: 20px} /*; height: 25px;*/
@@ -121,6 +121,20 @@ table.dataTable thead>tr>td.sorting {
 .btn.btn-primary.btn-xs.btn-square {border-radius: 2px;}
 /*.btn {border-radius: 50%;}*/
 #accordion {width: 150px;}
+
+/* metaLegend colorblind safe toggle button*/
+.toggle-off.btn-xs {
+    padding-left: 6px;
+}
+.glyphicon.glyphicon-eye-open{
+    font-size: 12px;
+}
+/*.btn.btn-success.btn-xs.toggle-on {
+    padding: 1px 2px;
+    font-size: 11px;
+    line-height: 1.5;
+    border-radius: 3px;
+}*/
 
 /* treeLoader*/
 #treeLoader{

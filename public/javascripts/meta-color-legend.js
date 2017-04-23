@@ -41,6 +41,9 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
 
     }
     else if (metaType!='') {
+        const visibility=(meta_display['color_options'][metaType]['type']=='discrete') ?'visible':'hidden';
+        d3.select('#colorblind_div').style('visibility',visibility);
+
         //** assign specific metadata color to speciesTree tips, if they are not yet addressed
         if (!speciesTree.meta){speciesTree.meta={};}
         if (!speciesTree.meta[metaType]){

@@ -12,6 +12,7 @@ const assign_discrete_color = function(metaColor_dicts,metaColor_dicts_keys, met
     if (index > -1) { //** assign color to unknown item
         meta_detail.splice(index, 1);
         tmp_meta_color_dict['unknown']=panXTree.metaUnknown;
+        tmp_meta_colorsafe_dict['unknown']=panXTree.metaUnknown;
     }
     //** create a list of legend values and corresponding colors
     var tmp_meta_color_dict_keys = meta_detail.map(function(item,ind){

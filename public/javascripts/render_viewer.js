@@ -2,7 +2,7 @@ import {render_chart_table,create_dropdown_menu} from "./chartsAndClusterTable";
 import * as datapath from "./data_path";
 import speciesTree from "./speciesTree";
 import  {metaDataTable} from "./datatable-meta";
-import  {panXTree, tableAccessories} from "./global";
+import  {panXTree, metaLegend, tableAccessories} from "./global";
 import {attachButtons, tipText, tipFontSize, attachPanzoom, connectTrees, applyChangeToTree, hideNonSelected, undoHideNonSelected} from "./tree-init";
 import {updateGeometry} from "../phyloTree/src/updateTree";
 import {linkTableAlignmentTrees, linkMetaTableTree} from "./linkTableAlignmentTrees";
@@ -87,9 +87,15 @@ const tryConnectTrees = function(){
         assign_metadata_color(meta_details,meta_display);
         //** monitor metadata selection and make legend
         var menu_panel = d3.select("#dropdown_select")
+        //** attach metaLegend button
+         $('#colorbind_safe').change(function() {
+            metaLegend.common_color= d3.select(this).property('checked')?false:true;
+            updateMetadata(metaLegend.current_metaType, mySpeciesTree, myGeneTree, meta_display, 'coreTree_legend', 0);
+        });
         menu_panel.on("change", function(d) {
             if (this.value!='Meta-info') {
                 //console.log("trigger meta data color change", this.value, d, menu_panel);
+                metaLegend.current_metaType=this.value;
                 updateMetadata(this.value, mySpeciesTree, myGeneTree, meta_display, 'coreTree_legend', 0);
             }
         });
