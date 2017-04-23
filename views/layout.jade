@@ -105,9 +105,9 @@ html
             #download_coreTree.col-md-1.btn_tooltip
           .row
             .col-md-2
-              br
-              br
-              br
+              //- br
+              #colorblind_div(style='visibility: hidden;')
+                input#colorbind_safe.btn_tooltip(type='checkbox', data-toggle='toggle', data-style='ios', data-on="<i class='glyphicon glyphicon-eye-open'></i>", data-off="<i class='glyphicon glyphicon-eye-open'></i>", data-size='mini')
               svg#coreTree_legend
             .col-md-10
               #speciesTreeDiv
