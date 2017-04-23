@@ -1,12 +1,13 @@
 import {panXTree,metaLegend} from "./global";
 import chroma from 'chroma-js';
-
+import {colorblind_safe_set, discrete_color_set, continuous_color_set} from "./colors";
 export var metaColor_dicts = {},//** {'host':hostColor,'country':countryColor}
        metaColor_dicts_keys = {}, //** keep the original key order
        metaColor_reference_dicts= {};
 
-const assign_discrete_color = function(metaColor_dicts,metaColor_dicts_keys, metaType_key, meta_detail,color_set) {
-    var tmp_meta_color_dict = {};
+const assign_discrete_color = function(metaColor_dicts,metaColor_dicts_keys, metaType_key, meta_detail, discret_color_set_common, discret_color_set_safe) {
+    var tmp_meta_color_dict = {},
+        tmp_meta_colorsafe_dict = {};
     var index = meta_detail.indexOf('unknown');
     if (index > -1) { //** assign color to unknown item
         meta_detail.splice(index, 1);
@@ -14,14 +15,17 @@ const assign_discrete_color = function(metaColor_dicts,metaColor_dicts_keys, met
     }
     //** create a list of legend values and corresponding colors
     var tmp_meta_color_dict_keys = meta_detail.map(function(item,ind){
-        tmp_meta_color_dict[item]=color_set[ind];
+        tmp_meta_color_dict[item]=discret_color_set_common[ind];
+        tmp_meta_colorsafe_dict[item]=discret_color_set_safe[ind];
         return item;
     });
     if (tmp_meta_color_dict['unknown']!=undefined){
             tmp_meta_color_dict_keys.push('unknown');
     }
-    metaColor_dicts[metaType_key] = tmp_meta_color_dict;
-    metaColor_dicts_keys[metaType_key] = tmp_meta_color_dict_keys;
+    metaColor_dicts[metaType_key]= {'common':{},'safe':{}};
+    metaColor_dicts[metaType_key].common= tmp_meta_color_dict;
+    metaColor_dicts[metaType_key].safe= tmp_meta_colorsafe_dict;
+    metaColor_dicts_keys[metaType_key]= tmp_meta_color_dict_keys;
 }
 
 const assign_continuous_color = function(metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts,metaType_key,meta_detail) {
@@ -50,7 +54,7 @@ const assign_continuous_color = function(metaColor_dicts,metaColor_dicts_keys,me
     //** create a list of legend values and corresponding colors
     const tmp_num_list = d3.range(num_interval+1).map(function(i){
         const legend_value= parseFloat(min_val+interval*i).toFixed(2);
-        tmp_meta_color_dict[legend_value]=metaLegend.continuous_colorSet[color_set_index][i];
+        tmp_meta_color_dict[legend_value]=continuous_color_set[color_set_index][i];
         return legend_value;
     });
 
@@ -110,7 +114,7 @@ const assign_mixed_continuous_color = function(metaColor_dicts,metaColor_dicts_k
         const partition_value= min_val+interval*i;
         //** convert log-transformed number back for legend display
         const legend_value= parseFloat(Math.pow(2,partition_value).toFixed(3));
-        tmp_meta_color_dict[legend_value]=metaLegend.continuous_colorSet[color_set_index][i];
+        tmp_meta_color_dict[legend_value]=continuous_color_set[color_set_index][i];
         return legend_value;
     });
 
@@ -152,8 +156,9 @@ export const assign_metadata_color = function(meta_details,meta_display){
         if (meta_coloring_type=='continuous') {
             assign_continuous_color(metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts,metaType_key,meta_detail)
         } else if (meta_coloring_type=='discrete') {
-            const discret_color_set=chroma.scale(metaLegend.discrete_colorSet).colors(meta_detail.length);
-            assign_discrete_color(metaColor_dicts,metaColor_dicts_keys,metaType_key,meta_detail, discret_color_set);
+            const discret_color_set_common=chroma.scale(discrete_color_set).colors(meta_detail.length),
+                  discret_color_set_safe=chroma.scale(colorblind_safe_set).colors(meta_detail.length);
+            assign_discrete_color(metaColor_dicts,metaColor_dicts_keys,metaType_key,meta_detail, discret_color_set_common,discret_color_set_safe);
         } else if (meta_coloring_type=='mixed_continuous') {
             var raw_meta_detail=meta_detail;
             assign_mixed_continuous_color(metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts,metaType_key,raw_meta_detail)

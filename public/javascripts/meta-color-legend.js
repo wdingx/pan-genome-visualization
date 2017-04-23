@@ -1,5 +1,5 @@
 import {updateTips,updateBranches} from "../phyloTree/src/updateTree";
-import {panXTree} from "./global";
+import {panXTree,metaLegend} from "./global";
 import {colorPresenceAbsence,styleGainLoss} from "./tree-init";
 import {assign_metadata_color,metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts} from './meta-color-assignment';
 import {preOrderIteration} from "../phyloTree/src/treeHelpers";
@@ -19,7 +19,7 @@ const metaUnknown=panXTree.metaUnknown,
       strokeToFill = panXTree.strokeToFill;
 //## create legend
 const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ // && legendOptionValue!= "Meta-info"
-    console.log(metaType);
+    //console.log(metaType);
     if (metaType==="genePattern"){
         var node,strain, fill;
         for (var i=0; i<speciesTree.tips.length; i++){
@@ -41,24 +41,34 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
 
     }
     else if (metaType!='') {
-        var itemCount = {};
+        //** assign specific metadata color to speciesTree tips, if they are not yet addressed
+        if (!speciesTree.meta){speciesTree.meta={};}
+        if (!speciesTree.meta[metaType]){
+            speciesTree.meta[metaType]='assigned';
+            for (let node of speciesTree.tips){
+                if (!node.metaColor){node.metaColor={}}
+                if (meta_display['color_options'][metaType]['type']=='discrete'){
+                    node.metaColor[metaType]={common:{},safe:{}};
+                    node.metaColor[metaType].common=metaColor_dicts[metaType]['common'][node.n.attr[metaType]];
+                    node.metaColor[metaType].safe=metaColor_dicts[metaType]['safe'][node.n.attr[metaType]];
+                }else{//** continuous or mixed_continuous
+                    const lengend_value= metaColor_reference_dicts[metaType][node.n.attr[metaType]];
+                    node.metaColor[metaType]= metaColor_dicts[metaType][lengend_value];
+                }
+            }
+        }
+
         for (var i=0; i<speciesTree.tips.length; i++){
             const node = speciesTree.tips[i];
-            if (itemCount[node.n.attr[metaType]]){
-                itemCount[node.n.attr[metaType]]++;
-            }else{
-                itemCount[node.n.attr[metaType]]=1;
-            }
             if (meta_display['color_options'][metaType]['type']=='discrete'){
-                const fill=metaColor_dicts[metaType][node.n.attr[metaType]];
+                const fill=(metaLegend.common_color) ?node.metaColor[metaType].common :node.metaColor[metaType].safe;
                 //node.tipAttributes.is_metaUnknown= fill ? false :true;
                 //node.tipAttributes.r*= fill? 1: 0.5;
                 node.tipAttributes.opacity= fill ? 1 :0.5;
                 node.tipAttributes.fill = fill || metaUnknown;
                 node.branchAttributes["stroke"] = fill || metaUnknown;
-            }else{//** continuous
-                const lengend_value= metaColor_reference_dicts[metaType][node.n.attr[metaType]],
-                      fill= metaColor_dicts[metaType][lengend_value];
+            }else{//** continuous or mixed_continuous
+                const fill= node.metaColor[metaType];
                 //node.tipAttributes.is_metaUnknown= fill ? false :true;
                 //node.tipAttributes.r*= fill ? 1 :0.8;
                 node.tipAttributes.opacity= fill ? 1 :0.5;
@@ -72,10 +82,10 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
             const node = geneTree.tips[i];
             const strain = speciesTree.namesToTips[node.n.accession];
             if(meta_display['color_options'][metaType]['type']=='discrete'){
-                const fill= metaColor_dicts[metaType][strain.n.attr[metaType]];
+                const fill= (metaLegend.common_color) ?metaColor_dicts[metaType]['common'][strain.n.attr[metaType]] :metaColor_dicts[metaType]['safe'][strain.n.attr[metaType]];
                 node.tipAttributes.fill = fill || metaUnknown;
             }else{//** continuous
-                const lengend_value= metaColor_reference_dicts[metaType][strain.n.attr[metaType]];
+                const lengend_value= metaColor_reference_dicts[metaType][strain.n.attr[metaType]],
                       fill =metaColor_dicts[metaType][lengend_value];
                 node.tipAttributes.fill = fill || metaUnknown;
             }
@@ -98,7 +108,6 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
                 //inner_node.branchAttributes["stroke"] = inner_node.branchAttributes['event_pattern'];
                 inner_node.branchAttributes["stroke"] = panXTree.branchStroke_default;
             }
-
         }
 
         updateTips(geneTree, [], ["fill", "stroke"], 0);
@@ -107,14 +116,14 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
         updateBranches(speciesTree, [], ["stroke"], 0);
 
         var legend= d3.select('#'+coreTree_legend_id)
-            .attr('width', panXTree.legend_width)
-            .attr('height', panXTree.legend_height);
+            .attr('width', metaLegend.legend_width)
+            .attr('height', metaLegend.legend_height);
         var tmp_leg = legend.selectAll(".legend")
             .data( metaColor_dicts_keys[metaType] )
             .enter().append('g')
             .attr('class', 'legend')
             .attr('transform', function(d, i) {
-                var stack = 20;
+                var stack = 50;
                 var height = legendRectSize + legendSpacing;
                 var fromRight = Math.floor(i / stack);
                 var fromTop = i % stack;
@@ -146,17 +155,21 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
                 .style('fill', function(d){return d.tipAttributes.fill;});
         }
 
+        const assign_legend_color = function (d) {
+            if (meta_display['color_options'][metaType]['type']=='discrete'){
+                return (metaLegend.common_color) ?metaColor_dicts[metaType]['common'][d] :metaColor_dicts[metaType]['safe'][d];
+            }else{ return metaColor_dicts[metaType][d];}
+        }
+
         tmp_leg.append('rect')
             .attr('width', legendRectSize)
             .attr('height', legendRectSize)
             .attr('text', function (d) {return d;} )
             .attr('fill', function (d) {
-                var col = metaColor_dicts[metaType][d];
-                return d3.rgb(col).toString();
+                return d3.rgb(assign_legend_color(d)).toString();
             })
             .attr('stroke', function (d) {
-                var col = metaColor_dicts[metaType][d];
-                return d3.rgb(col).darker([0.4]).toString();
+                return d3.rgb(assign_legend_color(d)).darker([0.4]).toString();
             })
             .on("mouseover", function(d) {mouseover_legend(d,speciesTree)})
             .on("mouseout",  function(d) {mouseout_legend(d,speciesTree)});
