@@ -121,7 +121,7 @@ export const tooltip_link = d3.tip().attr('class', 'd3-tip').html(function(d) {
 export const tooltip_toggle = function(tooltip_toggle_dict) {
     for (const divID in tooltip_toggle_dict){
         const tooltip_text=tooltip_toggle_dict[divID];
-        const label=d3.select($('#'+divID).next()[0].children[0]);
+        const label=d3.select($('#'+divID).next()[0]);
         label
           .on("mouseover", function(d){
               tooltip.text(tooltip_text);
