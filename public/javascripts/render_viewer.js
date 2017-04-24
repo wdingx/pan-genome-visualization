@@ -42,7 +42,9 @@ const handleSpeciesTree = function(newTree){
                                   treeSync:"speciesTreeSynchr",
                                   nodeLarge:"speciesTree_nodePlus",
                                   nodeSmaller:"speciesTree_nodeMinus",
-                                  download_coreTree:"download_coreTree"});
+                                  download_coreTree:"download_coreTree",
+                                  panzoom:"speciesTreePanzoom"
+                                  });
 
     mySpeciesTree.svg
         .selectAll('.tip')

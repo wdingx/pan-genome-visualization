@@ -168,7 +168,9 @@ const treeButton_tooltip_dict= {
     'geneTreeZoomReset':'reset gene tree',
     'geneTree_nodePlus':'increase tip size',
     'geneTree_nodeMinus':'decrease tip size',
-    'download_geneTree':'download gene tree'
+    'download_geneTree':'download gene tree',
+    'searchAccession':'search strains/genes by accession',
+    'searchAnnotation':'search genes by annotation'
     }
 tree_button_tooltip('#all_trees', treeButton_tooltip_dict);
 
@@ -178,5 +180,6 @@ export const tooltip_toggle_dict= {
     'geneTreeOrientation':'change tree orientation',
     'speciesTreeScale':'enable/disable scale',
     'geneTreeScale': 'enable/disable scale',
+    'speciesTreePanzoom': 'only enable pan/ use pan and zoom via mouse-wheel',
     'speciesTreeSynchr': 'synchronize toggle behaviors on both trees (layout and scale)'
     }
