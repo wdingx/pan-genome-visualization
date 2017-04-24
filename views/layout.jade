@@ -72,7 +72,7 @@ html
           .row
             .col-md-7#LeftTreeButtons(style='vertical-align: top')
               .col-md-3.triplet-button-group
-                button.triplet-button-control.triplet-button-toggle.speciesTree(type='button') Layouts
+                button#speciesTreeLayouts.triplet-button-control.triplet-button-toggle.speciesTree.btn_tooltip(type='button') Layouts
                     span.fa.fa-plus.triplet-button-space(aria-hidden='true')
                 ul#options.list-inline
                   li.option.speciesTree
@@ -85,18 +85,18 @@ html
                     button#speciesTreeUnroot.triplet-button-single.option3(type='button')
                       img(src='images/unrooted.png')
               //-input#TreeViewSelect.btn_tooltip.input(type='checkbox', data-toggle='toggle', data-style='ios', data-on='Circular', data-off='Vertical', data-size='mini', data-onstyle='primary', data-offstyle='info', text='layout')
-              input#speciesTreeLabels.btn_tooltip(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Label', data-off='Label', data-size='mini')
               input#speciesTreeScale.btn_tooltip(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Scale', data-off='Scale', data-size='mini')
+              input#speciesTreeLabels.btn_tooltip(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Label', data-off='Label', data-size='mini')
               button#speciesTree_height_plus.btn.btn-xs.btn-primary.btn_tooltip
                 span.glyphicon.glyphicon-resize-full
               button#speciesTree_height_minus.btn.btn-xs.btn-primary.btn_tooltip
                 span.glyphicon.glyphicon-resize-small
-              button#speciesTreeZoomReset.btn.btn-xs.btn-primary.btn_tooltip
-                span.glyphicon.glyphicon-refresh
               button#speciesTree_nodePlus.btn.btn-xs.btn-primary.btn_tooltip
                 span.glyphicon.glyphicon-plus
               button#speciesTree_nodeMinus.btn.btn-xs.btn-primary.btn_tooltip
                 span.glyphicon.glyphicon-minus
+              button#speciesTreeZoomReset.btn.btn-xs.btn-primary.btn_tooltip
+                span.glyphicon.glyphicon-refresh
               input#speciesTreeSynchr.btn_tooltip(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Synchr', data-off='Synchr', data-size='mini')
             //- #tree_zoom.col-md-2.btn_tooltip
             //-   input#tree_zoom_range.col-md-10(type='range', style='padding:0;')
@@ -107,7 +107,7 @@ html
             .col-md-2
               //- br
               #colorblind_div(style='visibility: hidden;')
-                input#colorbind_safe.btn_tooltip(type='checkbox', data-toggle='toggle', data-style='ios', data-on="<i class='glyphicon glyphicon-eye-open'></i>colorblind safe", data-off="<i class='glyphicon glyphicon-eye-open'></i>common color", data-size='mini',data-onstyle='success', data-offstyle='info')
+                input#colorblind_safe.btn_tooltip(type='checkbox', data-toggle='toggle', data-style='ios', data-on="<i class='glyphicon glyphicon-eye-open'></i>colorblind safe", data-off="<i class='glyphicon glyphicon-eye-open'></i>common color", data-size='mini',data-onstyle='success', data-offstyle='info')
               svg#coreTree_legend
             .col-md-10
               #speciesTreeDiv
@@ -118,7 +118,7 @@ html
           .row
             .col-md-7#genetree_buttons
               .col-md-3.triplet-button-group
-                button.triplet-button-control.triplet-button-toggle.geneTree(type='button') Layouts
+                button#geneTreeLayouts.triplet-button-control.triplet-button-toggle.geneTree.btn_tooltip(type='button') Layouts
                   span.fa.fa-plus.triplet-button-space(aria-hidden='true')
                 ul#options.list-inline
                   li.option.geneTree
@@ -131,17 +131,17 @@ html
                     button#geneTreeUnroot.triplet-button-single.triplet-button-single-toggle.option3(type='button')
                       img(src='images/unrooted.png')
               input#geneTreeScale.btn_tooltip(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Scale', data-off='Scale', data-size='mini')
+              input#geneTreeOrientation(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='right-left', data-off='left-right', data-size='mini', data-onstyle='primary', data-offstyle='info')
               button#geneTree_height_plus.btn.btn-xs.btn-primary.btn_tooltip
                 span.glyphicon.glyphicon-resize-full
               button#geneTree_height_minus.btn.btn-xs.btn-primary.btn_tooltip
                 span.glyphicon.glyphicon-resize-small
-              button#geneTreeZoomReset.btn.btn-xs.btn-primary.btn_tooltip
-                span.glyphicon.glyphicon-refresh
               button#geneTree_nodePlus.btn.btn-xs.btn-primary.btn_tooltip
                 span.glyphicon.glyphicon-plus
               button#geneTree_nodeMinus.btn.btn-xs.btn-primary.btn_tooltip
                 span.glyphicon.glyphicon-minus
-              input#geneTreeOrientation(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='right-left', data-off='left-right', data-size='mini', data-onstyle='primary', data-offstyle='info')
+              button#geneTreeZoomReset.btn.btn-xs.btn-primary.btn_tooltip
+                span.glyphicon.glyphicon-refresh
             //#dropdown_list2.col-md-4
             .col-md-2
               #searchAccession-group.input-group
