@@ -26,14 +26,12 @@ body {
   margin-bottom:5px;
 }
 
-
 /* font */
 html {
   font-family: "proxima-nova", Arial,sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
-
 
 #logo,#logo_footer h3{
   color:  #0000;/* #337AB7; */
@@ -60,7 +58,7 @@ span#coreThreshold {font-size: 0.8vw; }
     span#coreThreshold{font-size: 0.01vw;}
 }
 
-.col-md-4#col-coreThreshold { padding-left: 0;}
+#col-coreThreshold.col-md-4 { padding-left: 0;}
 
 /*noUiSlider background color */
 .noUi-connect { background:#2980B9;}
@@ -113,7 +111,7 @@ table.dataTable thead>tr>td.sorting {
     text-align: left;
 }*/
 
-/* bootstrap toggle button shape */
+/* SpeciesTree: bootstrap toggle button shape */
 .toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px;font-size:10px; }
 /*.toggle.ios .toggle-handle { border-radius: 20px;font-weight: 100; }*/
 #zoomin,#zoomout,.btn {border-radius: 20px} /*; height: 25px;*/

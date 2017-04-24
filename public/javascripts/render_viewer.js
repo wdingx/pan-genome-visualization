@@ -89,15 +89,19 @@ const tryConnectTrees = function(){
         //** monitor metadata selection and make legend
         var menu_panel = d3.select("#dropdown_select")
         //** attach metaLegend button
-         $('#colorbind_safe').change(function() {
+        $('#colorblind_safe').change(function() {
             metaLegend.common_color= d3.select(this).property('checked')?false:true;
             updateMetadata(metaLegend.current_metaType, mySpeciesTree, myGeneTree, meta_display, 'coreTree_legend', 0);
         });
         menu_panel.on("change", function(d) {
-            if (this.value!='Meta-info') {
-                //console.log("trigger meta data color change", this.value, d, menu_panel);
-                metaLegend.current_metaType=this.value;
-                updateMetadata(this.value, mySpeciesTree, myGeneTree, meta_display, 'coreTree_legend', 0);
+            const metaType=this.value;
+            if (metaType!='Meta-info') {
+                if (meta_display['color_options'][metaType]['type']=='discrete'){
+                    tooltip_toggle({'colorblind_safe':'switch on/off colorblind-friendly mode'})
+                }
+                //console.log("trigger meta data color change", metaType, d, menu_panel);
+                metaLegend.current_metaType=metaType;
+                updateMetadata(metaType, mySpeciesTree, myGeneTree, meta_display, 'coreTree_legend', 0);
             }
         });
     }else{
