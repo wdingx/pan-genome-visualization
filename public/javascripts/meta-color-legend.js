@@ -21,6 +21,7 @@ const metaUnknown=panXTree.metaUnknown,
 const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ // && legendOptionValue!= "Meta-info"
     //console.log(metaType);
     if (metaType==="genePattern"){
+        d3.select('#colorblind_div').style('visibility','hidden');
         var node,strain, fill;
         for (var i=0; i<speciesTree.tips.length; i++){
             node = speciesTree.tips[i];

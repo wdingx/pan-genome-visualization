@@ -96,7 +96,7 @@ const tryConnectTrees = function(){
         menu_panel.on("change", function(d) {
             const metaType=this.value;
             if (metaType!='Meta-info') {
-                if (meta_display['color_options'][metaType]['type']=='discrete'){
+                if (meta_display['color_options'][metaType]!=undefined && meta_display['color_options'][metaType]['type']=='discrete'){
                     tooltip_toggle({'colorblind_safe':'switch on/off colorblind-friendly mode'})
                 }
                 //console.log("trigger meta data color change", metaType, d, menu_panel);
