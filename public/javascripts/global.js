@@ -54,6 +54,7 @@ export const panXDashboard = {
 };
 
 export const metaLegend = {
+    current_metaType: undefined,
     legend_width:110,
     legend_height:580,
     common_color: true, //false for colorblind safe color
@@ -68,3 +69,8 @@ export const tableAccessories = {
 export const msaViewerAsset = {
     selected_rows_set: new Set()
 };
+
+export const metaTitles ={
+    'collection_date':'collection date',
+    'country':'country/ sampling area',
+}

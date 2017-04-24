@@ -1,5 +1,5 @@
 import {updateTips,updateBranches} from "../phyloTree/src/updateTree";
-import {panXTree,metaLegend} from "./global";
+import {panXTree,metaLegend,metaTitles} from "./global";
 import {colorPresenceAbsence,styleGainLoss} from "./tree-init";
 import {assign_metadata_color,metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts} from './meta-color-assignment';
 import {preOrderIteration} from "../phyloTree/src/treeHelpers";
@@ -219,9 +219,10 @@ export const create_dropdown = function (div, speciesTree, geneTree, meta_displa
     for (var i = 0, len = meta_display_order.length; i < len; i++) {
         const metaType= meta_display_order[i];
         if (meta_display['color_options'][metaType]['display']==undefined || meta_display['color_options'][metaType]['display']!='no'){
+            const metaText= (metaTitles[metaType]) ?metaTitles[metaType] :metaType.replace(/[_]/g,' ') ;
             dropdown_meta.append("option")
                 .attr("value", metaType)
-                .text(metaType);
+                .text(metaText);
         }
     }
 }
