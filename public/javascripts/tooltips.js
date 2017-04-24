@@ -4,7 +4,8 @@ d3.tip = d3Tip;
 
 const meta_types =meta_display['meta_display_order'];
 var antibiotics_set;
-//## tooltip for datatables header
+
+//** tooltip for datatables header/tree buttons
 export const tooltip = d3.select("body")
     .append("div")
     .style("position", "absolute")
@@ -15,22 +16,22 @@ export const tooltip = d3.select("body")
     .style("visibility", "hidden")
     .style("background", "rgba(0,0,0,0.5)"); //255,255,255
 
-export const tooltip_button = function(divID, tooltip_dict) {
+//** calling tooltip for cluster-table header
+export const tooltip_tableHeader = function(divID, tooltip_dict) {
     d3.selectAll(divID)
-    .on("mouseover", function(d){
-        tooltip.text(tooltip_dict[d]);
-        if (tooltip.text()!="") {
-            return tooltip.style("visibility", "visible");
-        } else {return tooltip.style("visibility", "hidden");}
-    })
-    .on("mousemove", function(){
-        return tooltip.style("top", (d3.event.pageY-40)+"px").style("left",(d3.event.pageX+10)+"px");
-    })
-    .on("mouseout", function(){
-        return tooltip.style("visibility", "hidden");
-    })
+      .on("mouseover", function(d){
+          tooltip.text(tooltip_dict[d]);
+          if (tooltip.text()!="") {
+              return tooltip.style("visibility", "visible");
+          } else {//** for cluster-table: hidden header of expand button
+            return tooltip.style("visibility", "hidden");
+          }
+      })
+      .on("mousemove", function(){
+        return tooltip.style("top", (d3.event.pageY-40)+"px").style("left",(d3.event.  pageX+5)+"px");
+      })
+      .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
 };
-
 
 //## tooltip for tree nodes and branches
 export const tooltip_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
@@ -115,23 +116,25 @@ export const tooltip_link = d3.tip().attr('class', 'd3-tip').html(function(d) {
     return string;
 });
 
-//** tree button tooltip
-const treeButton_tooltip_dict= {
-    //**speciesTree
-    'speciesTreeLabels':'show/hide labels',
-    'speciesTree_height_plus':'expand species tree vertically',
-    'speciesTree_height_minus':'shrink species tree vertically',
-    'speciesTreeZoomReset': 'reset species tree',
-    'speciesTree_nodePlus':'increase tip size',
-    'speciesTree_nodeMinus':'decrease tip size',
-    'download_coreTree':'download strain tree',
-    //**geneTree
-    'geneTree_height_plus':'expand gene tree vertically',
-    'geneTree_height_minus':'shrink gene tree vertically',
-    'geneTreeZoomReset':'reset gene tree',
-    'download_geneTree':'download gene tree'
-    }
 
+//** calling tooltip on toggle buttons (switch buttons)
+export const tooltip_toggle = function(tooltip_toggle_dict) {
+    for (const divID in tooltip_toggle_dict){
+        const tooltip_text=tooltip_toggle_dict[divID];
+        const label=d3.select($('#'+divID).next()[0].children[0]);
+        label
+          .on("mouseover", function(d){
+              tooltip.text(tooltip_text);
+              return tooltip.style("visibility", "visible");
+          })
+          .on("mousemove", function(){
+            return tooltip.style("top", (d3.event.pageY-40)+"px").style("left",(d3.event.pageX+5)+"px");
+          })
+          .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
+    }
+}
+
+//** calling tooltip for tree buttons
 function tree_button_tooltip(divID, tooltip_dict) {
     d3.selectAll(divID).selectAll('.btn_tooltip')
     .on("mouseover", function(d){
@@ -141,10 +144,39 @@ function tree_button_tooltip(divID, tooltip_dict) {
         } else {return tooltip.style("visibility", "hidden");}
     })
     .on("mousemove", function(){
-        return tooltip.style("top", (d3.event.pageY-40)+"px").style("left",(d3.event.pageX+10)+"px");
+        return tooltip.style("top", (d3.event.pageY-40)+"px").style("left",(d3.event.pageX+5)+"px");
     })
     .on("mouseout", function(){
         return tooltip.style("visibility", "hidden");
     })
 };
+
+//** tree button tooltip
+const treeButton_tooltip_dict= {
+    //**speciesTree
+    'speciesTreeLayouts': 'change tree layouts',
+    'speciesTree_height_plus':'expand species tree vertically',
+    'speciesTree_height_minus':'shrink species tree vertically',
+    'speciesTreeZoomReset': 'reset species tree',
+    'speciesTree_nodePlus':'increase tip size',
+    'speciesTree_nodeMinus':'decrease tip size',
+    'download_coreTree':'download strain tree',
+    //**geneTree
+    'geneTreeLayouts': 'change tree layouts',
+    'geneTree_height_plus':'expand gene tree vertically',
+    'geneTree_height_minus':'shrink gene tree vertically',
+    'geneTreeZoomReset':'reset gene tree',
+    'geneTree_nodePlus':'increase tip size',
+    'geneTree_nodeMinus':'decrease tip size',
+    'download_geneTree':'download gene tree'
+    }
 tree_button_tooltip('#all_trees', treeButton_tooltip_dict);
+
+//** tree button tooltip
+export const tooltip_toggle_dict= {
+    'speciesTreeLabels':'show/hide tree labels',
+    'geneTreeOrientation':'change tree orientation',
+    'speciesTreeScale':'enable/disable scale',
+    'geneTreeScale': 'enable/disable scale',
+    'speciesTreeSynchr': 'synchronize toggle behaviors on both trees (layout and scale)'
+    }

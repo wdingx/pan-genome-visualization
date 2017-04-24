@@ -8,7 +8,7 @@ import {updateGeometry} from "../phyloTree/src/updateTree";
 import {linkTableAlignmentTrees, linkMetaTableTree} from "./linkTableAlignmentTrees";
 import {create_dropdown, updateMetadata} from "./meta-color-legend";
 import {assign_metadata_color} from "./meta-color-assignment";
-import {tooltip_node} from './tooltips';
+import {tooltip_toggle,tooltip_toggle_dict,tooltip_node} from './tooltips';
 import speciesTreeCallbacks from "./speciesTreeCallbacks";
 import geneTreeCallbacks from "./geneTreeCallbacks";
 // /** strain_tree processing */
@@ -82,6 +82,7 @@ const tryConnectTrees = function(){
         linkMetaTableTree(meta_table_id, myMetaDatatable,mySpeciesTree);
         attachPanzoom("speciesTree", mySpeciesTree);
         //attachPanzoom("geneTree", myGeneTree);
+        tooltip_toggle(tooltip_toggle_dict);
         /** create metadata dropdown list */
         create_dropdown("#dropdown_list",mySpeciesTree,'geneTree',meta_display,'coreTree_legend',null);
         assign_metadata_color(meta_details,meta_display);
@@ -204,4 +205,3 @@ window.addEventListener("resize", function(){
     };
     applyChangeToTree(myGeneTree, geneTreeResize, 0);
 });
-

@@ -1,4 +1,5 @@
 import {panXTree} from "./global";
+import {tooltip_toggle} from "./tooltips";
 import {changeLayout, changeDistance, updateTips} from "../phyloTree/src/updateTree";
 import {zoomInY,  zoomIn, zoomIntoClade} from "../phyloTree/src/zoom";
 import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
@@ -95,9 +96,10 @@ export const attachButtons = function(myTree, buttons){
         });
     }
     if (buttons.orientation){
-            $('#'+buttons.orientation).change(function() {
-            myTree.orientation =  (d3.select(this).property('checked')==true) ? {x:-1, y:1} : {x:1, y:1};
-            applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
+
+        $('#'+buttons.orientation).change(function() {
+        myTree.orientation =  (d3.select(this).property('checked')==true) ? {x:-1, y:1} : {x:1, y:1};
+        applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
         });
     }
     if (buttons.nodeLarge){
@@ -141,7 +143,10 @@ export const attachButtons = function(myTree, buttons){
         });
     }
     if (buttons.treeSync){
+        //console.log(buttons.treeSync)
+        //tooltip_toggle('#speciesTreeSynchr','synchronize toggle behaviors on both  species tree and gene tree')
         $('#'+buttons.treeSync).change(function(event) {
+
             myTree.treeSync =d3.select(this).property('checked')
             if (myTree.treeSync){
                 var myGeneTree=panXTree.currentGeneTree;
@@ -162,12 +167,7 @@ export const attachButtons = function(myTree, buttons){
                                       layout_radial:"speciesTreeRadial",
                                       layout_vertical:"speciesTreeVertical",
                                       layout_unroot:"speciesTreeUnroot",
-                                      zoomInY:"speciesTree_height_plus",
-                                      zoomOutY:"speciesTree_height_minus",
-                                      scale:"speciesTreeScale",
-                                      tipLabels:"speciesTreeLabels",
-                                      zoomReset:"speciesTreeZoomReset",
-                                      treeSync:"speciesTreeSynchr"
+                                      scale:"speciesTreeScale"
                                       });
             }
         });
