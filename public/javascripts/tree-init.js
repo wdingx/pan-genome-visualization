@@ -205,6 +205,15 @@ export const attachButtons = function(myTree, buttons){
                 .append('i')
                 .attr('class','glyphicon glyphicon-download-alt')
     }
+    if (buttons.panzoom){
+        $('#'+buttons.panzoom).change(function() {
+            if (myTree.panZoom){
+                const zoom_enabled = d3.select(this).property('checked');
+                if (zoom_enabled){myTree.panZoom.disableZoom();
+                }else{myTree.panZoom.enableZoom();}
+            }
+        });
+    }
 }
 
 export const attachPanzoom = function(treeID, myTree){
@@ -225,6 +234,7 @@ export const attachPanzoom = function(treeID, myTree){
         //     return {x:false, y:false};
         // }
     });
+    myTree.panZoom.disableZoom();
 }
 
 

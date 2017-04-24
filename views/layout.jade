@@ -70,7 +70,7 @@ html
           .alert.alert-info(role='alert')
             | Strain tree (SNPs in all core genes)
           .row
-            .col-md-7#LeftTreeButtons(style='vertical-align: top')
+            .col-md-8#LeftTreeButtons(style='vertical-align: top')
               .col-md-3.triplet-button-group
                 button#speciesTreeLayouts.triplet-button-control.triplet-button-toggle.speciesTree.btn_tooltip(type='button') Layouts
                     span.fa.fa-plus.triplet-button-space(aria-hidden='true')
@@ -97,6 +97,7 @@ html
                 span.glyphicon.glyphicon-minus
               button#speciesTreeZoomReset.btn.btn-xs.btn-primary.btn_tooltip
                 span.glyphicon.glyphicon-refresh
+              input#speciesTreePanzoom.btn_tooltip(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on="<i class='glyphicon glyphicon-move'></i>", data-off="<i class='glyphicon glyphicon-zoom-in'></i>", data-size='mini',data-onstyle='primary', data-offstyle='info')
               input#speciesTreeSynchr.btn_tooltip(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Synchr', data-off='Synchr', data-size='mini')
             //- #tree_zoom.col-md-2.btn_tooltip
             //-   input#tree_zoom_range.col-md-10(type='range', style='padding:0;')
