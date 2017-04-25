@@ -43,7 +43,7 @@ export const create_dataTable = function (div, columns_set) {
         .data( columns_set )
         .enter()
         .append("th")
-        .text(function(d) { return d; });
+        .text(function(d) { return d.charAt(0).toUpperCase()+ d.slice(1); });
 };
 
 

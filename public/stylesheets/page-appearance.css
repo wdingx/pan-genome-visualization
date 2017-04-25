@@ -83,6 +83,8 @@ th, td {
 
 table.dataTable thead>tr>th {
     /*font-size: 8px;*/
+    font-weight: bold;
+    color: #323435;
     padding-left: 2px;
     padding-right: 18px;
 }
@@ -157,7 +159,7 @@ table.dataTable thead>tr>td.sorting {
 .sm-customized, .form-control.sm-customized {
   height: 24px;
   padding: 1px 5px;
-  font-size: 14px;}
+  font-size: 13px;}
 
 #tree-viewer-button-groups {margin-left:15px}
 
