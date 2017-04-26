@@ -28,7 +28,7 @@ const table_columns= [
     {'data':'allAnn','visible': false},
     {'data':'allGName','visible': false},
     {'defaultContent': '','data':'locus','visible': false},
-    {'data':'msa','visible': false}
+    {'data':'msa','visible': false} //'width':10,
 ]
 var column_config=[];
 var table_columns_length = table_columns.length;
@@ -61,7 +61,7 @@ export const clusterTable_tooltip_dict= {
     'Annotation':'gene annotation'}
 //** button for showing/hiding columns in table
 //## pay attention to GC table column order
-export const GC_table_dropdown_columns=['multiple sequence alignment','#strain','duplicated', 'gene gain/loss events','diversity','gene length','geneName','annotation'];
+export const GC_table_dropdown_columns=['multiple sequence alignment','#strain','geneName','annotation','duplicated', 'gene gain/loss events','diversity','gene length'];
 
 //** create GC table HTML structure
 export const create_dataTable = function (div, columns_set) {
