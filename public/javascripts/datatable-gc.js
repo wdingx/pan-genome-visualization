@@ -13,24 +13,22 @@ $.multiselect = multiselect;
 
 //## dc_DataTables configuration
 export const dc_dataTable_columnDefs_config=[
-    {'targets': 0,'defaultContent': '<button type="button" class="btn btn-info btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="amino acid alignment" >aa </button>'},
-    {'targets': 1,'defaultContent': '<button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="nucleotide alignment" >na </button>'},
-    {'targets': 2,'data':'count'},
-    {'targets': 3,'defaultContent': '','data':null, 'className': 'dup-details-control', 'orderable': false},
-    {'targets': 4,'data':'dupli'},
-    {'targets': 5,'data':'event'},
-    {'targets': 6,'data':'divers'},
-    {'targets': 7,'data':'geneLen'},
-    {'targets': 8,'defaultContent': '','data':null, 'className': 'geneName-details-control', 'orderable': false},
-    {'targets': 9,'data':'GName'},
-    {'targets': 10,'defaultContent': '','data':null, 'className': 'ann-details-control', 'orderable': false},
-    {'targets': 11,'data':'ann'},
-    {'targets': 12,'data':'geneId','visible': false},
-    {'targets': 13,'data':'allAnn','visible': false},
-    {'targets': 14,'data':'allGName','visible': false},
-    {'targets': 15,'defaultContent': '','data':'locus','visible': false},
-    {'targets': 16,'data':'msa','visible': false}
-
+    {'targets': 0,'defaultContent': '<div style="display:inline-block" ><button type="button" class="btn btn-info btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="amino acid alignment" >aa </button> <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="nucleotide alignment" >na </button> </div>'},
+    {'targets': 1,'data':'count'},
+    {'targets': 2,'defaultContent': '','data':null, 'className': 'dup-details-control', 'orderable': false},
+    {'targets': 3,'data':'dupli'},
+    {'targets': 4,'data':'event'},
+    {'targets': 5,'data':'divers'},
+    {'targets': 6,'data':'geneLen'},
+    {'targets': 7,'defaultContent': '','data':null, 'className': 'geneName-details-control', 'orderable': false},
+    {'targets': 8,'data':'GName'},
+    {'targets': 9,'defaultContent': '','data':null, 'className': 'ann-details-control', 'orderable': false},
+    {'targets': 10,'data':'ann'},
+    {'targets': 11,'data':'geneId','visible': false},
+    {'targets': 12,'data':'allAnn','visible': false},
+    {'targets': 13,'data':'allGName','visible': false},
+    {'targets': 14,'defaultContent': '','data':'locus','visible': false},
+    {'targets': 15,'data':'msa','visible': false}
 ];
 
 
@@ -49,16 +47,16 @@ export const create_dataTable = function (div, columns_set) {
 
 
 //# create GC table
-export const geneCluster_table_columns=['MSA','MSA','#Strain','','Duplicated','Events','Diversity','Length','','Name','','Annotation','Id','allAnn','allGName','locus']
+export const geneCluster_table_columns=['Alignment','#Strain','','Duplicated','Events','Diversity','Length','','Name','','Annotation','Id','allAnn','allGName','locus']
 
 export const clusterTable_tooltip_dict= {
-    'MSA':'multiple sequence alignment','MSA':'multiple sequence alignment',
+    'Alignment':'multiple sequence alignment',
     '#Strain':'strain count','Duplicated':'whether duplicated and duplication count in each strain',
     'Diversity':'gene diversity', 'Events':'gene gain/loss events count',
     'Length':'average gene length', 'Name':'gene name','Annotation':'gene annotation'}
 
 //## pay attention to GC table column order
-export const GC_table_dropdown_columns=['amino_acid aln','nucleotide aln','#strain','duplicated', 'gene gain/loss events','diversity','gene length','geneName','annotation'];
+export const GC_table_dropdown_columns=['multiple sequence alignment','#strain','duplicated', 'gene gain/loss events','diversity','gene length','geneName','annotation'];
 
 //## creat multiselect dropdown for dataTables
 export const create_multiselect = function (div, columns_set) {
@@ -95,7 +93,7 @@ export const datatable_configuration = function(table_input, table_id, col_selec
         /*"processing": true, "serverSide": true,*/
         'columnDefs': dc_dataTable_columnDefs_config,
         // order by count (desc) and geneId (asc)
-        "order": [[2, 'desc' ],[9, 'asc' ]]
+        "order": [[1, 'desc' ],[8, 'asc' ]]
     });
 
     // disable warning
