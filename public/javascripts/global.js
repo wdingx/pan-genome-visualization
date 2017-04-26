@@ -73,5 +73,5 @@ export const msaViewerAsset = {
 
 export const metaTitles ={
     'collection_date':'collection date',
-    'country':'country/ sampling area',
+    'country':'country/ sampling location',
 }

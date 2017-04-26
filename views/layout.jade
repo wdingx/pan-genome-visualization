@@ -70,6 +70,7 @@ html
           .alert.alert-info(role='alert')
             | Strain tree (SNPs in all core genes)
           .row
+            #dropdown_list.col-md-3.btn_tooltip
             .col-md-8#LeftTreeButtons(style='vertical-align: top')
               .col-md-3.triplet-button-group
                 button#speciesTreeLayouts.triplet-button-control.triplet-button-toggle.speciesTree.btn_tooltip(type='button') Layouts
@@ -102,7 +103,6 @@ html
             //- #tree_zoom.col-md-2.btn_tooltip
             //-   input#tree_zoom_range.col-md-10(type='range', style='padding:0;')
 
-            #dropdown_list.col-md-3.btn_tooltip
             #download_coreTree.col-md-1.btn_tooltip
           .row
             .col-md-2
