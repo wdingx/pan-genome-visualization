@@ -30,7 +30,7 @@ export const loadNewGeneCluster = function(data, handleGeneTree, seqType){
     if (geneTree_name.indexOf('tree.json') !== -1) {
         showViewerTitle("genetree_title",geneTree_name,ann_majority);
     };
-    var myGeneTree=geneTree("geneTree", geneTree_name, handleGeneTree);
+    var myGeneTree=geneTree("geneTree", geneTree_name, handleGeneTree, panXTree.currentTreeLayout);
     attachButtons(myGeneTree, { download_geneTree:"download_geneTree",
                                 clusterID:clusterID });
 }

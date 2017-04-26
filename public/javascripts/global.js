@@ -2,6 +2,7 @@
 export const panXTree = {
     /**if true, use separated pattern instead of entire pattern */
     currentClusterID: '',
+    currentTreeLayout: '',
     currentGeneTree: undefined,
     speciesTree: undefined, //{}
     speciesTreeTipCount: 0,
