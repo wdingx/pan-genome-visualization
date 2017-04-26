@@ -3,6 +3,7 @@ window.$ = $;
 window.jQuery = $;
 import DataTable from 'datatables.net';
 import './third_party/table_plugin/dataTables.bootstrap.min.js';
+require('datatables.net-colreorder');
 require("bootstrap");
 /*bootstrap-toggle for switch button*/
 require('bootstrap-toggle');
