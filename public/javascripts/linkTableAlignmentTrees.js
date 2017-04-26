@@ -13,10 +13,10 @@ import {attachButtons, hideNonSelected, undoHideNonSelected} from "./tree-init";
 //** show MSA/Gene tree title with geneCluster Id
 const showViewerTitle = function(genetree_title_id,message,ann_majority) {
     var genetree_viewer=d3.select('#'+genetree_title_id);/*genetree_title*/
-    genetree_viewer.html('Gene tree | ' +ann_majority+ ' | '+message.split('/').pop().replace('_tree.json', ''));
-
+    genetree_viewer.html('Gene tree | ' +ann_majority);
+    //genetree_viewer.html('Gene tree | ' +ann_majority+ ' | '+message.split('/').pop().replace('_tree.json', ''));
     var sequence_viewer=d3.select('#sequence_viewer_title');
-    sequence_viewer.html(' Sequence alignment | ' +ann_majority+ ' | '+message.split('/').pop().replace('_tree.json', ''))
+    sequence_viewer.html(' Sequence alignment | ' +ann_majority)
 };
 
 export const loadNewGeneCluster = function(data, handleGeneTree, seqType){
