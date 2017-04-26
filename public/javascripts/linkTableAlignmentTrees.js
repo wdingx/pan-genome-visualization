@@ -10,12 +10,26 @@ import {attachButtons, hideNonSelected, undoHideNonSelected} from "./tree-init";
  * click aa/na alignment button to show MSA and linked trees.
  */
 
+//** show MSA/Gene tree title with geneCluster Id
+const showViewerTitle = function(genetree_title_id,message,ann_majority) {
+    var genetree_viewer=d3.select('#'+genetree_title_id);/*genetree_title*/
+    genetree_viewer.html('Gene tree | ' +ann_majority+ ' | '+message.split('/').pop().replace('_tree.json', ''));
+
+    var sequence_viewer=d3.select('#sequence_viewer_title');
+    sequence_viewer.html(' Sequence alignment | ' +ann_majority+ ' | '+message.split('/').pop().replace('_tree.json', ''))
+};
+
 export const loadNewGeneCluster = function(data, handleGeneTree, seqType){
-    var clusterID=data.msa;
+    const clusterID=data.msa,
+          ann_majority=data.ann;
     panXTree.currentClusterID=clusterID;
     console.log("loadNewGeneCluster", clusterID, seqType);
     msaLoad(aln_file_path+clusterID+'_'+seqType+'_aln.fa',(seqType=='aa')?'taylor':'nucleotide');
     var geneTree_name=aln_file_path + clusterID+'_tree.json';
+    // if it is a gene tree, show the title with geneCluster Id
+    if (geneTree_name.indexOf('tree.json') !== -1) {
+        showViewerTitle("genetree_title",geneTree_name,ann_majority);
+    };
     var myGeneTree=geneTree("geneTree", geneTree_name, handleGeneTree);
     attachButtons(myGeneTree, { download_geneTree:"download_geneTree",
                                 clusterID:clusterID });
