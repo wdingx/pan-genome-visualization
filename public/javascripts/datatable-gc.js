@@ -17,8 +17,8 @@ export const dc_dataTable_columnDefs_config=[
     {'targets': 2,'data':'count'},
     {'targets': 3,'defaultContent': '','data':null, 'className': 'dup-details-control', 'orderable': false},
     {'targets': 4,'data':'dupli'},
-    {'targets': 5,'data':'divers'},
-    {'targets': 6,'data':'event'},
+    {'targets': 5,'data':'event'},
+    {'targets': 6,'data':'divers'},
     {'targets': 7,'data':'geneLen'},
     {'targets': 8,'defaultContent': '','data':null, 'className': 'geneName-details-control', 'orderable': false},
     {'targets': 9,'data':'GName'},
@@ -48,7 +48,7 @@ export const create_dataTable = function (div, columns_set) {
 
 
 //# create GC table
-export const geneCluster_table_columns=['MSA','MSA','#Strain','','Duplicated','Diversity','Events','Length','','Name','','Annotation','Id','allAnn','allGName','locus']
+export const geneCluster_table_columns=['MSA','MSA','#Strain','','Duplicated','Events','Diversity','Length','','Name','','Annotation','Id','allAnn','allGName','locus']
 
 export const clusterTable_tooltip_dict= {
     'MSA':'multiple sequence alignment','MSA':'multiple sequence alignment',
@@ -57,7 +57,7 @@ export const clusterTable_tooltip_dict= {
     'Length':'average gene length', 'Name':'gene name','Annotation':'gene annotation'}
 
 //## pay attention to GC table column order
-export const GC_table_dropdown_columns=['amino_acid aln','nucleotide aln','#strain','duplicated','diversity', 'gene gain/loss events','gene length','geneName','annotation'];
+export const GC_table_dropdown_columns=['amino_acid aln','nucleotide aln','#strain','duplicated', 'gene gain/loss events','diversity','gene length','geneName','annotation'];
 
 //## creat multiselect dropdown for dataTables
 export const create_multiselect = function (div, columns_set) {
