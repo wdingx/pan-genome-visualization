@@ -10,6 +10,15 @@ import {attachButtons, hideNonSelected, undoHideNonSelected} from "./tree-init";
  * click aa/na alignment button to show MSA and linked trees.
  */
 
+//**change select dropdown value to 'genePattern'(presence/absence) when clicking msa button
+const change_select_dropdown_value = function(div_id,valueToSelect) {
+    var element = document.getElementById(div_id);
+    if (element!=null){
+        element.value = valueToSelect;
+        d3.select('#colorblind_div').style('visibility','hidden');
+    }
+}
+
 //** show MSA/Gene tree title with geneCluster Id
 const showViewerTitle = function(genetree_title_id,message,ann_majority) {
     var genetree_viewer=d3.select('#'+genetree_title_id);/*genetree_title*/
@@ -33,6 +42,7 @@ export const loadNewGeneCluster = function(data, handleGeneTree, seqType){
     var myGeneTree=geneTree("geneTree", geneTree_name, handleGeneTree, panXTree.currentTreeLayout);
     attachButtons(myGeneTree, { download_geneTree:"download_geneTree",
                                 clusterID:clusterID });
+    change_select_dropdown_value("dropdown_select",'genePattern');
 }
 
 const table_select_tip_annotation= function (input_annotation,myGeneTree) {
