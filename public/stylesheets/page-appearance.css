@@ -414,6 +414,9 @@ input[type=range]:focus::-ms-fill-upper {
 .triplet-button-space{
   padding-left:4px;
 }
+.col-md-2.triplet_layout_width{
+  width:88px;
+}
 .triplet-button-control, .triplet-button-single {
     position: relative;
     /*z-index: 1;*/
@@ -429,10 +432,10 @@ input[type=range]:focus::-ms-fill-upper {
 }
 .triplet-button-single {
     /*z-index: 3;*/
-    width: 26px;
-    height: 26px;
+    width: 25px;
+    height: 25px;
     border-radius: 50%;
-    font-size: 4px;
+    font-size: 10px;/**/
     box-shadow: 0 3px 6px rgba(0,0,0,.275);
 }
 .triplet-button-toggle.open {
@@ -451,16 +454,16 @@ input[type=range]:focus::-ms-fill-upper {
     visibility: visible;
 }
 .option.scale-on .option1 {
-    -webkit-transform: translateX(-5px) translateY(2px) translateZ(0);
-    transform:         translateX(-5px) translateY(2px) translateZ(0);
+    -webkit-transform: translateX(-10px) translateY(1px) translateZ(0);
+    transform:         translateX(-10px) translateY(1px) translateZ(0);
 }
 .option.scale-on .option2 {
-    -webkit-transform: translateX(-5px) translateY(5px) translateZ(0);
-    transform:         translateX(-5px) translateY(5px) translateZ(0);
+    -webkit-transform: translateX(-10px) translateY(4px) translateZ(0);
+    transform:         translateX(-10px) translateY(4px) translateZ(0);
 }
 .option.scale-on .option3 {
-    -webkit-transform: translateX(-5px) translateY(2px) translateZ(0);
-    transform:         translateX(-5px) translateY(2px) translateZ(0);
+    -webkit-transform: translateX(-10px) translateY(1px) translateZ(0);
+    transform:         translateX(-10px) translateY(1px) translateZ(0);
 }
 
 /*======== tooltip table style ============*
