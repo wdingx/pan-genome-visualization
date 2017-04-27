@@ -161,6 +161,31 @@ window.search_annotation=search_annotation;
 //** create dropdown menu for species selection
 create_dropdown_menu('#species-selector', species_dt);
 
+//** setup and render autocomplete for species
+const autocomplete_species = function (){
+//Variable to hold autocomplete options
+    var keys;
+    d3.csv("species.csv",function (csv) {
+        keys=csv;
+        start();
+    });
+
+    /*//Call back for when user selects an option
+    function onSelect(d) {
+        alert(d.SpeciesName);
+    }*/
+
+    //Setup and render the autocomplete
+    function start() {
+        var mc = autocomplete(document.getElementById('test'))
+                .keys(keys)
+                .dataField("SpeciesName")
+                .placeHolder("Search species")
+                //.onSelected(onSelect)
+                .render();
+    }
+}
+
 const trigger_triplet_button = function(){
 
     // speciesTree triplet-button-group for 3 types of layouts
