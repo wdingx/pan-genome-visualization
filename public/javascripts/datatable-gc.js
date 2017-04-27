@@ -17,8 +17,22 @@ const table_columns= [
     {'data':'count'},//count
     {'defaultContent': '','data':null, 'className': 'geneName-details-control', 'orderable': false},//geneName expand
     {'data':'GName'},//geneName
+    {'data':'Paref',
+        "render" : function(data, type, row, meta){
+            if(type === 'display'){
+                return $('<a>')
+                    .attr('href','http://pseudomonas.com/primarySequenceFeature/list?strain_ids=107&term=Pseudomonas+aeruginosa+PAO1+%28Reference%29&c1=name&v1='+data+'+&e1=1&assembly=complete')
+                    .text(data)
+                    .wrap('<div></div>')
+                    .parent()
+                    .html();
+            } else {
+                return data;
+            }
+        }
+    },
     {'defaultContent': '','data':null, 'className': 'ann-details-control', 'orderable': false},//annotation expand
-    {'data':'ann'},//annotation
+    {'data':'ann'},//annotation    //'width':10,
     {'defaultContent': '','data':null, 'className': 'dup-details-control', 'orderable': false},//duplication expand
     {'data':'dupli'},//duplication
     {'data':'event'},
@@ -27,8 +41,10 @@ const table_columns= [
     {'data':'geneId','visible': false},
     {'data':'allAnn','visible': false},
     {'data':'allGName','visible': false},
-    {'defaultContent': '','data':'locus','visible': false},
-    {'data':'msa','visible': false} //'width':10,
+    {'defaultContent': '','data':'locus','visible': false}
+    //,
+    //{'data':'msa','visible': false}
+
 ]
 var column_config=[];
 var table_columns_length = table_columns.length;
@@ -40,7 +56,7 @@ for (let i = 0; i<table_columns_length; i++) {
 //** column configuration for datatables
 //export const dc_dataTable_columnDefs_config=column_config;
 //** column title for display
-export const geneCluster_table_columns=['Alignment','#Strain','','Name','','Annotation','','Duplicated','Events','Diversity','Length','Id','allAnn','allGName','locus']
+export const geneCluster_table_columns=['Alignment','#Strain','','Name','Paref','','Annotation','','Duplicated','Events','Diversity','Length','Id','allAnn','allGName','locus']
 //** column descend/ascend sorting order
 const column_desc= '#Strain',
       column_asc= 'Name',
