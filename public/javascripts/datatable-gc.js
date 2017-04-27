@@ -56,7 +56,7 @@ for (let i = 0; i<table_columns_length; i++) {
 //** column configuration for datatables
 //export const dc_dataTable_columnDefs_config=column_config;
 //** column title for display
-export const geneCluster_table_columns=['Alignment','#Strain','','Name','Paref','','Annotation','','Duplicated','Events','Diversity','Length','Id','allAnn','allGName','locus']
+export const geneCluster_table_columns=['Alignment','#Strain','','Name','PAO1','','Annotation','','Duplicated','Events','Diversity','Length','Id','allAnn','allGName','locus']
 //** column descend/ascend sorting order
 const column_desc= '#Strain',
       column_asc= 'Name',
