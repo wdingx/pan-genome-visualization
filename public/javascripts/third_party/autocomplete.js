@@ -141,8 +141,8 @@ const autocomplete = function (parent) {
             function search() {
 
                 var str=_searchTerm;
-                console.log("searching on " + _searchTerm, _keys, _keys[0][_dataField]);
-                console.log("-------------------");
+                //console.log("searching on " + _searchTerm, _keys, _keys[0][_dataField]);
+                //console.log("-------------------");
 
                 if (str.length >= _minLength) {
                     _matches = [];
