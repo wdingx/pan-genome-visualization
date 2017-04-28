@@ -19,7 +19,7 @@ import {attachButtons,attachPanzoom,applyChangeToTree} from "./tree-init";
  * @param  {oject} speciesTree  [description]
  * @return {object}              the new constructed geneTree
  */
-const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, speciesTree){
+const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, layout_choice){
 
     var treeplot = d3.select("#"+tree_svg);
     treeplot.attr("width", panXDashboard.winInnerWidth/3.);
@@ -39,7 +39,7 @@ const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, speciesTree){
     d3.json(treeJsonPath, function(err, data){
         //console.log(data, err);
         if (data){
-            myTree = phyloTree(data, {svg:treeplot, margins:{top:10, bottom:10, left:10, right:10},scaleBar:true,
+            myTree = phyloTree(data, {svg:treeplot, margins:{top:10, bottom:10, left:10, right:10},scaleBar:true, layout:(layout_choice)?layout_choice:'rect',
                                       callbacks:geneTreeCallbacks, orientation:{x:-1, y:1}}
                                );
             //console.log(myTree);

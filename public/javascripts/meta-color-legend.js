@@ -215,12 +215,13 @@ export const create_dropdown = function (div, speciesTree, geneTree, meta_displa
 
     dropdown_meta.append("option")
         .attr("value", "genePattern")
-        .text("gene presence/absence");
+        .text("Gene presence/absence");
 
     for (var i = 0, len = meta_display_order.length; i < len; i++) {
         const metaType= meta_display_order[i];
         if (meta_display['color_options'][metaType]['display']==undefined || meta_display['color_options'][metaType]['display']!='no'){
-            const metaText= (metaTitles[metaType]) ?metaTitles[metaType] :metaType.replace(/[_]/g,' ') ;
+            let metaText= (metaTitles[metaType]) ?metaTitles[metaType] :metaType.replace(/[_]/g,' ');
+            metaText= metaText.charAt(0).toUpperCase() + metaText.slice(1);
             dropdown_meta.append("option")
                 .attr("value", metaType)
                 .text(metaText);

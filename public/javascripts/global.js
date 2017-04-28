@@ -2,6 +2,7 @@
 export const panXTree = {
     /**if true, use separated pattern instead of entire pattern */
     currentClusterID: '',
+    currentTreeLayout: '',
     currentGeneTree: undefined,
     speciesTree: undefined, //{}
     speciesTreeTipCount: 0,
@@ -72,5 +73,5 @@ export const msaViewerAsset = {
 
 export const metaTitles ={
     'collection_date':'collection date',
-    'country':'country/ sampling area',
+    'country':'country/ sampling location',
 }

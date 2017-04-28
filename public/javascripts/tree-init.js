@@ -71,27 +71,31 @@ export const applyChangeToTree = function(myTree, func, dt){
 export const attachButtons = function(myTree, buttons){
     const dt = 1000;
     const updateSelected=false;
-    if (buttons.layout){
+    /*if (buttons.layout){
         $('#'+buttons.layout).change(function() {
             myTree.layout =  (d3.select(this).property('checked')==false) ? 'rect' : 'radial';
+            panXTree.currentTreeLayout= myTree.layout;
             applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
         });
-    }
+    }*/
     if (buttons.layout_radial){
         $('#'+buttons.layout_radial).click(function() {
             myTree.layout =  'radial';
+            panXTree.currentTreeLayout= myTree.layout;
             applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
             });
     }
     if (buttons.layout_vertical){
         $('#'+buttons.layout_vertical).click(function() {
             myTree.layout =  'rect';
+            panXTree.currentTreeLayout= myTree.layout;
             applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
         });
     }
     if (buttons.layout_unroot){
         $('#'+buttons.layout_unroot).click(function() {
             myTree.layout =  'unrooted';
+            panXTree.currentTreeLayout= myTree.layout;
             applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
         });
     }

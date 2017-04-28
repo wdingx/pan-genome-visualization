@@ -19,6 +19,7 @@ html
     //- link(rel="stylesheet", type="text/css", href='stylesheets/jquery.dataTables.min.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/msa-new.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/d3-tip.css')
+    link(rel="stylesheet", type="text/css", href='stylesheets/autocomplete.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/page-appearance.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/autohiding-navbar2.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/footer.css')
@@ -42,8 +43,8 @@ html
         #dc_data_count.col-md-2
           .alert.alert-info(role='alert') Species
           #species-selector
-          br
-          .dc_data_count
+          #species-search(style='margin-top:3px')
+          .dc_data_count(style='margin-top:3px')
         .col-md-2
           .alert.alert-info(role='alert') Core vs. Accessory
           #dc_coreAcc_piechart
@@ -70,8 +71,9 @@ html
           .alert.alert-info(role='alert')
             | Strain tree (SNPs in all core genes)
           .row
+            #dropdown_list.col-md-3.btn_tooltip
             .col-md-8#LeftTreeButtons(style='vertical-align: top')
-              .col-md-3.triplet-button-group
+              .col-md-2.triplet_layout_width.triplet-button-group
                 button#speciesTreeLayouts.triplet-button-control.triplet-button-toggle.speciesTree.btn_tooltip(type='button') Layouts
                     span.fa.fa-plus.triplet-button-space(aria-hidden='true')
                 ul#options.list-inline
@@ -102,7 +104,6 @@ html
             //- #tree_zoom.col-md-2.btn_tooltip
             //-   input#tree_zoom_range.col-md-10(type='range', style='padding:0;')
 
-            #dropdown_list.col-md-3.btn_tooltip
             #download_coreTree.col-md-1.btn_tooltip
           .row
             .col-md-2
@@ -118,7 +119,7 @@ html
             #genetree_title Gene tree (individual gene)
           .row
             .col-md-7#genetree_buttons
-              .col-md-3.triplet-button-group
+              .col-md-2.triplet_layout_width.triplet-button-group
                 button#geneTreeLayouts.triplet-button-control.triplet-button-toggle.geneTree.btn_tooltip(type='button') Layouts
                   span.fa.fa-plus.triplet-button-space(aria-hidden='true')
                 ul#options.list-inline
@@ -132,7 +133,7 @@ html
                     button#geneTreeUnroot.triplet-button-single.triplet-button-single-toggle.option3(type='button')
                       img(src='images/unrooted.png')
               input#geneTreeScale.btn_tooltip(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Scale', data-off='Scale', data-size='mini')
-              input#geneTreeOrientation(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='right-left', data-off='left-right', data-size='mini', data-onstyle='primary', data-offstyle='info')
+              input#geneTreeOrientation(type='checkbox', checked='', data-toggle='toggle', data-style='ios', data-on='Right-left', data-off='Left-right', data-size='mini', data-onstyle='primary', data-offstyle='info')
               button#geneTree_height_plus.btn.btn-xs.btn-primary.btn_tooltip
                 span.glyphicon.glyphicon-resize-full
               button#geneTree_height_minus.btn.btn-xs.btn-primary.btn_tooltip
@@ -148,12 +149,12 @@ html
               #searchAccession-group.input-group
                 span#searchAccession.input-group-addon.primary.sm-customized.btn_tooltip
                   span.glyphicon.glyphicon-search
-                input.form-control.sm-customized.tree_search(type='text', placeholder='accession', aria-describedby='sizing-addon1',oninput='search_accession(this.value)')
+                input.form-control.sm-customized.tree_search(type='text', placeholder='Accession', aria-describedby='sizing-addon1',oninput='search_accession(this.value)')
             .col-md-2
               #searchAnnotation-group.input-group
                 span#searchAnnotation.input-group-addon.primary.sm-customized.btn_tooltip
                   span.glyphicon.glyphicon-search
-                input.form-control.sm-customized.tree_search(type='text', placeholder='annotation', aria-describedby='sizing-addon1',oninput='search_annotation(this.value)')
+                input.form-control.sm-customized.tree_search(type='text', placeholder='Annotation', aria-describedby='sizing-addon1',oninput='search_annotation(this.value)')
             #download_geneTree.col-md-1.btn_tooltip
           .row
             .col-md-10
