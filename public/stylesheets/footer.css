@@ -4,9 +4,9 @@
 	box-sizing: border-box;
 	width: 100%;
 	text-align: left;
-	font: bold 16px;
+	font: bold;
+	font-size: 16px;
 	/*font: bold 16px sans-serif;*/
-
 	padding: 55px 50px;
 	margin-top: 80px;
 }
@@ -25,22 +25,7 @@
 	margin-left: 60px;
 }
 
-/* The company logo */
-
-.footer-distributed h3{
-	color:  #ffffff;
-	/*font: normal 36px;*/
-	font: normal 36px 'Cookie', cursive;
-	font-size: 60px;
-	margin: 0;
-}
-
-.footer-distributed h3 span{
-	color:  #5383d3;
-}
-
 /* Footer links */
-
 .footer-distributed .footer-links{
 	color:  #ffffff;
 	margin: 20px 0 12px;
@@ -56,7 +41,7 @@
 
 .footer-distributed .footer-author{
 	color:  #FFFFFF;
-	font-size: 15px;
+	/*font-size: 16px;*/
 	font-weight: normal;
 	margin: 0;
 }
@@ -80,11 +65,6 @@
 	vertical-align: middle;
 }
 
-.footer-distributed .footer-center i.fa-envelope{
-	font-size: 17px
-	line-height: 38px;
-}
-
 .footer-distributed .footer-center p{
 	display: inline-block;
 	color: #ffffff;
@@ -95,7 +75,7 @@
 .footer-distributed .footer-center p span{
 	display:block;
 	font-weight: normal;
-	font-size:15px;
+	/*font-size:16px;*/
 	line-height:2;
 }
 
@@ -114,7 +94,7 @@
 .footer-distributed .footer-website-about{
 	/* line-height: 20px; */
 	color:  #ffffff;
-	font-size: 15px;
+	/*font-size: 15px;*/
 	font-weight: normal;
 	margin: 0;
 }
@@ -122,30 +102,9 @@
 .footer-distributed .footer-website-about span{
 	display: block;
 	color:  #ffffff;
-	font-size: 15px;
+	/*font-size: 15px;*/
 	font-weight: bold;
 	margin-bottom: 20px;
-}
-
-.footer-distributed .footer-icons{
-	margin-top: 25px;
-}
-
-.footer-distributed .footer-icons a{
-	display: inline-block;
-	width: 35px;
-	height: 35px;
-	cursor: pointer;
-	background-color:  #33383b;
-	border-radius: 2px;
-
-	font-size: 20px;
-	color: #ffffff;
-	text-align: center;
-	line-height: 35px;
-
-	margin-right: 3px;
-	margin-bottom: 5px;
 }
 
 /* If you don't want the footer to be responsive, remove these media queries */
@@ -153,7 +112,7 @@
 @media (max-width: 1560px) {
 
 	.footer-distributed{
-		font: bold 15px;
+		font: bold 16px;
 		/* font: bold 15px sans-serif; */
 	}
 
