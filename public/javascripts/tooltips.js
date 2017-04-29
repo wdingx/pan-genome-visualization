@@ -117,7 +117,7 @@ export const tooltip_branch = d3.tip().attr('class', 'd3-tip').html(function(d) 
 
     return string;
 });
-
+tooltip_branch.offset([-5, 0])
 
 //** calling tooltip on toggle buttons (switch buttons)
 export const tooltip_toggle = function(tooltip_toggle_dict) {
