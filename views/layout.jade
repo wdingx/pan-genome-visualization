@@ -19,6 +19,7 @@ html
     //- link(rel="stylesheet", type="text/css", href='stylesheets/jquery.dataTables.min.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/msa-new.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/d3-tip.css')
+    link(rel="stylesheet", type="text/css", href='stylesheets/autocomplete.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/page-appearance.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/autohiding-navbar2.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/footer.css')
@@ -42,8 +43,8 @@ html
         #dc_data_count.col-md-2
           .alert.alert-info(role='alert') Species
           #species-selector
-          br
-          .dc_data_count
+          #species-search(style='margin-top:3px')
+          .dc_data_count(style='margin-top:3px')
         .col-md-2
           .alert.alert-info(role='alert') Core vs. Accessory
           #dc_coreAcc_piechart

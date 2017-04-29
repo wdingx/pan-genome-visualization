@@ -1,3 +1,4 @@
+import d3 from "d3";
 /**
  Copyright (c) 2014 BrightPoint Consulting, Inc.
 
@@ -23,7 +24,7 @@
  OTHER DEALINGS IN THE SOFTWARE.
  */
 
-function autocomplete(parent) {
+const autocomplete = function (parent) {
     var _data=null,
         _delay= 0,
         _selection,
@@ -38,7 +39,8 @@ function autocomplete(parent) {
         _lastSearchTerm,
         _currentIndex,
         _keys,
-        _selectedFunction=defaultSelected;
+        _results,
+        _selectedFunction=defaultSelected,
         _minLength = 1,
         _dataField = "dataField",
         _labelField = "labelField";
@@ -46,24 +48,19 @@ function autocomplete(parent) {
     _selection=d3.select(parent);
 
     function component() {
-        _selection.each(function (data) {
 
-            // Select the svg element, if it exists.
-            var container = d3.select(this).select("#bp-ac").data([data]);
-            var enter = container.enter()
-                    .append("div")
-                    .attr("id","bp-ac")
-                    .attr("class","bp-ac")
-                    .append("div")
-                    .attr("class","padded-row")
-                    .attr("class","padded-row")
-                    .append("div")
-                    .attr("style","bp-autocomplete-holder");
+            var container = d3.select(parent);
 
             container.attr("width", __width)
                 .attr("height", __height);
 
+            var enter = container.append("div")
+                    .attr("id","bp-ac")
+                    .attr("class","bp-ac")
+
             var input = enter.append("input")
+            			.attr("id","bp-input")
+            			.attr("type","search")
                         .attr("class", "form-control")
                         .attr("placeholder",_placeHolder)
                         .attr("type","text")
@@ -92,6 +89,7 @@ function autocomplete(parent) {
                         showSearching();
                         search();
                         processResults();
+                        console.log("results", _matches);
                         if (_matches.length == 0) {
                             showSearching("No results");
                         }
@@ -143,17 +141,16 @@ function autocomplete(parent) {
             function search() {
 
                 var str=_searchTerm;
-                console.log("searching on " + _searchTerm);
-                console.log("-------------------");
+                //console.log("searching on " + _searchTerm, _keys, _keys[0][_dataField]);
+                //console.log("-------------------");
 
                 if (str.length >= _minLength) {
                     _matches = [];
                     for (var i = 0; i < _keys.length; i++) {
                         var match = false;
                         match = match || (_keys[i][_dataField].toLowerCase().indexOf(str.toLowerCase()) >= 0);
-                        if (match) {
+                        if (match && _matches.length < 10) {
                             _matches.push(_keys[i]);
-                            //console.log("matches " + _keys[i][_dataField]);
                         }
                     }
                 }
@@ -186,7 +183,6 @@ function autocomplete(parent) {
                 dropDown.style("display","block");
             }
 
-        });
     }
 
 
@@ -274,3 +270,5 @@ function autocomplete(parent) {
     return component;
 
 }
+
+export default autocomplete;
