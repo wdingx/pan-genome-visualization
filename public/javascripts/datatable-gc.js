@@ -12,16 +12,16 @@ var multiselect = require('bootstrap-multiselect');
 $.multiselect = multiselect;
 
 //** column title for display
-export var geneCluster_table_columns=['Alignment','#Strain','','Name','','Annotation','','Duplicated','Events','Diversity','Length','Id','allAnn','allGName','locus'];
+export var geneCluster_table_columns=['Alignment','','Name','','Annotation','#Strain','','Duplicated','Events','Diversity','Length','Id','allAnn','allGName','locus'];
 
 //## dc_DataTables configuration <div style="display:inline-block" ></div>
 var table_columns= [
     {'defaultContent': '<button type="button" class="btn btn-info btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="amino acid alignment" >aa </button> <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="nucleotide alignment" >na </button> '},
-    {'data':'count'},//count
     {'defaultContent': '','data':null, 'className': 'geneName-details-control', 'orderable': false},//geneName expand
     {'data':'GName'},//geneName
     {'defaultContent': '','data':null, 'className': 'ann-details-control', 'orderable': false},//annotation expand
     {'data':'ann'},//annotation    //'width':10,
+    {'data':'count'},//count
     {'defaultContent': '','data':null, 'className': 'dup-details-control', 'orderable': false},//duplication expand
     {'data':'dupli'},//duplication
     {'data':'event'},
