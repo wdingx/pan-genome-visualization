@@ -1,5 +1,5 @@
 import {preOrderIteration} from "../phyloTree/src/treeHelpers";
-import {tooltip_node} from './tooltips';
+import {tooltip_node,tooltip_branch} from './tooltips';
 import {panXTree} from './global';
 
 const subtree_node_colors = d3.scale.category20c();
@@ -83,6 +83,7 @@ const onBranchLeave = function(d){
   d3.select('#coreTree_legend')
     .style('visibility','visible');
   preOrderIteration(d, function(x){if (x.terminal){onTipLeave(x);}});
+  tooltip_branch.hide();
 };
 
 const geneTreeCallbacks = {

@@ -8,7 +8,7 @@ import {updateGeometry} from "../phyloTree/src/updateTree";
 import {linkTableAlignmentTrees, linkMetaTableTree} from "./linkTableAlignmentTrees";
 import {create_dropdown, updateMetadata} from "./meta-color-legend";
 import {assign_metadata_color} from "./meta-color-assignment";
-import {tooltip_toggle,tooltip_toggle_dict,tooltip_node} from './tooltips';
+import {tooltip_toggle,tooltip_toggle_dict,tooltip_node,tooltip_branch} from './tooltips';
 import speciesTreeCallbacks from "./speciesTreeCallbacks";
 import geneTreeCallbacks from "./geneTreeCallbacks";
 import autocomplete from './third_party/autocomplete';
@@ -52,7 +52,14 @@ const handleSpeciesTree = function(newTree){
         .on('mouseover', function(d){speciesTreeCallbacks.onTipHover(d);
                                      tooltip_node.show.apply(this, [...arguments, this])});
     mySpeciesTree.svg
-        .call(tooltip_node);
+        .selectAll('.branch')
+        .on('mouseover', function(d){speciesTreeCallbacks.onBranchHover(d);
+                                     tooltip_branch.show.apply(this, [...arguments, this])});
+
+        ;
+    mySpeciesTree.svg
+        .call(tooltip_node)
+        .call(tooltip_branch);
     //console.log("render_viewer:mySpeciesTree ",mySpeciesTree);
 }
 const handleGeneTree = function(newTree){
@@ -65,7 +72,13 @@ const handleGeneTree = function(newTree){
         .on('mouseover', function(d){geneTreeCallbacks.onTipHover(d);
                                      tooltip_node.show.apply(this, [...arguments, this])});
     myGeneTree.svg
-        .call(tooltip_node);
+        .selectAll('.branch')
+        .on('mouseover', function(d){geneTreeCallbacks.onBranchHover(d);
+                                     tooltip_branch.show.apply(this, [...arguments, this])});
+
+    myGeneTree.svg
+        .call(tooltip_node)
+        .call(tooltip_branch);
     //console.log("render_viewer:myGeneTree ",myGeneTree);
 }
 
