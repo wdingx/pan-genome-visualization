@@ -32,7 +32,8 @@ const speciesTree = function(tree_svg,treeJsonPath, handleResult){
     //console.log("loading speciesTree", treeJsonPath);
     d3.json(treeJsonPath, function(err, data){
         if (data){
-            myTree = phyloTree(data, {svg:treeplot, margins:{top:10, bottom:10, left:10, right:10}, scaleBar:true,
+            myTree = phyloTree(data, {svg:treeplot, margins:{top:10, bottom:10, left:10, right:10},
+                                      scaleBar:true, autoTipSize:false, tipStrokeWidth:0.5,
                                       callbacks:speciesTreeCallbacks, orientation:{x:1, y:1}}
                                );
         }else{
