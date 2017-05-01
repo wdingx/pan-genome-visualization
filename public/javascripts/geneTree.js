@@ -39,7 +39,9 @@ const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, layout_choice)
     d3.json(treeJsonPath, function(err, data){
         //console.log(data, err);
         if (data){
-            myTree = phyloTree(data, {svg:treeplot, margins:{top:10, bottom:10, left:10, right:10},scaleBar:true, layout:(layout_choice)?layout_choice:'rect',
+            myTree = phyloTree(data, {svg:treeplot, margins:{top:10, bottom:10, left:10, right:10},
+                                      scaleBar:true, layout:(layout_choice)?layout_choice:'rect',
+                                      autoTipSize:false, tipStrokeWidth:0.5,
                                       callbacks:geneTreeCallbacks, orientation:{x:-1, y:1}}
                                );
             //console.log(myTree);

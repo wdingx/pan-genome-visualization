@@ -14,10 +14,13 @@ export const metaDataTable = {
         //# assign data to each column
         var columnDefs_list=[];
         for (var i = 0, len = meta_display_order.length; i < len; i++) {
-            columnDefs_list.push({
-                'targets': i,
-                'data': meta_display_order[i]
-            });
+            var column_config={'targets': i,'data': meta_display_order[i]};
+            //** add hyperlink for NCBI accession number
+            if (meta_display_order[i]=='accession'){
+                column_config['render']= function(data, type, row, meta){
+                                         return '<a href="https://www.ncbi.nlm.nih.gov/nuccore/'+data+'" target="_blank">'+data+'</a>';}
+            }
+            columnDefs_list.push(column_config);
         }
 
         metaDatatable= $('#'+meta_table_id).DataTable({
