@@ -37,7 +37,7 @@ export const tooltip_tableHeader = function(divID, tooltip_dict) {
 export const tooltip_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
     var string = "";
     //** speicesTree tooltip
-    string +="<br/> <table rules='cols'> "
+    string +="<table rules='cols'> "
     if (d.name != undefined) {
         if (d.n.accession==undefined){
             //string += "NCBI accesion:  " + d.name;
@@ -95,27 +95,29 @@ export const tooltip_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
     return string;
 });
 
-export const tooltip_link = d3.tip().attr('class', 'd3-tip').html(function(d) {
+export const tooltip_branch = d3.tip().attr('class', 'd3-tip').html(function(d) {
     var string = "";
-    if (typeof d.target.ann != "undefined") {
-        string += "<br/>" + "annotation:  " + d.target.ann;
-        }
-    if (typeof d.target.muts != "undefined") {
-        var muts_str=d.target.muts
-        if (muts_str.length>50) { muts_str=muts_str.substr(0,50)+'...'}
-        string += "<br/>" + "nucleotide mutations:  " + muts_str
-        }
-    if (typeof d.target.aa_muts != "undefined") {
-        var aa_muts_str=d.target.aa_muts
-        if (aa_muts_str.length>50) { aa_muts_str=aa_muts_str.substr(0,50)+'...'}
-        string += "<br/>" + "amino acid mutations:  " + aa_muts_str;
-        }
-
+    string += "click and zoom into clade ";
+    if (d.target) {
+        if (typeof d.target.ann != "undefined") {
+            string += "<br/>" + "annotation:  " + d.target.ann;
+            }
+        if (typeof d.target.muts != "undefined") {
+            var muts_str=d.target.muts
+            if (muts_str.length>50) { muts_str=muts_str.substr(0,50)+'...'}
+            string += "<br/>" + "nucleotide mutations:  " + muts_str
+            }
+        if (typeof d.target.aa_muts != "undefined") {
+            var aa_muts_str=d.target.aa_muts
+            if (aa_muts_str.length>50) { aa_muts_str=aa_muts_str.substr(0,50)+'...'}
+            string += "<br/>" + "amino acid mutations:  " + aa_muts_str;
+            }
+    }
     string += "<div class=\"smallspacer\"></div>";
 
     return string;
 });
-
+tooltip_branch.offset([-5, 0])
 
 //** calling tooltip on toggle buttons (switch buttons)
 export const tooltip_toggle = function(tooltip_toggle_dict) {

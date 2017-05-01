@@ -11,14 +11,17 @@ require('bootstrap-toggle');
 var multiselect = require('bootstrap-multiselect');
 $.multiselect = multiselect;
 
+//** column title for display
+export var geneCluster_table_columns=['Alignment','','Name','','Annotation','#Strain','','Duplicated','Events','Diversity','Length','Id','allAnn','allGName','locus'];
+
 //## dc_DataTables configuration <div style="display:inline-block" ></div>
-const table_columns= [
+var table_columns= [
     {'defaultContent': '<button type="button" class="btn btn-info btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="amino acid alignment" >aa </button> <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="nucleotide alignment" >na </button> '},
-    {'data':'count'},//count
     {'defaultContent': '','data':null, 'className': 'geneName-details-control', 'orderable': false},//geneName expand
     {'data':'GName'},//geneName
     {'defaultContent': '','data':null, 'className': 'ann-details-control', 'orderable': false},//annotation expand
-    {'data':'ann'},//annotation
+    {'data':'ann'},//annotation    //'width':10,
+    {'data':'count'},//count
     {'defaultContent': '','data':null, 'className': 'dup-details-control', 'orderable': false},//duplication expand
     {'data':'dupli'},//duplication
     {'data':'event'},
@@ -27,9 +30,23 @@ const table_columns= [
     {'data':'geneId','visible': false},
     {'data':'allAnn','visible': false},
     {'data':'allGName','visible': false},
-    {'defaultContent': '','data':'locus','visible': false},
-    {'data':'msa','visible': false} //'width':10,
-]
+    {'defaultContent': '','data':'locus','visible': false}
+    //{'data':'msa','visible': false}
+];
+
+//** if new_column_config.js is given, add new column to the cluster table
+//** insert the column after insertion_position (insertion_pos)
+//** e.g.: col_header:'PAO1'
+if (typeof new_columns_config!= "undefined"){
+    for (let new_column_config of new_columns_config) {
+        const insertion_index= geneCluster_table_columns.indexOf(new_column_config.insertion_pos)+1;
+        //** insert new header
+        geneCluster_table_columns.splice(insertion_index, 0, new_column_config.col_header);
+        //** insert data linked with new header for datatable initialization (column_config)
+        table_columns.splice(insertion_index, 0, new_column_config.new_col);
+    }
+}
+
 var column_config=[];
 var table_columns_length = table_columns.length;
 for (let i = 0; i<table_columns_length; i++) {
@@ -39,8 +56,6 @@ for (let i = 0; i<table_columns_length; i++) {
 }
 //** column configuration for datatables
 //export const dc_dataTable_columnDefs_config=column_config;
-//** column title for display
-export const geneCluster_table_columns=['Alignment','#Strain','','Name','','Annotation','','Duplicated','Events','Diversity','Length','Id','allAnn','allGName','locus']
 //** column descend/ascend sorting order
 const column_desc= '#Strain',
       column_asc= 'Name',

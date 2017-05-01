@@ -2,7 +2,7 @@ var species_dt={
 	'optgroup1':{'label':'Case studies:',
 				 'members': ['S_pneumoniae616','P_marinus_meta']},
 	'optgroup2':{'label':'Pan-genomes from RefSeq records:',
-				 'members': ['A_baumannii','B_anthracis','B_pseudomallei','B_subtilis','B_thuringiensis','C_jejuni','C_pseudotuberculosis','C_trachomatis','E_coli','F_tularensis','H_pylori','K_pneumoniae','L_lactis','L_monocytogenes','L_pneumophila','M_tuberculosis','N_meningitidis','P_aeruginosa','S_aureus','S_enterica','S_pneumoniae','S_pyogenes','V_cholerae','X_citri','X_oryzae','Y_pestis']},
+				 'members': ['A_baumannii','B_anthracis','B_pseudomallei','B_subtilis','C_jejuni','C_pseudotuberculosis','C_trachomatis','E_coli','F_tularensis','H_pylori','K_pneumoniae','L_lactis','L_monocytogenes','L_pneumophila','M_tuberculosis','N_meningitidis','P_aeruginosa','S_aureus','S_enterica','S_pneumoniae','S_pyogenes','V_cholerae','X_citri','X_oryzae','Y_pestis']},
 	'S_pneumoniae616':'Epidemiology of S. pneumoniae',
 	'P_marinus_meta':'Prochlorococcus marinus (metadata)',
 	'A_baumannii': 'Acinetobacter baumannii (71)',
