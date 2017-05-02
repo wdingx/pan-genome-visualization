@@ -22,7 +22,7 @@ export const panXTree = {
     tiparalogFillHover:"#314BC6",
     genePresentFill: '#3A89EA',//'#3A89EA' '#1F69C4' gene presence
     geneAbsentFill: '#CCC', // '#D82400' '#EA5833'; gene absence
-    genePresentR: 4, // tip radius
+    genePresentR: 5, // tip radius
     geneAbsentR:  3,
     strokeToFill: 0.4,  //brightness difference between stroke and fill
     tipStroke: '#555555',

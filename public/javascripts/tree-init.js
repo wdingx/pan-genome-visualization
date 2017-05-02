@@ -292,7 +292,7 @@ export const colorPresenceAbsence = function(speciesTree){
     var node,strain, fill;
     for (var i=0; i<speciesTree.tips.length; i++){
         node = speciesTree.tips[i];
-        node.tipAttributes.r = node.genePresent?5:3;
+        node.tipAttributes.r = node.genePresent?panXTree.genePresentR:panXTree.geneAbsentR;
         fill = node.genePresent?panXTree.genePresentFill:panXTree.geneAbsentFill
         node.tipAttributes.fill = fill;
         node.tipAttributes.stroke = d3.rgb(fill).darker(panXTree.strokeToFill).toString();
