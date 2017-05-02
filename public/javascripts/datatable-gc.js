@@ -11,26 +11,23 @@ require('bootstrap-toggle');
 var multiselect = require('bootstrap-multiselect');
 $.multiselect = multiselect;
 
-//** column title for display
-export var geneCluster_table_columns=['Alignment','','Name','','Annotation','#Strain','','Duplicated','Events','Diversity','Length','Id','allAnn','allGName','locus'];
-
 //## dc_DataTables configuration <div style="display:inline-block" ></div>
 var table_columns= [
-    {'defaultContent': '<button type="button" class="btn btn-info btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="amino acid alignment" >aa </button> <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="nucleotide alignment" >na </button> '},
-    {'defaultContent': '','data':null, 'className': 'geneName-details-control', 'orderable': false},//geneName expand
-    {'data':'GName'},//geneName
-    {'defaultContent': '','data':null, 'className': 'ann-details-control', 'orderable': false},//annotation expand
-    {'data':'ann'},//annotation    //'width':10,
-    {'data':'count'},//count
-    {'defaultContent': '','data':null, 'className': 'dup-details-control', 'orderable': false},//duplication expand
-    {'data':'dupli'},//duplication
-    {'data':'event'},
-    {'data':'divers'},
-    {'data':'geneLen'},
-    {'data':'geneId','visible': false},
-    {'data':'allAnn','visible': false},
-    {'data':'allGName','visible': false},
-    {'defaultContent': '','data':'locus','visible': false}
+    {'defaultContent': '<button type="button" class="btn btn-info btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="amino acid alignment" >aa </button> <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="nucleotide alignment" >na </button> ',  'header':'Alignment','tooltip':'multiple sequence alignment'},
+    {'defaultContent': '','data':null, 'className': 'geneName-details-control', 'orderable': false,  'header':''},//geneName expand
+    {'data':'GName',  'header':'Name','tooltip':'gene name'},//geneName
+    {'defaultContent': '','data':null, 'className': 'ann-details-control', 'orderable': false,  'header':''},//annotation expand
+    {'data':'ann',  'header':'Annotation','tooltip':'gene annotation'},//annotation    //'width':10,
+    {'data':'count',  'header':'#Strain','tooltip':'strain count'},//count
+    {'defaultContent': '','data':null, 'className': 'dup-details-control', 'orderable': false,  'header':''},//duplication expand
+    {'data':'dupli',  'header':'Duplicated','tooltip':'whether duplicated and duplication count in each strain'},//duplication
+    {'data':'event',  'header':'Events','tooltip':'gene gain/loss events count'},
+    {'data':'divers',  'header':'Diversity','tooltip':'gene diversity'},
+    {'data':'geneLen',  'header':'Length','tooltip':'average gene length'},
+    {'data':'geneId','visible': false,  'header':'','tooltip':''},
+    {'data':'allAnn','visible': false,  'header':'','tooltip':''},
+    {'data':'allGName','visible': false,  'header':'','tooltip':''},
+    {'defaultContent': '','data':'locus','visible': false,  'header':'','tooltip':''}
     //{'data':'msa','visible': false}
 ];
 
@@ -47,15 +44,27 @@ if (typeof new_columns_config!= "undefined"){
     }
 }
 
+//** column header title for display
+export var geneCluster_table_columns=[];
+//** column title tooltip
+export const clusterTable_tooltip_dict= {};
+
+var header, column_data;
 var column_config=[];
-var table_columns_length = table_columns.length;
-for (let i = 0; i<table_columns_length; i++) {
-    let column_data= table_columns[i];
-    column_data['targets']=i;//** push index in targets
+for (let i=0, len=table_columns.length ; i<len; i++) {
+    column_data= table_columns[i];
+    header=column_data['header'];
+    //** header for display
+    geneCluster_table_columns.push(header);
+    //** header tooltip
+    if (header.length!=0){
+        clusterTable_tooltip_dict[header]=column_data['tooltip']
+    }
+    //** push index in targets
+    column_data['targets']=i;
     column_config.push(column_data); //width:60,
 }
-//** column configuration for datatables
-//export const dc_dataTable_columnDefs_config=column_config;
+
 //** column descend/ascend sorting order
 const column_desc= '#Strain',
       column_asc= 'Name',
@@ -64,16 +73,7 @@ const column_desc= '#Strain',
 //const table_sort_order= [[, 'desc' ],[8, 'asc' ]];
 //console.log(column_desc_index,column_asc_index)
 const table_sort_order= [[column_desc_index, 'desc' ],[column_asc_index, 'asc' ]];
-//** column header tooltip
-export const clusterTable_tooltip_dict= {
-    'Alignment':'multiple sequence alignment',
-    '#Strain':'strain count',
-    'Duplicated':'whether duplicated and duplication count in each strain',
-    'Diversity':'gene diversity',
-    'Events':'gene gain/loss events count',
-    'Length':'average gene length',
-    'Name':'gene name',
-    'Annotation':'gene annotation'}
+
 //** button for showing/hiding columns in table
 //## pay attention to GC table column order
 export const GC_table_dropdown_columns=['multiple sequence alignment','#strain','geneName','annotation','duplicated', 'gene gain/loss events','diversity','gene length'];
@@ -104,6 +104,7 @@ export const create_multiselect = function (div, columns_set) {
     }
 };
 
+//** column configuration for datatables
 export const datatable_configuration = function(table_input, table_id, col_select_id) {
     "use strict";
     //GC_tablecol_select
