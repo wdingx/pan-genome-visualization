@@ -21,7 +21,6 @@ const metaUnknown=panXTree.metaUnknown,
 //## create legend
 const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ // && legendOptionValue!= "Meta-info"
     //console.log(metaType);
-    const meta_coloring_type= meta_display['color_options'][metaType]['type'];
 
     // assign gene presence absence. this relies on node.genePresent being set
     if (metaType==="genePattern"){
@@ -30,6 +29,7 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
         styleGainLoss(speciesTree);
     }
     else if (metaType!='') {
+        const meta_coloring_type= meta_display['color_options'][metaType]['type'];
         //show colormap selector for discrete color scales
         const visibility=(meta_coloring_type=='discrete')?'visible':'hidden';
         d3.select('#colorblind_div').style('visibility',visibility);
