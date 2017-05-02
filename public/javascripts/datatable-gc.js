@@ -31,26 +31,11 @@ var table_columns= [
     //{'data':'msa','visible': false}
 ];
 
-//** if new_column_config.js is given, add new column to the cluster table
-//** insert the column after insertion_position (insertion_pos)
-//** e.g.: col_header:'PAO1'
-if (typeof new_columns_config!= "undefined"){
-    for (let new_column_config of new_columns_config) {
-        const insertion_index= geneCluster_table_columns.indexOf(new_column_config.insertion_pos)+1;
-        //** insert new header
-        geneCluster_table_columns.splice(insertion_index, 0, new_column_config.col_header);
-        //** insert data linked with new header for datatable initialization (column_config)
-        table_columns.splice(insertion_index, 0, new_column_config.new_col);
-    }
-}
-
 //** column header title for display
 export var geneCluster_table_columns=[];
 //** column title tooltip
 export const clusterTable_tooltip_dict= {};
-
 var header, column_data;
-var column_config=[];
 for (let i=0, len=table_columns.length ; i<len; i++) {
     column_data= table_columns[i];
     header=column_data['header'];
@@ -60,6 +45,29 @@ for (let i=0, len=table_columns.length ; i<len; i++) {
     if (header.length!=0){
         clusterTable_tooltip_dict[header]=column_data['tooltip']
     }
+}
+
+//** if new_column_config.js is given, add new column to the cluster table
+//** insert the column after insertion_position (insertion_pos)
+//** e.g.: col_header:'PAO1'
+var insertion_index, new_column_header, new_column_data;
+if (typeof new_columns_config!= "undefined"){
+    for (let new_column_config of new_columns_config) {
+        new_column_header=new_column_config.col_header;
+        new_column_data=new_column_config.new_col;
+        insertion_index= geneCluster_table_columns.indexOf(new_column_config.insertion_pos)+1;
+        //** insert new header and related tooltip
+        geneCluster_table_columns.splice(insertion_index, 0, new_column_header);
+        clusterTable_tooltip_dict[new_column_header]=new_column_data['tooltip']
+        //** insert data linked with new header for datatable initialization (column_config)
+        table_columns.splice(insertion_index, 0, new_column_data);
+    }
+}
+
+//** prepare column configuration for cluster datatable
+var column_data, column_config=[];
+for (let i=0, len=table_columns.length ; i<len; i++) {
+    column_data= table_columns[i];
     //** push index in targets
     column_data['targets']=i;
     column_config.push(column_data); //width:60,
