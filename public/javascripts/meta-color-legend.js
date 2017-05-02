@@ -17,32 +17,21 @@ export const removeLegend = function(coreTree_legend_id) {
 
 const metaUnknown=panXTree.metaUnknown,
       strokeToFill = panXTree.strokeToFill;
+
 //## create legend
 const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ // && legendOptionValue!= "Meta-info"
     //console.log(metaType);
+    const meta_coloring_type= meta_display['color_options'][metaType]['type'];
+
+    // assign gene presence absence. this relies on node.genePresent being set
     if (metaType==="genePattern"){
         d3.select('#colorblind_div').style('visibility','hidden');
-        var node,strain, fill;
-        for (var i=0; i<speciesTree.tips.length; i++){
-            node = speciesTree.tips[i];
-            node.tipAttributes.r = node.genePresent?5:3;
-            fill = node.genePresent?panXTree.genePresentFill:panXTree.geneAbsentFill
-            node.tipAttributes.fill = fill;
-            node.tipAttributes.stroke = d3.rgb(fill).darker(strokeToFill).toString();
-        }
         colorPresenceAbsence(speciesTree);
         styleGainLoss(speciesTree);
-        for (var i=0; i<geneTree.tips.length; i++){
-            node = geneTree.tips[i];
-            strain = speciesTree.namesToTips[node.n.accession];
-            node.tipAttributes.fill = "#AAA";
-            node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
-        }
-        updateTips(geneTree, [], ["fill", "stroke"], 0);
-
     }
     else if (metaType!='') {
-        const visibility=(meta_display['color_options'][metaType]['type']=='discrete') ?'visible':'hidden';
+        //show colormap selector for discrete color scales
+        const visibility=(meta_coloring_type=='discrete')?'visible':'hidden';
         d3.select('#colorblind_div').style('visibility',visibility);
 
         //** assign specific metadata color to speciesTree tips, if they are not yet addressed
@@ -51,92 +40,79 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
             speciesTree.meta[metaType]='assigned';
             for (let node of speciesTree.tips){
                 if (!node.metaColor){node.metaColor={}}
-                if (meta_display['color_options'][metaType]['type']=='discrete'){
+                if (meta_coloring_type=='discrete'){
                     node.metaColor[metaType]={common:{},safe:{}};
                     node.metaColor[metaType].common=metaColor_dicts[metaType]['common'][node.n.attr[metaType]];
                     node.metaColor[metaType].safe=metaColor_dicts[metaType]['safe'][node.n.attr[metaType]];
                 }else{//** continuous or mixed_continuous
-                    const lengend_value= metaColor_reference_dicts[metaType][node.n.attr[metaType]];
-                    node.metaColor[metaType]= metaColor_dicts[metaType][lengend_value];
+                    const legend_value= metaColor_reference_dicts[metaType][node.n.attr[metaType]];
+                    node.metaColor[metaType]= metaColor_dicts[metaType][legend_value];
                 }
             }
         }
 
+        // update the internal data of tips of the species tree
+        var fill, node, strain, legend_value;
         for (var i=0; i<speciesTree.tips.length; i++){
-            const node = speciesTree.tips[i];
-            if (meta_display['color_options'][metaType]['type']=='discrete'){
-                const fill=(metaLegend.common_color) ?node.metaColor[metaType].common :node.metaColor[metaType].safe;
+            node = speciesTree.tips[i];
+            if (meta_coloring_type=='discrete'){
+                fill=(metaLegend.common_color) ?node.metaColor[metaType].common :node.metaColor[metaType].safe;
                 //node.tipAttributes.is_metaUnknown= fill ? false :true;
                 //node.tipAttributes.r*= fill? 1: 0.5;
-                node.tipAttributes.opacity= fill ? 1 :0.5;
-                node.tipAttributes.fill = fill || metaUnknown;
-                node.branchAttributes["stroke"] = fill || metaUnknown;
             }else{//** continuous or mixed_continuous
-                const fill= node.metaColor[metaType];
+                fill= node.metaColor[metaType];
                 //node.tipAttributes.is_metaUnknown= fill ? false :true;
                 //node.tipAttributes.r*= fill ? 1 :0.8;
-                node.tipAttributes.opacity= fill ? 1 :0.5;
-                node.tipAttributes.fill = fill|| metaUnknown;
-                node.branchAttributes["stroke"] = fill || metaUnknown;
             }
+            node.tipAttributes.opacity= fill ? 1 : 0.5;
+            node.tipAttributes.fill = fill|| metaUnknown;
+            node.branchAttributes.stroke = fill || metaUnknown;
             node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
         }
 
+        //update the gene tree
         for (var i=0; i<geneTree.tips.length; i++){
-            const node = geneTree.tips[i];
-            const strain = speciesTree.namesToTips[node.n.accession];
-            if(meta_display['color_options'][metaType]['type']=='discrete'){
-                const fill= (metaLegend.common_color) ?metaColor_dicts[metaType]['common'][strain.n.attr[metaType]] :metaColor_dicts[metaType]['safe'][strain.n.attr[metaType]];
-                node.tipAttributes.fill = fill || metaUnknown;
+            node = geneTree.tips[i];
+            strain = speciesTree.namesToTips[node.n.accession];
+            if(meta_coloring_type=='discrete'){
+                fill= (metaLegend.common_color) ? metaColor_dicts[metaType]['common'][strain.n.attr[metaType]] :metaColor_dicts[metaType]['safe'][strain.n.attr[metaType]];
             }else{//** continuous
-                const lengend_value= metaColor_reference_dicts[metaType][strain.n.attr[metaType]],
-                      fill =metaColor_dicts[metaType][lengend_value];
-                node.tipAttributes.fill = fill || metaUnknown;
+                legend_value = metaColor_reference_dicts[metaType][strain.n.attr[metaType]];
+                fill = metaColor_dicts[metaType][legend_value];
             }
+            node.tipAttributes.fill = fill || metaUnknown;
             node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
         }
 
         //** assign internal branch color
+        var consistent_flag=0, color_compare='';
         for (var i=0; i<speciesTree.internals.length; i++){
             const inner_node = speciesTree.internals[i];
-            var color_compare='',consistent_flag=0,fill;
+            color_compare='';
+            consistent_flag=0;
+            fill=0;
             preOrderIteration(inner_node, function(d){if (d.terminal){
                 if (color_compare==''){ fill=d.tipAttributes.fill}
                 if (color_compare!==d.tipAttributes.fill) {consistent_flag+=1}
                 color_compare=d.tipAttributes.fill;}
             });
             if (consistent_flag==1) {
-                inner_node.branchAttributes["stroke"] = fill|| metaUnknown;
+                inner_node.branchAttributes.stroke = fill|| metaUnknown;
             }else{
                 //** use gene event color for internal branch color
                 //inner_node.branchAttributes["stroke"] = inner_node.branchAttributes['event_pattern'];
-                inner_node.branchAttributes["stroke"] = panXTree.branchStroke_default;
+                inner_node.branchAttributes.stroke = panXTree.branchStroke_default;
             }
         }
 
+        //finally redraw the tree with the newly set attributes
         updateTips(geneTree, [], ["fill", "stroke"], 0);
         // updateTips(speciesTree, ['opacity'], ["fill", "stroke"], 0);
         updateTips(speciesTree, [], ["fill", "stroke"], 0);
         updateBranches(speciesTree, [], ["stroke"], 0);
 
-        var legend= d3.select('#'+coreTree_legend_id)
-            .attr('width', metaLegend.legend_width)
-            .attr('height', metaLegend.legend_height);
-        var tmp_leg = legend.selectAll(".legend")
-            .data( metaColor_dicts_keys[metaType] )
-            .enter().append('g')
-            .attr('class', 'legend')
-            .attr('transform', function(d, i) {
-                var stack = 50;
-                var height = legendRectSize + legendSpacing;
-                var fromRight = Math.floor(i / stack);
-                var fromTop = i % stack;
-                var horz = fromRight * 145 + 5;
-                var vert = fromTop * height + 5;
-                return 'translate(' + horz + ',' + vert + ')';
-            });
 
-        const meta_coloring_type= meta_display['color_options'][metaType]['type'];
+        //define legend behavior on mouse interaction
         const mouseover_legend = function(metaField, tree){
             tree.tipElements
             .filter(function(d){
@@ -160,10 +136,29 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
         }
 
         const assign_legend_color = function (d) {
-            if (meta_display['color_options'][metaType]['type']=='discrete'){
+            if (meta_coloring_type=='discrete'){
                 return (metaLegend.common_color) ?metaColor_dicts[metaType]['common'][d] :metaColor_dicts[metaType]['safe'][d];
             }else{ return metaColor_dicts[metaType][d];}
         }
+
+
+        //draw the legend
+        var legend= d3.select('#'+coreTree_legend_id)
+            .attr('width', metaLegend.legend_width)
+            .attr('height', metaLegend.legend_height);
+        var tmp_leg = legend.selectAll(".legend")
+            .data( metaColor_dicts_keys[metaType] )
+            .enter().append('g')
+            .attr('class', 'legend')
+            .attr('transform', function(d, i) {
+                var stack = 50;
+                var height = legendRectSize + legendSpacing;
+                var fromRight = Math.floor(i / stack);
+                var fromTop = i % stack;
+                var horz = fromRight * 145 + 5;
+                var vert = fromTop * height + 5;
+                return 'translate(' + horz + ',' + vert + ')';
+            });
 
         tmp_leg.append('rect')
             .attr('width', legendRectSize)
@@ -198,25 +193,29 @@ export const updateMetadata = function(metaType,speciesTree,geneTree,meta_displa
     makeLegend(metaType,speciesTree,geneTree,coreTree_legend_id, tool_side);
 };
 
-//## creat dropdown-list for meta-info
+//## create dropdown-list for meta-info
 export const create_dropdown = function (div, speciesTree, geneTree, meta_display,coreTree_legend_id, tool_side) {
     const meta_display_order=meta_display['meta_display_order'];
     var menu_panel = d3.select(div)
 
+    //create panel
     var dropdown_meta = menu_panel
         .append("select")
         .attr("id","dropdown_select")
         .attr("class","form-control sm-customized")
 
+    //add title "Meta data coloring"
     dropdown_meta.append("option")
         .attr("value", "Meta-info")
         .attr("selected", 1)
-        .text("Meta-info");
+        .text("Color by meta data");
 
+    //add gene presence absence entry
     dropdown_meta.append("option")
         .attr("value", "genePattern")
         .text("Gene presence/absence");
 
+    //add additional species dependent entries that are specified in meta_display
     for (var i = 0, len = meta_display_order.length; i < len; i++) {
         const metaType= meta_display_order[i];
         if (meta_display['color_options'][metaType]['display']==undefined || meta_display['color_options'][metaType]['display']!='no'){
