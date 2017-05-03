@@ -2,7 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  devtool: ['eval','sourcemap'],
+  devtool: 'eval',//['eval','sourcemap'],
   entry: [
     'webpack-hot-middleware/client',
     './public/javascripts/render_viewer'
