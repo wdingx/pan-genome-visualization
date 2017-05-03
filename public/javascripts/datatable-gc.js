@@ -84,7 +84,8 @@ const table_sort_order= [[column_desc_index, 'desc' ],[column_asc_index, 'asc' ]
 
 //** button for showing/hiding columns in table
 //## pay attention to GC table column order
-export const GC_table_dropdown_columns=['multiple sequence alignment','#strain','geneName','annotation','duplicated', 'gene gain/loss events','diversity','gene length'];
+//export const GC_table_dropdown_columns=['multiple sequence alignment','geneName','annotation','#strain','duplicated', 'gene gain/loss events','diversity','gene length'];
+export const GC_table_dropdown_columns= geneCluster_table_columns.filter(function(n){ return n != '' });
 
 //** create GC table HTML structure
 export const create_dataTable = function (div, columns_set) {
