@@ -8,7 +8,7 @@ Although several software are available for pan-genome analysis, yet visualizati
 
 panX displays the pan-genome using interconnected visual components including gene cluster table, multiple alignment, comparative phylogenetic tree viewers and strain metadata table. The pan-genome data structures are prepared by our [pan-genome-analysis](https://github.com/neherlab/pan-genome-analysis) analysis pipeline, which efficiently identifies orthologous clusters from large sets of genome sequences and pre-computes alignments, trees, and plenty of informative statistics.
 **panX is available at [pangenome.de](http://pangenome.de)**
-### clone the repository
+### Clone the repository
 ```
 git clone https://github.com/neherlab/pan-genome-visualization
 git submodule update --init
