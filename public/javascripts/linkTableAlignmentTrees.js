@@ -28,6 +28,17 @@ const showViewerTitle = function(genetree_title_id,message,ann_majority) {
     sequence_viewer.html(' Sequence alignment | ' +ann_majority)
 };
 
+//** unselect metaTable_tree by either clicking "Unselect" button (on metatable)
+//** Or clicking a new cluster
+const unselect_metaTable_tree = function(MetaTableID, speciesTree){
+    $('#'+MetaTableID+' tbody'+' tr').removeClass('active row_selected');
+    if (speciesTree){
+        undoHideNonSelected(speciesTree);
+    }else{
+        console.log("speciesTree not available");
+    }
+}
+
 export const loadNewGeneCluster = function(data, handleGeneTree, seqType){
     const clusterID=data.msa,
           ann_majority=data.ann;
@@ -63,13 +74,14 @@ const table_select_tip_annotation= function (input_annotation,myGeneTree) {
     }
 };
 
-export const linkTableAlignmentTrees = function(tableID, datatable, speciesTree, handleGeneTree){
+export const linkTableAlignmentTrees = function(clusterTableID, metaTableId, datatable, speciesTree, handleGeneTree){
     /** row-clicking trigger: update MSA amino_acid alignment when clicking datatable row*/
-    $('#'+tableID+' tbody').on('click', 'tr', function (e) {
+    $('#'+clusterTableID+' tbody').on('click', 'tr', function (e) {
         var data = datatable.row($(this)).data();
         if (data){ //** fetch alignment filename from the table row
             loadNewGeneCluster(data, handleGeneTree, 'aa');
-            $('#'+tableID+' tbody tr').removeClass('row_selected');
+            unselect_metaTable_tree(metaTableId,speciesTree);
+            $('#'+clusterTableID+' tbody tr').removeClass('row_selected');
             $(this).addClass('row_selected');
         } else{ //** when rows in nested table cliked
             const myGeneTree=panXTree.currentGeneTree;
@@ -81,14 +93,14 @@ export const linkTableAlignmentTrees = function(tableID, datatable, speciesTree,
             if ( row_index!==0 && !is_colspan){
                 const is_annotation=$(this).parents('tr').text().startsWith('Annotation');
                 if (!$(this).hasClass("row_selected")){
-                    $('#'+tableID+' tbody tr').removeClass('row_selected');
+                    $('#'+clusterTableID+' tbody tr').removeClass('row_selected');
                     $(this).addClass('row_selected');
                     //** select related tips in geneTree with the same annotation
                     if (is_annotation){
                         table_select_tip_annotation(cell_text,myGeneTree);
                     }
                 }else{
-                    $('#'+tableID+' tbody tr').removeClass('row_selected');
+                    $('#'+clusterTableID+' tbody tr').removeClass('row_selected');
                     if (is_annotation){
                         undoHideNonSelected(myGeneTree);
                     }
@@ -98,13 +110,13 @@ export const linkTableAlignmentTrees = function(tableID, datatable, speciesTree,
         }
     });
 
-    $('#'+tableID+' tbody').on('click', '.btn.btn-info.btn-xs', function (e) {
+    $('#'+clusterTableID+' tbody').on('click', '.btn.btn-info.btn-xs', function (e) {
         var data = datatable.row( $(this).parents('tr') ).data();
         loadNewGeneCluster(data, handleGeneTree, 'aa');
         e.stopPropagation();
     });
 
-    $('#'+tableID+' tbody').on('click', '.btn.btn-primary.btn-xs', function (e) {
+    $('#'+clusterTableID+' tbody').on('click', '.btn.btn-primary.btn-xs', function (e) {
         var data = datatable.row( $(this).parents('tr') ).data();
         loadNewGeneCluster(data, handleGeneTree, 'na');
         e.stopPropagation();
@@ -112,7 +124,7 @@ export const linkTableAlignmentTrees = function(tableID, datatable, speciesTree,
 
 };
 
-export const linkMetaTableTree = function(tableID, datatable, speciesTree){
+export const linkMetaTableTree = function(MetaTableID, datatable, speciesTree){
     datatable.on('search.dt', function(){
         if (speciesTree){
             speciesTree.tips.forEach(function(d){d.state.selected=false;});
@@ -135,7 +147,7 @@ export const linkMetaTableTree = function(tableID, datatable, speciesTree){
         }
     });
 
-    $('#'+tableID+' tbody').on( 'click', 'tr', function () {
+    $('#'+MetaTableID+' tbody').on( 'click', 'tr', function () {
 
         $(this).toggleClass('active');
         if ($(this).hasClass( "active" )){
@@ -167,13 +179,7 @@ export const linkMetaTableTree = function(tableID, datatable, speciesTree){
     } );
 
     $('#'+tableAccessories.meta_table_unselect).on( 'click', function () {
-        $('#'+tableID+' tbody'+' tr').removeClass('active row_selected');
-        if (speciesTree){
-            undoHideNonSelected(speciesTree);
-        }else{
-            console.log("speciesTree not available");
-        }
+        unselect_metaTable_tree(MetaTableID,speciesTree);
     } );
 
 }
-

@@ -94,7 +94,7 @@ const handleMetaDataTable = function(metaDatatable){
 const tryConnectTrees = function(){
     if (mySpeciesTree&&myGeneTree&&myDatatable&&myMetaDatatable){
         //connectTrees(mySpeciesTree, myGeneTree);
-        linkTableAlignmentTrees('dc_data_table', myDatatable, mySpeciesTree, handleGeneTree);
+        linkTableAlignmentTrees('dc_data_table', meta_table_id, myDatatable, mySpeciesTree, handleGeneTree);
         linkMetaTableTree(meta_table_id, myMetaDatatable,mySpeciesTree);
         attachPanzoom("speciesTree", mySpeciesTree);
         //attachPanzoom("geneTree", myGeneTree);
