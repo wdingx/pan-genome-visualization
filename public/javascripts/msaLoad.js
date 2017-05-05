@@ -1,7 +1,8 @@
-import './third_party/msa-new.js';
+//import './third_party/msa-new.js';
+import './third_party/msa.min.gz.js';
 import {panXTree, msaViewerAsset} from './global'
 import {hideNonSelected} from './tree-init'
-var msa=call_msa('msa');
+//var msa = require("msa");
 
 const msaLoad = function (aln_path,scheme_type) {
     var rootDiv = document.getElementById('snippetDiv');
@@ -20,7 +21,7 @@ const msaLoad = function (aln_path,scheme_type) {
     };*/
     opts.colorscheme={scheme: scheme_type}; //{scheme: 'taylor'};//{scheme: 'nucleotide'};
     opts.config={};
-    var m =  msa(opts);    //JSON.stringify
+    var m =  new msa.msa(opts);    //JSON.stringify
 
     //# click row/rows to highlight the related strain/strains
     var seqID_to_accession_dt={};
