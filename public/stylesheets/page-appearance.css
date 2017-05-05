@@ -320,9 +320,9 @@ input[type=range] {
     /*fix for FF unable to apply focus style bug */
     border: 1px solid white;
 
-    /*required for proper track sizing in FF*/
+    /*required for proper track sizing in FF
     width: 60px;
-    margin-top: 7px
+    margin-top: 7px*/
 }
 input[type=range]::-webkit-slider-runnable-track {
     width: 60px;
@@ -339,7 +339,7 @@ input[type=range]::-webkit-slider-thumb {
     width: 16px;
     border-radius: 50%;
     background: steelblue;
-    margin-top: -4px;
+    margin-top: -6px;
 }
 input[type=range]:focus {
     outline: none;
