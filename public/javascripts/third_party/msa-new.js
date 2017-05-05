@@ -803,18 +803,18 @@ module.exports = MenuView = boneView.extend({
       model: this.msa.seqs,
       g: this.msa.g
     }));
-    /*this.addView("20_filter", new FilterMenu({
+    this.addView("20_filter", new FilterMenu({
       model: this.msa.seqs,
       g: this.msa.g
-    }));*/
+    }));/**/
     this.addView("30_selection", new SelectionMenu({
       model: this.msa.seqs,
       g: this.msa.g
     }));
-    /*this.addView("40_vis", new VisMenu({
+    this.addView("40_vis", new VisMenu({
       model: this.msa.seqs,
       g: this.msa.g
-    }));*/
+    }));/**/
     this.addView("50_color", new ColorMenu({
       model: this.msa.seqs,
       g: this.msa.g
