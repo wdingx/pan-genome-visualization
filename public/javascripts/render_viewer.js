@@ -1,4 +1,5 @@
-import {render_chart_table,create_dropdown_menu} from "./chartsAndClusterTable";
+import {render_chart_table} from "./chartsAndClusterTable";
+import {create_species_dropdown, autocomplete_species} from "./species-selector";
 import * as datapath from "./data_path";
 import speciesTree from "./speciesTree";
 import  {metaDataTable} from "./datatable-meta";
@@ -11,7 +12,6 @@ import {assign_metadata_color} from "./meta-color-assignment";
 import {tooltip_toggle,tooltip_toggle_dict,tooltip_node,tooltip_branch} from './tooltips';
 import speciesTreeCallbacks from "./speciesTreeCallbacks";
 import geneTreeCallbacks from "./geneTreeCallbacks";
-import autocomplete from './third_party/autocomplete';
 // /** strain_tree processing */
 //render_tree(0, "mytree1", coreTree_path, clusterID=null, null);
 
@@ -173,20 +173,9 @@ const search_annotation= function (input_value) {
 window.search_annotation=search_annotation;
 
 //** create dropdown menu for species selection
-create_dropdown_menu('#species-selector', species_dt);
-
+create_species_dropdown('#species-selector', species_dt);
 //** setup and render autocomplete for species
-const autocomplete_species = function (){
-    var mc = autocomplete(document.getElementById('species-search'))
-            .keys(species_search_dt)
-            .dataField("species")
-            .placeHolder("Search species")
-            .onSelected(function onSelect(d) {
-                location.href = d.linkName;
-            })
-            .render();
-}
-autocomplete_species()
+autocomplete_species();
 
 const trigger_triplet_button = function(){
 

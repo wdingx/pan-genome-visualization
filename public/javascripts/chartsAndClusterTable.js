@@ -42,32 +42,6 @@ function slider_coreThreshold_init(coreThreshold_slider_id){
     return tooltipSlider;
 };
 
-//## make dropdown_menu
-export const create_dropdown_menu = function (div, species_dt) {
-    var menu = d3.select(div);
-
-    var selector = menu
-        .append("select")
-        .attr("class", "form-control")
-        .attr("id", "sel1")
-        .attr("onchange", "location = this.options[this.selectedIndex].value;");
-
-    selector
-        .append("option")
-        .attr("value", speciesAbbr)
-        .text(species_dt[speciesAbbr]);
-
-    for(var key in species_dt) {
-        var value = species_dt[key];
-        if (key.startsWith('optgroup')){
-            let optgroup= selector.append("optgroup").attr("label",value['label']);
-            for (let species of value['members']){
-                optgroup.append("option").attr("value", species).text(species_dt[species]);
-            }
-        }
-    }
-};
-
 //## create charts and load geneCluster dataTable
 export const render_chart_table = {
     initChart: function (data, table_id, col_select_id,
