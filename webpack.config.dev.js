@@ -3,14 +3,16 @@ var webpack = require('webpack');
 
 module.exports = {
   devtool: 'eval',//['eval','sourcemap'],
-  entry: [
-    'webpack-hot-middleware/client',
-    './public/javascripts/render_viewer'
-  ],
+  entry: {
+    'client_bundle':
+      ['webpack-hot-middleware/client','./public/javascripts/render_viewer.js'],
+    'homepage':
+      ['webpack-hot-middleware/client','./public/javascripts/homepage.js'],
+  },
   output: {
     path: path.join(__dirname, 'devel'),
-    filename: 'client_bundle.js',
-    publicPath: '/dist/'
+    publicPath: '/dist/',
+    filename: '[name].js'
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
