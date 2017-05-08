@@ -18,14 +18,17 @@ html
         br
         br
         br
-        .col-md-1
       .row.panX-text
-        .col-md-12
+        #logo.col-md-3
+          img(src='images/pan-blue-noReads.svg', style='width:100%;')
+          //.col-md-2
+        .col-md-8
           br
-          p panX is a software package for comprehensive pan-genome analysis and web-based interactive visualization and dynamic exploration.
-          p It encompasses various interconnected viewers, allows rapid search via gene name, diversity, duplications, annotation, integrates strain-associated meta-data (collection data, country, resistance, etc.), gene presence/absence pattern, gene gain/loss event on phylogeny.
-          p panX helps users to gain insights into bacterial genomic diversity and the dynamics of the accessory genes linked with habitat adaptation, antibiotic resistance, virulence, as well as epidemiological markers.
-      br
+          p panX comprises a pan-genome identification pipeline and a web application for interactive visualization of the pan-genome. The pipeline is based on DIAMOND, MCL and phylogeny-aware post-processing.
+          p The web application encompasses interactively connected tree viewers for the species tree and individual gene trees, an alignment viewer, and charts displaying pan-genome statistics. Gene clusters can be rapidly searched and filtered by gene name, annotation, and their phylogenetic properties such as diversity or the number of gene gain/loss events.
+
+          p Metadata associated with the strains and gene presence/absence patterns can be mapped onto the species tree. Such mapping facilitates the identification of genes associated with particular ecological niches, phenotypes such as antibiotic resistance, virulence, or epidemiological parameters such as host age.
+      p(style='font-size:22px') Showcases of panX functionalities:
       .row.panX-text
         .col-md-6
           .thumbnail.shadow_homepagex
@@ -33,10 +36,12 @@ html
               h4 Epidemiology of 616 Streptococcus pneumoniae strains
               p
                 a(href='https://www.nature.com/articles/sdata201558') Croucher et al. (2015)
-              p
-                a.btn.btn-info(href='#', role='button', data-toggle='modal', data-target='#Modal_Sp616') Demo
+                span(style="display:inline-block; width:5px;")
+                a.btn.btn-info(href='#', role='button', data-toggle='modal', data-target='#Modal_Sp616')  Demo
+                span(style="display:inline-block; width:2px;")
                 a.btn.btn-default(href='./S_pneumoniae616', role='button') Explore
-            img(src='./images/Demo-Sp616.gif', alt='...', style='width:100%;height:320px')
+            a(href='./S_pneumoniae616')
+              img(src='./images/Demo-Sp616.gif', alt='...', style='width:100%;height:320px')
 
         .col-md-6
           .thumbnail.shadow_homepagex
@@ -44,10 +49,12 @@ html
               h4 Diverse Prochlorococcus genomes: gene gain/loss pattern
               p
                 a(href='https://www.nature.com/articles/sdata201434') Biller et al. (2014)
-              p
+                span(style="display:inline-block; width:5px;")
                 a.btn.btn-info(href='#', role='button', data-toggle='modal', data-target='#Modal_Pm') Demo
+                span(style="display:inline-block; width:2px;")
                 a.btn.btn-default(href='./P_marinus_meta', role='button') Explore
-            img(src='./images/Pm_case.png', alt='...', style='width:100%;height:320px')
+            a(href='./P_marinus_meta')
+              img(src='./images/Pm_case.png', alt='...', style='width:100%;height:320px')
         //.col-md-4
           .thumbnail.shadow_homepagex
             img(src='./images/comparative-dashborad.jpg', alt='...', style='width:100%;')
@@ -57,6 +64,12 @@ html
               p
                 a.btn.btn-info(href='#', role='button', data-toggle='modal', data-target='#myModal') Demo
                 a.btn.btn-default(href='#', role='button') Explore
+      p(style='font-size:22px') Pan-genomes from NCBI RefSeq genomes:
+      #dc_data_count.col-md-2
+        .alert.alert-info(role='alert') Species
+        #species-selector
+        #species-search(style='margin-top:3px')
+        .dc_data_count(style='margin-top:3px')
       //.row.panX-text
         .col-md-6
           .thumbnail.shadow_homepagex
@@ -98,6 +111,11 @@ html
               img(src='./images/Demo-Pm.gif', style='width:100%;')
             .modal-footer
               button.btn.btn-info(type='button', data-dismiss='modal') Close
+      br
+      br
+      br
+      br
+
     include footer
 
     script(src='javascripts/third_party/gifffer.min.js')

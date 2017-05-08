@@ -18,7 +18,7 @@ var table_columns= [
     {'data':'GName',  'header':'Name','tooltip':'gene name'},//geneName
     {'defaultContent': '','data':null, 'className': 'ann-details-control', 'orderable': false,  'header':''},//annotation expand
     {'data':'ann',  'header':'Annotation','tooltip':'gene annotation'},//annotation    //'width':10,
-    {'data':'count',  'header':'#Strain','tooltip':'strain count'},//count
+    {'data':'count',  'header':'#Strains','tooltip':'strain count'},//count
     {'defaultContent': '','data':null, 'className': 'dup-details-control', 'orderable': false,  'header':''},//duplication expand
     {'data':'dupli',  'header':'Duplicated','tooltip':'whether duplicated and duplication count in each strain'},//duplication
     {'data':'event',  'header':'Events','tooltip':'gene gain/loss events count'},
@@ -74,7 +74,7 @@ for (let i=0, len=table_columns.length ; i<len; i++) {
 }
 
 //** column descend/ascend sorting order
-const column_desc= '#Strain',
+const column_desc= '#Strains',
       column_asc= 'Name',
       column_desc_index= geneCluster_table_columns.indexOf(column_desc),
       column_asc_index= geneCluster_table_columns.indexOf(column_asc);

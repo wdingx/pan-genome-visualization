@@ -12,9 +12,9 @@ export const tooltip = d3.select("body")
     //.style("z-index", "10")
     .style("color", "white")
     .style("padding","5px")
-    .style("border-radius","2px")
+    .style("border-radius","5px")
     .style("visibility", "hidden")
-    .style("background", "rgba(0,0,0,0.5)"); //255,255,255
+    .style("background", "rgba(0,0,0,0.4)"); //255,255,255
 
 //** calling tooltip for cluster-table header
 export const tooltip_tableHeader = function(divID, tooltip_dict) {
