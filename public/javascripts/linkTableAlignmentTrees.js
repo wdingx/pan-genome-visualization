@@ -1,6 +1,6 @@
 import msaLoad from './msaLoad';
 import geneTree from "./geneTree";
-import {panXTree,tableAccessories} from "./global";
+import {panXTree,metaLegend,tableAccessories} from "./global";
 import {aln_file_path} from "./data_path";
 import {attachButtons, hideNonSelected, undoHideNonSelected} from "./tree-init";
 
@@ -11,7 +11,7 @@ import {attachButtons, hideNonSelected, undoHideNonSelected} from "./tree-init";
  */
 
 //**change select dropdown value to 'genePattern'(presence/absence) when clicking msa button
-const change_select_dropdown_value = function(div_id,valueToSelect) {
+export const change_select_dropdown_value = function(div_id,valueToSelect) {
     var element = document.getElementById(div_id);
     if (element!=null){
         element.value = valueToSelect;
@@ -53,7 +53,7 @@ export const loadNewGeneCluster = function(data, handleGeneTree, seqType){
     var myGeneTree=geneTree("geneTree", geneTree_name, handleGeneTree, panXTree.currentTreeLayout);
     attachButtons(myGeneTree, { download_geneTree:"download_geneTree",
                                 clusterID:clusterID });
-    change_select_dropdown_value("dropdown_select",'genePattern');
+    //change_select_dropdown_value("dropdown_select",'genePattern');
 }
 
 const table_select_tip_annotation= function (input_annotation,myGeneTree) {

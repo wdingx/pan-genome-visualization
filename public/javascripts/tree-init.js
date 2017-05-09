@@ -1,11 +1,12 @@
-import {panXTree} from "./global";
+import {panXTree,metaLegend} from "./global";
 import {tooltip_toggle} from "./tooltips";
 import {changeLayout, changeDistance, updateTips} from "../phyloTree/src/updateTree";
 import {zoomInY,  zoomIn, zoomIntoClade} from "../phyloTree/src/zoom";
 import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
 import svgPanZoom from "svg-pan-zoom";
 import {filterMetaDataTable} from "./datatable-meta";
-import {removeLegend} from './meta-color-legend';
+import {change_select_dropdown_value} from './linkTableAlignmentTrees';
+import {updateMetadata, removeLegend} from './meta-color-legend';
 import {updateTipAttribute,updateBranches} from "../phyloTree/src/updateTree";
 import {aln_file_path} from "./data_path";
 
@@ -284,8 +285,15 @@ export const connectTrees = function(speciesTree, geneTree){
         }
     }
     removeLegend('coreTree_legend');
-    colorPresenceAbsence(speciesTree);
+    if (!metaLegend.current_metaType) {
+        colorPresenceAbsence(speciesTree);
+        change_select_dropdown_value("dropdown_select",'genePattern');
+    }else{
+        updateMetadata(metaLegend.current_metaType, speciesTree, geneTree, meta_display, 'coreTree_legend', 0);
+    }
     styleGainLoss(speciesTree);
+
+
 }
 
 export const colorPresenceAbsence = function(speciesTree){
@@ -320,7 +328,11 @@ export const styleGainLoss = function(speciesTree){
                 node.branchAttributes["stroke-dasharray"] = stroke_dasharray;
             }
         }
-        updateBranches(speciesTree, [], ['stroke', 'stroke-width','stroke-dasharray'], 0);
+        if (metaLegend.current_metaType=='genePattern'||!metaLegend.current_metaType){
+            updateBranches(speciesTree, [], ['stroke', 'stroke-width','stroke-dasharray'], 0);
+        }else{
+            updateBranches(speciesTree, [], ['stroke-width','stroke-dasharray'], 0);
+        }
         //console.log('gain/loss pattern loading finished')
     })
 }
