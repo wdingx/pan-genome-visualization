@@ -6,7 +6,7 @@ var new_columns_config=[
             function(data, type, row, meta){
                 return ' <a href="http://pseudomonas.com/primarySequenceFeature/list?strain_ids=107&term=Pseudomonas+aeruginosa+PAO1+%28Reference%29&c1=name&v1='+data+'+&e1=1&assembly=complete" target="_blank">'+data+'</a>';
             },
-        'header':'PAO1',
+        'name':'PAO1',
         'tooltip':'PAO1 gene annotations from Pseudomonas Genome Database'
         }
     }

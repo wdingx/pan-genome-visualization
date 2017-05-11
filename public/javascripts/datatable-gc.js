@@ -13,21 +13,21 @@ $.multiselect = multiselect;
 
 //## dc_DataTables configuration <div style="display:inline-block" ></div>
 var table_columns= [
-    {'defaultContent': '<button type="button" class="btn btn-info btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="amino acid alignment" >aa </button> <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="nucleotide alignment" >na </button> ',  'header':'Alignment','tooltip':'multiple sequence alignment'},
-    {'defaultContent': '','data':null, 'className': 'geneName-details-control', 'orderable': false,  'header':''},//geneName expand
-    {'data':'GName',  'header':'Name','tooltip':'gene name'},//geneName
-    {'defaultContent': '','data':null, 'className': 'ann-details-control', 'orderable': false,  'header':''},//annotation expand
-    {'data':'ann',  'header':'Annotation','tooltip':'gene annotation'},//annotation    //'width':10,
-    {'data':'count',  'header':'#Strains','tooltip':'strain count'},//count
-    {'defaultContent': '','data':null, 'className': 'dup-details-control', 'orderable': false,  'header':''},//duplication expand
-    {'data':'dupli',  'header':'Duplicated','tooltip':'whether duplicated and duplication count in each strain'},//duplication
-    {'data':'event',  'header':'Events','tooltip':'gene gain/loss events count'},
-    {'data':'divers',  'header':'Diversity','tooltip':'gene diversity'},
-    {'data':'geneLen',  'header':'Length','tooltip':'average gene length'},
-    {'data':'geneId','visible': false,  'header':'','tooltip':''},
-    {'data':'allAnn','visible': false,  'header':'','tooltip':''},
-    {'data':'allGName','visible': false,  'header':'','tooltip':''},
-    {'defaultContent': '','data':'locus','visible': false,  'header':'','tooltip':''}
+    {'defaultContent': '<button type="button" class="btn btn-info btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="amino acid alignment" >aa </button> <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="nucleotide alignment" >na </button> ',  'name':'Alignment','tooltip':'multiple sequence alignment'},
+    {'defaultContent': '','data':null, 'className': 'geneName-details-control', 'orderable': false,  'name':''},//geneName expand
+    {'data':'GName',  'name':'Name','tooltip':'gene name'},//geneName
+    {'defaultContent': '','data':null, 'className': 'ann-details-control', 'orderable': false,  'name':''},//annotation expand
+    {'data':'ann',  'name':'Annotation','tooltip':'gene annotation'},//annotation    //'width':10,
+    {'data':'count',  'name':'#Strains','tooltip':'strain count'},//count
+    {'defaultContent': '','data':null, 'className': 'dup-details-control', 'orderable': false,  'name':''},//duplication expand
+    {'data':'dupli',  'name':'Duplicated','tooltip':'whether duplicated and duplication count in each strain'},//duplication
+    {'data':'event',  'name':'Events','tooltip':'gene gain/loss events count'},
+    {'data':'divers',  'name':'Diversity','tooltip':'gene diversity'},
+    {'data':'geneLen',  'name':'Length','tooltip':'average gene length'},
+    {'data':'geneId','visible': false,  'name':'','tooltip':''},
+    {'data':'allAnn','visible': false,  'name':'','tooltip':''},
+    {'data':'allGName','visible': false,  'name':'','tooltip':''},
+    {'defaultContent': '','data':'locus','visible': false,  'name':'','tooltip':''}
     //{'data':'msa','visible': false}
 ];
 
@@ -38,7 +38,7 @@ export const clusterTable_tooltip_dict= {};
 var header, column_data;
 for (let i=0, len=table_columns.length ; i<len; i++) {
     column_data= table_columns[i];
-    header=column_data['header'];
+    header=column_data['name'];
     //** header for display
     geneCluster_table_columns.push(header);
     //** header tooltip
@@ -51,10 +51,10 @@ for (let i=0, len=table_columns.length ; i<len; i++) {
 //** insert the column after insertion_position (insertion_pos)
 //** e.g.: col_header:'PAO1'
 var insertion_index, new_column_header, new_column_data;
-if (typeof new_columns_config!= "undefined"){
+if (typeof new_columns_config!='undefined'){
     for (let new_column_config of new_columns_config) {
         new_column_data=new_column_config.new_col;
-        new_column_header=new_column_data['header'];
+        new_column_header=new_column_data['name'];
         insertion_index= geneCluster_table_columns.indexOf(new_column_config.insertion_pos)+1;
         //** insert new header and related tooltip
         geneCluster_table_columns.splice(insertion_index, 0, new_column_header);
@@ -75,7 +75,6 @@ for (let i=0, len=table_columns.length ; i<len; i++) {
 //**configure the sorting order when clicking header (order direction control)
 const click_sortDescend={"sorting": [ "desc", "asc" ],"targets": [ "_all" ]};
 column_config.push(click_sortDescend);
-
 //** column descend/ascend sorting order
 const column_desc= '#Strains',
       column_asc= 'Name',
@@ -89,8 +88,8 @@ const table_sort_order= [[column_desc_index, 'desc' ],[column_asc_index, 'asc' ]
 //## pay attention to GC table column order
 //export const clusterTable_standard_dropdown=['multiple sequence alignment','geneName','annotation','#strain','duplicated', 'gene gain/loss events','diversity','gene length'];
 const clusterTable_standard_dropdown= table_columns
-                                        .filter(function(n){return n.header!='' && n.visible!=false})
-                                        .map(function(n){return n.header})
+                                        .filter(function(n){return n.name!='' && n.visible!=false})
+                                        .map(function(n){return n.name})
 //** create GC table HTML structure
 export const create_dataTable = function (div, columns_set) {
     var datatable_div = d3.select(div);
@@ -102,7 +101,7 @@ export const create_dataTable = function (div, columns_set) {
         .data( columns_set )
         .enter()
         .append("th")
-        .text(function(d) { return d.charAt(0).toUpperCase()+ d.slice(1); });
+        .text(function(d) {return d.charAt(0).toUpperCase()+ d.slice(1); });
 };
 
 //** creat multiselect dropdown for dataTables
