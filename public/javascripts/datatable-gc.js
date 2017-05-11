@@ -53,8 +53,8 @@ for (let i=0, len=table_columns.length ; i<len; i++) {
 var insertion_index, new_column_header, new_column_data;
 if (typeof new_columns_config!= "undefined"){
     for (let new_column_config of new_columns_config) {
-        new_column_header=new_column_config.col_header;
         new_column_data=new_column_config.new_col;
+        new_column_header=new_column_data['header'];
         insertion_index= geneCluster_table_columns.indexOf(new_column_config.insertion_pos)+1;
         //** insert new header and related tooltip
         geneCluster_table_columns.splice(insertion_index, 0, new_column_header);
@@ -84,9 +84,10 @@ const table_sort_order= [[column_desc_index, 'desc' ],[column_asc_index, 'asc' ]
 
 //** button for showing/hiding columns in table
 //## pay attention to GC table column order
-//export const GC_table_dropdown_columns=['multiple sequence alignment','geneName','annotation','#strain','duplicated', 'gene gain/loss events','diversity','gene length'];
-export const GC_table_dropdown_columns= geneCluster_table_columns.filter(function(n){ return n != '' });
-
+//export const clusterTable_standard_dropdown=['multiple sequence alignment','geneName','annotation','#strain','duplicated', 'gene gain/loss events','diversity','gene length'];
+const clusterTable_standard_dropdown= table_columns
+                                        .filter(function(n){return n.header!='' && n.visible!=false})
+                                        .map(function(n){return n.header})
 //** create GC table HTML structure
 export const create_dataTable = function (div, columns_set) {
     var datatable_div = d3.select(div);
@@ -170,7 +171,7 @@ export const datatable_configuration = function(table_input, table_id, col_selec
     var non_empty_index_list= indexes_list[0];
     var empty_inde_list = indexes_list[1];
 
-    create_multiselect('#'+col_select_id,GC_table_dropdown_columns);
+    create_multiselect('#'+col_select_id,clusterTable_standard_dropdown);
     $('#'+col_select_id).multiselect({
         //enableFiltering: true,
         onChange: function(element, checked) {
@@ -178,7 +179,7 @@ export const datatable_configuration = function(table_input, table_id, col_selec
             function element_included (arr, number) {
                 return (arr.indexOf(number) != -1)
             }
-            var col_index = GC_table_dropdown_columns.indexOf(element.val());
+            var col_index = clusterTable_standard_dropdown.indexOf(element.val());
             var original_col_index = non_empty_index_list[col_index];
 
             if (checked === true) {
