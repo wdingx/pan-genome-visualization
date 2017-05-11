@@ -148,15 +148,21 @@ export const datatable_configuration = function(table_input, table_id, col_selec
         $('#'+table_id).on('error.dt', function(e, settings, techNote, message) { console.log(message); });
     }
 
+    const create_dropdown_button = function(tableId, buttonId, multiple){
+        d3.select('#'+tableId+'_length.dataTables_length')
+          .append('span')
+          .style('display','inline-block')
+          .style('width','5px')
+        var new_select=d3.select('#'+tableId+'_length.dataTables_length')
+          .append('select')
+          .attr('id', buttonId);
+        if (multiple){
+            new_select.attr('multiple', 'multiple')
+        }
+    }
+
     //# append multiselect button for standard & gain_loss event columns to cluster table
-    d3.select('#'+table_id+'_length.dataTables_length')
-      .append('span')
-      .style('display','inline-block')
-      .style('width','10px')
-    d3.select('#'+table_id+'_length.dataTables_length')
-      .append('select')
-      .attr('id',col_select_id)
-      .attr('multiple','multiple')
+    create_dropdown_button(table_id, col_select_id, true)
 
     //## empty and non-empty indexes
     function get_all_Indexes(array) {
@@ -176,6 +182,8 @@ export const datatable_configuration = function(table_input, table_id, col_selec
     create_multiselect('#'+col_select_id,clusterTable_standard_dropdown);
     $('#'+col_select_id).multiselect({
         //enableFiltering: true,
+        allSelectedText: "All",
+        //includeSelectAllOption: true,
         onChange: function(element, checked) {
             //console.log(col_select_id,datatable,element,checked);
             function element_included (arr, number) {
