@@ -22,6 +22,9 @@ export const metaDataTable = {
             }
             columnDefs_list.push(column_config);
         }
+        //**configure the sorting order when clicking header (order direction control)
+        /*const click_sortDescend={"sorting": [ "desc", "asc" ],"targets": [ "_all" ]};
+        columnDefs_list.push(click_sortDescend);*/
 
         metaDatatable= $('#'+meta_table_id).DataTable({
                 'ajax': path_datatable_meta,
