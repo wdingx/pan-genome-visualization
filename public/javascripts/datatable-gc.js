@@ -72,6 +72,9 @@ for (let i=0, len=table_columns.length ; i<len; i++) {
     column_data['targets']=i;
     column_config.push(column_data); //width:60,
 }
+//**configure the sorting order when clicking header (order direction control)
+const click_sortDescend={"sorting": [ "desc", "asc" ],"targets": [ "_all" ]};
+column_config.push(click_sortDescend);
 
 //** column descend/ascend sorting order
 const column_desc= '#Strains',
