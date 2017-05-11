@@ -24483,12 +24483,12 @@
 	    this.addView("30_selection", new _SelectionMenu2.default({ model: this.msa.seqs, g: this.msa.g }));
 	    this.addView("40_vis", new _VisMenu2.default({ model: this.msa.seqs, g: this.msa.g }));
 	    this.addView("50_color", new _ColorMenu2.default({ model: this.msa.seqs, g: this.msa.g }));
-	    this.addView("70_extra", new _ExtraMenu2.default({ model: this.msa.seqs, g: this.msa.g, msa: this.msa }));
+	    /*this.addView("70_extra", new _ExtraMenu2.default({ model: this.msa.seqs, g: this.msa.g, msa: this.msa }));
 	    this.addView("80_export", new _ExportMenu2.default({ model: this.msa.seqs, g: this.msa.g, msa: this.msa }));
 	    this.addView("90_help", new _HelpMenu2.default({ g: this.msa.g }));
 	    if (this.msa.g.config.get("debug")) {
 	      return this.addView("95_debug", new _DebugMenu2.default({ g: this.msa.g }));
-	    }
+	    }*/
 	  },
 
 	  render: function render() {
