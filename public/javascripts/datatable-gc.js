@@ -210,5 +210,26 @@ export const datatable_configuration = function(table_input, table_id, col_selec
         }
     });
 
+    //** append multiselect button for association columns to cluster table
+    if (typeof new_columns_config!='undefined' && typeof apply_association_cols!='undefined'){
+        const association_id='association';
+        create_dropdown_button(table_id, association_id, false)
+        const GC_table_association= new_columns_config.map(function(n){ return n.new_col['name']});
+        create_multiselect('#'+association_id,GC_table_association);
+        var association_column=[];
+        $('#'+association_id).multiselect({
+            enableFiltering: true,
+            onChange: function(element, checked) {
+                for (var i = 0, len=association_column.length; i < len; i++) {
+                    association_column[i].visible(false);
+                }
+                //** search column via name (header name)
+                var column_normal =datatable.column( element.val()+':name');
+                column_normal.visible(true);
+                association_column.push(column_normal);
+            }
+        });
+    }
+
     return datatable;
 };
