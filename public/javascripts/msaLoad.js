@@ -14,6 +14,7 @@ const msaLoad = function (aln_path,scheme_type) {
 
     //opts.vis = {conserv: false, overviewbox: false, labelId: false};
     opts.vis = {scaleslider: true,conserv: false, overviewbox: false, labelId: false};
+    opts.zoomer = {labelFontsize: '12',residueFont: "12"};
     /*opts.zoomer = {alignmentWidth:'auto',alignmentHeight: 250,rowHeight: 18,
                     labelWidth: 100, labelNameLength: 150,
                     labelNameFontsize: '10px',labelIdLength: 20, menuFontsize: '12px',
@@ -22,6 +23,7 @@ const msaLoad = function (aln_path,scheme_type) {
     };*/
     opts.colorscheme={scheme: scheme_type}; //{scheme: 'taylor'};//{scheme: 'nucleotide'};
     //opts.config={};opts.conf= {alphabetSize: 1};
+
     var m =  new msa.msa(opts);    //JSON.stringify
 
     //# click row/rows to highlight the related strain/strains
