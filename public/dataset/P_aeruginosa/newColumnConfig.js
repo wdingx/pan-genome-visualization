@@ -1,6 +1,5 @@
 var new_columns_config=[
 	{insertion_pos:'Name',
-	 col_header:'PAO1',
 	 new_col: {
         'data':'PAO1',
         'render':
