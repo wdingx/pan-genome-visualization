@@ -22747,9 +22747,9 @@
 	  >\
 	  </div>\
 	  <div class="btngroup msa-btngroup">\
-	    <button class="btn msa-btn" data-action="smaller"><span class="glyphicon-zoom-out"></span>-</button>\
-	    <button class="btn msa-btn" data-action="bigger"><span class="glyphicon-zoom-in"></span>+</button>\
-	    <button class="btn msa-btn" data-action="reset"><span class="glyphicon-repeat"></span>reset</button>\
+	    <button class="btn msa-btn" data-action="smaller">-</button>\
+	    <button class="btn msa-btn" data-action="bigger">+</button>\
+	    <button class="btn msa-btn" data-action="reset">reset</button>\
 	  </div>\
 	</div>\
 	'),
@@ -24483,9 +24483,9 @@
 	    this.addView("30_selection", new _SelectionMenu2.default({ model: this.msa.seqs, g: this.msa.g }));
 	    this.addView("40_vis", new _VisMenu2.default({ model: this.msa.seqs, g: this.msa.g }));
 	    this.addView("50_color", new _ColorMenu2.default({ model: this.msa.seqs, g: this.msa.g }));
-	    /*this.addView("70_extra", new _ExtraMenu2.default({ model: this.msa.seqs, g: this.msa.g, msa: this.msa }));
+	    //this.addView("70_extra", new _ExtraMenu2.default({ model: this.msa.seqs, g: this.msa.g, msa: this.msa }));
 	    this.addView("80_export", new _ExportMenu2.default({ model: this.msa.seqs, g: this.msa.g, msa: this.msa }));
-	    this.addView("90_help", new _HelpMenu2.default({ g: this.msa.g }));
+	    /*this.addView("90_help", new _HelpMenu2.default({ g: this.msa.g }));
 	    if (this.msa.g.config.get("debug")) {
 	      return this.addView("95_debug", new _DebugMenu2.default({ g: this.msa.g }));
 	    }*/
@@ -24793,7 +24793,8 @@
 	    var _this = this;
 
 	    this.removeAllNodes();
-	    this.setName("Vis.elements");
+	    //this.setName("Vis.elements");
+	    this.setName("Scale");
 
 	    var visElements = this.getVisElements();
 	    for (var i = 0, visEl; i < visElements.length; i++) {
@@ -24802,7 +24803,7 @@
 	    }
 
 	    // other
-	    this.addNode("Reset", function () {
+	    /*this.addNode("Reset", function () {
 	      _this.g.vis.set("labels", true);
 	      _this.g.vis.set("sequences", true);
 	      _this.g.vis.set("metacell", true);
@@ -24816,7 +24817,7 @@
 	      _this.g.vis.set("metaGaps", true);
 	      _this.g.vis.set("metaIdentity", true);
 	      return _this.g.vis.set("metaLinks", true);
-	    });
+	    });*/
 
 	    // TODO: make more efficient
 	    dom.removeAllChilds(this.el);
@@ -24846,21 +24847,21 @@
 
 	  getVisElements: function getVisElements() {
 	    var vis = [];
-	    vis.push({ name: "residues indices", id: "markers" });
-	    vis.push({ name: "ID/Label", id: "labels" });
+	    //vis.push({ name: "residues indices", id: "markers" });
+	    //vis.push({ name: "ID/Label", id: "labels" });
 	    //vis.push name: "Sequences", id: "sequences"
-	    vis.push({ name: "meta info (Gaps/Ident)", id: "metacell" });
+	    /*vis.push({ name: "meta info (Gaps/Ident)", id: "metacell" });
 	    vis.push({ name: "overview panel", id: "overviewbox" });
 	    vis.push({ name: "sequence logo", id: "seqlogo" });
 	    vis.push({ name: "gap weights", id: "gapHeader" });
-	    vis.push({ name: "conservation weights", id: "conserv" });
+	    vis.push({ name: "conservation weights", id: "conserv" });*/
 	    vis.push({ name: "scale slider", id: "scaleslider" });
 	    //vis.push name: "Left header", id: "leftHeader"
-	    vis.push({ name: "Label", id: "labelName" });
-	    vis.push({ name: "ID", id: "labelId" });
+	    //vis.push({ name: "Label", id: "labelName" });
+	    //vis.push({ name: "ID", id: "labelId" });
 	    //vis.push name: "Label checkbox", id: "labelCheckbox"
-	    vis.push({ name: "gaps %", id: "metaGaps" });
-	    vis.push({ name: "identity score", id: "metaIdentity" });
+	    //vis.push({ name: "gaps %", id: "metaGaps" });
+	    //vis.push({ name: "identity score", id: "metaIdentity" });
 	    // vis.push name: "Meta links", id: "metaLinks"
 	    return vis;
 	  }
@@ -25300,13 +25301,13 @@
 
 	    this.setName("Export");
 
-	    this.addNode("Share view (URL)" + ShareSym, function () {
+	    /*this.addNode("Share view (URL)" + ShareSym, function () {
 	      return _exporter2.default.shareLink(_this.msa, function (link) {
 	        return window.open(link, '_blank');
 	      });
-	    });
+	    });*/
 
-	    this.addNode("View in Jalview", function () {
+	    /*this.addNode("View in Jalview", function () {
 	      var url = _this.g.config.get('url');
 	      if (!(typeof url !== "undefined" && url !== null)) {
 	        return alert("Sequence weren't imported via an URL");
@@ -25319,7 +25320,7 @@
 	          return _exporter2.default.openInJalview(url, _this.g.colorscheme.get("scheme"));
 	        }
 	      }
-	    });
+	    });*/
 
 	    this.addNode("Export alignment (FASTA)", function () {
 	      return _exporter2.default.saveAsFile(_this.msa, "all.fasta");
