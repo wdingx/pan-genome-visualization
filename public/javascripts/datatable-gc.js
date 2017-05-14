@@ -148,6 +148,7 @@ export const datatable_configuration = function(table_input, table_id, col_selec
         $('#'+table_id).on('error.dt', function(e, settings, techNote, message) { console.log(message); });
     }
 
+    //** create table dropdown buttons (standard, associations)
     const create_dropdown_button = function(tableId, buttonId, multiple){
         d3.select('#'+tableId+'_length.dataTables_length')
           .append('span')
@@ -159,6 +160,20 @@ export const datatable_configuration = function(table_input, table_id, col_selec
         if (multiple){
             new_select.attr('multiple', 'multiple')
         }
+    }
+
+    //** create download buttons (core_genes,etc)
+    const create_dt_download_button = function(tableId, href_link){
+        d3.select('#'+tableId+'_filter.dataTables_filter')
+            .append('span')
+            .style('display','inline-block')
+            .style('width','5px')
+        d3.select('#'+tableId+'_filter.dataTables_filter')
+            .append('a')
+            .attr('href',href_link)
+            .append('i')
+            .attr('class','glyphicon glyphicon-download-alt')
+            .style('vertical-align','middle')
     }
 
     //# append multiselect button for standard & gain_loss event columns to cluster table
@@ -231,5 +246,7 @@ export const datatable_configuration = function(table_input, table_id, col_selec
         });
     }
 
+    //** append download button for all core genes
+    create_dt_download_button(table_id, '/download/datasets/'+speciesAbbr+'/core_genes.tar.gz')
     return datatable;
 };
