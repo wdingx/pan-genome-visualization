@@ -256,7 +256,7 @@ export const datatable_configuration = function(table_input, table_id, col_selec
     create_dt_download_button(table_id, 'core_genes', '/download/datasets/'+speciesAbbr+'/core_genes.tar.gz');
     const dt_button_tooltip_dict= {
     //**download core genes
-    'core_genes': 'download all core genes (nucleotide FASTA)'
+    'core_genes': 'download all core genes'
     }
     button_tooltip('#'+table_id+'_filter', dt_button_tooltip_dict);
 
