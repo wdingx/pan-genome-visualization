@@ -136,10 +136,11 @@ export const tooltip_toggle = function(tooltip_toggle_dict) {
     }
 }
 
-//** calling tooltip for tree buttons
-function tree_button_tooltip(divID, tooltip_dict) {
+//** calling tooltip for simple buttons
+export const button_tooltip = function(divID, tooltip_dict) {
     d3.selectAll(divID).selectAll('.btn_tooltip')
     .on("mouseover", function(d){
+        console.log(d)
         tooltip.text(tooltip_dict[d3.select(this).attr('id')]);
         if (tooltip.text()!="") {
             return tooltip.style("visibility", "visible");
@@ -174,7 +175,7 @@ const treeButton_tooltip_dict= {
     'searchAccession':'search strains/genes by accession',
     'searchAnnotation':'search genes by annotation'
     }
-tree_button_tooltip('#all_trees', treeButton_tooltip_dict);
+button_tooltip('#all_trees', treeButton_tooltip_dict);
 
 //** tree button tooltip
 export const tooltip_toggle_dict= {
