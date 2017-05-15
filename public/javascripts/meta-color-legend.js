@@ -208,6 +208,7 @@ export const create_dropdown = function (div, speciesTree, geneTree, meta_displa
     dropdown_meta.append("option")
         .attr("value", "Meta-info")
         .attr("selected", 1)
+        .attr("disabled", true)
         .text("Color by meta data");
 
     //add gene presence absence entry

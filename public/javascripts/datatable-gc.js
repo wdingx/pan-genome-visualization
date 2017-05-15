@@ -203,7 +203,7 @@ export const datatable_configuration = function(table_input, table_id, col_selec
     create_multiselect('#'+col_select_id,clusterTable_standard_dropdown);
     $('#'+col_select_id).multiselect({
         //enableFiltering: true,
-        allSelectedText: "All",
+        allSelectedText: "All selected",
         //includeSelectAllOption: true,
         onChange: function(element, checked) {
             //console.log(col_select_id,datatable,element,checked);
