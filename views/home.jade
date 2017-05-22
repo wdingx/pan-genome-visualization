@@ -25,10 +25,12 @@ html
           //.col-md-2
         .col-md-8
           br
-          p panX comprises a pan-genome identification pipeline and a web application for interactive visualization of the pan-genome. The pipeline is based on DIAMOND, MCL and phylogeny-aware post-processing.
-          p The web application encompasses interactively connected tree viewers for the species tree and individual gene trees, an alignment viewer, and charts displaying pan-genome statistics. Gene clusters can be rapidly searched and filtered by gene name, annotation, and their phylogenetic properties such as diversity or the number of gene gain/loss events.
+          p panX is a software package for comprehensive pan-genome analysis, web-based interactive visualization and dynamic exploration. The analysis pipeline is based on DIAMOND, MCL and phylogeny-aware post-processing.
+          p The web application encompasses various interconnected viewers (pan-genome statistical charts, gene cluster table, alignment, comparative phylogenies, metadata table). Gene clusters can be rapidly searched and filtered by gene name, annotation, duplication and their phylogenetic properties such as diversity or the number of gene gain/loss events.
 
-          p Metadata associated with the strains and gene presence/absence patterns can be mapped onto the species tree. Such mapping facilitates the identification of genes associated with particular ecological niches, phenotypes such as antibiotic resistance, virulence, or epidemiological parameters such as host age.
+          p
+            strong Metadata
+            |  associated with the strains and gene presence/absence patterns can be mapped onto the species tree. Such mapping facilitates the identification of genes associated with particular ecological niches, phenotypes such as antibiotic resistance, virulence, or epidemiological parameters such as host age.
       p(style='font-size:22px') Showcases of panX functionalities:
       .row.panX-text
         .col-md-6
@@ -99,6 +101,7 @@ html
               h4.modal-title Gene presence/absence, gain/loss pattern
             .modal-body
               img(src='./images/Demo-Sp616.gif', style='width:100%;')
+              //img(data-gifffer='./images/Demo-Sp616.gif', style='width:100%;')
             .modal-footer
               button.btn.btn-info(type='button', data-dismiss='modal') Close
 

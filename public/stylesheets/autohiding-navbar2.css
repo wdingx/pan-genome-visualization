@@ -4,7 +4,7 @@
 }
   */
 .navbar-default .navbar-brand {  /* S.aureusEvo */
-  color: #0578C4;
+  color: white;/*#0578C4;*/
   font-size:32px;
   font-family: Calibri;
   font-style:italic;
