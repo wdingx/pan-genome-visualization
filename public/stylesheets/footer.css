@@ -1,33 +1,18 @@
 .footer-distributed{
 	background-color: #66AAD6;
-	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
-	box-sizing: border-box;
-	width: 100%;
-	text-align: left;
-	font: bold;
+	color:  #ffffff;
 	font-size: 16px;
-	/*font: bold 16px sans-serif;*/
-	padding: 55px 50px;
+	padding: 30px;
 	margin-top: 80px;
 }
 
-.footer-distributed .footer-left,
-.footer-distributed .footer-center,
-.footer-distributed .footer-right{
-	display: inline-block;
-	vertical-align: top;
-}
 
-/* Footer left */
-
-.footer-distributed .footer-left{
-	width: 30%;
-	margin-left: 60px;
+@media screen and (min-width: 1920px) {
+  .footer-distributed{padding: 60px;}
 }
 
 /* Footer links */
 .footer-distributed .footer-links{
-	color:  #ffffff;
 	margin: 20px 0 12px;
 	padding: 0;
 }
@@ -40,21 +25,12 @@
 }
 
 .footer-distributed .footer-author{
-	color:  #FFFFFF;
-	/*font-size: 16px;*/
 	font-weight: normal;
 	margin: 0;
 }
 
-/* Footer Center */
-
-.footer-distributed .footer-center{
-	width: 35%;
-}
-
 .footer-distributed .footer-center i{
 	background-color:  #33383b;
-	color: #ffffff;
 	font-size: 25px;
 	width: 38px;
 	height: 38px;
@@ -67,7 +43,6 @@
 
 .footer-distributed .footer-center p{
 	display: inline-block;
-	color: #ffffff;
 	vertical-align: middle;
 	margin:0;
 }
@@ -75,63 +50,26 @@
 .footer-distributed .footer-center p span{
 	display:block;
 	font-weight: normal;
-	/*font-size:16px;*/
-	line-height:2;
+	line-height:1.8;
 }
 
 .footer-distributed .footer-center p a{
-	color:  #ffffff; /* #5383d3; */
-	text-decoration: none; /**/
-}
-
-
-/* Footer Right */
-
-.footer-distributed .footer-right{
-	width: 30%;
+	color:  #ffffff;
+	text-decoration: none;
 }
 
 .footer-distributed .footer-website-about{
-	/* line-height: 20px; */
-	color:  #ffffff;
-	/*font-size: 15px;*/
 	font-weight: normal;
 	margin: 0;
 }
 
 .footer-distributed .footer-website-about span{
 	display: block;
-	color:  #ffffff;
-	/*font-size: 15px;*/
 	font-weight: bold;
 	margin-bottom: 20px;
 }
 
 .footer-distributed .footer-website-about a{
-	color:  #ffffff; /* #5383d3; */
-	text-decoration: none; /**/
-}
-
-/* If you don't want the footer to be responsive, remove these media queries */
-
-@media (max-width: 1560px) {
-
-	.footer-distributed{
-		font: bold 16px;
-		/* font: bold 15px sans-serif; */
-	}
-
-	.footer-distributed .footer-left,
-	.footer-distributed .footer-center,
-	.footer-distributed .footer-right{
-		display: block;
-		width: 100%;
-		margin-bottom: 40px;
-		text-align: center;
-	}
-
-	.footer-distributed .footer-center i{
-		margin-left: 0;
-	}
-
+	color:  #ffffff;
+	text-decoration: none;
 }
