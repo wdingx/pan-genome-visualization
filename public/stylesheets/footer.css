@@ -107,6 +107,11 @@
 	margin-bottom: 20px;
 }
 
+.footer-distributed .footer-website-about a{
+	color:  #ffffff; /* #5383d3; */
+	text-decoration: none; /**/
+}
+
 /* If you don't want the footer to be responsive, remove these media queries */
 
 @media (max-width: 1560px) {
