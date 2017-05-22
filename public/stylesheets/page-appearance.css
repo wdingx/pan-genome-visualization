@@ -10,8 +10,29 @@
 }
 
 .container.home{
-  width:60%;}
+  width:80%;
+}
 .modal-lg {width:85%;}
+
+img.homepage_logo{
+  width:100%;
+  margin: auto;
+  vertical-align: middle;
+  /*display: block;*/
+}
+
+@media screen and (min-width: 1600px) {
+  .container.home{
+  width:70%;
+  }
+  /*fixed logo size for large screen*/
+  img.homepage_logo{
+    width:270px;
+    height:270px;
+    margin: auto;
+    vertical-align: middle;
+  }
+}
 
 body {
   background-color: rgba(255, 140, 0, 0.015); !important
