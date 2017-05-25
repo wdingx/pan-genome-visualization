@@ -58,13 +58,32 @@ export const loadNewGeneCluster = function(data, handleGeneTree, seqType){
 
 const table_select_tip_annotation= function (input_annotation,myGeneTree) {
     /*var tree_index=1;*/
-    var searchStr = input_annotation.toLowerCase();
+    var searchStr = input_annotation;//.toLowerCase()
     function nodeMatch(d, treeType){
-        var annotation=d.n.annotation.toLowerCase();
+        var annotation=d.n.annotation;//.toLowerCase()
         return ((annotation.indexOf(searchStr) > -1 ) && (input_annotation.length != 0));
     };
 
     if (input_annotation=='') {
+        undoHideNonSelected(myGeneTree);
+    }else{
+        myGeneTree.tips.forEach(function(d){
+            d.state.selected=(nodeMatch(d,'geneTree'))?true:false;
+        })
+        hideNonSelected(myGeneTree);
+    }
+};
+
+const table_select_tip_geneName= function (input_geneName,myGeneTree) {
+    /*var tree_index=1;*/
+    var searchStr = input_geneName+'_';//.toLowerCase()
+    function nodeMatch(d, treeType){
+        var annotation=d.n.annotation;//.toLowerCase()
+        console.log(input_geneName,annotation)
+        return ((annotation.indexOf(searchStr) > -1 ) && (input_geneName.length != 0));
+    };
+
+    if (input_geneName=='') {
         undoHideNonSelected(myGeneTree);
     }else{
         myGeneTree.tips.forEach(function(d){
@@ -92,13 +111,17 @@ export const linkTableAlignmentTrees = function(clusterTableID, metaTableId, dat
             //** when clicking data cells (not the title & not the entire expanded cell)
             if ( row_index!==0 && !is_colspan){
                 const is_annotation=$(this).parents('tr').text().startsWith('Annotation');
+                const is_geneName=$(this).parents('tr').text().startsWith('geneName');
                 if (!$(this).hasClass("row_selected")){
                     $('#'+clusterTableID+' tbody tr').removeClass('row_selected');
                     $(this).addClass('row_selected');
                     //** select related tips in geneTree with the same annotation
                     if (is_annotation){
                         table_select_tip_annotation(cell_text,myGeneTree);
+                    } else if (is_geneName){
+                        table_select_tip_geneName(cell_text,myGeneTree);
                     }
+
                 }else{
                     $('#'+clusterTableID+' tbody tr').removeClass('row_selected');
                     if (is_annotation){
