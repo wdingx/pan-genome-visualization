@@ -56,38 +56,25 @@ export const loadNewGeneCluster = function(data, handleGeneTree, seqType){
     //change_select_dropdown_value("dropdown_select",'genePattern');
 }
 
-const table_select_tip_annotation= function (input_annotation,myGeneTree) {
-    /*var tree_index=1;*/
-    var searchStr = input_annotation;//.toLowerCase()
-    function nodeMatch(d, treeType){
+//** check if the item in child row matches the tips of gene tree
+const nodeMatch= function (d, input_item, input_type){
+    if (input_type!=='duplication') {
+        // annotation and geneName are stored in d.n.annotation
         var annotation=d.n.annotation;//.toLowerCase()
-        return ((annotation.indexOf(searchStr) > -1 ) && (input_annotation.length != 0));
-    };
-
-    if (input_annotation=='') {
-        undoHideNonSelected(myGeneTree);
-    }else{
-        myGeneTree.tips.forEach(function(d){
-            d.state.selected=(nodeMatch(d,'geneTree'))?true:false;
-        })
-        hideNonSelected(myGeneTree);
+        return ((annotation.indexOf(input_item) > -1 ) && (input_item.length != 0));
+    } else {
+        var accession=d.n.accession;
+        return ((accession.indexOf(input_item) > -1 ) && (input_item.length != 0));
     }
 };
-
-const table_select_tip_geneName= function (input_geneName,myGeneTree) {
+const table_childrow_select_tip= function (input_item, myGeneTree, input_type) {
     /*var tree_index=1;*/
-    var searchStr = input_geneName+'_';//.toLowerCase()
-    function nodeMatch(d, treeType){
-        var annotation=d.n.annotation;//.toLowerCase()
-        console.log(input_geneName,annotation)
-        return ((annotation.indexOf(searchStr) > -1 ) && (input_geneName.length != 0));
-    };
-
-    if (input_geneName=='') {
+    //var searchStr = input_item.toLowerCase()
+    if (input_item=='') {
         undoHideNonSelected(myGeneTree);
     }else{
         myGeneTree.tips.forEach(function(d){
-            d.state.selected=(nodeMatch(d,'geneTree'))?true:false;
+            d.state.selected=(nodeMatch(d, input_item, input_type))?true:false;
         })
         hideNonSelected(myGeneTree);
     }
@@ -110,21 +97,24 @@ export const linkTableAlignmentTrees = function(clusterTableID, metaTableId, dat
                   is_colspan=cell.attr('colspan');
             //** when clicking data cells (not the title & not the entire expanded cell)
             if ( row_index!==0 && !is_colspan){
-                const is_annotation=$(this).parents('tr').text().startsWith('Annotation');
-                const is_geneName=$(this).parents('tr').text().startsWith('geneName');
+                const nested_table_text= $(this).parents('tr').text(),
+                      is_annotation= nested_table_text.startsWith('Annotation'),
+                      is_geneName  = nested_table_text.startsWith('geneName'),
+                      is_duplication=nested_table_text.startsWith('strain name');
                 if (!$(this).hasClass("row_selected")){
                     $('#'+clusterTableID+' tbody tr').removeClass('row_selected');
                     $(this).addClass('row_selected');
                     //** select related tips in geneTree with the same annotation
                     if (is_annotation){
-                        table_select_tip_annotation(cell_text,myGeneTree);
+                        table_childrow_select_tip(cell_text,myGeneTree,'annotation');
                     } else if (is_geneName){
-                        table_select_tip_geneName(cell_text,myGeneTree);
+                        table_childrow_select_tip(cell_text,myGeneTree,'geneName');
+                    } else if (is_duplication){
+                        table_childrow_select_tip(cell_text,myGeneTree,'duplication');
                     }
-
-                }else{
+                }else{ // click(unselect) the selected child row
                     $('#'+clusterTableID+' tbody tr').removeClass('row_selected');
-                    if (is_annotation){
+                    if (is_annotation||is_geneName||is_duplication){
                         undoHideNonSelected(myGeneTree);
                     }
                 }
