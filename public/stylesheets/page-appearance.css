@@ -504,6 +504,9 @@ input[type=range]:focus::-ms-fill-upper {
 /*td {overflow:hidden; white-space:nowrap}*/
 
 /** css (pipeline.jade tutorial.jade) **/
+/*reduced p distance in figcaption for panX-pipeline.png*/
+p.narrow { margin:0; }
+
 ul.nav-pills {
   top: 60px;
   position: fixed;
