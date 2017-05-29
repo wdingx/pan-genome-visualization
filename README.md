@@ -39,7 +39,7 @@ Notes: the paths in the script need to be customized.
 python link-to-server.py YourSpecies
 ```
 
-Restart your server and enjoy your own interactive pan-genome dashboard!
+**Restart your server and enjoy your own interactive pan-genome dashboard!**
 
 
 ### **Pipeline overview:**
@@ -49,7 +49,7 @@ panX analysis pipeline is based on [DIAMOND](https://github.com/bbuchfink/diamon
 processing to determine clusters of orthologous genes from a collection of annotated genomes.
 panX generates a strain/species tree based on core genome SNPs and a gene tree for each gene cluster.
 
-panX interactive visualization: (1) The dynamic profile charts allow rapid filtering and selection of gene subsets in cluster table;
+**panX interactive visualization**: (1) The dynamic profile charts allow rapid filtering and selection of gene subsets in cluster table;
 
 clicking a gene cluster in cluster table loads (2) related alignment, (3) individual gene tree and (4) gene presence/absence and gain/loss pattern on species/strain tree;
 
