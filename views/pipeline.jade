@@ -19,50 +19,15 @@ html
         nav#myScrollspy.col-sm-2
           ul.nav.nav-pills.nav-stacked.fixed-dropdown
             li.active
-              a(href='#JS') JavaScript libraries
+              a(href='#overview')  Pipeline overview
             li
-              a(href='#overview')  pipeline overview
+              a(href='#JS') JavaScript libraries
             li
               a(href='#DIAMOND') DIAMOND
             li
               a(href='#MCL') MCL
         .col-sm-6.panX-text
           br
-          .alert.alert-info(role='alert') JavaScript libraries
-          #JS
-            p
-              b Interactive charts:
-              a(href='https://dc-js.github.io/dc.js/')
-                u dc.js
-              |  (interactive charting JS library based on
-              a(href="http://square.github.io/crossfilter/")
-                u crossfilter
-              |  and
-              a(href="https://d3js.org/")
-                u d3
-              | )
-              i.fa.fa-heart(aria-hidden='true',style='color:red;')
-              a(href="https://github.com/gordonwoodhull")
-                u Gordon Woodhull's
-              |  support and advice highly appreciated!
-            p
-              b Data tables:
-              a(href="https://datatables.net/")
-                u DataTables
-              |  plug-in for the enhancement of data accessibility
-            p
-              b Alignment:
-              a(href="http://msa.biojs.net/")
-                u MSA
-              |  (multiple sequence alignment JS library)
-            p
-              b Phylogenetic tree:
-              a(href="https://github.com/nextstrain/phyloTree")
-                u PhyloTree
-              |  (highly flexible tree visualization JS library) crafted by
-              a(href="https://github.com/neherlab")
-               u Richard Neher
-            br
           .alert.alert-info(role='alert') Pipeline overview
           #overview
             p
@@ -106,6 +71,41 @@ html
                   p.narrow
                     b  (9)
                     |  Searching in metadata table display strains pertinent to specific meta-information.
+          br
+          .alert.alert-info(role='alert') JavaScript libraries
+          #JS
+            p
+              b Interactive charts:
+              a(href='https://dc-js.github.io/dc.js/')
+                u dc.js
+              |  (interactive charting JS library based on
+              a(href="http://square.github.io/crossfilter/")
+                u crossfilter
+              |  and
+              a(href="https://d3js.org/")
+                u d3
+              | )
+              i.fa.fa-heart(aria-hidden='true',style='color:red;')
+              a(href="https://github.com/gordonwoodhull")
+                u Gordon Woodhull's
+              |  support and advice highly appreciated!
+            p
+              b Data tables:
+              a(href="https://datatables.net/")
+                u DataTables
+              |  plug-in for the enhancement of data accessibility
+            p
+              b Alignment:
+              a(href="http://msa.biojs.net/")
+                u MSA
+              |  (multiple sequence alignment JS library)
+            p
+              b Phylogenetic tree:
+              a(href="https://github.com/nextstrain/phyloTree")
+                u PhyloTree
+              |  (highly flexible tree visualization JS library) crafted by
+              a(href="https://github.com/neherlab")
+               u Richard Neher
           br
           #DIAMOND
             .alert.alert-info(role='alert') DIAMOND
