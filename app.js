@@ -19,7 +19,7 @@ app.use(require("webpack-dev-middleware")(compiler, {
 }));
 app.use(require("webpack-hot-middleware")(compiler));
 
-app.get('*aln.fa', function (req, res, next) {
+app.get('*.fa', function (req, res, next) {
   req.url = req.url + '.gz';
   res.set('Content-Encoding', 'gzip');
   next();
