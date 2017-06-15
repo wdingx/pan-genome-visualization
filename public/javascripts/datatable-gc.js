@@ -54,14 +54,16 @@ for (let i=0, len=table_columns.length ; i<len; i++) {
 var insertion_index, new_column_header, new_column_data;
 if (typeof new_columns_config!='undefined'){
     for (let new_column_config of new_columns_config) {
-        new_column_data=new_column_config.new_col;
-        new_column_header=new_column_data['name'];
-        insertion_index= geneCluster_table_columns.indexOf(new_column_config.insertion_pos)+1;
-        //** insert new header and related tooltip
-        geneCluster_table_columns.splice(insertion_index, 0, new_column_header);
-        clusterTable_tooltip_dict[new_column_header]=new_column_data['tooltip']
-        //** insert data linked with new header for datatable initialization (column_config)
-        table_columns.splice(insertion_index, 0, new_column_data);
+        if (!new_column_config['new_col']['group name']){
+            new_column_data=new_column_config.new_col;
+            new_column_header=new_column_data['name'];
+            insertion_index= geneCluster_table_columns.indexOf(new_column_config.insertion_pos)+1;
+            //** insert new header and related tooltip
+            geneCluster_table_columns.splice(insertion_index, 0, new_column_header);
+            clusterTable_tooltip_dict[new_column_header]=new_column_data['tooltip']
+            //** insert data linked with new header for datatable initialization (column_config)
+            table_columns.splice(insertion_index, 0, new_column_data);
+        }
     }
 }
 
@@ -89,7 +91,8 @@ const table_sort_order= [[column_desc_index, 'desc' ],[column_asc_index, 'asc' ]
 //## pay attention to GC table column order
 //export const clusterTable_standard_dropdown=['multiple sequence alignment','geneName','annotation','#strain','duplicated', 'gene gain/loss events','diversity','gene length'];
 const clusterTable_standard_dropdown= table_columns
-                                        .filter(function(n){return n.name!='' && n.visible!=false})
+                                        //.filter(function(n){return n.name!='' && n.visible!=false})
+                                        .filter(function(n){return n.name!='' && !n.group})
                                         .map(function(n){return n.name})
 //** create GC table HTML structure
 export const create_dataTable = function (div, columns_set) {
@@ -105,16 +108,33 @@ export const create_dataTable = function (div, columns_set) {
         .text(function(d) {return d.charAt(0).toUpperCase()+ d.slice(1); });
 };
 
-//** creat multiselect dropdown for dataTables
-export const create_multiselect = function (div, columns_set) {
+//** create multiselect dropdown for dataTables
+export const create_multiselect = function (div, standard_columns, GC_table_association_groups) {
     var select_panel = d3.select(div);
-
-    for (var i = 0; i < columns_set.length; i++) {
-        select_panel.append("option")
-            .attr("value", columns_set[i])
+    if (GC_table_association_groups!=undefined){
+        const groups= Object.keys(GC_table_association_groups);
+        for (var i = 0, len= groups.length; i < len; i++) {
+            var select_group=select_panel.append("optgroup")
+                                .attr("label", groups[i]);
+            const group_elements= GC_table_association_groups[groups[i]];
+            for (var e = 0, elem_len= group_elements.length; e < elem_len; e++) {
+                select_group.append("option")
+                    .attr("value", group_elements[e])
+                    .attr("selected", "selected")
+                    .text(group_elements[e]);
+            }
+        }
+    }else{
+        var select_group=select_panel;
+        for (var i = 0, len= standard_columns.length; i < len; i++) {
+        select_group.append("option")
+            .attr("value", standard_columns[i])
             .attr("selected", "selected")
-            .text(columns_set[i]);
+            .text(standard_columns[i]);
+        }
     }
+
+
 };
 
 //** column configuration for datatables
@@ -200,11 +220,11 @@ export const datatable_configuration = function(table_input, table_id, col_selec
     var non_empty_index_list= indexes_list[0];
     var empty_inde_list = indexes_list[1];
 
-    create_multiselect('#'+col_select_id,clusterTable_standard_dropdown);
+    create_multiselect('#'+col_select_id, clusterTable_standard_dropdown);
     $('#'+col_select_id).multiselect({
         //enableFiltering: true,
-        allSelectedText: "All selected",
         //includeSelectAllOption: true,
+        allSelectedText: "Standard", //"All selected",
         onChange: function(element, checked) {
             //console.log(col_select_id,datatable,element,checked);
             function element_included (arr, number) {
@@ -234,20 +254,42 @@ export const datatable_configuration = function(table_input, table_id, col_selec
     //** append multiselect button for association columns to cluster table
     if (typeof new_columns_config!='undefined' && typeof apply_association_cols!='undefined'){
         const association_id='association';
-        create_dropdown_button(table_id, association_id, false)
-        const GC_table_association= new_columns_config.map(function(n){ return n.new_col['name']});
-        create_multiselect('#'+association_id,GC_table_association);
+        create_dropdown_button(table_id, association_id, true)
+
+        const GC_table_association_keys= new_columns_config
+                                    .filter(function(n){ return n.new_col['group name']})
+                                    .map(function(n){ return n.new_col['group name']});
+        var GC_table_association_groups={};
+        for(var i=0, len=GC_table_association_keys.length; i < len; i++) {
+            const group_name= GC_table_association_keys[i];
+            const GC_table_association= new_columns_config
+                                    .filter(function(n){ return n.new_col['group']==group_name})
+                                    .map(function(n){ return n.new_col['name']});
+            GC_table_association_groups[group_name]=GC_table_association;
+
+        }
+        //const standard_columns='';
+        create_multiselect('#'+association_id, '', GC_table_association_groups);
         var association_column=[];
         $('#'+association_id).multiselect({
             enableFiltering: true,
+            //includeSelectAllOption: true,
+            allSelectedText: "Associations",
+            enableClickableOptGroups: true,
+            enableCollapsibleOptGroups: true,
             onChange: function(element, checked) {
-                for (var i = 0, len=association_column.length; i < len; i++) {
+                /*for (var i = 0, len=association_column.length; i < len; i++) {
                     association_column[i].visible(false);
-                }
+                }*/
+
                 //** search column via name (header name)
-                var column_normal =datatable.column( element.val()+':name');
-                column_normal.visible(true);
-                association_column.push(column_normal);
+                var column_selected =datatable.column( element.val()+':name');
+                if (checked === true) {
+                    column_selected.visible(true);
+                }else{
+                    column_selected.visible(false);
+                }
+                //association_column.push(column_selected);
             }
         });
     }
