@@ -98,17 +98,17 @@ export const tooltip_node = d3.tip().attr('class', 'd3-tip').html(function(d) {
 export const tooltip_branch = d3.tip().attr('class', 'd3-tip').html(function(d) {
     var string = "";
     string += "click and zoom into clade ";
-    if (d.target) {
-        if (typeof d.target.ann != "undefined") {
-            string += "<br/>" + "annotation:  " + d.target.ann;
+    if (d.n) {
+        if (typeof d.n.ann != "undefined") {
+            string += "<br/>" + "annotation:  " + d.n.ann;
             }
-        if (typeof d.target.muts != "undefined") {
-            var muts_str=d.target.muts
+        if (typeof d.n.muts != "undefined") {
+            var muts_str=d.n.muts
             if (muts_str.length>50) { muts_str=muts_str.substr(0,50)+'...'}
             string += "<br/>" + "nucleotide mutations:  " + muts_str
             }
-        if (typeof d.target.aa_muts != "undefined") {
-            var aa_muts_str=d.target.aa_muts
+        if (typeof d.n.aa_muts != "undefined") {
+            var aa_muts_str=d.n.aa_muts
             if (aa_muts_str.length>50) { aa_muts_str=aa_muts_str.substr(0,50)+'...'}
             string += "<br/>" + "amino acid mutations:  " + aa_muts_str;
             }
@@ -140,7 +140,6 @@ export const tooltip_toggle = function(tooltip_toggle_dict) {
 export const button_tooltip = function(divID, tooltip_dict) {
     d3.selectAll(divID).selectAll('.btn_tooltip')
     .on("mouseover", function(d){
-        console.log(d)
         tooltip.text(tooltip_dict[d3.select(this).attr('id')]);
         if (tooltip.text()!="") {
             return tooltip.style("visibility", "visible");
