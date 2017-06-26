@@ -26,7 +26,6 @@ const msaLoad = function (aln_path,scheme_type) {
     //opts.config={};opts.conf= {alphabetSize: 1};
 
     var m =  new msa.msa(opts);    //JSON.stringify
-
     //# click row/rows to highlight the related strain/strains
     var seqID_to_accession_dt={};
     m.g.on('row:click', function(data){
@@ -53,6 +52,7 @@ const msaLoad = function (aln_path,scheme_type) {
         }
         hideNonSelected(speciesTree);
     });
+    m.g.scale.setSize(2);
 
     /*$(".smenu-dropdown-menu").find("li:contains('Reset')").each(function(){
         var div=$(this);
