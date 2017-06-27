@@ -52,7 +52,9 @@ const msaLoad = function (aln_path,scheme_type) {
         }
         hideNonSelected(speciesTree);
     });
-    m.g.scale.setSize(2);
+    var scaleSize;
+    scaleSize= (scheme_type=='nucleotide')? 2: 3;
+    m.g.scale.setSize(scaleSize); console.log(scheme_type,scaleSize);
 
     /*$(".smenu-dropdown-menu").find("li:contains('Reset')").each(function(){
         var div=$(this);
