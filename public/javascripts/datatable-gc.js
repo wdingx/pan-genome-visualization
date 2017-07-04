@@ -188,7 +188,7 @@ export const datatable_configuration = function(table_input, table_id, col_selec
         d3.select('#'+tableId+'_filter.dataTables_filter')
             .append('span')
             .style('display','inline-block')
-            .style('width','5px')
+            .style('width','6px')
         d3.select('#'+tableId+'_filter.dataTables_filter')
             .append('a')
             .attr('href',href_link)
@@ -199,7 +199,7 @@ export const datatable_configuration = function(table_input, table_id, col_selec
         d3.select('#'+tableId+'_filter.dataTables_filter')
             .append('span')
             .style('display','inline-block')
-            .style('width','5px')
+            .style('width','6px')
     }
 
     //# append multiselect button for standard & gain_loss event columns to cluster table
