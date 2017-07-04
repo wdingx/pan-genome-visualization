@@ -88,11 +88,26 @@ export const render_chart_table = {
                 coreThreshold=init_core_threshold
             }
             return ndx.dimension(function (d) {
-                if (d.count >= totalStrainNumber*coreThreshold){
-                    return 'Core';
-                }
-                else {
-                    return 'Acc';
+                // add option later
+                if (true){
+                    if (d.count >= totalStrainNumber*coreThreshold){
+                        return 'core';
+                    }
+                    else {
+                        return 'acc';
+                    }
+                } else{
+                    if (d.count >= totalStrainNumber*coreThreshold){
+                        if (d.dup_detail==''){
+                            return 'core(s)';
+                        }else {
+                            return 'core';
+                        }
+                    }else if (d.count!=1){
+                        return 'acc';
+                    }else {
+                        return 'unique';
+                    }
                 }
             });
         };
@@ -158,7 +173,7 @@ export const render_chart_table = {
                 }
                 return label;
             })
-            //.legend(dc.legend());
+            .legend(dc.legend());
 
         //## using core threshold in slider to re-distribute pie chart data
         // update the field
