@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'panX' });
+  res.render('home', { title: 'panX' });
   //res.sendfile(__dirname + '/public/clienthtml/index.html');
 });
 
