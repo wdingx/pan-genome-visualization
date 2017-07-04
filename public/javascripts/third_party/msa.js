@@ -24477,7 +24477,7 @@
 	    // add menu config to the global object
 	    this.msa.g.menuconfig = new _settings2.default(data.menu);
 
-	    this.addView("10_import", new _ImportMenu2.default({ model: this.msa.seqs, g: this.msa.g, msa: this.msa }));
+	    //this.addView("10_import", new _ImportMenu2.default({ model: this.msa.seqs, g: this.msa.g, msa: this.msa }));
 	    this.addView("15_ordering", new _OrderingMenu2.default({ model: this.msa.seqs, g: this.msa.g }));
 	    this.addView("20_filter", new _FilterMenu2.default({ model: this.msa.seqs, g: this.msa.g }));
 	    this.addView("30_selection", new _SelectionMenu2.default({ model: this.msa.seqs, g: this.msa.g }));
@@ -24485,7 +24485,8 @@
 	    this.addView("50_color", new _ColorMenu2.default({ model: this.msa.seqs, g: this.msa.g }));
 	    //this.addView("70_extra", new _ExtraMenu2.default({ model: this.msa.seqs, g: this.msa.g, msa: this.msa }));
 	    this.addView("80_export", new _ExportMenu2.default({ model: this.msa.seqs, g: this.msa.g, msa: this.msa }));
-	    /*this.addView("90_help", new _HelpMenu2.default({ g: this.msa.g }));
+	    //this.addView("90_export1", new _ExportMenu2.default({ model: this.msa.seqs, g: this.msa.g, msa: this.msa }));
+	    /*this.addView("90_help", n1ew _HelpMenu2.default({ g: this.msa.g }));
 	    if (this.msa.g.config.get("debug")) {
 	      return this.addView("95_debug", new _DebugMenu2.default({ g: this.msa.g }));
 	    }*/
@@ -25326,19 +25327,19 @@
 	      return _exporter2.default.saveAsFile(_this.msa, "all.fasta");
 	    });
 
-	    this.addNode("Export alignment (URL)", function () {
+	    /*this.addNode("Export alignment (URL)", function () {
 	      return _exporter2.default.publishWeb(_this.msa, function (link) {
 	        return window.open(link, '_blank');
 	      });
-	    });
+	    });*/
 
 	    this.addNode("Export selected sequences (FASTA)", function () {
 	      return _exporter2.default.saveSelection(_this.msa, "selection.fasta");
 	    });
 
-	    this.addNode("Export features (GFF)", function () {
+	    /*this.addNode("Export features (GFF)", function () {
 	      return _exporter2.default.saveAnnots(_this.msa, "features.gff3");
-	    });
+	    });*/
 
 	    this.addNode("Export MSA image (PNG)", function () {
 	      return _exporter2.default.saveAsImg(_this.msa, "biojs-msa.png");
