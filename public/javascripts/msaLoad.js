@@ -70,6 +70,23 @@ const msaLoad = function (aln_path,scheme_type) {
     menuOpts.msa = m;
     var defMenu = new msa.menu.defaultmenu(menuOpts);
     m.addView('menu', defMenu);
+
+    const tryMSA = function(){
+        if ( d3.selectAll('.smenubar').empty() ) {
+            setTimeout(tryMSA, 1000);
+        } else{
+            //d3.selectAll('.msa_download').remove();
+            d3.selectAll('.smenubar')
+            .insert('a',":first-child")
+            .attr('href',aln_path.replace('_reduced',''))
+            .attr('class','msa_download')
+            .append('i')
+            .attr('id', 'alignment-download')
+            .attr('class','glyphicon glyphicon-download-alt btn_tooltip')
+            .style('vertical-align','middle')
+        }
+    }
+    tryMSA();
 };
 
 
