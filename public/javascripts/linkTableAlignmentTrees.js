@@ -44,7 +44,7 @@ export const loadNewGeneCluster = function(data, handleGeneTree, seqType){
           ann_majority=data.ann;
     panXTree.currentClusterID=clusterID;
     console.log("loadNewGeneCluster", clusterID, seqType);
-    msaLoad(aln_file_path+clusterID+'_'+seqType+'_aln.fa',(seqType=='aa')?'taylor':'nucleotide');
+    msaLoad(aln_file_path+clusterID+'_'+seqType+'_aln_reduced.fa',(seqType=='aa')?'taylor':'nucleotide');
     var geneTree_name=aln_file_path + clusterID+'_tree.json';
     // if it is a gene tree, show the title with geneCluster Id
     if (geneTree_name.indexOf('tree.json') !== -1) {
