@@ -27,17 +27,18 @@ html
         //p(style='font-size:22px') Pan-genomes from NCBI RefSeq data:
         #dc_data_count.col-md-3
           br
-          .alert.alert-info(role='alert') Pan-genomes from NCBI RefSeq data
+          .alert.alert-info(role='alert') Available pan-genomes
           #species-selector
           #species-search(style='margin-top:3px')
         .col-md-7
-          br
-          p panX is a software package for comprehensive pan-genome analysis, web-based interactive visualization and dynamic exploration. The analysis pipeline is based on DIAMOND, MCL and phylogeny-aware post-processing.
-          p The web application encompasses various interconnected viewers (pan-genome statistical charts, gene cluster table, alignment, comparative phylogenies, metadata table). Gene clusters can be rapidly searched and filtered by gene name, annotation, duplication and their phylogenetic properties such as diversity or the number of gene gain/loss events.
+          .row(style='padding-left:18px')
+            br
+            p panX is a software package for comprehensive pan-genome analysis, web-based interactive visualization and dynamic exploration. The analysis pipeline is based on DIAMOND, MCL and phylogeny-aware post-processing.
+            p The web application encompasses various interconnected viewers (pan-genome statistical charts, gene cluster table, alignment, comparative phylogenies, metadata table). Gene clusters can be rapidly searched and filtered by gene name, annotation, duplication and their phylogenetic properties such as diversity or the number of gene gain/loss events.
 
-          p
-            strong Metadata
-            |  associated with the strains and gene presence/absence patterns can be mapped onto the species tree. Such mapping facilitates the identification of genes associated with particular ecological niches, phenotypes such as antibiotic resistance, virulence, or epidemiological parameters such as host age.
+            p
+              strong Metadata
+              |  associated with the strains and gene presence/absence patterns can be mapped onto the species tree. Such mapping facilitates the identification of genes associated with particular ecological niches, phenotypes such as antibiotic resistance, virulence, or epidemiological parameters such as host age.
       p(style='font-size:22px') Showcases of panX functionalities:
       .row.panX-text
         .col-md-6
