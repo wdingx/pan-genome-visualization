@@ -13,8 +13,16 @@ export const create_species_dropdown = function (div, species_dt) {
 
     selector
         .append("option")
+        //.attr("value", '')
+        .attr("disabled", '')
+        //.attr("selected", '')
+        .text('Select species');
+     // <option value="" disabled selected>Select your option</option>
+
+    /*selector
+        .append("option")
         .attr("value", speciesAbbr)
-        .text(species_dt[speciesAbbr]);
+        .text(species_dt[speciesAbbr]);*/
 
     for(var key in species_dt) {
         var value = species_dt[key];
