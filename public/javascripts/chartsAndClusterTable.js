@@ -173,7 +173,7 @@ export const render_chart_table = {
                 }
                 return label;
             })
-            .legend(dc.legend());
+            //.legend(dc.legend());
 
         //## using core threshold in slider to re-distribute pie chart data
         // update the field
