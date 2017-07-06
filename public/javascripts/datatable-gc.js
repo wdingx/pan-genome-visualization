@@ -2,7 +2,7 @@ import $ from 'jquery';
 window.$ = $;
 window.jQuery = $;
 import DataTable from 'datatables.net';
-import {button_tooltip} from './tooltips';
+import {button_tooltip, append_download_button} from './tooltips';
 import './third_party/table_plugin/dataTables.bootstrap.min.js';
 require('datatables.net-colreorder');
 require("bootstrap");
@@ -183,25 +183,6 @@ export const datatable_configuration = function(table_input, table_id, col_selec
         }
     }
 
-    //** create download buttons (core_genes,etc)
-    const create_dt_download_button = function(tableId, buttonId, href_link){
-        d3.select('#'+tableId+'_filter.dataTables_filter')
-            .append('span')
-            .style('display','inline-block')
-            .style('width','6px')
-        d3.select('#'+tableId+'_filter.dataTables_filter')
-            .append('a')
-            .attr('href',href_link)
-            .append('i')
-            .attr('id', buttonId)
-            .attr('class','glyphicon glyphicon-download-alt btn_tooltip')
-            .style('vertical-align','middle')
-        d3.select('#'+tableId+'_filter.dataTables_filter')
-            .append('span')
-            .style('display','inline-block')
-            .style('width','6px')
-    }
-
     //# append multiselect button for standard & gain_loss event columns to cluster table
     create_dropdown_button(table_id, col_select_id, true)
 
@@ -295,10 +276,12 @@ export const datatable_configuration = function(table_input, table_id, col_selec
     }
 
     //** append download button for all core genes
-    create_dt_download_button(table_id, 'core_genes', '/download/datasets/'+speciesAbbr+'/core_genes.tar.gz');
+    append_download_button('#'+table_id+'_filter.dataTables_filter', 'core_genes', '/download/datasets/'+speciesAbbr+'/core_genes.tar.gz');
+    append_download_button('#'+table_id+'_filter.dataTables_filter', 'all_genes', '/download/datasets/'+speciesAbbr+'/all_genes.tar.gz');
     const dt_button_tooltip_dict= {
     //**download core genes
-    'core_genes': 'download all core genes'
+    'core_genes': 'download core genes',
+    'all_genes': 'download all genes'
     }
     button_tooltip('#'+table_id+'_filter', dt_button_tooltip_dict);
 
