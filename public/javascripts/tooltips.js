@@ -153,6 +153,22 @@ export const button_tooltip = function(divID, tooltip_dict) {
     })
 };
 
+
+//** create download buttons for table and msa viewer (core_genes,etc)
+export const append_download_button = function(divID, buttonId, href_link){
+    d3.select(divID)
+        .append('span')
+        .style('display','inline-block')
+        .style('width','6px')
+    d3.select(divID)
+        .append('a')
+        .attr('href',href_link)
+        .append('i')
+        .attr('id', buttonId)
+        .attr('class','glyphicon glyphicon-download-alt btn_tooltip')
+        .style('vertical-align','middle')
+}
+
 //** tree button tooltip
 const treeButton_tooltip_dict= {
     //**speciesTree
