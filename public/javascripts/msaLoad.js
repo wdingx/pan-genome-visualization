@@ -57,7 +57,8 @@ const msaLoad = function (aln_path,scheme_type) {
     });
     var scaleSize;
     scaleSize= (scheme_type=='nucleotide')? 2: 3;
-    m.g.scale.setSize(scaleSize); console.log(scheme_type,scaleSize);
+    m.g.scale.setSize(scaleSize);
+    //console.log(scheme_type,scaleSize);
 
     /*$(".smenu-dropdown-menu").find("li:contains('Reset')").each(function(){
         var div=$(this);
@@ -79,8 +80,8 @@ const msaLoad = function (aln_path,scheme_type) {
     append_download_button('#msa_legend','msa_aln',aln_path.replace('_reduced',''));
     append_download_button('#msa_legend','msa_reduced_aln',aln_path);
     const msa_button_tooltip_dict= {
-        'msa_aln': 'download alignment',
-        'msa_reduced_aln': 'download reduced alignment (consensus sequence and variable sites)'
+        'msa_aln': 'download current alignment',
+        'msa_reduced_aln': 'download current reduced alignment (consensus sequence and variable sites)'
     }
     button_tooltip('#msa_legend', msa_button_tooltip_dict);
 

@@ -276,12 +276,12 @@ export const datatable_configuration = function(table_input, table_id, col_selec
     }
 
     //** append download button for all core genes
-    append_download_button('#'+table_id+'_filter.dataTables_filter', 'core_genes', '/download/datasets/'+speciesAbbr+'/core_genes.tar.gz');
-    append_download_button('#'+table_id+'_filter.dataTables_filter', 'all_genes', '/download/datasets/'+speciesAbbr+'/all_genes.tar.gz');
+    append_download_button('#'+table_id+'_filter.dataTables_filter', 'core_gene_alignments', '/download/datasets/'+speciesAbbr+'/core_gene_alignments.tar.gz');
+    append_download_button('#'+table_id+'_filter.dataTables_filter', 'all_gene_alignments', '/download/datasets/'+speciesAbbr+'/all_gene_alignments.tar.gz');
     const dt_button_tooltip_dict= {
     //**download core genes
-    'core_genes': 'download core genes',
-    'all_genes': 'download all genes'
+    'core_gene_alignments': 'download core gene alignments',
+    'all_gene_alignments': 'download all gene alignments'
     }
     button_tooltip('#'+table_id+'_filter', dt_button_tooltip_dict);
 
