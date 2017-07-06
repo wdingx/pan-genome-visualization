@@ -1,6 +1,6 @@
 var species_dt={
 	'optgroup1':{'label':'Case studies:',
-				 'members': ['S_p616','P_marinus_meta']},
+				 'members': ['Sp616','P_marinus_meta']},
 	'optgroup2':{'label':'Pan-genomes from RefSeq records:',
 				 'members': ['Acinetobacter_baumannii','Bacillus_anthracis','Burkholderia_pseudomallei','Bacillus_subtilis','Campylobacter_jejuni','Corynebacterium_pseudotuberculosis','Chlamydia_trachomatis','Escherichia_coli','Francisella_tularensis','Helicobacter_pylori','Klebsiella_pneumoniae','Lactococcus_lactis','Listeria_monocytogenes','Legionella_pneumophila','Mycobacterium_tuberculosis','Neisseria_meningitidis','Pseudomonas_aeruginosa','Staphylococcus_aureus','Salmonella_enterica','Streptococcus_pneumoniae','Streptococcus_pyogenes','Vibrio_cholerae','Xanthomonas_citri','Xanthomonas_oryzae','Yersinia_pestis']},
 	'optgroup3':{'label':'Orders:',
@@ -8,7 +8,7 @@ var species_dt={
 	'Vibrionales': 'Vibrionales',
 	'Pseudomonadales': 'Pseudomonadales',
 	'Enterobacteriales': 'Enterobacteriales',
-	'S_p616':'Epidemiology of S. pneumoniae',
+	'S_pneumoniae616':'Epidemiology of S. pneumoniae',
 	'P_marinus_meta':'Prochlorococcus marinus (Biller et al)',
 	'Acinetobacter_baumannii': 'Acinetobacter baumannii (71)',
 	'Bacillus_anthracis': 'Bacillus anthracis (43)',
