@@ -1,8 +1,10 @@
-//import './third_party/msa-new.js';
+import './third_party/msa-new.js';
 //import './third_party/msa.min.gz.js';
 import './third_party/msa.js';
 import {panXTree, msaViewerAsset} from './global'
 import {hideNonSelected} from './tree-init'
+import {button_tooltip,append_download_button} from './tooltips'
+
 //var msa = require("msa");
 
 const msaLoad = function (aln_path,scheme_type) {
@@ -11,6 +13,7 @@ const msaLoad = function (aln_path,scheme_type) {
     var opts = {
       el: rootDiv,
       importURL: aln_path,
+      bootstrapMenu: false
     };
 
     //opts.vis = {conserv: false, overviewbox: false, labelId: false};
@@ -66,27 +69,19 @@ const msaLoad = function (aln_path,scheme_type) {
         colorBy = "genotype";
         colorByGenotypePosition([data['rowPos']]);});*/
 
-    var menuOpts = {};
-    menuOpts.msa = m;
-    var defMenu = new msa.menu.defaultmenu(menuOpts);
-    m.addView('menu', defMenu);
+    //var menuOpts = {};
+    //menuOpts.msa = m;
+    //var defMenu = new msa.menu.defaultmenu(menuOpts);
+    //m.addView('menu', defMenu);
 
-    const tryMSA = function(){
-        if ( d3.selectAll('.smenubar').empty() ) {
-            setTimeout(tryMSA, 1000);
-        } else{
-            //d3.selectAll('.msa_download').remove();
-            d3.selectAll('.smenubar')
-            .insert('a',":first-child")
-            .attr('href',aln_path.replace('_reduced',''))
-            .attr('class','msa_download')
-            .append('i')
-            .attr('id', 'alignment-download')
-            .attr('class','glyphicon glyphicon-download-alt btn_tooltip')
-            .style('vertical-align','middle')
-        }
+    append_download_button('#msa_legend','msa_aln',aln_path.replace('_reduced',''));
+    append_download_button('#msa_legend','msa_reduced_aln',aln_path);
+    const msa_button_tooltip_dict= {
+        'msa_aln': 'download alignment',
+        'msa_reduced_aln': 'download reduced alignment (consensus sequence and variable sites)'
     }
-    tryMSA();
+    button_tooltip('#msa_legend', msa_button_tooltip_dict);
+
 };
 
 
