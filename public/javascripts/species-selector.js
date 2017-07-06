@@ -11,18 +11,19 @@ export const create_species_dropdown = function (div, species_dt) {
         .attr("id", "sel1")
         .attr("onchange", "location = this.options[this.selectedIndex].value;");
 
-    selector
-        .append("option")
-        //.attr("value", '')
-        .attr("disabled", '')
-        //.attr("selected", '')
-        .text('Select species');
-     // <option value="" disabled selected>Select your option</option>
-
-    /*selector
-        .append("option")
-        .attr("value", speciesAbbr)
-        .text(species_dt[speciesAbbr]);*/
+    // for homepage, nothing is selected;
+    // for page from clicked item on dropdown list, it shows the selected species.
+    if (speciesAbbr=='null'){
+        selector.append("option")
+            .attr("value", '')
+            .attr("disabled", '')
+            .attr("selected", '')
+            .text('Select species');
+    }else{
+        selector.append("option")
+            .attr("value", speciesAbbr)
+            .text(species_dt[speciesAbbr]);
+    }
 
     for(var key in species_dt) {
         var value = species_dt[key];
