@@ -74,6 +74,8 @@ const msaLoad = function (aln_path,scheme_type) {
     //var defMenu = new msa.menu.defaultmenu(menuOpts);
     //m.addView('menu', defMenu);
 
+    const msa_legend=d3.select('#msa_legend');
+    msa_legend.selectAll('a, span').remove();
     append_download_button('#msa_legend','msa_aln',aln_path.replace('_reduced',''));
     append_download_button('#msa_legend','msa_reduced_aln',aln_path);
     const msa_button_tooltip_dict= {
