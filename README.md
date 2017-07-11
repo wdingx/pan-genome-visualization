@@ -34,9 +34,8 @@ bash add-new-pages-repo.sh your_species_prefix
 ```
 ## Send your own data to the local server
 After finishing the pan-genome-analysis pipeline, please use the script [link-to-server.py](https://github.com/neherlab/pan-genome-analysis/blob/master/link-to-server.py)  to transfer your data to the local server.
-Notes: the paths in the script need to be customized.
 ```
-python link-to-server.py YourSpecies
+./link-to-server.py -s E_coli -v /usr/pan-genome-visualization
 ```
 
 **Restart your server and enjoy your own interactive pan-genome dashboard!**
