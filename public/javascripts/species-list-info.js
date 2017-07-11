@@ -9,7 +9,7 @@ var species_dt={
 	'Pseudomonadales': 'Pseudomonadales',
 	'Enterobacteriales': 'Enterobacteriales',
 	'S_pneumoniae616':'Epidemiology of S. pneumoniae',
-	'Sp616':'Epidemiology of S. pneumoniae',
+	'Spneumoniae616':'Epidemiology of S. pneumoniae',
 	'P_marinus_meta':'Prochlorococcus marinus (Biller et al)',
 	'Acinetobacter_baumannii': 'Acinetobacter baumannii (71)',
 	'Bacillus_anthracis': 'Bacillus anthracis (43)',
