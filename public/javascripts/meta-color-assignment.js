@@ -153,6 +153,7 @@ export const assign_metadata_color = function(meta_details,meta_display){
     for (var j = 0; j < metaTypes.length; j++) {
         var metaType_key = metaTypes[j]; //**'host'
         var meta_detail = meta_details[metaType_key]; //** ["human", "rice"]
+        //meta_detail.sort();
         const meta_coloring_type= meta_display['color_options'][metaType_key]['type'];
         if (meta_coloring_type=='continuous') {
             assign_continuous_color(metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts,metaType_key,meta_detail)
