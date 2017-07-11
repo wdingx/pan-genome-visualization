@@ -4,7 +4,7 @@ Even closely related bacterial genomes can differ in the presence of hundreds of
 This mix of inheritance patterns complicates phylogenetic analysis of bacteria.
 
 Although several software are available for pan-genome analysis, yet visualization, interpretation and exploration of pan-genomes remains challenging.
-**panX** (Pan-genome Analysis and Exploration) aims at facilitating pan-genome research with an easy-to-use and interactive platform to analyze and explore pan-genomic data.
+**panX** (Pan-genome Analysis and Exploration) aims at facilitating pan-genome research with an easy-to-use and interactive platform for analyzing and exploring pan-genomic data.
 
 panX displays the pan-genome using interconnected visual components including gene cluster table, multiple alignment, comparative phylogenetic tree viewers and strain metadata table. The pan-genome data structures are prepared by our [pan-genome-analysis](https://github.com/neherlab/pan-genome-analysis) analysis pipeline, which efficiently identifies orthologous clusters from large sets of genome sequences and pre-computes alignments, trees, and plenty of informative statistics.
 **panX is available at [pangenome.de](http://pangenome.de)**
@@ -13,13 +13,14 @@ panX displays the pan-genome using interconnected visual components including ge
 git clone https://github.com/neherlab/pan-genome-visualization
 git submodule update --init
 ```
-### Install npm packages and start the server: (if npm can not start, please make sure that [nodejs](https://nodejs.org/en/download/) is updated.)
+### Install npm packages and start the server:
 ```
 npm install
 npm start
 ```
 
 check ```http://localhost:8000/``` in browser (One might need to upgrade the outdated browser.)
+If npm can not start, please make sure that [nodejs](https://nodejs.org/en/download/) is updated.
 
 The example page shows the beauty and power of the panX visualization and exploration, even though only a few species and some of their gene clusters are showcased in the repository. Complete pan-genomes are exhibited at [pangenome.de](http://pangenome.de).
 ### Demo
