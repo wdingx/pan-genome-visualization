@@ -3,6 +3,7 @@ window.$ = $;
 window.jQuery = $;
 import DataTable from 'datatables.net';
 import {button_tooltip, append_download_button} from './tooltips';
+import {table_columns} from './global';
 import './third_party/table_plugin/dataTables.bootstrap.min.js';
 require('datatables.net-colreorder');
 require("bootstrap");
@@ -12,25 +13,29 @@ require('bootstrap-toggle');
 var multiselect = require('bootstrap-multiselect');
 $.multiselect = multiselect;
 
-//## dc_DataTables configuration <div style="display:inline-block" ></div>
-var table_columns= [
-    {'defaultContent': '<button type="button" class="btn btn-info btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="amino acid alignment" >aa </button> <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="nucleotide alignment" >na </button> ',  'name':'Alignment','tooltip':'multiple sequence alignment'},
-    {'defaultContent': '','data':null, 'className': 'geneName-details-control', 'orderable': false,  'name':''},//geneName expand
-    {'data':'GName',  'name':'Name','tooltip':'gene name'},//geneName
-    {'defaultContent': '','data':null, 'className': 'ann-details-control', 'orderable': false,  'name':''},//annotation expand
-    {'data':'ann',  'name':'Annotation','tooltip':'gene annotation'},//annotation    //'width':10,
-    {'data':'count',  'name':'#Strains','tooltip':'strain count'},//count
-    {'defaultContent': '','data':null, 'className': 'dup-details-control', 'orderable': false,  'name':''},//duplication expand
-    {'data':'dupli',  'name':'Duplicated','tooltip':'whether duplicated and duplication count in each strain'},//duplication
-    {'data':'event',  'name':'Events','tooltip':'gene gain/loss events count'},
-    {'data':'divers',  'name':'Diversity','tooltip':'gene diversity'},
-    {'data':'geneLen',  'name':'Length','tooltip':'average gene length'},
-    {'data':'geneId','visible': false,  'name':'','tooltip':''},
-    {'data':'allAnn','visible': false,  'name':'','tooltip':''},
-    {'data':'allGName','visible': false,  'name':'','tooltip':''},
-    {'defaultContent': '','data':'locus','visible': false,  'name':'','tooltip':''}
-    //{'data':'msa','visible': false}
-];
+if (typeof customized_standard_columns=='undefined'){
+    //## dc_DataTables configuration <div style="display:inline-block" ></div>
+    var table_columns= [
+        {'defaultContent': '<button type="button" class="btn btn-info btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="amino acid alignment" >aa </button> <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip"  data-placement="bottom"  title="nucleotide alignment" >na </button> ',  'name':'Alignment','tooltip':'multiple sequence alignment'},
+        {'defaultContent': '', 'className': 'geneName-details-control', 'orderable': false,  'name':''},//geneName expand
+        {'data':'GName',  'name':'Name','tooltip':'gene name'},//geneName
+        {'defaultContent': '', 'className': 'ann-details-control', 'orderable': false,  'name':''},//annotation expand
+        {'data':'ann',  'name':'Annotation','tooltip':'gene annotation'},//annotation    //'width':10,
+        {'data':'count',  'name':'#Strains','tooltip':'strain count'},//count
+        {'defaultContent': '', 'className': 'dup-details-control', 'orderable': false,  'name':''},//duplication expand
+        {'data':'dupli',  'name':'Duplicated','tooltip':'whether duplicated and duplication count in each strain'},//duplication
+        {'data':'event',  'name':'Events','tooltip':'gene gain/loss events count'},
+        {'data':'divers',  'name':'Diversity','tooltip':'gene diversity'},
+        {'data':'geneLen',  'name':'Length','tooltip':'average gene length'},
+        {'data':'geneId','visible': false,  'name':'','tooltip':''},
+        {'data':'allAnn','visible': false,  'name':'','tooltip':''},
+        {'data':'allGName','visible': false,  'name':'','tooltip':''},
+        {'defaultContent': '','data':'locus','visible': false,  'name':'','tooltip':''}
+        //{'data':'msa','visible': false}
+    ];
+} else {
+    var table_columns=customized_standard_columns;
+}
 
 //** column header title for display
 export var geneCluster_table_columns=[];
