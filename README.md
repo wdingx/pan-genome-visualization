@@ -53,7 +53,7 @@ script(src='dataset/yourSpecies/newColumnConfig.js')
 ```
 
 
-### **Pipeline overview:**
+## **Pipeline overview:**
 ![panX](/panX-pipeline.png)
 
 panX analysis pipeline is based on [DIAMOND](https://github.com/bbuchfink/diamond) ([Buchfink et al. 2015 Nature Methods](http://www.nature.com/nmeth/journal/v12/n1/full/nmeth.3176.html)), MCL and post-
