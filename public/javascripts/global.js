@@ -23,7 +23,7 @@ export const panXTree = {
     genePresentFill: '#3A89EA',//'#3A89EA' '#1F69C4' gene presence
     geneAbsentFill: '#CCC', // '#D82400' '#EA5833'; gene absence
     genePresentR: 5, // tip radius
-    geneAbsentR:  3,
+    geneAbsentR:  2,
     strokeToFill: 0.4,  //brightness difference between stroke and fill
     tipStroke: '#555555',
     branchStroke_default: '#555555',

@@ -65,9 +65,11 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
                 //node.tipAttributes.r*= fill ? 1 :0.8;
             }
             node.tipAttributes.opacity= fill ? 1 : 0.5;
-            node.tipAttributes.fill = fill|| metaUnknown;
-            node.branchAttributes.stroke = fill || metaUnknown;
-            node.tipAttributes.stroke = d3.rgb(node.tipAttributes.fill).darker(strokeToFill).toString();
+            fill =  fill || metaUnknown;
+            node.tipAttributes.fill = fill;
+            node.branchAttributes.stroke = fill;
+            node.tipAttributes.stroke = d3.rgb(fill).darker(strokeToFill).toString();
+            node.tipAttributes.r = node.genePresent?panXTree.genePresentR:panXTree.geneAbsentR;
         }
 
         //update the gene tree
@@ -108,7 +110,7 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
         //finally redraw the tree with the newly set attributes
         updateTips(geneTree, [], ["fill", "stroke"], 0);
         // updateTips(speciesTree, ['opacity'], ["fill", "stroke"], 0);
-        updateTips(speciesTree, [], ["fill", "stroke"], 0);
+        updateTips(speciesTree, ['r'], ["fill", "stroke"], 0);
         updateBranches(speciesTree, [], ["stroke"], 0);
 
 
