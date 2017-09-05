@@ -45,13 +45,14 @@ After finishing the pan-genome-analysis pipeline, please use the script [link-to
 ## Special feature: visualize branch association(BA) and presence/absence(PA) association
 Once BA and PA with metadata (e.g. drug concentration) are calculated in panX analysis pipeline, users can create their custom pages to flexibly visualize branch associations.
 
-[Example](https://gitlab.com/wdingx/pangenome_visualization/blob/master/views/S_pneumoniae616.jade) on how the page should be customized for BA and PA association:
+[Example](https://github.com/neherlab/pan-genome-visualization/blob/master/views/S_pneumoniae616.jade) on how the page should be customized for BA and PA association:
 
 add this line and corresponding file (modify "yourSpecies")
 ```
 script(src='dataset/yourSpecies/newColumnConfig.js')
 ```
 
+[Example](https://github.com/neherlab/pan-genome-visualization/blob/master/public/dataset/S_pneumoniae616/newColumnConfig.js) for newColumnConfig.js
 
 ## **Pipeline overview:**
 ![panX](/panX-pipeline.png)
