@@ -46,7 +46,10 @@ const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, layout_choice)
                                );
             //console.log(myTree);
         }else{
-            console.log("error loading geneTree data",err);
+            console.log("error loading geneTree data: either tree missing or a singleton",err);
+            var svg_geneTree=d3.select('#geneTree');
+            svg_geneTree.selectAll("*").remove();
+            //styleGainLoss(speciesTree);
         }
         drawTree(myTree);
         const branchText = function(d){
@@ -90,6 +93,7 @@ const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, layout_choice)
                               scale:"speciesTreeScale"
                               });
         attachPanzoom("geneTree", myTree);
+
     });
     if (typeof speciesTree !== "undefined"){
         linkTrees(speciesTree, myTree);
