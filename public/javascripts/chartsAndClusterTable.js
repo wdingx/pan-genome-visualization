@@ -265,7 +265,7 @@ export const render_chart_table = {
     initData: function (path_datatable1, table_id, col_select_id,
         count_id, chart1_id, chart2_id, chart3_id,
         coreThreshold_slider_id, coreThreshold_text_id,
-        strain_tree_id,gene_tree_id, tool_side, handleDataTable, handleGeneTree) {
+        strain_tree_id,gene_tree_id, tool_side, species_tree, handleDataTable, handleGeneTree) {
         //## load the data, charts and MSA
         var datatable;
         d3.json(path_datatable1, function(error, data) {
@@ -277,7 +277,7 @@ export const render_chart_table = {
                 count_id, chart1_id, chart2_id, chart3_id,
                 coreThreshold_slider_id, coreThreshold_text_id,
                 first_cluster=data[0], strain_tree_id,gene_tree_id,tool_side);
-            loadNewGeneCluster(first_cluster, handleGeneTree, 'aa');
+            loadNewGeneCluster(first_cluster, species_tree, handleGeneTree, 'aa');
             handleDataTable(datatable);
         });
     }

@@ -108,9 +108,15 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
         }
 
         //finally redraw the tree with the newly set attributes
-        updateTips(geneTree, [], ["fill", "stroke"], 0);
+
         // updateTips(speciesTree, ['opacity'], ["fill", "stroke"], 0);
-        updateTips(speciesTree, ['r'], ["fill", "stroke"], 0);
+        if (panXTree.singleton_gene) {
+            console.log('panXTree.singleton_gene',panXTree.singleton_gene)
+            updateTips(speciesTree, ["fill", "stroke"], 0);
+        }else{
+            updateTips(geneTree, [], ["fill", "stroke"], 0);
+            updateTips(speciesTree, ['r'], ["fill", "stroke"], 0);
+        }
         updateBranches(speciesTree, [], ["stroke"], 0);
 
 
@@ -179,6 +185,7 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
             .attr('x', legendRectSize + legendSpacing + 5)
             .attr('y', legendRectSize - legendSpacing)
             .attr('text', function (d) {return d;} )
+            //.attr('font-size','')
             .text(function(d) {
                 return d.toString();
             })

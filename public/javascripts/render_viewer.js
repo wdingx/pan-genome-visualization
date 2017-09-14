@@ -204,7 +204,7 @@ speciesTree("speciesTree", datapath.coreTree_path, handleSpeciesTree);
 render_chart_table.initData(datapath.path_datatable1,'dc_data_table', 'GC_tablecol_select',
     'dc_data_count','dc_straincount_chart','dc_geneLength_chart','dc_coreAcc_piechart',
     'changeCoreThreshold','coreThreshold',
-    'speciesTreeDiv','geneTreeDiv', null, handleDataTable, handleGeneTree);
+    'speciesTreeDiv','geneTreeDiv', null, mySpeciesTree, handleDataTable, handleGeneTree);
 /** render meta-data datatable */
 var meta_table_id='dc_data_table_meta';
 metaDataTable.dataTable2Fun(meta_table_id, handleMetaDataTable);

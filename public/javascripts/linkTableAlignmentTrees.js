@@ -39,20 +39,31 @@ const unselect_metaTable_tree = function(MetaTableID, speciesTree){
     }
 }
 
-export const loadNewGeneCluster = function(data, handleGeneTree, seqType){
+export const loadNewGeneCluster = function(data, speciesTree, handleGeneTree, seqType){
     const clusterID=data.msa,
           ann_majority=data.ann;
     panXTree.currentClusterID=clusterID;
     console.log("loadNewGeneCluster", clusterID, seqType);
+    if (clusterID.indexOf('RC00')!== -1) {seqType='na'}
     msaLoad(aln_file_path+clusterID+'_'+seqType+'_aln_reduced.fa',(seqType=='aa')?'taylor':'nucleotide');
+    /*try{    }
+    catch(err) {
+        console.log('msa loading failed')//console.log(err.message);}*/
+
     var geneTree_name=aln_file_path + clusterID+'_tree.json';
     // if it is a gene tree, show the title with geneCluster Id
     if (geneTree_name.indexOf('tree.json') !== -1) {
         showViewerTitle("genetree_title",geneTree_name,ann_majority);
     };
-    var myGeneTree=geneTree("geneTree", geneTree_name, handleGeneTree, panXTree.currentTreeLayout);
-    attachButtons(myGeneTree, { download_geneTree:"download_geneTree",
+    try {
+        var myGeneTree=geneTree("geneTree", geneTree_name, handleGeneTree, speciesTree, panXTree.currentTreeLayout);
+        attachButtons(myGeneTree, { download_geneTree:"download_geneTree",
                                 clusterID:clusterID });
+    }
+    catch(err) {
+        console.log('No tree avaible: either tree missing or this is singleton gene');
+    }
+
     //change_select_dropdown_value("dropdown_select",'genePattern');
 }
 
@@ -85,7 +96,7 @@ export const linkTableAlignmentTrees = function(clusterTableID, metaTableId, dat
     $('#'+clusterTableID+' tbody').on('click', 'tr', function (e) {
         var data = datatable.row($(this)).data();
         if (data){ //** fetch alignment filename from the table row
-            loadNewGeneCluster(data, handleGeneTree, 'aa');
+            loadNewGeneCluster(data, speciesTree, handleGeneTree, 'aa');
             unselect_metaTable_tree(metaTableId,speciesTree);
             $('#'+clusterTableID+' tbody tr').removeClass('row_selected');
             $(this).addClass('row_selected');
@@ -125,13 +136,13 @@ export const linkTableAlignmentTrees = function(clusterTableID, metaTableId, dat
 
     $('#'+clusterTableID+' tbody').on('click', '.btn.btn-info.btn-xs', function (e) {
         var data = datatable.row( $(this).parents('tr') ).data();
-        loadNewGeneCluster(data, handleGeneTree, 'aa');
+        loadNewGeneCluster(data, speciesTree, handleGeneTree, 'aa');
         e.stopPropagation();
     });
 
     $('#'+clusterTableID+' tbody').on('click', '.btn.btn-primary.btn-xs', function (e) {
         var data = datatable.row( $(this).parents('tr') ).data();
-        loadNewGeneCluster(data, handleGeneTree, 'na');
+        loadNewGeneCluster(data, speciesTree, handleGeneTree, 'na');
         e.stopPropagation();
     });
 

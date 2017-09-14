@@ -6,6 +6,7 @@ export const panXTree = {
     currentGeneTree: undefined,
     speciesTree: undefined, //{}
     speciesTreeTipCount: 0,
+    singleton_gene: false,
     //large_output: false,
     //gain_loss_enabled: true,
     collapsed_node_size: 4.5,

@@ -8,7 +8,7 @@ import {branchLabels, tipLabels, removeLabels} from "../phyloTree/src/labels";
 import d3 from "d3";
 import geneTreeCallbacks from "./geneTreeCallbacks";
 import {panXTree,panXDashboard} from "./global";
-import {attachButtons,attachPanzoom,applyChangeToTree} from "./tree-init";
+import {attachButtons,attachPanzoom,applyChangeToTree,colorPresenceAbsence,styleGainLoss} from "./tree-init";
 
 
 
@@ -19,7 +19,7 @@ import {attachButtons,attachPanzoom,applyChangeToTree} from "./tree-init";
  * @param  {oject} speciesTree  [description]
  * @return {object}              the new constructed geneTree
  */
-const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, layout_choice){
+const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, speciesTree, layout_choice){
 
     var treeplot = d3.select("#"+tree_svg);
     treeplot.attr("width", panXDashboard.winInnerWidth/3.);
@@ -39,18 +39,13 @@ const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, layout_choice)
     d3.json(treeJsonPath, function(err, data){
         //console.log(data, err);
         if (data){
+            panXTree.singleton_gene=false;
             myTree = phyloTree(data, {svg:treeplot, margins:{top:10, bottom:10, left:10, right:10},
                                       scaleBar:true, layout:(layout_choice)?layout_choice:'rect',
                                       autoTipSize:false, tipStrokeWidth:0.5,
                                       callbacks:geneTreeCallbacks, orientation:{x:-1, y:1}}
                                );
             //console.log(myTree);
-        }else{
-            console.log("error loading geneTree data: either tree missing or a singleton",err);
-            var svg_geneTree=d3.select('#geneTree');
-            svg_geneTree.selectAll("*").remove();
-            //styleGainLoss(speciesTree);
-        }
         drawTree(myTree);
         const branchText = function(d){
             if (d.n.muts){
@@ -93,11 +88,17 @@ const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, layout_choice)
                               scale:"speciesTreeScale"
                               });
         attachPanzoom("geneTree", myTree);
-
+        }else{
+            console.log("error loading geneTree data: either tree missing or a singleton",err);
+            var svg_geneTree=d3.select('#geneTree');
+            svg_geneTree.selectAll("*").remove();
+            panXTree.singleton_gene=true;
+            styleGainLoss(speciesTree);
+        }
     });
-    if (typeof speciesTree !== "undefined"){
+    /*if (typeof speciesTree !== "undefined"){
         linkTrees(speciesTree, myTree);
-    }
+    }*/
     return myTree;
 }
 
