@@ -297,7 +297,7 @@ export const connectTrees = function(speciesTree, geneTree){
 }
 
 export const colorPresenceAbsence = function(speciesTree){
-    var node,strain, fill;
+    var node, fill;
     for (var i=0; i<speciesTree.tips.length; i++){
         node = speciesTree.tips[i];
         node.tipAttributes.r = node.genePresent?panXTree.genePresentR:panXTree.geneAbsentR;
@@ -311,6 +311,19 @@ export const colorPresenceAbsence = function(speciesTree){
 export const styleGainLoss = function(speciesTree){
     const pattern_path=aln_file_path+panXTree.currentClusterID+'_patterns.json';
     var node,stroke,stroke_width_factor,stroke_dasharray,event_type;
+
+    if (panXTree.singleton_gene) {
+        var node, fill;
+        for (var i=0; i<speciesTree.tips.length; i++){
+            node = speciesTree.tips[i];
+            node.tipAttributes.r = panXTree.geneAbsentR;
+            fill = panXTree.geneAbsentFill;
+            node.tipAttributes.fill = fill;
+            node.tipAttributes.stroke = d3.rgb(fill).darker(panXTree.strokeToFill).toString();
+        }
+        updateTips(speciesTree, ["r"], ["fill", "stroke"], 0);
+    }
+
     d3.json(pattern_path, function(error, data){
         const event_string=data['patterns'];
         const nodes=speciesTree.nodes;
@@ -319,6 +332,13 @@ export const styleGainLoss = function(speciesTree){
             if (node.n.name!='NODE_0000000'){
                 event_type=event_string[i-1];
                 stroke=(event_type=='0'||event_type=='2')? panXTree.geneAbsentFill: panXTree.genePresentFill;
+                if (panXTree.singleton_gene && event_type=='1'){
+                    node.tipAttributes.r = panXTree.genePresentR;
+                    fill = panXTree.genePresentFill;
+                    node.tipAttributes.fill = fill;
+                    node.tipAttributes.stroke = d3.rgb(fill).darker(panXTree.strokeToFill).toString();
+                    updateTips(speciesTree, ["r"], ["fill", "stroke"], 0);
+                }
                 stroke_width_factor=(event_type=='1'||event_type=='2')? 1.5: 1;
                 stroke_dasharray= (event_type=='2') ? "6,6" : "1,0";
                 node.branchAttributes["stroke"] = stroke;
