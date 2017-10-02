@@ -29,9 +29,14 @@ based on post-vaccine epidemiology of 616 S. pneumoniae strains ([Croucher et al
 ![panX](/public/images/Demo-Sp616.gif)
 
 Moreover, for your own pan-genome:
-## Add your own page in the local server ([add-new-pages-repo.sh](https://github.com/neherlab/pan-genome-visualization/blob/master/add-new-pages-repo.sh))
+## Add your own page in the local server ([add-new-pages-repo.sh](https://github.com/neherlab/pan-genome-visualization/blob/master/add-new-pages-repo.sh))\\
+Using standard layout (gene cluster table and alignment on the same row):
 ```
-bash add-new-pages-repo.sh your_species_prefix
+bash add-new-pages-repo.sh your_species
+```
+Using wide layout (gene cluster table for one row and alignment at the bottom):
+```
+bash add-new-pages-repo.sh your_species wide
 ```
 ## Send your own data to the local server
 After finishing the pan-genome-analysis pipeline, please use the script [link-to-server.py](https://github.com/neherlab/pan-genome-analysis/blob/master/link-to-server.py)  to transfer your data to the local server.
