@@ -13,6 +13,11 @@ import {tipText, tipFontSize, applyChangeToTree} from "./tree-init";
 import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
 import {filterMetaDataTable} from "./datatable-meta";
 
+import $ from 'jquery';
+window.$ = $;
+window.jQuery = $;
+import DataTable from 'datatables.net';
+
 const speciesTree = function(tree_svg,treeJsonPath, handleResult){
     var treeplot = d3.select("#"+tree_svg);
     treeplot.attr("width", panXDashboard.winInnerWidth/3.);
@@ -28,10 +33,6 @@ const speciesTree = function(tree_svg,treeJsonPath, handleResult){
             ,dt);
         const metaTableID=panXMetaTable.meta_table_id;
         const tipList=filterMetaDataTable(metaTableID, myTree);
-        const strainsString=tipList.join(' ');
-        console.log(strainsString);
-        $('#'+panXClusterTable.cluster_table_id).DataTable()
-            .search(strainsString).draw();
     };
 
     //console.log("loading speciesTree", treeJsonPath);
