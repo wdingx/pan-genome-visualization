@@ -1,7 +1,7 @@
 ## Usage:
 ## standard layout (gene cluster table and alignment on the same row):
 ##	bash add-new-pages-repo.sh your_species
-## wide layout (gene cluster table in one row and alignment at the bottom):
+## wide layout (gene cluster table for one row and alignment at the bottom):
 ##	bash add-new-pages-repo.sh your_species wide
 
 species=$1;

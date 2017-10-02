@@ -1,4 +1,4 @@
-import {panXTree,metaLegend} from "./global";
+import {panXTree,metaLegend,panXMetaTable} from "./global";
 import {tooltip_toggle} from "./tooltips";
 import {changeLayout, changeDistance, updateTips} from "../phyloTree/src/updateTree";
 import {zoomInY,  zoomIn, zoomIntoClade} from "../phyloTree/src/zoom";
@@ -143,7 +143,8 @@ export const attachButtons = function(myTree, buttons){
             //#subtle:zoomIntoClade (tree, d, dt, setSelected)
             //#       state.selected are set to true in zoomIntoClade, they are then reset to undefined
             applyChangeToTree(myTree, function(){zoomIntoClade(myTree, myTree.nodes[0],dt, true);},dt);
-            filterMetaDataTable('dc_data_table_meta', myTree);
+            const metaTableID=panXMetaTable.meta_table_id;
+            filterMetaDataTable(metaTableID, myTree);
             undoHideNonSelected(myTree);
         });
     }

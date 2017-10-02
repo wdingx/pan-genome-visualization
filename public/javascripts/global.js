@@ -50,7 +50,6 @@ export const panXTree = {
     }
 };
 
-
 export const panXDashboard = {
     winInnerWidth: window.innerWidth,
 };
@@ -64,7 +63,8 @@ export const metaLegend = {
     //continuous_colorSet: continuous_color_set
 }
 
-export const tableAccessories = {
+export const panXMetaTable = {
+    meta_table_id: 'dc_data_table_meta',
     meta_table_unselect: "meta_table_unselect"
 };
 

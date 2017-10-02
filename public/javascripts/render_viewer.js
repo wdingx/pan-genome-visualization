@@ -3,7 +3,7 @@ import {create_species_dropdown, autocomplete_species} from "./species-selector"
 import * as datapath from "./data_path";
 import speciesTree from "./speciesTree";
 import  {metaDataTable} from "./datatable-meta";
-import  {panXTree, metaLegend, tableAccessories} from "./global";
+import  {panXTree, metaLegend, panXMetaTable} from "./global";
 import {attachButtons, tipText, tipFontSize, attachPanzoom, connectTrees, applyChangeToTree, hideNonSelected, undoHideNonSelected} from "./tree-init";
 import {updateGeometry} from "../phyloTree/src/updateTree";
 import {linkTableAlignmentTrees, linkMetaTableTree} from "./linkTableAlignmentTrees";
@@ -206,7 +206,7 @@ render_chart_table.initData(datapath.path_datatable1,'dc_data_table', 'GC_tablec
     'changeCoreThreshold','coreThreshold',
     'speciesTreeDiv','geneTreeDiv', null, mySpeciesTree, handleDataTable, handleGeneTree);
 /** render meta-data datatable */
-var meta_table_id='dc_data_table_meta';
+const meta_table_id=panXMetaTable.meta_table_id;
 metaDataTable.dataTable2Fun(meta_table_id, handleMetaDataTable);
 tryConnectTrees();
 

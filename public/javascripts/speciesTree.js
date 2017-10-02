@@ -1,17 +1,17 @@
 import phyloTree from "../phyloTree/src/phyloTree";
 import drawTree from "../phyloTree/src/drawTree";
 import {zoomIntoClade, zoomIn} from "../phyloTree/src/zoom";
+import {preOrderIteration} from "../phyloTree/src/treeHelpers";
 import {changeLayout, changeDistance, updateGeometry,
         updateTipAttribute, updateTipStyle, updateTips,
         updateBranchAttribute, updateBranchStyle, updateBranches} from "../phyloTree/src/updateTree";
 import {branchLabels, tipLabels, removeLabels} from "../phyloTree/src/labels";
 import speciesTreeCallbacks from "./speciesTreeCallbacks";
 import d3 from "d3";
-import {panXDashboard} from "./global"
+import {panXDashboard,panXMetaTable} from "./global"
 import {tipText, tipFontSize, applyChangeToTree} from "./tree-init";
 import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
 import {filterMetaDataTable} from "./datatable-meta";
-
 
 const speciesTree = function(tree_svg,treeJsonPath, handleResult){
     var treeplot = d3.select("#"+tree_svg);
@@ -26,7 +26,12 @@ const speciesTree = function(tree_svg,treeJsonPath, handleResult){
         applyChangeToTree(myTree,
             function(){zoomIntoClade(myTree, d.terminal?d.parent:d, dt, true);}
             ,dt);
-        filterMetaDataTable('dc_data_table_meta', myTree);
+        const metaTableID=panXMetaTable.meta_table_id;
+        const tipList=filterMetaDataTable(metaTableID, myTree);
+        const strainsString=tipList.join(' ');
+        console.log(strainsString);
+        /*$('#'+metaTableID).DataTable().column(0)
+            .search(strainsString, true).draw();*/
     };
 
     //console.log("loading speciesTree", treeJsonPath);

@@ -1,6 +1,6 @@
 import {create_dataTable} from "./datatable-gc";
 import {path_datatable_meta} from './data_path';
-import {tableAccessories} from './global';
+import {panXMetaTable} from './global';
 import {button_tooltip,append_download_button} from './tooltips';
 
 
@@ -50,7 +50,7 @@ export const metaDataTable = {
         }
 
         $('<span style="display:inline-block; width: 10px;"></span>').appendTo('div#'+meta_table_id+'_length.dataTables_length');
-        $('<button type="button" id="'+tableAccessories.meta_table_unselect+'" class="btn btn-default">Unselect all clicked items</button>').appendTo('div#'+meta_table_id+'_length.dataTables_length');
+        $('<button type="button" id="'+panXMetaTable.meta_table_unselect+'" class="btn btn-default">Unselect all clicked items</button>').appendTo('div#'+meta_table_id+'_length.dataTables_length');
         //append_download_button
         append_download_button('#'+meta_table_id+'_filter.dataTables_filter', 'metainfo', '/download/datasets/'+speciesAbbr+'/metainfo.tsv');
         const dt_button_tooltip_dict= {
@@ -76,4 +76,5 @@ export const filterMetaDataTable = function(dataTableID, tree)
         const regex = `(?:[\s]|^)(${tipList.join('|')})(?=[\s]|$)`;
         $('#'+dataTableID).DataTable().column(0)
             .search(regex, true).draw();
+        return tipList;
     };

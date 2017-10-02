@@ -1,6 +1,6 @@
 import msaLoad from './msaLoad';
 import geneTree from "./geneTree";
-import {panXTree,metaLegend,tableAccessories} from "./global";
+import {panXTree,metaLegend,panXMetaTable} from "./global";
 import {aln_file_path} from "./data_path";
 import {attachButtons, hideNonSelected, undoHideNonSelected} from "./tree-init";
 
@@ -202,7 +202,7 @@ export const linkMetaTableTree = function(MetaTableID, datatable, speciesTree){
 
     } );
 
-    $('#'+tableAccessories.meta_table_unselect).on( 'click', function () {
+    $('#'+panXMetaTable.meta_table_unselect).on( 'click', function () {
         unselect_metaTable_tree(MetaTableID,speciesTree);
     } );
 
