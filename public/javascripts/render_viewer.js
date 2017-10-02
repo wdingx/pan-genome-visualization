@@ -3,7 +3,7 @@ import {create_species_dropdown, autocomplete_species} from "./species-selector"
 import * as datapath from "./data_path";
 import speciesTree from "./speciesTree";
 import  {metaDataTable} from "./datatable-meta";
-import  {panXTree, metaLegend, panXMetaTable} from "./global";
+import  {panXTree, metaLegend, panXClusterTable, panXMetaTable} from "./global";
 import {attachButtons, tipText, tipFontSize, attachPanzoom, connectTrees, applyChangeToTree, hideNonSelected, undoHideNonSelected} from "./tree-init";
 import {updateGeometry} from "../phyloTree/src/updateTree";
 import {linkTableAlignmentTrees, linkMetaTableTree} from "./linkTableAlignmentTrees";
@@ -19,6 +19,9 @@ var mySpeciesTree,
     myGeneTree,
     myDatatable,
     myMetaDatatable;
+
+const cluster_table_id=panXClusterTable.cluster_table_id;
+const meta_table_id=panXMetaTable.meta_table_id;
 
 const handleSpeciesTree = function(newTree){
     newTree.namesToTips = {};
@@ -94,7 +97,7 @@ const handleMetaDataTable = function(metaDatatable){
 const tryConnectTrees = function(){
     if (mySpeciesTree&&myGeneTree&&myDatatable&&myMetaDatatable){
         //connectTrees(mySpeciesTree, myGeneTree);
-        linkTableAlignmentTrees('dc_data_table', meta_table_id, myDatatable, mySpeciesTree, handleGeneTree);
+        linkTableAlignmentTrees(cluster_table_id, meta_table_id, myDatatable, mySpeciesTree, handleGeneTree);
         linkMetaTableTree(meta_table_id, myMetaDatatable,mySpeciesTree);
         attachPanzoom("speciesTree", mySpeciesTree);
         //attachPanzoom("geneTree", myGeneTree);
@@ -201,12 +204,11 @@ speciesTree("speciesTree", datapath.coreTree_path, handleSpeciesTree);
 /** render interactive charts and gene-cluster datatable */
 //console.log("render_viewer:",datapath);
 //myDatatable =
-render_chart_table.initData(datapath.path_datatable1,'dc_data_table', 'GC_tablecol_select',
+render_chart_table.initData(datapath.path_datatable1,cluster_table_id, 'GC_tablecol_select',
     'dc_data_count','dc_straincount_chart','dc_geneLength_chart','dc_coreAcc_piechart',
     'changeCoreThreshold','coreThreshold',
     'speciesTreeDiv','geneTreeDiv', null, mySpeciesTree, handleDataTable, handleGeneTree);
 /** render meta-data datatable */
-const meta_table_id=panXMetaTable.meta_table_id;
 metaDataTable.dataTable2Fun(meta_table_id, handleMetaDataTable);
 tryConnectTrees();
 

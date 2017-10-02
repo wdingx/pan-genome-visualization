@@ -63,6 +63,10 @@ export const metaLegend = {
     //continuous_colorSet: continuous_color_set
 }
 
+export const panXClusterTable = {
+    cluster_table_id: 'dc_data_table'
+};
+
 export const panXMetaTable = {
     meta_table_id: 'dc_data_table_meta',
     meta_table_unselect: "meta_table_unselect"

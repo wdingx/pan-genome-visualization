@@ -1,4 +1,4 @@
-import {panXTree,metaLegend,panXMetaTable} from "./global";
+import {panXTree,metaLegend,panXClusterTable,panXMetaTable} from "./global";
 import {tooltip_toggle} from "./tooltips";
 import {changeLayout, changeDistance, updateTips} from "../phyloTree/src/updateTree";
 import {zoomInY,  zoomIn, zoomIntoClade} from "../phyloTree/src/zoom";
@@ -146,6 +146,8 @@ export const attachButtons = function(myTree, buttons){
             const metaTableID=panXMetaTable.meta_table_id;
             filterMetaDataTable(metaTableID, myTree);
             undoHideNonSelected(myTree);
+            $('#'+panXClusterTable.cluster_table_id).DataTable()
+                .search('').draw();
         });
     }
     if (buttons.treeSync){

@@ -8,7 +8,7 @@ import {changeLayout, changeDistance, updateGeometry,
 import {branchLabels, tipLabels, removeLabels} from "../phyloTree/src/labels";
 import speciesTreeCallbacks from "./speciesTreeCallbacks";
 import d3 from "d3";
-import {panXDashboard,panXMetaTable} from "./global"
+import {panXDashboard,panXClusterTable,panXMetaTable} from "./global"
 import {tipText, tipFontSize, applyChangeToTree} from "./tree-init";
 import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
 import {filterMetaDataTable} from "./datatable-meta";
@@ -30,8 +30,8 @@ const speciesTree = function(tree_svg,treeJsonPath, handleResult){
         const tipList=filterMetaDataTable(metaTableID, myTree);
         const strainsString=tipList.join(' ');
         console.log(strainsString);
-        /*$('#'+metaTableID).DataTable().column(0)
-            .search(strainsString, true).draw();*/
+        $('#'+panXClusterTable.cluster_table_id).DataTable()
+            .search(strainsString).draw();
     };
 
     //console.log("loading speciesTree", treeJsonPath);
