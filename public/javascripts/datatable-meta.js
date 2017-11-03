@@ -56,7 +56,7 @@ export const metaDataTable = {
         $('<span style="display:inline-block; width: 10px;"></span>').appendTo('div#'+meta_table_id+'_length.dataTables_length');
         $('<button type="button" id="'+panXMetaTable.meta_table_unselect+'" class="btn btn-default">Unselect all clicked items</button>').appendTo('div#'+meta_table_id+'_length.dataTables_length');
         //append_download_button
-        append_download_button('#'+meta_table_id+'_filter.dataTables_filter', 'metainfo', '/download/datasets/'+speciesAbbr+'/metainfo.tsv');
+        append_download_button('#'+meta_table_id+'_filter.dataTables_filter', 'metainfo', './dataset/'+speciesAbbr+'/metainfo.tsv');
         const dt_button_tooltip_dict= {
         'metainfo': 'download strain metadata'
         }

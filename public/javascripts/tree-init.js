@@ -200,7 +200,7 @@ export const attachButtons = function(myTree, buttons){
     if (buttons.download_coreTree){
         d3.select('#'+buttons.download_coreTree)
             .append('a')
-            .attr('href','/download/datasets/'+speciesAbbr+'/strain_tree.nwk')
+            .attr('href','./dataset/'+speciesAbbr+'/strain_tree.nwk')
             .append('i')
             .attr('class','glyphicon glyphicon-download-alt')
     }
@@ -209,7 +209,7 @@ export const attachButtons = function(myTree, buttons){
             download_geneTree.selectAll('a').remove();
             download_geneTree.append('a')
                 .attr('id','#'+buttons.download_geneTree_id+'_href')
-                .attr('href','/download/datasets/'+speciesAbbr+'/geneCluster/'+buttons.clusterID+'.nwk')
+                .attr('href','./dataset/'+speciesAbbr+'/geneCluster/'+buttons.clusterID+'.nwk')
                 .append('i')
                 .attr('class','glyphicon glyphicon-download-alt')
     }
