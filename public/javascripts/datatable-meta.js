@@ -10,10 +10,9 @@ export const metaDataTable = {
         var metaDatatable, metaConfiguration;
         //# create meta table
         var meta_display_order = meta_display['meta_display_order'].slice();
-        if (typeof no_accession==undefined){
-            meta_display_order.unshift('accession','strain');
-        } else{
-            meta_display_order.unshift('strain');
+        meta_display_order.unshift('strain');
+        if (typeof not_accession=="undefined"){
+            meta_display_order.unshift('accession');
         }
 
         create_dataTable('#'+meta_table_id, meta_display_order);
