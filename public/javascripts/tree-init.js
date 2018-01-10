@@ -150,6 +150,13 @@ export const attachButtons = function(myTree, buttons){
                 .search('').draw();
         });
     }
+
+    if (buttons.colorReset){
+        $('#'+buttons.colorReset).click(function() {
+            resetGeneTreeColor(myTree);
+        });
+    }
+
     if (buttons.treeSync){
         //console.log(buttons.treeSync)
         //tooltip_toggle('#speciesTreeSynchr','synchronize toggle behaviors on both  species tree and gene tree')
@@ -358,4 +365,16 @@ export const styleGainLoss = function(speciesTree){
         }
         //console.log('gain/loss pattern loading finished')
     })
+}
+
+const tipStroke=panXTree.tipStroke;
+
+export const resetGeneTreeColor = function(geneTree){
+    var node, fill;
+    for (var i=0; i<geneTree.tips.length; i++){
+        node = geneTree.tips[i];
+        node.tipAttributes.fill = tipStroke;
+        node.tipAttributes.stroke = tipStroke;
+    }
+    updateTips(geneTree, [], ["fill", "stroke"], 0);
 }
