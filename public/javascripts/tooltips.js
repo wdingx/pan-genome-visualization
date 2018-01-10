@@ -184,6 +184,7 @@ const treeButton_tooltip_dict= {
     'geneTree_height_plus':'expand gene tree vertically',
     'geneTree_height_minus':'shrink gene tree vertically',
     'geneTreeZoomReset':'reset gene tree',
+    'geneTreeColorReset':'restore black nodes',
     'geneTree_nodePlus':'increase tip size',
     'geneTree_nodeMinus':'decrease tip size',
     'download_geneTree':'download gene tree',
@@ -195,6 +196,7 @@ button_tooltip('#all_trees', treeButton_tooltip_dict);
 //** tree button tooltip
 export const tooltip_toggle_dict= {
     'speciesTreeLabels':'show/hide tree labels',
+    'geneTreeLabels':'show/hide tree labels',
     'geneTreeOrientation':'change tree orientation',
     'speciesTreeScale':'enable/disable scale',
     'geneTreeScale': 'enable/disable scale',

@@ -10,8 +10,6 @@ import geneTreeCallbacks from "./geneTreeCallbacks";
 import {panXTree,panXDashboard} from "./global";
 import {attachButtons,attachPanzoom,applyChangeToTree,colorPresenceAbsence,styleGainLoss} from "./tree-init";
 
-
-
 /**
  * Instantiate the gene tree and link it to the species tree
  * @param  {str} tree_svg     name of svg
@@ -75,8 +73,10 @@ const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, speciesTree, l
                               zoomInY:"geneTree_height_plus",
                               zoomOutY:"geneTree_height_minus",
                               scale:"geneTreeScale",
+                              tipLabels:"geneTreeLabels",
                               orientation:"geneTreeOrientation",
                               zoomReset:"geneTreeZoomReset",
+                              colorReset:"geneTreeColorReset",
                               nodeLarge:"geneTree_nodePlus",
                               nodeSmaller:"geneTree_nodeMinus",
                               });
