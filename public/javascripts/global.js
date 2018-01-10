@@ -67,9 +67,13 @@ export const panXClusterTable = {
     cluster_table_id: 'dc_data_table'
 };
 
+var default_NCBI_link;
+default_NCBI_link= (speciesAbbr=='P_marinus_meta')? false: true;
+
 export const panXMetaTable = {
     meta_table_id: 'dc_data_table_meta',
-    meta_table_unselect: "meta_table_unselect"
+    meta_table_unselect: "meta_table_unselect",
+    show_NCBI_link: default_NCBI_link
 };
 
 export const msaViewerAsset = {
