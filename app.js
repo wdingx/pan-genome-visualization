@@ -25,13 +25,12 @@ app.get('*.fa', function (req, res, next) {
   next();
 });
 
-//"save loaded data to the global namespace"
 //"To enable cross-domain requests, have the server set the header Access-Control-Allow-Origin."
-app.all('*', function(req, res, next) {
+/*app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     next()
-  });
+  });*/
 
 if (0) {
   var auth = require('http-auth');
