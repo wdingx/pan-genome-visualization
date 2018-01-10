@@ -5,12 +5,11 @@ import {preOrderIteration} from "../phyloTree/src/treeHelpers";
 import {changeLayout, changeDistance, updateGeometry,
         updateTipAttribute, updateTipStyle, updateTips,
         updateBranchAttribute, updateBranchStyle, updateBranches} from "../phyloTree/src/updateTree";
-import {branchLabels, tipLabels, removeLabels} from "../phyloTree/src/labels";
+import {branchLabels, tipLabels} from "../phyloTree/src/labels";
 import speciesTreeCallbacks from "./speciesTreeCallbacks";
 import d3 from "d3";
 import {panXDashboard,panXClusterTable,panXMetaTable} from "./global"
 import {tipText, tipFontSize, applyChangeToTree} from "./tree-init";
-import {removeLabels, tipLabels}  from "../phyloTree/src/labels";
 import {filterMetaDataTable} from "./datatable-meta";
 
 import $ from 'jquery';

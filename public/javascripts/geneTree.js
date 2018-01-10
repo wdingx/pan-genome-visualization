@@ -4,7 +4,7 @@ import {zoomIntoClade, zoomIn} from "../phyloTree/src/zoom";
 import {changeLayout, changeDistance, updateGeometry,
         updateTipAttribute, updateTipStyle, updateTips,
         updateBranchAttribute, updateBranchStyle, updateBranches} from "../phyloTree/src/updateTree";
-import {branchLabels, tipLabels, removeLabels} from "../phyloTree/src/labels";
+import {branchLabels, tipLabels} from "../phyloTree/src/labels";
 import d3 from "d3";
 import geneTreeCallbacks from "./geneTreeCallbacks";
 import {panXTree,panXDashboard} from "./global";
@@ -20,6 +20,7 @@ import {attachButtons,attachPanzoom,applyChangeToTree,colorPresenceAbsence,style
 const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, speciesTree, layout_choice){
 
     var treeplot = d3.select("#"+tree_svg);
+    treeplot.selectAll("*").remove();
     treeplot.attr("width", panXDashboard.winInnerWidth/3.);
     treeplot.attr("height", panXDashboard.winInnerWidth/3.);
     var myTree;
@@ -64,6 +65,7 @@ const geneTree = function(tree_svg, treeJsonPath, handleGeneTree, speciesTree, l
         const tipFontSize = function(d){return 4.0;}
         //branchLabels(myTree, branchText, branchFontSize, -5, -5);
         tipLabels(myTree, tipText, tipFontSize, 5, 3);
+        myTree.showTipLabels=false;
         handleGeneTree(myTree);
         panXTree.currentGeneTree= myTree;
         attachButtons(myTree, {

@@ -65,7 +65,11 @@ export const applyChangeToTree = function(myTree, func, dt){
     removeLabels(myTree);
     func();
     if (myTree.showTipLabels){
-        setTimeout(function() {tipLabels(myTree, tipText, tipFontSize(myTree), 3,8);}, dt?dt:1000);
+        if (myTree.orientation.x==1) {
+            setTimeout(function() {tipLabels(myTree, tipText, tipFontSize(myTree), 3,8);}, dt?dt:1000);
+        } else {
+            setTimeout(function() {tipLabels(myTree, tipText, tipFontSize(myTree), 3,-8,'end');}, dt?dt:1000);
+        }
     };
 }
 
@@ -101,10 +105,9 @@ export const attachButtons = function(myTree, buttons){
         });
     }
     if (buttons.orientation){
-
         $('#'+buttons.orientation).change(function() {
-        myTree.orientation =  (d3.select(this).property('checked')==true) ? {x:-1, y:1} : {x:1, y:1};
-        applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
+            myTree.orientation =  (d3.select(this).property('checked')==true) ? {x:-1, y:1} : {x:1, y:1};
+            applyChangeToTree(myTree, function(){changeLayout(myTree, dt);}, dt);
         });
     }
     if (buttons.nodeLarge){
@@ -192,7 +195,11 @@ export const attachButtons = function(myTree, buttons){
             myTree.showTipLabels = d3.select(this).property('checked')
             //-console.log("tipLabels", myTree.visibleTips, tipFontSize(myTree)());
             if (myTree.showTipLabels){
-                tipLabels(myTree, tipText, tipFontSize(myTree),  3,8);
+                if (myTree.orientation.x==-1) {
+                    tipLabels(myTree, tipText, tipFontSize(myTree),  3,-8,'end');
+                } else {
+                    tipLabels(myTree, tipText, tipFontSize(myTree),  3,8);
+                }
             }else{
                 removeLabels(myTree);
             }

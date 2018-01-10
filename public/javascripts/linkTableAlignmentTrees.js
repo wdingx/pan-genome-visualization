@@ -3,6 +3,7 @@ import geneTree from "./geneTree";
 import {panXTree,metaLegend,panXMetaTable} from "./global";
 import {aln_file_path} from "./data_path";
 import {attachButtons, hideNonSelected, undoHideNonSelected} from "./tree-init";
+import {removeLabels}  from "../phyloTree/src/labels";
 
 /**
  * Module for initializing trigger actions in cluster datatable. It includes:
