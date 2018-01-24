@@ -64,7 +64,8 @@ export const metaLegend = {
 }
 
 export const panXClusterTable = {
-    cluster_table_id: 'dc_data_table'
+    cluster_table_id: 'dc_data_table',
+    cluster_table_unselect: "cluster_table_unselect"
 };
 
 var default_NCBI_link;

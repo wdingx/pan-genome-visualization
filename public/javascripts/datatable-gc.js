@@ -3,7 +3,7 @@ window.$ = $;
 window.jQuery = $;
 import DataTable from 'datatables.net';
 import {button_tooltip, append_download_button} from './tooltips';
-import {table_columns} from './global';
+import {table_columns, panXClusterTable} from './global';
 import './third_party/table_plugin/dataTables.bootstrap.min.js';
 require('datatables.net-colreorder');
 require("bootstrap");
@@ -280,6 +280,14 @@ export const datatable_configuration = function(table_input, table_id, col_selec
         });
     }
 
+    const cluster_table_unselect = panXClusterTable.cluster_table_unselect;
+    //** add button to clear the filter when clicking a clade
+    $('<span style="display:inline-block; width: 5px;"></span>').appendTo('div#'+table_id+'_length.dataTables_length');
+    $('<button type="button" id="'+cluster_table_unselect+'" class="btn btn-default">Clear clade filter</button>').appendTo('div#'+table_id+'_length.dataTables_length');
+    $('#'+cluster_table_unselect).on('click', function () {
+        unselect_clusterTable(table_id);
+    })
+
     //** append download button for all core genes
     append_download_button('#'+table_id+'_filter.dataTables_filter', 'core_gene_alignments', '/dataset/'+speciesAbbr+'/core_gene_alignments.tar.gz');
     append_download_button('#'+table_id+'_filter.dataTables_filter', 'all_gene_alignments', '/dataset/'+speciesAbbr+'/all_gene_alignments.tar.gz');
@@ -294,3 +302,32 @@ export const datatable_configuration = function(table_input, table_id, col_selec
 
     return datatable;
 };
+
+export const filterClusterDataTable = function(dataTableID, tree)
+    {
+        //make a list of all tips currently selected
+        var tipList = [], tip;
+        for (var i=0; i<tree.tips.length; i++){
+            tip = tree.tips[i];
+            if (tip.state.selected){
+                tipList.push(tip.name);
+            }
+        }
+        const strainCount = tipList.length;
+        const tipListStr = tipList.join(" ");
+        //** first, select cluster matching the strain count
+        $('#'+dataTableID).DataTable().columns(5)
+            .search('^'+strainCount+'$', true, false).draw();
+        //** then, select cluster matching the related accession IDs
+        $('#'+dataTableID).DataTable()
+            .search(tipListStr).draw();
+        //return tipList;
+    };
+
+//** unselect cluster table by clicking "clear clade filter" button (on cluster table)
+export const unselect_clusterTable = function(clusterTableID){
+    $('#'+clusterTableID).DataTable()
+        .search('')
+        .columns().search('')
+        .draw();
+}

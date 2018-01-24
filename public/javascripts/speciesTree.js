@@ -11,6 +11,7 @@ import d3 from "d3";
 import {panXDashboard,panXClusterTable,panXMetaTable} from "./global"
 import {tipText, tipFontSize, applyChangeToTree} from "./tree-init";
 import {filterMetaDataTable} from "./datatable-meta";
+import {filterClusterDataTable} from "./datatable-gc";
 
 import $ from 'jquery';
 window.$ = $;
@@ -32,6 +33,8 @@ const speciesTree = function(tree_svg,treeJsonPath, handleResult){
             ,dt);
         const metaTableID=panXMetaTable.meta_table_id;
         const tipList=filterMetaDataTable(metaTableID, myTree);
+        const clusterTableId=panXClusterTable.cluster_table_id;
+        filterClusterDataTable(clusterTableId, myTree);
     };
 
     //console.log("loading speciesTree", treeJsonPath);
