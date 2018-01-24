@@ -319,8 +319,9 @@ export const filterClusterDataTable = function(dataTableID, tree)
         $('#'+dataTableID).DataTable().columns(5)
             .search('^'+strainCount+'$', true, false).draw();
         //** then, select cluster matching the related accession IDs
-        $('#'+dataTableID).DataTable()
+        $('#'+dataTableID).DataTable().columns(-1)
             .search(tipListStr).draw();
+        //console.log(strainCount,tipListStr)
         //return tipList;
     };
 
@@ -330,4 +331,6 @@ export const unselect_clusterTable = function(clusterTableID){
         .search('')
         .columns().search('')
         .draw();
+        //** only with the following does not work
+        //.search('').draw();
 }
