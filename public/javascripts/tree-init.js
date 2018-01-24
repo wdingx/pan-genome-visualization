@@ -9,6 +9,7 @@ import {change_select_dropdown_value} from './linkTableAlignmentTrees';
 import {updateMetadata, removeLegend} from './meta-color-legend';
 import {updateTipAttribute,updateBranches} from "../phyloTree/src/updateTree";
 import {aln_file_path} from "./data_path";
+import {unselect_clusterTable} from "./datatable-gc";
 
 const tipUnselected=panXTree.tipUnselected;
 
@@ -151,6 +152,7 @@ export const attachButtons = function(myTree, buttons){
             undoHideNonSelected(myTree);
             $('#'+panXClusterTable.cluster_table_id).DataTable()
                 .search('').draw();
+            unselect_clusterTable(panXClusterTable.cluster_table_id);
         });
     }
 
