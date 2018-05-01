@@ -1,6 +1,5 @@
 node_modules/*
 public/dist/*
 public/dataset/*
-public/downloads/
 public/bower_components/
 public/javascripts/meta-dict-*

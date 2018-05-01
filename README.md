@@ -19,6 +19,7 @@ panX displays the pan-genome using interconnected visual components including ge
 ### Clone the repository
 ```
 git clone https://github.com/neherlab/pan-genome-visualization
+cd pan-genome-visualization
 git submodule update --init
 ```
 ### Install npm packages and start the server:
