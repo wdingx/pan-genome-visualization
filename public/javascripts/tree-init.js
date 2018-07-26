@@ -150,9 +150,9 @@ export const attachButtons = function(myTree, buttons){
             const metaTableID=panXMetaTable.meta_table_id;
             filterMetaDataTable(metaTableID, myTree);
             undoHideNonSelected(myTree);
-            $('#'+panXClusterTable.cluster_table_id).DataTable()
+            /*$('#'+panXClusterTable.cluster_table_id).DataTable()
                 .search('').draw();
-            unselect_clusterTable(panXClusterTable.cluster_table_id);
+            unselect_clusterTable(panXClusterTable.cluster_table_id);*/
         });
     }
 
