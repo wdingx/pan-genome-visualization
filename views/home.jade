@@ -140,3 +140,11 @@ html
     script(src='javascripts/third_party/jquery.bootstrap-autohidingnavbar.min.js')
     script(src='javascripts/third_party/call-autohidingnavbar.js')
     script(src='dist/homepage.js')
+    // Global site tag (gtag.js) - Google Analytics
+    script(async='', src='https://www.googletagmanager.com/gtag/js?id=UA-60087408-2')
+    script.
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-60087408-2');
+

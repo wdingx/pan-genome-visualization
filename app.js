@@ -12,14 +12,14 @@ var zlib = require('zlib');
 var compression = require('compression');
 app.use(compression());
 
-var webpack = require('webpack');
-var webpackConfig = require('./webpack.config.dev');
-var compiler = webpack(webpackConfig);
+//var webpack = require('webpack');
+//var webpackConfig = require('./webpack.config.dev');
+//var compiler = webpack(webpackConfig);
 //app.use('/pubic', express.static('pubic'))
-app.use(require("webpack-dev-middleware")(compiler, {
-    noInfo: true, publicPath: webpackConfig.output.publicPath
-}));
-app.use(require("webpack-hot-middleware")(compiler));
+//app.use(require("webpack-dev-middleware")(compiler, {
+//    noInfo: true, publicPath: webpackConfig.output.publicPath
+//}));
+//app.use(require("webpack-hot-middleware")(compiler));
 
 
 //var store_path= 'https://pangenome-store.nyc3.digitaloceanspaces.com'

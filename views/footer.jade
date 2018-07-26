@@ -12,7 +12,11 @@ footer.footer-distributed
         a(href='./tutorial')
           u Tutorials
         p.footer-author Software and website: Wei Ding and Richard Neher
-        p.footer-author Logo and website &copy; 2016 Wei Ding
+        p.footer-author
+          | Logo and website © 2016
+          script.
+            new Date().getFullYear()>2010&&document.write("- "+new Date().getFullYear());
+          |  Wei Ding. All rights reserved.
     .footer-center.col-md-4
       #contacts
         i.fa.fa-envelope
