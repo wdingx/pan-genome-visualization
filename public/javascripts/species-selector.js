@@ -18,7 +18,7 @@ export const create_species_dropdown = function (div, species_dt) {
             .attr("value", '')
             .attr("disabled", '')
             .attr("selected", '')
-            .text('Select species');
+            .text('Selected species (see below for more species)');
     }else{
         selector.append("option")
             .attr("value", speciesAbbr)
