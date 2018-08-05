@@ -34,7 +34,8 @@ const speciesTree = function(tree_svg,treeJsonPath, handleResult){
         const metaTableID=panXMetaTable.meta_table_id;
         const tipList=filterMetaDataTable(metaTableID, myTree);
         const clusterTableId=panXClusterTable.cluster_table_id;
-        filterClusterDataTable(clusterTableId, myTree);
+        //# temporarily not filter clustertable when zooming into clade
+        //filterClusterDataTable(clusterTableId, myTree);
     };
 
     //console.log("loading speciesTree", treeJsonPath);
