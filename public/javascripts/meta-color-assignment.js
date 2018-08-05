@@ -154,16 +154,21 @@ export const assign_metadata_color = function(meta_details,meta_display){
         var metaType_key = metaTypes[j]; //**'host'
         var meta_detail = meta_details[metaType_key]; //** ["human", "rice"]
         //meta_detail.sort();
-        const meta_coloring_type= meta_display['color_options'][metaType_key]['type'];
-        if (meta_coloring_type=='continuous') {
-            assign_continuous_color(metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts,metaType_key,meta_detail)
-        } else if (meta_coloring_type=='discrete') {
-            const discret_color_set_common=chroma.scale(discrete_color_set).colors(meta_detail.length),
-                  discret_color_set_safe=chroma.scale(colorblind_safe_set).colors(meta_detail.length);
-            assign_discrete_color(metaColor_dicts,metaColor_dicts_keys,metaType_key,meta_detail, discret_color_set_common,discret_color_set_safe);
-        } else if (meta_coloring_type=='mixed_continuous') {
-            var raw_meta_detail=meta_detail;
-            assign_mixed_continuous_color(metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts,metaType_key,raw_meta_detail)
+        console.log(meta_display);
+        if (meta_display['color_options'][metaType_key]===undefined){
+            console.warn("no meta color option for", metaType_key);
+        }else{
+            const meta_coloring_type= meta_display['color_options'][metaType_key]['type'];
+            if (meta_coloring_type=='continuous') {
+                assign_continuous_color(metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts,metaType_key,meta_detail)
+            } else if (meta_coloring_type=='discrete') {
+                const discret_color_set_common=chroma.scale(discrete_color_set).colors(meta_detail.length),
+                      discret_color_set_safe=chroma.scale(colorblind_safe_set).colors(meta_detail.length);
+                assign_discrete_color(metaColor_dicts,metaColor_dicts_keys,metaType_key,meta_detail, discret_color_set_common,discret_color_set_safe);
+            } else if (meta_coloring_type=='mixed_continuous') {
+                var raw_meta_detail=meta_detail;
+                assign_mixed_continuous_color(metaColor_dicts,metaColor_dicts_keys,metaColor_reference_dicts,metaType_key,raw_meta_detail)
+            }
         }
     }
 }
