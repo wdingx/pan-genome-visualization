@@ -154,7 +154,7 @@ export const assign_metadata_color = function(meta_details,meta_display){
         var metaType_key = metaTypes[j]; //**'host'
         var meta_detail = meta_details[metaType_key]; //** ["human", "rice"]
         //meta_detail.sort();
-        console.log(meta_display);
+        //console.log(meta_display);
         if (meta_display['color_options'][metaType_key]===undefined){
             console.warn("no meta color option for", metaType_key);
         }else{

@@ -24,6 +24,7 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
 
     // assign gene presence absence. this relies on node.genePresent being set
     if (metaType==="genePattern"){
+        d3.select('#metadata_legend').style('overflow','hidden');
         d3.select('#colorblind_div').style('visibility','hidden');
         colorPresenceAbsence(speciesTree);
         styleGainLoss(speciesTree);
@@ -149,17 +150,27 @@ const makeLegend = function(metaType,speciesTree,geneTree,coreTree_legend_id){ /
             }else{ return metaColor_dicts[metaType][d];}
         }
 
-
+        const metaitem_scroll_limit=30;
+        var metadata_legend= d3.select('#metadata_legend');
+        metadata_legend.style('height', '600px')
+        const metaitem_list= metaColor_dicts_keys[metaType];
+        const metaitem_count= metaitem_list.length;
+        if (metaitem_count>metaitem_scroll_limit){
+            metadata_legend.style('overflow', 'scroll')
+        } else {
+            metadata_legend.style('overflow', 'hidden')
+        }
         //draw the legend
         var legend= d3.select('#'+coreTree_legend_id)
             .attr('width', metaLegend.legend_width)
-            .attr('height', metaLegend.legend_height);
+            .attr('height', metaitem_count*(legendRectSize+legendSpacing)+5);
+
         var tmp_leg = legend.selectAll(".legend")
-            .data( metaColor_dicts_keys[metaType] )
+            .data( metaitem_list )
             .enter().append('g')
             .attr('class', 'legend')
             .attr('transform', function(d, i) {
-                var stack = 50;
+                var stack = metaitem_count;
                 var height = legendRectSize + legendSpacing;
                 var fromRight = Math.floor(i / stack);
                 var fromTop = i % stack;
