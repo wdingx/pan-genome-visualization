@@ -71,8 +71,7 @@ script(src='dataset/yourSpecies/newColumnConfig.js')
 ## **Pipeline overview:**
 ![panX](/panX-pipeline.png)
 
-panX analysis pipeline is based on [DIAMOND](https://github.com/bbuchfink/diamond) ([Buchfink et al. 2015 Nature Methods](http://www.nature.com/nmeth/journal/v12/n1/full/nmeth.3176.html)), MCL and post-
-processing to determine clusters of orthologous genes from a collection of annotated genomes.
+panX analysis pipeline is based on DIAMOND, MCL and post-processing to determine clusters of orthologous genes from a collection of annotated genomes.
 panX generates a strain/species tree based on core genome SNPs and a gene tree for each gene cluster.
 
 **panX interactive visualization**: (1) The dynamic pan-genome statistical charts allow rapid filtering and selection of gene subsets in cluster table;
