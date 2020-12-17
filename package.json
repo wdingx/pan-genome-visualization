@@ -19,7 +19,7 @@
     "d3": "^3.5.17",
     "d3-tip": "^0.7.1",
     "datatable": "^2.0.2",
-    "datatables.net": "^1.10.13",
+    "datatables.net": "^1.10.22",
     "datatables.net-dt": "^1.10.13",
     "dc": "^2.1.3",
     "debug": ">=2.6.9",
