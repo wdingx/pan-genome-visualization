@@ -1,0 +1,63 @@
+version: '3.7'
+
+services:
+  pangenome-node:
+    container_name: pangenome-node
+    image: pangenome-node
+    build:
+      context: ../..
+      dockerfile: config/docker/node/Dockerfile
+      args:
+      - UID=${UID}
+      - GID=${GID}
+      - USER=${USER}
+      - GROUP=${GROUP}
+    volumes:
+      - ../../.volumes/node/tmp:/tmp
+      - ../../../aws_pangenome_dataset:/app/public/dataset:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - UID=${UID}
+      - GID=${GID}
+      - USER=${USER}
+      - GROUP=${GROUP}
+      - COLORTERM=truecolor
+      - TERM=xterm-truecolor
+    restart: always
+    init: true
+    tty: true
+
+  pangenome-nginx:
+    depends_on:
+      - pangenome-node
+    container_name: pangenome-nginx
+    image: pangenome-nginx
+    build:
+      context: ../..
+      dockerfile: config/docker/nginx/Dockerfile
+      args:
+      - UID=${UID}
+      - GID=${GID}
+      - USER=${USER}
+      - GROUP=${GROUP}
+    volumes:
+      - ../../.volumes/nginx/cache:/var/cache/nginx
+      - ../../.volumes/nginx/logs:/var/lib/nginx/logs
+      - ../../.volumes/nginx/tmp:/tmp
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 80:8080
+      - 443:44443
+    environment:
+      - UID=${UID}
+      - GID=${GID}
+      - USER=${USER}
+      - GROUP=${GROUP}
+      - COLORTERM=truecolor
+      - TERM=xterm-truecolor
+    restart: always
+    init: true
+    tty: true
+    user: '${UID}'

@@ -41,7 +41,7 @@ gulp.task('miniJS', function() {
     './public/javascripts/meta-color-legend.js',
     './public/javascripts/render_viewer.js',
   	'./public/javascripts/datatable-meta.js'
-  	
+
   	])
     .pipe(concat('all-edge.js'))
     .pipe(uglify())
@@ -71,5 +71,4 @@ gulp.task('miniCSS', function() {
 	    .pipe(gulp.dest('./public/dist/'))
 });
 
-gulp.task('default', ['miniJS','miniCSS'], function() {
-});
+gulp.task('default', ['miniJS','miniCSS']);

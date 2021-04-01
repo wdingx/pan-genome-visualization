@@ -1,0 +1,6 @@
+\.git/
+\.idea/
+\.ignore/
+\.volumes/
+\.vscode*
+\.config

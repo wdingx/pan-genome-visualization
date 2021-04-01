@@ -1,0 +1,16 @@
+[Unit]
+Description=pangenome service
+Requires=docker.service
+After=docker.service
+
+[Service]
+User=www-data
+Group=www-data
+Type=oneshot
+RemainAfterExit=true
+WorkingDirectory=/www/pangenome
+ExecStart=/usr/bin/bash /www/pangenome/scripts/run.sh
+ExecStop=/usr/bin/bash /www/pangenome/scripts/stop.sh
+
+[Install]
+WantedBy=multi-user.target

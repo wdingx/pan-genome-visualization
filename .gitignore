@@ -1,5 +1,10 @@
+\.git/
+\.idea/
+\.ignore/
+\.volumes/
+\.vscode*
 node_modules/*
-public/dist/*
-public/dataset/*
 public/bower_components/
+public/dataset/*
+public/dist/*
 public/javascripts/meta-dict-*
