@@ -109,3 +109,35 @@ clicking a gene cluster in cluster table loads (2) related alignment, (3) indivi
     Dots are often used to separate the parts of the domain name. So, please use "_" (underscore) for the species/dataset name within the url.<br />
     E.g.: http://localhost:8000/E_coli instead of http://localhost:8000/E.coli
 
+
+## With docker
+
+Last updated: 2021-04-01
+
+ - Put the app code into `/www/aws_pangenome`
+
+ - Put the data into `/www/aws_pangenome_dataset`
+
+   For example, the data from previos deploymen is on S3:
+
+    ```
+    cd /www/aws_pangenome_dataset
+    aws s3 sync s3://data.pangenome.ch-2021-04-01/ .
+    ```
+
+ - Install docker
+
+    ```
+    ./scripts/Install_docker.sh
+    ```
+
+ - Run the app
+
+    ```
+    cd /www/aws_pangenome
+    screen -qxRS pangenome -- ./scripts/run-attached.sh
+    ```
+
+ - Exit from `screen` session with Ctrl+A,Ctrl+D. It is safe to log out now.
+
+ - To reattach to screen session, run `screen -qxRS pangenome` again.
