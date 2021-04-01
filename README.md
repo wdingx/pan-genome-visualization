@@ -141,3 +141,4 @@ Last updated: 2021-04-01
  - Exit from `screen` session with Ctrl+A,Ctrl+D. It is safe to log out now.
 
  - To reattach to screen session, run `screen -qxRS pangenome` again.
+
