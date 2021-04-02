@@ -116,19 +116,32 @@ Last updated: 2021-04-01
 
  - Put the app code into `/www/aws_pangenome`
 
+ - Install docker and AWS CLI
+
+    ```
+    ./scripts/install_docker.sh
+    ./scripts/install_aws.sh
+    ```
+
  - Put the data into `/www/aws_pangenome_dataset`
 
-   For example, the data from previos deploymen is on S3:
+   For example, the data from previous deployment is on S3:
 
     ```
     cd /www/aws_pangenome_dataset
     aws s3 sync s3://data.pangenome.ch-2021-04-01/ .
     ```
 
- - Install docker
+    (you will need to be authenticated, for example with `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` env variables. You can create temporary ones, or, better, a temporary user on AWS. Make sure you clean up `~/.bash_history` from those keys afterwards!)
+
+    If there are issues with AWS CLI being kileld by OOM guard, reduce it's memory consumption by adding this to `~/.aws/config`:
 
     ```
-    ./scripts/Install_docker.sh
+    [profile default]
+    s3 =
+      max_concurrent_requests = 5
+      max_bandwidth = 10MB/s
+
     ```
 
  - Run the app
@@ -142,3 +155,19 @@ Last updated: 2021-04-01
 
  - To reattach to screen session, run `screen -qxRS pangenome` again.
 
+ - Once containers are up, run certbot manually once, to create SSL certificates  (inside nginx container)
+
+    ```
+    docker exec -u 0 -it pangenome-nginx /certbot.sh
+    ```
+
+   The renewal is automatic, every 12 days. See these files:
+
+   ```
+   config/docker/nginx/files/etc/cron.d/jobs       # cron job
+   config/docker/nginx/files/certbot.sh            # the script which cron job runs
+   config/docker/nginx/files/etc/nginx/http.conf   # nginx config to serve ACME challenge files
+   config/docker/nginx/files/etc/nginx/https.conf  # nginx config to proxy to the app
+   ```
+
+ - If something goes wrong and you want to start over, delete or move the `.volumes` directory as root (Warning: if deleted, all logs, certs and other persisted data will be lost!)

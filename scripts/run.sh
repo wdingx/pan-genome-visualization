@@ -34,7 +34,7 @@ echo "UID=${UID}"
 echo "GROUP=${GROUP}"
 echo "GID=${GID}"
 
-mkdir -p .volumes/nginx/{config,cache,logs,tmp}
+mkdir -p .volumes/nginx
 mkdir -p .volumes/node/tmp
 
 docker-compose -f config/docker/docker-compose.yml build

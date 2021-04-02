@@ -22,8 +22,7 @@ services:
       - GID=${GID}
       - USER=${USER}
       - GROUP=${GROUP}
-      - COLORTERM=truecolor
-      - TERM=xterm-truecolor
+      - TERM=xterm-256color
     restart: always
     init: true
     tty: true
@@ -36,14 +35,13 @@ services:
     build:
       context: ../..
       dockerfile: config/docker/nginx/Dockerfile
-      args:
-      - UID=${UID}
-      - GID=${GID}
-      - USER=${USER}
-      - GROUP=${GROUP}
     volumes:
-      - ../../.volumes/nginx/cache:/var/cache/nginx
-      - ../../.volumes/nginx/logs:/var/lib/nginx/logs
+      - ../../.volumes/nginx/var/cache/nginx:/var/cache/nginx
+      - ../../.volumes/nginx/var/lib/nginx/logs:/var/lib/nginx/logs
+      - ../../.volumes/nginx/var/lib/letsencrypt:/var/lib/letsencrypt
+      - ../../.volumes/nginx/var/log/letsencrypt:/var/log/letsencrypt
+      - ../../.volumes/nginx/etc/letsencrypt:/etc/letsencrypt
+      - ../../.volumes/nginx/www/letsencrypt:/www/letsencrypt
       - ../../.volumes/nginx/tmp:/tmp
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
@@ -51,13 +49,7 @@ services:
       - 80:8080
       - 443:44443
     environment:
-      - UID=${UID}
-      - GID=${GID}
-      - USER=${USER}
-      - GROUP=${GROUP}
-      - COLORTERM=truecolor
-      - TERM=xterm-truecolor
+      - TERM=xterm-256color
     restart: always
     init: true
     tty: true
-    user: '${UID}'

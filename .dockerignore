@@ -1,6 +1,6 @@
-\.git/
-\.idea/
-\.ignore/
-\.volumes/
-\.vscode*
-\.config
+.git
+.idea
+.ignore
+.volumes
+.vscode*
+.config
