@@ -12,7 +12,7 @@ trap "exit" INT
 
 EMAIL="hello@neherlab.org"
 WEBROOT="/usr/share/nginx/html/"
-DOMAINS="pangenome.org,pangenome.ch,pangenome.de"
+DOMAINS="pangenome.org,pangenome.ch,pangenome.de,pangenome.tuebingen.mpg.de"
 
 echo "[info] ${0}: Updating SSL certificates for $(IFS=','; echo "${DOMAINS[*]}")"
 bash -c "certbot certonly \
