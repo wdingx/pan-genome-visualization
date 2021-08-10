@@ -30,7 +30,15 @@ bash -c "certbot certonly \
   # --dry-run \
 
 # Enable HTTPS
-sed -i 's/# include https.conf;/include https.conf;/' /etc/nginx/nginx.conf
+sed -i 's|# include https.conf;|include https.conf;|' /etc/nginx/nginx.conf
+
+sed -i 's|# include include/ssl.conf;|include include/ssl.conf;|' /etc/nginx/https.conf
+sed -i 's|# listen 44443 ssl http2;|listen 44443 ssl http2;|' /etc/nginx/https.conf
+
+sed -i 's|# include include/ssl.conf;|include include/ssl.conf;|' /etc/nginx/redirects.conf
+sed -i 's|# listen 44443 ssl http2;|listen 44443 ssl http2;|' /etc/nginx/redirects.conf
+
+
 
 echo "[info] ${0}: Reloading nginx"
 nginx -s reload
