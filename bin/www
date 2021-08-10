@@ -14,7 +14,7 @@ var http = require('http');
 
 var port = normalizePort(process.env.PORT || '3000');//|| '3000'
 app.set('port', port);
-console.log('open the web page http://localhost:8000/ in your browser')
+console.log('open the web page http://localhost:3000/ in your browser')
 
 /**
  * Create HTTP server.
