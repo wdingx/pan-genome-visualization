@@ -1,5 +1,6 @@
+import './third_party/msa-niaid';
 //import './third_party/msa-new.js';
-import './third_party/msa.min.gz.js';
+//import './third_party/msa.min.gz.js';
 //import './third_party/msa.js';
 import {panXTree, msaViewerAsset} from './global'
 import {hideNonSelected} from './tree-init'
