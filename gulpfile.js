@@ -28,7 +28,7 @@ gulp.task('miniJS', function() {
   	'./public/javascripts/third_party/table_plugin/dataTables.bootstrap.min.js',
     './public/javascripts/third_party/table_plugin/dataTables.colReorder.min.js',
 
-  	'./public/javascripts/third_party/msa-new.js',
+  	'./public/javascripts/third_party/msa-niaid.js',
   	'./public/javascripts/third_party/tnt.tree.min.js',
   	'./public/javascripts/third_party/jquery.panzoom.min.js',
 
