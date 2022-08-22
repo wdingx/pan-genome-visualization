@@ -13,11 +13,11 @@ async function renderPageHtml(page) {
 
 async function main() {
   return Promise.all([
+    '404',
     'compare',
     'download',
     'gridstack',
     'index',
-    'notFound',
     'pipeline',
     'tutorial',
   ].map((page) => renderPageHtml(page)))
