@@ -14,9 +14,12 @@ async function renderPathogenHtml(pathogen) {
 
 async function main() {
   return Promise.all([
+    { pathogenName: 'P_aeruginosa', hasNewColumnConfig: true, hasStandardColumnConfig: true },
+    { pathogenName: 'P_marinus_meta', hasNewColumnConfig: true, hasStandardColumnConfig: true },
     { pathogenName: 'Pseudomonas_aeruginosa', hasNewColumnConfig: true, hasStandardColumnConfig: true },
-    { pathogenName: 'Streptococcus_pneumoniae', hasNewColumnConfig: false, hasStandardColumnConfig: false },
+    { pathogenName: 'S_pneumoniae616', hasNewColumnConfig: false, hasStandardColumnConfig: false },
     { pathogenName: 'Staphylococcus_aureus', hasNewColumnConfig: false, hasStandardColumnConfig: false },
+    { pathogenName: 'Streptococcus_pneumoniae', hasNewColumnConfig: false, hasStandardColumnConfig: false },
     { pathogenName: 'Vibrio_cholerae', hasNewColumnConfig: false, hasStandardColumnConfig: false },
     { pathogenName: 'Yersinia_pestis', hasNewColumnConfig: false, hasStandardColumnConfig: false },
   ].map((pathogen) => renderPathogenHtml(pathogen)))
