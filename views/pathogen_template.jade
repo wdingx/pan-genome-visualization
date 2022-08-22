@@ -1,0 +1,13 @@
+extends components/layout
+
+block content
+    script.
+      var speciesAbbr = '#{pathogenName}'
+
+    script(src='dataset/#{pathogenName}/metaConfiguration.js')
+
+    if hasStandardColumnConfig
+        script(src='dataset/#{pathogenName}/standardColumnConfig.js')
+
+    if hasNewColumnConfig
+        script(src='dataset/#{pathogenName}/newColumnConfig.js')

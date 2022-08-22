@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="javascripts/third_party/pace.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/pace-theme-center-atom.css">
+    <link rel="stylesheet" href="stylesheets/bootstrap.min.css">
+    <!--link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')-->
+    <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap_customized.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap-toggle.min.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap-multiselect.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/nouislider.min.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/dc.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/dataTables.bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/dataTables-customized.css">
+    <!--link(rel="stylesheet", type="text/css", href='stylesheets/msa-old.css')-->
+    <!--source: style details from http://msa.biojs.net/app/-->
+    <link rel="stylesheet" type="text/css" href="stylesheets/msa.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/d3-tip.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/autocomplete.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/page-appearance.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/autohiding-navbar2.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/footer.css">
+    <!-- footer icon and font-->
+    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <!--link(rel='stylesheet', type='text/css', href='bower_components/font-awesome/css/font-awesome.min.css')-->
+    <link rel="stylesheet" type="text/css" href="stylesheets/fontawesome-customized.css">
+    <link rel="icon" type="image/png" href="images/pan-blue.png" sizes="32x32">
+    <title>panX</title>
+  </head>
+  <body>
+    <div role="navigation" class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="./home" class="navbar-brand"> panX: Pan-genome Analysis & Exploration</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="./S_pneumoniae616">Applications</a></li>
+            <li><a href="pipeline">Methods</a></li>
+            <li><a href="#downloads">Downloads</a></li>
+            <li><a href="#contacts">How to run</a></li>
+            <li><a href="tutorial">Tutorials</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#contacts"> Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row"><br><br><br>
+        <div id="logo" class="col-md-2"><img src="images/pan-blue-noReads.svg" style="width:230;height:209px;">
+          <div class="col-md-2"></div>
+        </div>
+        <div id="dc_data_count" class="col-md-2">
+          <div role="alert" class="alert alert-info">Species</div>
+          <div id="species-selector"></div>
+          <div id="species-search" style="margin-top:3px"></div>
+          <div style="margin-top:3px" class="dc_data_count"></div>
+        </div>
+        <div class="col-md-2">
+          <div role="alert" class="alert alert-info">Core vs. Accessory</div>
+          <div id="dc_coreAcc_piechart"></div>
+          <div id="col-coreThreshold" class="col-md-4"><span id="coreThreshold" data-toggle="tooltip" data-placement="bottom" title="coreThreshold ">cutoff:0.99</span></div>
+          <div class="col-md-6">
+            <div id="changeCoreThreshold"></div>
+          </div>
+        </div>
+        <div id="dc_straincount_chart" class="col-md-3">
+          <div role="alert" class="alert alert-info">Gene count rank distribution</div>
+        </div>
+        <div id="dc_geneLength_chart" class="col-md-3">
+          <div role="alert" class="alert alert-info">Gene length distribution</div>
+        </div>
+      </div>
+      <div class="row cs_shadow">
+        <div class="col-md-6">
+          <div role="alert" class="alert alert-info">Gene cluster table</div>
+          <table id="dc_data_table" cellspacing="0" width="100%" class="table table-striped table"></table>
+        </div>
+        <div class="col-md-6">
+          <div role="alert" class="alert alert-info">
+            <div id="sequence_viewer_title">Sequence alignment</div>
+          </div>
+          <div id="msa_legend" style="padding-top:3px"></div>
+          <div id="snippetDiv"></div>
+        </div>
+      </div>
+      <div id="all_trees" class="row cs_shadow">
+        <div class="col-md-6">
+          <div role="alert" class="alert alert-info">Strain tree (SNPs in all core genes)</div>
+          <div class="row">
+            <div id="dropdown_list" class="col-md-3 btn_tooltip"></div>
+            <div id="LeftTreeButtons" style="vertical-align: top" class="col-md-8">
+              <div class="col-md-2 triplet_layout_width triplet-button-group">
+                <button id="speciesTreeLayouts" type="button" class="triplet-button-control triplet-button-toggle speciesTree btn_tooltip">Layouts<span aria-hidden="true" class="fa fa-plus triplet-button-space"></span></button>
+                <ul id="options" class="list-inline">
+                  <li class="option speciesTree">
+                    <button id="speciesTreeRadial" type="button" class="triplet-button-single option1"><img src="images/radial.png"></button>
+                  </li>
+                  <li class="option speciesTree">
+                    <button id="speciesTreeVertical" type="button" class="triplet-button-single option2"><img src="images/vertical.png"></button>
+                  </li>
+                  <li class="option speciesTree">
+                    <button id="speciesTreeUnroot" type="button" class="triplet-button-single option3"><img src="images/unrooted.png"></button>
+                  </li>
+                </ul>
+              </div>
+              <input id="speciesTreeScale" type="checkbox" checked="" data-toggle="toggle" data-style="ios" data-on="Scale" data-off="Scale" data-size="mini" class="btn_tooltip">
+              <input id="speciesTreeLabels" type="checkbox" checked="" data-toggle="toggle" data-style="ios" data-on="Label" data-off="Label" data-size="mini" class="btn_tooltip">
+              <button id="speciesTree_height_plus" class="btn btn-xs btn-primary btn_tooltip"><span class="glyphicon glyphicon-resize-full"></span></button>
+              <button id="speciesTree_height_minus" class="btn btn-xs btn-primary btn_tooltip"><span class="glyphicon glyphicon-resize-small"></span></button>
+              <button id="speciesTree_nodePlus" class="btn btn-xs btn-primary btn_tooltip"><span class="glyphicon glyphicon-plus"></span></button>
+              <button id="speciesTree_nodeMinus" class="btn btn-xs btn-primary btn_tooltip"><span class="glyphicon glyphicon-minus"></span></button>
+              <button id="speciesTreeZoomReset" class="btn btn-xs btn-primary btn_tooltip"><span class="glyphicon glyphicon-refresh"></span></button>
+              <input id="speciesTreePanzoom" type="checkbox" checked="" data-toggle="toggle" data-style="ios" data-on="&lt;i class='glyphicon glyphicon-move'&gt;&lt;/i&gt;" data-off="&lt;i class='glyphicon glyphicon-zoom-in'&gt;&lt;/i&gt;" data-size="mini" data-onstyle="primary" data-offstyle="info" class="btn_tooltip">
+              <input id="speciesTreeSynchr" type="checkbox" checked="" data-toggle="toggle" data-style="ios" data-on="Synchr" data-off="Synchr" data-size="mini" class="btn_tooltip">
+            </div>
+            <div id="download_coreTree" class="col-md-1 btn_tooltip"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <div id="colorblind_div" style="visibility: hidden;padding-left:4px">
+                <input id="colorblind_safe" type="checkbox" data-toggle="toggle" data-style="ios" data-on="&lt;i class='glyphicon glyphicon-eye-open'&gt;&lt;/i&gt;" data-off="&lt;i class='glyphicon glyphicon-eye-open'&gt;&lt;/i&gt;" data-size="mini" data-onstyle="success" data-offstyle="info" class="btn_tooltip">
+              </div>
+              <div id="metadata_legend">
+                <svg id="coreTree_legend"></svg>
+              </div>
+            </div>
+            <div class="col-md-10">
+              <div id="speciesTreeDiv">
+                <svg id="speciesTree"></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div role="alert" class="alert alert-info">
+            <div id="genetree_title">Gene tree (individual gene)</div>
+          </div>
+          <div class="row">
+            <div id="genetree_buttons" class="col-md-7">
+              <div class="col-md-2 triplet_layout_width triplet-button-group">
+                <button id="geneTreeLayouts" type="button" class="triplet-button-control triplet-button-toggle geneTree btn_tooltip">Layouts<span aria-hidden="true" class="fa fa-plus triplet-button-space"></span></button>
+                <ul id="options" class="list-inline">
+                  <li class="option geneTree">
+                    <button id="geneTreeRadial" type="button" class="triplet-button-single triplet-button-single-toggle option1"><img src="images/radial.png"></button>
+                  </li>
+                  <li class="option geneTree">
+                    <button id="geneTreeVertical" type="button" class="triplet-button-single triplet-button-single-toggle option2"><img src="images/vertical.png"></button>
+                  </li>
+                  <li class="option geneTree">
+                    <button id="geneTreeUnroot" type="button" class="triplet-button-single triplet-button-single-toggle option3"><img src="images/unrooted.png"></button>
+                  </li>
+                </ul>
+              </div>
+              <input id="geneTreeScale" type="checkbox" checked="" data-toggle="toggle" data-style="ios" data-on="Scale" data-off="Scale" data-size="mini" class="btn_tooltip">
+              <input id="geneTreeLabels" type="checkbox" data-toggle="toggle" data-style="ios" data-on="Label" data-off="Label" data-size="mini" class="btn_tooltip">
+              <input id="geneTreeOrientation" type="checkbox" checked="" data-toggle="toggle" data-style="ios" data-on="Right-left" data-off="Left-right" data-size="mini" data-onstyle="primary" data-offstyle="info">
+              <button id="geneTree_height_plus" class="btn btn-xs btn-primary btn_tooltip"><span class="glyphicon glyphicon-resize-full"></span></button>
+              <button id="geneTree_height_minus" class="btn btn-xs btn-primary btn_tooltip"><span class="glyphicon glyphicon-resize-small"></span></button>
+              <button id="geneTree_nodePlus" class="btn btn-xs btn-primary btn_tooltip"><span class="glyphicon glyphicon-plus"></span></button>
+              <button id="geneTree_nodeMinus" class="btn btn-xs btn-primary btn_tooltip"><span class="glyphicon glyphicon-minus"></span></button>
+              <button id="geneTreeZoomReset" class="btn btn-xs btn-primary btn_tooltip"><span class="glyphicon glyphicon-refresh"></span></button>
+              <button id="geneTreeColorReset" class="btn btn-xs btn-primary btn_tooltip"><span class="glyphicon glyphicon-repeat"></span></button>
+            </div>
+            <!--#dropdown_list2.col-md-4-->
+            <div class="col-md-2">
+              <div id="searchAccession-group" class="input-group"><span id="searchAccession" class="input-group-addon primary sm-customized btn_tooltip"><span class="glyphicon glyphicon-search"></span></span>
+                <input type="text" placeholder="Accession" aria-describedby="sizing-addon1" oninput="search_accession(this.value)" class="form-control sm-customized tree_search">
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div id="searchAnnotation-group" class="input-group"><span id="searchAnnotation" class="input-group-addon primary sm-customized btn_tooltip"><span class="glyphicon glyphicon-search"></span></span>
+                <input type="text" placeholder="Annotation" aria-describedby="sizing-addon1" oninput="search_annotation(this.value)" class="form-control sm-customized tree_search">
+              </div>
+            </div>
+            <div id="download_geneTree" class="col-md-1 btn_tooltip"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-10">
+              <div id="geneTreeDiv">
+                <svg id="geneTree"></svg>
+              </div>
+            </div>
+            <div class="col-md-2"><br><br><br>
+              <svg id="legend2"></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row cs_shadow">
+        <div class="col-md-12">
+          <div role="alert" class="alert alert-info">Strain meta-info table</div>
+          <table id="dc_data_table_meta" cellspacing="0" width="100%" class="table table-striped table"></table>
+        </div>
+      </div>
+    </div>
+    <footer class="footer-distributed">
+      <div class="row">
+        <div class="footer-left col-md-4"><img src="images/pan-white-out.svg" style="width:230;height:209px;">
+          <p class="footer-links"><a href="./">
+              <u>Applications</u></a>        |<a href="./pipeline">
+              <u>Methods</u></a>        |<a href="./tutorial">
+              <u>Tutorials</u></a>
+            <p class="footer-author">Software and website: Wei Ding and Richard Neher</p>
+            <p class="footer-author">Logo and website © 2016
+              <script>new Date().getFullYear()>2010&&document.write("- "+new Date().getFullYear());</script> Wei Ding. All rights reserved.
+            </p>
+          </p>
+        </div>
+        <div class="footer-center col-md-4">
+          <div id="repo"><i class="fa fa-github"></i>
+            <p><span style="font-weight: bold;">How to run</span><span><a href="https://github.com/neherlab/pan-genome-analysis">
+                  <u>pan-genome-analysis</u></a></span><span><a href="https://github.com/neherlab/pan-genome-visualization/">
+                  <u>pan-genome-visualization</u></a></span><span><br></span></p>
+          </div>
+          <div id="contacts"><i class="fa fa-envelope"></i>
+            <p><span><a href="mailto:wei.ding@tuebingen.mpg.de">
+                  <u>wei.ding at tuebingen.mpg.de</u></a></span><span><a href="mailto:richard.neher@unibas.ch">
+                  <u>richard.neher at unibas.ch</u></a></span></p>
+          </div>
+          <div id="address"><i class="fa fa-map-marker"></i>
+            <p><span><br></span><span><a href="http://www.eb.tuebingen.mpg.de/">
+                  <u>Max Planck Institute for Developmental Biology</u></a></span><span> Tuebingen, Germany</span><span><a href="http://www.biozentrum.unibas.ch/">
+                  <u>Biozentrum, University of Basel</u></a></span><span> Basel, Switzerland</span></p>
+          </div>
+        </div>
+        <div class="footer-right col-md-4">
+          <p class="footer-website-about"><span>About panX</span>panX is a powerful interactive platform for pan-genome analysis and exploration. It provides multiple different views on annotated genomes and allows rapid search by gene name, diversity, gene gain and loss event, etc. Strain-specific meta-data is integrated into the phylogenetic tree viewer such that associations between gene presence and phenotypes (resistance,virulence,etc) can be easily spotted.<span><a href="mailto:wei.ding@tuebingen.mpg.de,richard.neher@unibas.ch">
+                <u>Comments, suggestions for improvements, bug reports etc</u> are welcome.</a></span></p>
+        </div>
+      </div>
+    </footer>
+    <script>
+      var speciesAbbr = 'Staphylococcus_aureus'
+      
+    </script>
+    <script src="dataset/Staphylococcus_aureus/metaConfiguration.js"></script>
+    <script src="javascripts/species-list-info.js"></script>
+    <script src="/dist/client_bundle.js"></script>
+    <script src="javascripts/third_party/jquery.bootstrap-autohidingnavbar.min.js"></script>
+    <script src="javascripts/third_party/call-autohidingnavbar.js"></script>
+  </body>
+</html>

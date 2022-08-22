@@ -12,7 +12,7 @@ html
     title panX: pan-genome analysis & exploration
 
   body(data-spy='scroll', data-target='#myScrollspy', data-offset='100')
-    include navbar_tutorial
+    include components/navbar_tutorial
     .container
       br
       br
@@ -83,7 +83,7 @@ html
             .alert.alert-info(role='alert') Displaying strain specific meta-information on the core genome tree
             p
             img(data-gifffer='./images/interactive-metaInfo-pattern.gif', alt='...', style='width:100%;')
-    include footer
+    include components/footer
 
     script(src='javascripts/third_party/gifffer.min.js')
     script.

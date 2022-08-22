@@ -5,7 +5,6 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     //- link(rel="stylesheet", type="text/css", href="dist/all-edge.css")
     link(rel='stylesheet', type='text/css', href='stylesheets/bootstrap.min.css', media='screen')
-    link(rel="stylesheet", type="text/css", href='stylesheets/dataTables.bootstrap.css')
     link(rel='stylesheet', type='text/css', href='stylesheets/autohiding-navbar2.css', media='screen')
     link(rel='stylesheet', type='text/css', href='stylesheets/footer.css')
     link(rel="stylesheet", type="text/css", href='stylesheets/autocomplete.css')
@@ -14,31 +13,24 @@ html
     title panX
 
   body
-    include navbar
+    include components/navbar
     .container.home
       .row
         br
         br
         br
       .row.panX-text
-        #logo.col-md-2
-          //img.homepage_logo(src='images/pan-blue-noReads.svg')
-          img(src='images/pan-blue-noReads.svg', style='width:230;height:209px;')
+        #logo.col-md-3
+          img.homepage_logo(src='images/pan-blue-noReads.svg')
           //.col-md-2
-        //p(style='font-size:22px') Pan-genomes from NCBI RefSeq data:
-        #dc_data_count.col-md-3
+        .col-md-8
           br
-          .alert.alert-info(role='alert') Available pan-genomes
-          #species-selector
-          #species-search(style='margin-top:3px')
-        .col-md-7
-          .row(style='padding-left:18px')
-            br
-            p panX is a software package for comprehensive analysis, interactive visualization and dynamic exploration of bacterial pan-genomes. The analysis pipeline is based on DIAMOND, MCL and phylogeny-aware post-processing.
-            p The visualization application encompasses various interconnected components (statistical charts, gene cluster table, alignment, comparative phylogenies, metadata). Gene clusters can be rapidly searched and filtered by summary statistics such as annotation and phylogenetic properties such as diversity.
-            p
-              strong Metadata
-              |  and gene presence/absence patterns can be mapped onto the species tree. Such mapping facilitates the identification of genes associated with phenotypes such as antibiotic resistance, virulence, or epidemiological parameters such as host age.
+          p panX is a software package for comprehensive pan-genome analysis, web-based interactive visualization and dynamic exploration. The analysis pipeline is based on DIAMOND, MCL and phylogeny-aware post-processing.
+          p The web application encompasses various interconnected viewers (pan-genome statistical charts, gene cluster table, alignment, comparative phylogenies, metadata table). Gene clusters can be rapidly searched and filtered by gene name, annotation, duplication and their phylogenetic properties such as diversity or the number of gene gain/loss events.
+
+          p
+            strong Metadata
+            |  associated with the strains and gene presence/absence patterns can be mapped onto the species tree. Such mapping facilitates the identification of genes associated with particular ecological niches, phenotypes such as antibiotic resistance, virulence, or epidemiological parameters such as host age.
       p(style='font-size:22px') Showcases of panX functionalities:
       .row.panX-text
         .col-md-6
@@ -56,21 +48,50 @@ html
 
         .col-md-6
           .thumbnail.shadow_homepagex
-            .embed-responsive.embed-responsive-16by9
-              iframe.embed-responsive-item(src='https://player.vimeo.com/video/375993607', allowfullscreen)
-            hr(style="margin-bottom:3px")
             .caption
-              h4 Explore another example: diverse Prochlorococcus genomes
-                //(gene gain/loss pattern)
+              h4 Diverse Prochlorococcus genomes: gene gain/loss pattern
               p
                 a(href='https://www.nature.com/articles/sdata201434') Biller et al. (2014)
                 span(style="display:inline-block; width:5px;")
-                //a.btn.btn-info(href='#', role='button', data-toggle='modal', data-target='#Modal_Pm') Demo
+                a.btn.btn-info(href='#', role='button', data-toggle='modal', data-target='#Modal_Pm') Demo
                 span(style="display:inline-block; width:2px;")
                 a.btn.btn-default(href='./P_marinus_meta', role='button') Explore
-            //- a(href='./P_marinus_meta')
-            //-   img(src='./images/Pm_case.png', alt='...')
-            //-   //, style='width:100%;height:320px'
+            a(href='./P_marinus_meta')
+              img(src='./images/Pm_case.png', alt='...')
+              //, style='width:100%;height:320px'
+        //.col-md-4
+          .thumbnail.shadow_homepagex
+            img(src='./images/comparative-dashborad.jpg', alt='...', style='width:100%;')
+            .caption
+              h4 Comparative dashborad
+              p details...
+              p
+                a.btn.btn-info(href='#', role='button', data-toggle='modal', data-target='#myModal') Demo
+                a.btn.btn-default(href='#', role='button') Explore
+      p(style='font-size:22px') Pan-genomes from NCBI RefSeq genomes:
+      #dc_data_count.col-md-3
+        .alert.alert-info(role='alert') Species
+        #species-selector
+        #species-search(style='margin-top:3px')
+      //.row.panX-text
+        .col-md-6
+          .thumbnail.shadow_homepagex
+            img(src='./images/comparative-dashborad.jpg', alt='...', style='width:100%;')
+            .caption
+              h4 Tutorial 1
+              p details...
+              p
+                a.btn.btn-info(href='#', role='button', data-toggle='modal', data-target='#myModal') Demo
+                a.btn.btn-default(href='#', role='button') Explore
+        .col-md-6
+          .thumbnail.shadow_homepagex
+            img(src='./images/comparative-dashborad.jpg', alt='...', style='width:100%;')
+            .caption
+              h4 Tutorial 2
+              p details...
+              p
+                a.btn.btn-info(href='#', role='button', data-toggle='modal', data-target='#myModal') Demo
+                a.btn.btn-default(href='#', role='button') Explore
 
       #Modal_Sp616.modal.fade(role='dialog')
         .modal-dialog.modal-lg
@@ -94,22 +115,12 @@ html
               img(src='./images/Demo-Pm.gif', style='width:100%;')
             .modal-footer
               button.btn.btn-info(type='button', data-dismiss='modal') Close
-
-      .row.panX-text#citation
-        p(style='font-size:22px') If you use panX, please cite:
-        p
-          | Wei Ding, Franz Baumdicker, Richard A Neher;
-          strong  panX: pan-genome analysis and exploration,
-          |  Nucleic Acids Research, Volume 46, Issue 1, 9 January 2018, Pages e5,
-        strong
-          a(href='https://doi.org/10.1093/nar/gkx977') https://doi.org/10.1093/nar/gkx977
       br
-      .row.cs_shadow#downloads
-        .col-md-12
-          .alert.alert-info(role='alert') Downloads
-          table#download_table.table.table-striped.table(cellspacing='0', width='100%')
+      br
+      br
+      br
 
-    include footer
+    include components/footer
 
     script(src='javascripts/third_party/gifffer.min.js')
     script.
@@ -118,7 +129,7 @@ html
       }
 
     script.
-      var speciesAbbr='null'
+      var speciesAbbr='S_pneumoniae616'
     script(src='javascripts/species-list-info.js')
     script(src='javascripts/third_party/jquery.min.js')
     script(src='javascripts/third_party/bootstrap.min.js')
