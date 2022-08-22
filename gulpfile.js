@@ -2,51 +2,7 @@
 // Dependencies
 var gulp = require('gulp');
 var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
-var rename = require('gulp-rename');
 var minifyCSS = require('gulp-minify-css');
-
-// Task
-gulp.task('miniJS', function() {
-  gulp.src(['./public/javascripts/colors.js',
-  	'./public/javascripts/species-list-info.js',
-  	'./public/javascripts/third_party/wNumb.js',
-  	'./public/javascripts/third_party/nouislider.min.js',
-  	'./public/javascripts/third_party/jquery.min.js',
-  	'./public/javascripts/third_party/lodash.min.js',
-  	'./public/javascripts/third_party/bootstrap.min.js',
-  	'./public/javascripts/third_party/bootstrap-toggle.min.js',
-  	'./public/javascripts/third_party/bootstrap-multiselect.js',
-  	'./public/javascripts/third_party/jquery.bootstrap-autohidingnavbar.min.js',
-  	'./public/javascripts/third_party/call-autohidingnavbar.js',
-  	'./public/javascripts/third_party/d3.min.js',
-  	'./public/javascripts/third_party/d3-tip.min.js',
-  	'./public/javascripts/third_party/crossfilter.min.js',
-  	'./public/javascripts/third_party/dc.min.js',
-
-  	'./public/javascripts/third_party/table_plugin/jquery.dataTables.min.js',
-  	'./public/javascripts/third_party/table_plugin/dataTables.bootstrap.min.js',
-    './public/javascripts/third_party/table_plugin/dataTables.colReorder.min.js',
-
-  	'./public/javascripts/third_party/msa-niaid.js',
-  	'./public/javascripts/third_party/tnt.tree.min.js',
-  	'./public/javascripts/third_party/jquery.panzoom.min.js',
-
-  	'./public/javascripts/data_path-compare.js',
-    './public/javascripts/tooltips.js',
-    './public/javascripts/datatable-gc.js',
-    './public/javascripts/tree-init.js',
-    './public/javascripts/tree-view-compare.js',
-  	'./public/javascripts/interact-compare.js',
-    './public/javascripts/meta-color-legend.js',
-    './public/javascripts/render_viewer.js',
-  	'./public/javascripts/datatable-meta.js'
-
-  	])
-    .pipe(concat('all-edge.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest('./public/dist/'))
-});
 
 gulp.task('miniCSS', function() {
 	gulp.src([
@@ -71,4 +27,4 @@ gulp.task('miniCSS', function() {
 	    .pipe(gulp.dest('./public/dist/'))
 });
 
-gulp.task('default', ['miniJS','miniCSS']);
+gulp.task('default', ['miniCSS']);
