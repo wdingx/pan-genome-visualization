@@ -4,10 +4,10 @@ block content
     script.
       var speciesAbbr = '#{pathogenName}'
 
-    script(src='dataset/#{pathogenName}/metaConfiguration.js')
+    script(src='#{DATA_ROOT_URL}/dataset/#{pathogenName}/metaConfiguration.js')
 
     if hasStandardColumnConfig
-        script(src='dataset/#{pathogenName}/standardColumnConfig.js')
+        script(src='#{DATA_ROOT_URL}/dataset/#{pathogenName}/standardColumnConfig.js')
 
     if hasNewColumnConfig
-        script(src='dataset/#{pathogenName}/newColumnConfig.js')
+        script(src='#{DATA_ROOT_URL}/dataset/#{pathogenName}/newColumnConfig.js')
