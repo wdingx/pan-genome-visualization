@@ -16,7 +16,6 @@ async function main() {
     'compare',
     'download',
     'gridstack',
-    'home',
     'index',
     'notFound',
     'pipeline',
