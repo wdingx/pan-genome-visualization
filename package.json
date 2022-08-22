@@ -4,6 +4,7 @@
   "description": "pan-genome-visualization",
   "private": true,
   "scripts": {
+    "clean": "rm -rf public/*.html public/dist/*",
     "build": "NODE_ENV=production npm run build:webpack && NODE_ENV=production npm run build:gulp && NODE_ENV=production npm run build:html",
     "build:webpack": "NODE_ENV=production webpack --env production",
     "build:gulp": "NODE_ENV=production gulp",
