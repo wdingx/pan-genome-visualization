@@ -34,6 +34,7 @@ async function getIndexJson(indexJsonPathOrUrl) {
 }
 
 function getIndexPathOrUrl() {
+  console.log({ argv: process.argv })
   const indexJsonPathOrUrl = process.argv[2]
   if(indexJsonPathOrUrl) {
     return indexJsonPathOrUrl
@@ -43,7 +44,9 @@ function getIndexPathOrUrl() {
 
 async function main() {
   const indexJsonPathOrUrl = getIndexPathOrUrl()
+  console.log({ indexJsonPathOrUrl })
   const indexJsonStr = await getIndexJson(indexJsonPathOrUrl)
+  console.log({ indexJsonStr })
   const indexJson = JSON.parse(indexJsonStr)
   return Promise.all(indexJson.datasets.map((pathogen) => renderPathogenHtml(pathogen)))
 }
