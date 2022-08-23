@@ -89,7 +89,7 @@ jobs:
           aws s3 cp \
            --recursive \
            --cache-control "max-age=2592000, public" \
-           --exclude "*.html"
+           --exclude "*.html" \
            "./" "s3://${AWS_S3_BUCKET}/"
 
       - name: Deploy HTML files, stripping extension
