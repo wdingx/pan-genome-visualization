@@ -86,6 +86,7 @@ jobs:
       - name: Deploy static files except HTML
         if: endsWith(github.ref, '/static-app') || endsWith(github.ref, '/release')
         run: |
+          cd public/
           aws s3 cp \
            --recursive \
            --cache-control "max-age=2592000, public" \
