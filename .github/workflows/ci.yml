@@ -20,6 +20,9 @@ jobs:
     name: 'Build and Deploy'
     runs-on: ubuntu-20.04
 
+    env:
+      DATA_ROOT_URL: 'https://data.master.pangenome.org'
+
     steps:
       - name: Check requirements
         run: |
@@ -46,41 +49,42 @@ jobs:
       - name: Build
         run: |
           npm run build
+          ls -a1 public/*.html
 
-      - name: Check requirements
-        run: |
-          : ${AWS_ACCESS_KEY_ID?"Environment variable is required"}
-          : ${AWS_SECRET_ACCESS_KEY?"Environment variable is required"}
-          : ${AWS_DEFAULT_REGION?"Environment variable is required"}
-          : ${AWS_S3_BUCKET?"Environment variable is required"}
-          : ${AWS_CLOUDFRONT_DISTRIBUTION_ID?"Environment variable is required"}
-
-      - name: Clear bucket
-        run: |
-          aws s3 rm s3://${AWS_S3_BUCKET} --recursive
-
-      - name: Deploy static files except HTML
-        run: |
-          aws s3 cp \
-           --recursive \
-           --cache-control "max-age=2592000, public" \
-           --exclude "*.html"
-           "./" "s3://${AWS_S3_BUCKET}/"
-
-      - name: Deploy HTML files, stripping extension
-        run: |
-          cd public/
-          find * -type f -name "*.html" -print0 | xargs -0 -P4 -n1 -I '{}' -- bash -c '\
-            file={}; \
-            aws s3 cp \
-              --content-type "text/html" \
-              --cache-control "no-cache" \
-              --metadata-directive REPLACE \
-                $file \
-                s3://${AWS_S3_BUCKET}/${file%.html}'
-
-      - name: Invalidate AWS Cloudfront cache
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id ${AWS_CLOUDFRONT_DISTRIBUTION_ID} \
-            --paths "/*"
+#      - name: Check requirements
+#        run: |
+#          : ${AWS_ACCESS_KEY_ID?"Environment variable is required"}
+#          : ${AWS_SECRET_ACCESS_KEY?"Environment variable is required"}
+#          : ${AWS_DEFAULT_REGION?"Environment variable is required"}
+#          : ${AWS_S3_BUCKET?"Environment variable is required"}
+#          : ${AWS_CLOUDFRONT_DISTRIBUTION_ID?"Environment variable is required"}
+#
+#      - name: Clear bucket
+#        run: |
+#          aws s3 rm s3://${AWS_S3_BUCKET} --recursive
+#
+#      - name: Deploy static files except HTML
+#        run: |
+#          aws s3 cp \
+#           --recursive \
+#           --cache-control "max-age=2592000, public" \
+#           --exclude "*.html"
+#           "./" "s3://${AWS_S3_BUCKET}/"
+#
+#      - name: Deploy HTML files, stripping extension
+#        run: |
+#          cd public/
+#          find * -type f -name "*.html" -print0 | xargs -0 -P4 -n1 -I '{}' -- bash -c '\
+#            file={}; \
+#            aws s3 cp \
+#              --content-type "text/html" \
+#              --cache-control "no-cache" \
+#              --metadata-directive REPLACE \
+#                $file \
+#                s3://${AWS_S3_BUCKET}/${file%.html}'
+#
+#      - name: Invalidate AWS Cloudfront cache
+#        run: |
+#          aws cloudfront create-invalidation \
+#            --distribution-id ${AWS_CLOUDFRONT_DISTRIBUTION_ID} \
+#            --paths "/*"
