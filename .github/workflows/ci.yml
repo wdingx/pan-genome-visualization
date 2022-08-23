@@ -63,6 +63,9 @@ jobs:
           unzip -oqq awscliv2.zip
           sudo ./aws/install --update
 
+          mkdir -p ~/.aws/
+          cp config/aws/config ~/.aws/
+
       - name: Build
         run: |
           : ${DATA_ROOT_URL?"Environment variable is required"}
