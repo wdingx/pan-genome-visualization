@@ -20,13 +20,24 @@ jobs:
     name: 'Build and Deploy'
     runs-on: ubuntu-20.04
 
-    env:
-      DATA_ROOT_URL: 'https://data.master.pangenome.org'
-
     steps:
+      - name: Setup environment (release)
+        if: endsWith(github.ref, '/release')
+        run: |
+          echo "ENVIRONMENT=release" >> $GITHUB_ENV
+          echo "DATA_ROOT_URL=${{ secrets.RELEASE_DATA_ROOT_URL }}" >> $GITHUB_ENV
+
+      - name: Setup environment (master)
+        if: endsWith(github.ref, '/static-app')
+        run: |
+         echo "ENVIRONMENT=master" >> $GITHUB_ENV
+         echo "DATA_ROOT_URL=${{ secrets.MASTER_DATA_ROOT_URL }}" >> $GITHUB_ENV
+
       - name: Check requirements
         run: |
           : ${DATA_ROOT_URL?"Environment variable is required"}
+          echo "$DATA_ROOT_URL"
+          echo "$ENVIRONMENT"
 
       - name: Checkout source code
         uses: actions/checkout@v3
