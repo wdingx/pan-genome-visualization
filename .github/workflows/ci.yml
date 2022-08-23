@@ -26,18 +26,22 @@ jobs:
         run: |
           echo "ENVIRONMENT=release" >> $GITHUB_ENV
           echo "DATA_ROOT_URL=${{ secrets.RELEASE_DATA_ROOT_URL }}" >> $GITHUB_ENV
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.RELEASE_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.RELEASE_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+          echo "AWS_DEFAULT_REGION=${{ secrets.RELEASE_AWS_DEFAULT_REGION }}" >> $GITHUB_ENV
+          echo "AWS_S3_BUCKET=${{ secrets.RELEASE_AWS_S3_BUCKET }}" >> $GITHUB_ENV
+          echo "AWS_CLOUDFRONT_DISTRIBUTION_ID=${{ secrets.RELEASE_AWS_CLOUDFRONT_DISTRIBUTION_ID }}" >> $GITHUB_ENV
 
       - name: Setup environment (master)
         if: endsWith(github.ref, '/static-app')
         run: |
-         echo "ENVIRONMENT=master" >> $GITHUB_ENV
-         echo "DATA_ROOT_URL=${{ secrets.MASTER_DATA_ROOT_URL }}" >> $GITHUB_ENV
-
-      - name: Check requirements
-        run: |
-          : ${DATA_ROOT_URL?"Environment variable is required"}
-          echo "$DATA_ROOT_URL"
-          echo "$ENVIRONMENT"
+          echo "ENVIRONMENT=master" >> $GITHUB_ENV
+          echo "DATA_ROOT_URL=${{ secrets.MASTER_DATA_ROOT_URL }}" >> $GITHUB_ENV
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.MASTER_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.MASTER_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+          echo "AWS_DEFAULT_REGION=${{ secrets.MASTER_AWS_DEFAULT_REGION }}" >> $GITHUB_ENV
+          echo "AWS_S3_BUCKET=${{ secrets.MASTER_AWS_S3_BUCKET }}" >> $GITHUB_ENV
+          echo "AWS_CLOUDFRONT_DISTRIBUTION_ID=${{ secrets.MASTER_AWS_CLOUDFRONT_DISTRIBUTION_ID }}" >> $GITHUB_ENV
 
       - name: Checkout source code
         uses: actions/checkout@v3
@@ -61,43 +65,49 @@ jobs:
 
       - name: Build
         run: |
+          : ${DATA_ROOT_URL?"Environment variable is required"}
           npm run build
           ls -a1 public/*.html
 
-#      - name: Check requirements
-#        run: |
-#          : ${AWS_ACCESS_KEY_ID?"Environment variable is required"}
-#          : ${AWS_SECRET_ACCESS_KEY?"Environment variable is required"}
-#          : ${AWS_DEFAULT_REGION?"Environment variable is required"}
-#          : ${AWS_S3_BUCKET?"Environment variable is required"}
-#          : ${AWS_CLOUDFRONT_DISTRIBUTION_ID?"Environment variable is required"}
-#
-#      - name: Clear bucket
-#        run: |
-#          aws s3 rm s3://${AWS_S3_BUCKET} --recursive
-#
-#      - name: Deploy static files except HTML
-#        run: |
-#          aws s3 cp \
-#           --recursive \
-#           --cache-control "max-age=2592000, public" \
-#           --exclude "*.html"
-#           "./" "s3://${AWS_S3_BUCKET}/"
-#
-#      - name: Deploy HTML files, stripping extension
-#        run: |
-#          cd public/
-#          find * -type f -name "*.html" -print0 | xargs -0 -P4 -n1 -I '{}' -- bash -c '\
-#            file={}; \
-#            aws s3 cp \
-#              --content-type "text/html" \
-#              --cache-control "no-cache" \
-#              --metadata-directive REPLACE \
-#                $file \
-#                s3://${AWS_S3_BUCKET}/${file%.html}'
-#
-#      - name: Invalidate AWS Cloudfront cache
-#        run: |
-#          aws cloudfront create-invalidation \
-#            --distribution-id ${AWS_CLOUDFRONT_DISTRIBUTION_ID} \
-#            --paths "/*"
+      - name: Check requirements
+        if: endsWith(github.ref, '/static-app') || endsWith(github.ref, '/release')
+        run: |
+          : ${AWS_ACCESS_KEY_ID?"Environment variable is required"}
+          : ${AWS_SECRET_ACCESS_KEY?"Environment variable is required"}
+          : ${AWS_DEFAULT_REGION?"Environment variable is required"}
+          : ${AWS_S3_BUCKET?"Environment variable is required"}
+          : ${AWS_CLOUDFRONT_DISTRIBUTION_ID?"Environment variable is required"}
+
+      - name: Clear bucket
+        if: endsWith(github.ref, '/static-app') || endsWith(github.ref, '/release')
+        run: |
+          aws s3 rm s3://${AWS_S3_BUCKET} --recursive
+
+      - name: Deploy static files except HTML
+        if: endsWith(github.ref, '/static-app') || endsWith(github.ref, '/release')
+        run: |
+          aws s3 cp \
+           --recursive \
+           --cache-control "max-age=2592000, public" \
+           --exclude "*.html"
+           "./" "s3://${AWS_S3_BUCKET}/"
+
+      - name: Deploy HTML files, stripping extension
+        if: endsWith(github.ref, '/static-app') || endsWith(github.ref, '/release')
+        run: |
+          cd public/
+          find * -type f -name "*.html" -print0 | xargs -0 -P4 -n1 -I '{}' -- bash -c '\
+            file={}; \
+            aws s3 cp \
+              --content-type "text/html" \
+              --cache-control "no-cache" \
+              --metadata-directive REPLACE \
+                $file \
+                s3://${AWS_S3_BUCKET}/${file%.html}'
+
+      - name: Invalidate AWS Cloudfront cache
+        if: endsWith(github.ref, '/static-app') || endsWith(github.ref, '/release')
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${AWS_CLOUDFRONT_DISTRIBUTION_ID} \
+            --paths "/*"
