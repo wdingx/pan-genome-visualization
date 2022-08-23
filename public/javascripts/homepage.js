@@ -43,13 +43,13 @@ const create_downloads_table = (downloads_table_id) => {
             var column_config={'targets': i,'data': column_display_order[i]};
             if (["panX link"].indexOf(column_display_order[i]) >= 0){
                 column_config['render']= function(data, type, row, meta){
-                                            var download_url= process.env.DATA_ROOT_URL + data;
+                                            var download_url= `${process.env.DATA_ROOT_URL}/${data}`;
                                             return '<a href="'+download_url+'" target="_blank"><i class="glyphicon glyphicon-new-window" style="vertical-align: middle;"></a>';
                                         }
             }
             else if (["species name", "panX link", "#strains", "source"].indexOf(column_display_order[i]) < 0) {
                 column_config['render']= function(data, type, row, meta){
-                                            var download_url= process.env.DATA_ROOT_URL + data;
+                                            var download_url= `${process.env.DATA_ROOT_URL}/${data}`;
                                             return '<a href="'+download_url+'" target="_blank"> <i class="glyphicon glyphicon-download-alt" style="vertical-align: middle;"></i> </a>';
                                         }
             }

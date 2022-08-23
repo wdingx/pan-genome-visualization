@@ -41,7 +41,7 @@ def generate_index_json(dataset_path):
         "datasets": sorted(datasets, key=lambda dataset: dataset["pathogenName"]),
     }
 
-    index_json_path = join(dataset_path, "index.json")
+    index_json_path = join(dataset_path, "..", "index.json")
     with open(index_json_path, "w") as f:
         json.dump(index_json, f, indent=2, sort_keys=False)
 

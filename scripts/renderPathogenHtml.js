@@ -38,7 +38,7 @@ function getIndexPathOrUrl() {
   if(indexJsonPathOrUrl) {
     return indexJsonPathOrUrl
   }
-  return `${DATA_ROOT_URL}index.json`
+  return `${DATA_ROOT_URL}/index.json`
 }
 
 async function main() {

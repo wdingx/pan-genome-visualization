@@ -1,5 +1,5 @@
 export const DATA_ROOT_URL = process.env.DATA_ROOT_URL
-export const DATASET_ROOT_URL=`${DATA_ROOT_URL}dataset/`
+export const DATASET_ROOT_URL=`${DATA_ROOT_URL}/dataset/`
 
 /** data paths */
 export const path_datatable1=DATASET_ROOT_URL+speciesAbbr+"/geneCluster.json";
