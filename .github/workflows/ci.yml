@@ -53,6 +53,11 @@ jobs:
         with:
           node-version: 10
 
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -qq --yes
+          sudo apt-get install pigz
+
       - name: Install NPM dependencies
         run: |
           npm ci
@@ -70,7 +75,10 @@ jobs:
         run: |
           : ${DATA_ROOT_URL?"Environment variable is required"}
           npm run build
-          ls -a1 public/*.html
+
+      - name: Compress
+        run: |
+          pigz -kfr public/ || true
 
       - name: Check requirements
         if: endsWith(github.ref, '/static-app') || endsWith(github.ref, '/release')
@@ -93,21 +101,23 @@ jobs:
           aws s3 cp \
            --recursive \
            --cache-control "max-age=2592000, public" \
+           --metadata-directive REPLACE \
            --exclude "*.html" \
+           --exclude "*.html.gz" \
            "./" "s3://${AWS_S3_BUCKET}/"
 
       - name: Deploy HTML files, stripping extension
         if: endsWith(github.ref, '/static-app') || endsWith(github.ref, '/release')
         run: |
           cd public/
-          find * -type f -name "*.html" -print0 | xargs -0 -P4 -n1 -I '{}' -- bash -c '\
+          find * -type f \( -name "*.html" -o -iname "*.html.gz" \) -print0 | xargs -0 -P4 -n1 -I '{}' -- bash -c '\
             file={}; \
             aws s3 cp \
               --content-type "text/html" \
               --cache-control "no-cache" \
               --metadata-directive REPLACE \
                 $file \
-                s3://${AWS_S3_BUCKET}/${file%.html}'
+                s3://${AWS_S3_BUCKET}/${file//.html/}'
 
       - name: Invalidate AWS Cloudfront cache
         if: endsWith(github.ref, '/static-app') || endsWith(github.ref, '/release')
