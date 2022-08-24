@@ -56,7 +56,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update -qq --yes
-          sudo apt-get install pigz
+          sudo apt-get install -qq --yes --verbose-versions pigz rename
 
       - name: Install NPM dependencies
         run: |
@@ -75,10 +75,7 @@ jobs:
         run: |
           : ${DATA_ROOT_URL?"Environment variable is required"}
           npm run build
-
-      - name: Compress
-        run: |
-          pigz -kfr public/ || true
+          pigz -kfr public/
 
       - name: Check requirements
         if: endsWith(github.ref, '/static-app') || endsWith(github.ref, '/release')
@@ -89,35 +86,30 @@ jobs:
           : ${AWS_S3_BUCKET?"Environment variable is required"}
           : ${AWS_CLOUDFRONT_DISTRIBUTION_ID?"Environment variable is required"}
 
-      - name: Clear bucket
-        if: endsWith(github.ref, '/static-app') || endsWith(github.ref, '/release')
-        run: |
-          aws s3 rm s3://${AWS_S3_BUCKET} --recursive
-
       - name: Deploy static files except HTML
         if: endsWith(github.ref, '/static-app') || endsWith(github.ref, '/release')
         run: |
-          cd public/
-          aws s3 cp \
-           --recursive \
-           --cache-control "max-age=2592000, public" \
-           --metadata-directive REPLACE \
-           --exclude "*.html" \
-           --exclude "*.html.gz" \
-           "./" "s3://${AWS_S3_BUCKET}/"
+          aws s3 sync \
+            --delete \
+            --cache-control "max-age=2592000, public" \
+            --metadata-directive REPLACE \
+            --exclude "*.html" \
+            --exclude "*.html.gz" \
+            "public/" "s3://${AWS_S3_BUCKET}/"
 
       - name: Deploy HTML files, stripping extension
         if: endsWith(github.ref, '/static-app') || endsWith(github.ref, '/release')
         run: |
-          cd public/
-          find * -type f \( -name "*.html" -o -iname "*.html.gz" \) -print0 | xargs -0 -P4 -n1 -I '{}' -- bash -c '\
-            file={}; \
-            aws s3 cp \
-              --content-type "text/html" \
-              --cache-control "no-cache" \
-              --metadata-directive REPLACE \
-                $file \
-                s3://${AWS_S3_BUCKET}/${file//.html/}'
+          find public/ -type f \( ! -iname "*.html" -a ! -iname "*.html.gz" \) -exec rm {} \+
+          rename --verbose --filename 's/\.html//' public/*.html
+          rename --verbose --filename 's/\.html//' public/*.html.gz
+          aws s3 sync \
+            --content-type "text/html" \
+            --cache-control "no-cache" \
+            --metadata-directive REPLACE \
+            --exclude "*.*" \
+            --exclude "*.*.gz" \
+            "public/" "s3://${AWS_S3_BUCKET}/"
 
       - name: Invalidate AWS Cloudfront cache
         if: endsWith(github.ref, '/static-app') || endsWith(github.ref, '/release')
