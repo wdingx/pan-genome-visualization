@@ -46,4 +46,4 @@ export -f upload_one_directory
 aws s3 cp --only-show-errors --cache-control "max-age=2592000, public" "${INPUT_DIR}/index.json" "s3://${S3_BUCKET}/index.json"
 aws s3 cp --only-show-errors --cache-control "max-age=2592000, public" --content-encoding=gzip "${INPUT_DIR}/index.json.gz" "s3://${S3_BUCKET}/index.json.gz"
 
-find "${INPUT_DIR}" -mindepth 2 -maxdepth 2 -type d | parallel -j 4 upload_one_directory
+find "${INPUT_DIR}" -mindepth 2 -maxdepth 2 -type d | sort -h | parallel -j 20 upload_one_directory
