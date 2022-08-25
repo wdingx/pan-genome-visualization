@@ -16,5 +16,5 @@ echo "Ungzipping"
 find "${INPUT_DIR}" -mindepth 2 -maxdepth 2 -type d | parallel --lb pigz -dfrq || true
 
 echo "Gzipping"
-pigz -fkq "${INPUT_DIR}/index.json"
+pigz -fkq "${INPUT_DIR}/*.json"
 find "${INPUT_DIR}" -mindepth 2 -maxdepth 2 -type d | parallel --lb pigz -kfrq || true

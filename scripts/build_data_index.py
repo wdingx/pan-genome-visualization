@@ -47,6 +47,11 @@ def generate_index_json(dataset_path):
 
     info(f"Index written to '{index_json_path}'")
 
+def generate_page_404(dataset_path):
+    not_found_json_path = join(dataset_path, "..", "not_found.json")
+    not_found_json = { "status": 404, "message": "Not found" }
+    with open(not_found_json_path, "w") as f:
+        json.dump(not_found_json, f, indent=2, sort_keys=False)
 
 if __name__ == '__main__':
     dataset_path = sys.argv[1]
@@ -56,3 +61,4 @@ if __name__ == '__main__':
         info(f"  {file}")
 
     generate_index_json(dataset_path)
+    generate_page_404(dataset_path)
