@@ -43,7 +43,7 @@ const create_downloads_table = (downloads_table_id) => {
             var column_config={'targets': i,'data': column_display_order[i]};
             if (["panX link"].indexOf(column_display_order[i]) >= 0){
                 column_config['render']= function(data, type, row, meta){
-                                            var download_url= `${process.env.DATA_ROOT_URL}/${data}`;
+                                            var download_url= `/${data}`;
                                             return '<a href="'+download_url+'" target="_blank"><i class="glyphicon glyphicon-new-window" style="vertical-align: middle;"></a>';
                                         }
             }
