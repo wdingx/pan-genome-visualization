@@ -18,24 +18,24 @@ cd "${INPUT_DIR}"
 # If parallel version does not work for you, here is a serial version
 
 echo "Upload gz"
-aws s3 cp --only-show-errors --cache-control "max-age=2592000, public" \
+aws s3 sync --only-show-errors --cache-control "max-age=2592000, public" --content-encoding=gzip --metadata-directive REPLACE \
  --content-encoding=gzip --exclude "*" --include "*.gz" . "s3://${S3_BUCKET}"
 
 echo "Upload non-gz"
-aws s3 cp --only-show-errors --cache-control "max-age=2592000, public" \
+aws s3 sync --only-show-errors --cache-control "max-age=2592000, public" --metadata-directive REPLACE \
  --exclude "*.gz" . "s3://${S3_BUCKET}"
 
 # # Here is a slightly parallel version
 #
 # function upload_gzip() {
-#   aws s3 sync --only-show-errors --cache-control "max-age=2592000, public" \
-#     --content-encoding=gzip --exclude "*" --include "*.gz" \
+#   aws s3 sync --only-show-errors --delete --cache-control "max-age=2592000, public" \
+#     --content-encoding=gzip --metadata-directive REPLACE --exclude "*" --include "*.gz" \
 #     . "s3://${S3_BUCKET}"
 # }
 # export -f upload_gzip
 #
 # function upload_non_gzip() {
-#   aws s3 sync --only-show-errors --cache-control "max-age=2592000, public" \
+#   aws s3 sync --only-show-errors --delete --cache-control "max-age=2592000, public" --metadata-directive REPLACE \
 #     --exclude "*.gz" \
 #     . "s3://${S3_BUCKET}"
 # }

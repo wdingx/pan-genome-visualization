@@ -28,22 +28,38 @@ function bucket_path {
 export -f bucket_path
 
 function upload_gzip() {
-  aws s3 sync --only-show-errors --cache-control "max-age=2592000, public" --content-encoding=gzip --exclude "*" --include "*.gz" "${INPUT_DIR}/${1}" "s3://${S3_BUCKET}/${1}"
+  aws s3 sync --only-show-errors --delete --cache-control "max-age=2592000, public" --content-encoding=gzip  --metadata-directive REPLACE --exclude "*" --include "*.gz" "${INPUT_DIR}/${1}" "s3://${S3_BUCKET}/${1}"
 }
 export -f upload_gzip
 
 function upload_non_gzip() {
-  aws s3 sync --only-show-errors --cache-control "max-age=2592000, public" --exclude "*.gz" "${INPUT_DIR}/${1}" "s3://${S3_BUCKET}/${1}"
+  aws s3 sync --only-show-errors --delete --cache-control "max-age=2592000, public" --metadata-directive REPLACE --exclude "*.gz" "${INPUT_DIR}/${1}" "s3://${S3_BUCKET}/${1}"
 }
 export -f upload_non_gzip
 
 function upload_one_directory() {
-  echo "Uploading '${1}'"
-  parallel ::: "upload_gzip $(bucket_path ${1})" "upload_non_gzip $(bucket_path ${1})"
+  name=$(bucket_path ${1})
+  printf "Uploading '${name}'\n"
+  parallel ::: "upload_gzip '${name}'" "upload_non_gzip '${name}'"
 }
 export -f upload_one_directory
 
-aws s3 cp --only-show-errors --cache-control "max-age=2592000, public" "${INPUT_DIR}/index.json" "s3://${S3_BUCKET}/index.json"
-aws s3 cp --only-show-errors --cache-control "max-age=2592000, public" --content-encoding=gzip "${INPUT_DIR}/index.json.gz" "s3://${S3_BUCKET}/index.json.gz"
+pushd "${INPUT_DIR}" >/dev/null
 
-find "${INPUT_DIR}" -mindepth 2 -maxdepth 2 -type d | sort -h | parallel -j 20 upload_one_directory
+  for f in *.json; do
+    aws s3 cp \
+      --cache-control "max-age=2592000, public" \
+      --metadata-directive REPLACE \
+      "${INPUT_DIR}/$f" "s3://${S3_BUCKET}/"
+  done
+
+  for f in *.json.gz; do
+    aws s3 cp \
+      --cache-control "max-age=2592000, public" \
+    --content-encoding=gzip --metadata-directive REPLACE \
+      "${INPUT_DIR}/$f" "s3://${S3_BUCKET}/"
+  done
+
+popd >/dev/null
+
+find "${INPUT_DIR}" -mindepth 2 -maxdepth 2 -type d | sort -h | parallel upload_one_directory
