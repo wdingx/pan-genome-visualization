@@ -16,27 +16,29 @@ fi
 cd "${INPUT_DIR}"
 
 # If parallel version does not work for you, here is a serial version
+
+echo "Upload gz"
+aws s3 cp --only-show-errors --cache-control "max-age=2592000, public" \
+ --content-encoding=gzip --exclude "*" --include "*.gz" . "s3://${S3_BUCKET}"
+
+echo "Upload non-gz"
+aws s3 cp --only-show-errors --cache-control "max-age=2592000, public" \
+ --exclude "*.gz" . "s3://${S3_BUCKET}"
+
+# # Here is a slightly parallel version
 #
-# echo "Upload gz"
-# aws s3 cp --only-show-errors --cache-control "max-age=2592000, public" \
-#   --content-encoding=gzip --exclude "*" --include "*.gz" . "s3://${S3_BUCKET}"
+# function upload_gzip() {
+#   aws s3 sync --only-show-errors --cache-control "max-age=2592000, public" \
+#     --content-encoding=gzip --exclude "*" --include "*.gz" \
+#     . "s3://${S3_BUCKET}"
+# }
+# export -f upload_gzip
 #
-# echo "Upload non-gz"
-# aws s3 cp --only-show-errors --cache-control "max-age=2592000, public" \
-#   --exclude "*.gz" . "s3://${S3_BUCKET}"
-
-function upload_gzip() {
-  aws s3 sync --only-show-errors --cache-control "max-age=2592000, public" \
-    --content-encoding=gzip --exclude "*" --include "*.gz" \
-    . "s3://${S3_BUCKET}"
-}
-export -f upload_gzip
-
-function upload_non_gzip() {
-  aws s3 sync --only-show-errors --cache-control "max-age=2592000, public" \
-    --exclude "*.gz" \
-    . "s3://${S3_BUCKET}"
-}
-export -f upload_non_gzip
-
-parallel ::: upload_gzip upload_non_gzip
+# function upload_non_gzip() {
+#   aws s3 sync --only-show-errors --cache-control "max-age=2592000, public" \
+#     --exclude "*.gz" \
+#     . "s3://${S3_BUCKET}"
+# }
+# export -f upload_non_gzip
+#
+# parallel ::: upload_gzip upload_non_gzip

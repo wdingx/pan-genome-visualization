@@ -75,7 +75,6 @@ jobs:
         run: |
           : ${DATA_ROOT_URL?"Environment variable is required"}
           npm run build
-          pigz -kfr public/
 
       - name: Check requirements
         if: endsWith(github.ref, '/static-app') || endsWith(github.ref, '/release')
@@ -86,28 +85,71 @@ jobs:
           : ${AWS_S3_BUCKET?"Environment variable is required"}
           : ${AWS_CLOUDFRONT_DISTRIBUTION_ID?"Environment variable is required"}
 
-      - name: Deploy static files except HTML
+      - name: Precompress files
+        if: endsWith(github.ref, '/static-app') || endsWith(github.ref, '/release')
+        run: |
+          pigz -dfrq public/ || true
+          pigz -kfrq public/
+
+      - name: Upload non-compressed non-HTML files
         if: endsWith(github.ref, '/static-app') || endsWith(github.ref, '/release')
         run: |
           aws s3 sync \
             --delete \
+            --only-show-errors \
             --cache-control "max-age=2592000, public" \
             --metadata-directive REPLACE \
+            --exclude "*.git*" \
             --exclude "*.html" \
+            --exclude "*.gz" \
+            "public/" "s3://${AWS_S3_BUCKET}/"
+
+      - name: Upload compressed non-HTML files
+        if: endsWith(github.ref, '/static-app') || endsWith(github.ref, '/release')
+        run: |
+          aws s3 sync \
+            --delete \
+            --only-show-errors \
+            --cache-control "max-age=2592000, public" \
+            --content-encoding=gzip \
+            --metadata-directive REPLACE \
+            --exclude "*" \
+            --include "*.gz" \
+            --exclude "*.git*" \
             --exclude "*.html.gz" \
             "public/" "s3://${AWS_S3_BUCKET}/"
 
-      - name: Deploy HTML files, stripping extension
+      - name: Remove non-HTML files
         if: endsWith(github.ref, '/static-app') || endsWith(github.ref, '/release')
         run: |
           find public/ -type f \( ! -iname "*.html" -a ! -iname "*.html.gz" \) -exec rm {} \+
-          rename --verbose --filename 's/\.html//' public/*.html
-          rename --verbose --filename 's/\.html//' public/*.html.gz
+          rename --filename 's/\.html//' public/*.html || true
+          rename --filename 's/\.html//' public/*.html.gz || true
+
+      - name: Upload non-compressed HTML files
+        if: endsWith(github.ref, '/static-app') || endsWith(github.ref, '/release')
+        run: |
           aws s3 sync \
+            --delete \
+            --only-show-errors \
             --content-type "text/html" \
-            --cache-control "no-cache" \
+            --cache-control "max-age=86400, public" \
             --metadata-directive REPLACE \
             --exclude "*.*" \
+            "public/" "s3://${AWS_S3_BUCKET}/"
+
+      - name: Upload compressed HTML files
+        if: endsWith(github.ref, '/static-app') || endsWith(github.ref, '/release')
+        run: |
+          aws s3 sync \
+            --delete \
+            --only-show-errors \
+            --content-type "text/html" \
+            --cache-control "max-age=86400, public" \
+            --content-encoding=gzip \
+            --metadata-directive REPLACE \
+            --exclude "*" \
+            --include "*.gz" \
             --exclude "*.*.gz" \
             "public/" "s3://${AWS_S3_BUCKET}/"
 

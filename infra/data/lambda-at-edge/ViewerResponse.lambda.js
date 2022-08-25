@@ -1,6 +1,6 @@
 /* eslint-disable prefer-destructuring */
 // Adds additional headers to the response, including security headers and CORS.
-// Suited for serving files and APIs.
+// Suited for serving data and APIs.
 //
 // See also:
 //  - https://securityheaders.com/
