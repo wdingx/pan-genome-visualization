@@ -23,6 +23,14 @@ async function renderPathogenHtml(pathogen) {
   return writeFile(`public/${pathogen.pathogenName}.html`, html)
 }
 
+function renderPathogenList(pathogens) {
+  const html = jade.renderFile('views/pathogens.jade', {
+    pretty: true,
+    pathogens
+  })
+  return writeFile(`public/pathogens.html`, html)
+}
+
 async function getIndexJson(indexJsonPathOrUrl) {
   if(indexJsonPathOrUrl.startsWith('http')) {
     const res = await fetch(indexJsonPathOrUrl)
@@ -45,7 +53,7 @@ async function main() {
   const indexJsonPathOrUrl = getIndexPathOrUrl()
   const indexJsonStr = await getIndexJson(indexJsonPathOrUrl)
   const indexJson = JSON.parse(indexJsonStr)
-  return Promise.all(indexJson.datasets.map((pathogen) => renderPathogenHtml(pathogen)))
+  return Promise.all([renderPathogenList(indexJson.datasets), ...(indexJson.datasets.map((pathogen) => renderPathogenHtml(pathogen)))])
 }
 
 main().catch(console.error)
