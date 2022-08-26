@@ -24,7 +24,7 @@ find public/ -type f \( ! -iname "*.gz" -a ! -iname "*.br" \) | parallel brotli 
 aws s3 sync \
   --delete \
   --only-show-errors \
-  --cache-control "max-age=2592000, public" \
+  --cache-control "no-cache" \
   --metadata-directive REPLACE \
   --exclude "*.git*" \
   --exclude "*.html" \
@@ -36,7 +36,7 @@ aws s3 sync \
 aws s3 sync \
   --delete \
   --only-show-errors \
-  --cache-control "max-age=2592000, public" \
+  --cache-control "no-cache" \
   --content-encoding gzip \
   --metadata-directive REPLACE \
   --exclude "*" \
@@ -49,7 +49,7 @@ aws s3 sync \
 aws s3 sync \
   --delete \
   --only-show-errors \
-  --cache-control "max-age=2592000, public" \
+  --cache-control "no-cache" \
   --content-encoding br \
   --metadata-directive REPLACE \
   --exclude "*" \
@@ -69,7 +69,7 @@ aws s3 sync \
   --delete \
   --only-show-errors \
   --content-type "text/html" \
-  --cache-control "max-age=86400, public" \
+  --cache-control "no-cache" \
   --metadata-directive REPLACE \
   --exclude "*.*" \
   "public/" "s3://${AWS_S3_BUCKET}/"
@@ -79,7 +79,7 @@ aws s3 sync \
   --delete \
   --only-show-errors \
   --content-type "text/html" \
-  --cache-control "max-age=86400, public" \
+  --cache-control "no-cache" \
   --content-encoding gzip \
   --metadata-directive REPLACE \
   --exclude "*" \
@@ -92,7 +92,7 @@ aws s3 sync \
   --delete \
   --only-show-errors \
   --content-type "text/html" \
-  --cache-control "max-age=86400, public" \
+  --cache-control "no-cache" \
   --content-encoding br \
   --metadata-directive REPLACE \
   --exclude "*" \

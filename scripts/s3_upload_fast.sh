@@ -22,25 +22,34 @@ fi
 
 echo "Uploading"
 
-function bucket_path {
+function bucket_path() {
   realpath --relative-to="${INPUT_DIR}" "${1}"
 }
 export -f bucket_path
 
 function upload_gzip() {
-  aws s3 sync --only-show-errors --delete --cache-control "max-age=2592000, public" --content-encoding=gzip  --metadata-directive REPLACE --exclude "*" --include "*.gz" "${INPUT_DIR}/${1}" "s3://${S3_BUCKET}/${1}"
+  aws s3 sync --only-show-errors --delete --cache-control "no-cache" \
+    --metadata-directive REPLACE --content-encoding=gzip \
+    --exclude "*" --include "*.gz" \
+    "${INPUT_DIR}/${1}" "s3://${S3_BUCKET}/${1}"
 }
 export -f upload_gzip
 
 function upload_non_gzip() {
-  aws s3 sync --only-show-errors --delete --cache-control "max-age=2592000, public" --metadata-directive REPLACE --exclude "*.gz" "${INPUT_DIR}/${1}" "s3://${S3_BUCKET}/${1}"
+  aws s3 sync --only-show-errors --delete --cache-control "no-cache" \
+    --metadata-directive REPLACE \
+    --exclude "*.gz" \
+    "${INPUT_DIR}/${1}" "s3://${S3_BUCKET}/${1}"
 }
 export -f upload_non_gzip
+
 
 function upload_one_directory() {
   name=$(bucket_path ${1})
   printf "Uploading '${name}'\n"
-  parallel ::: "upload_gzip '${name}'" "upload_non_gzip '${name}'"
+  upload_gzip "${name}"
+  # upload_non_gzip "${name}"
+  printf "Uploading '${name}: done'\n"
 }
 export -f upload_one_directory
 
@@ -48,18 +57,18 @@ pushd "${INPUT_DIR}" >/dev/null
 
   for f in *.json; do
     aws s3 cp \
-      --cache-control "max-age=2592000, public" \
+      --cache-control "no-cache" \
       --metadata-directive REPLACE \
       "${INPUT_DIR}/$f" "s3://${S3_BUCKET}/"
   done
 
   for f in *.json.gz; do
     aws s3 cp \
-      --cache-control "max-age=2592000, public" \
-    --content-encoding=gzip --metadata-directive REPLACE \
+      --cache-control "no-cache" \
+      --content-encoding=gzip --metadata-directive REPLACE \
       "${INPUT_DIR}/$f" "s3://${S3_BUCKET}/"
   done
 
 popd >/dev/null
 
-find "${INPUT_DIR}" -mindepth 2 -maxdepth 2 -type d | sort -h | parallel upload_one_directory
+find "${INPUT_DIR}" -mindepth 2 -maxdepth 2 -type d | sort -h | parallel -j8 upload_one_directory

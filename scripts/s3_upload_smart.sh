@@ -51,7 +51,7 @@ content_type() {
 export -f content_type
 
 upload() {
-  aws s3 cp --only-show-errors --cache-control "max-age=2592000, public" $(content_encoding "${1}") $(content_type "${1}") "-" "s3://${S3_BUCKET}/${1}"
+  aws s3 cp --only-show-errors --cache-control "no-cache" $(content_encoding "${1}") $(content_type "${1}") "-" "s3://${S3_BUCKET}/${1}"
 }
 export -f upload
 
