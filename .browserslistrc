@@ -1,3 +1,8 @@
+[production]
 defaults
-IE >= 11
-since 2015
+cover 99%
+since 2017
+
+[development]
+last 10 Chrome versions
+last 10 Firefox versions
