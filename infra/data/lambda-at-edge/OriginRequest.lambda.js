@@ -1,23 +1,16 @@
-// Implements rewrite of non-gz to gz URLs using AWS Lambda@Edge. This is
-// useful if you have precompressed your files.
+/* eslint-disable prefer-destructuring */
+// Implements rewrite of non-compressed to .gz URLs using AWS
+// Lambda@Edge. This is useful if you have precompressed your files.
 //
-// Usage: Create an AWS Lambda function and attach it to "Origin Request" event
-// of a Cloudfront distribution
+// Usage:
+// Create an AWS Lambda function and attach it to "Origin Request" event of a
+// Cloudfront distribution
 
-const ARCHIVE_EXTS = [
-  '.7z',
-  '.br',
-  '.bz2',
-  '.gz',
-  '.lzma',
-  '.xz',
-  '.zip',
-  '.zst',
-]
+const ARCHIVE_EXTS = ['.7z', '.br', '.bz2', '.gz', '.lzma', '.xz', '.zip', '.zst']
 
 function getHeader(headers, headerName) {
   const header = headers[headerName.toLowerCase()]
-  if((!header) || (!(header[0])) || (!(header[0].value))) {
+  if (!header || !header[0] || !header[0].value) {
     return undefined
   }
   return header[0].value
@@ -25,10 +18,10 @@ function getHeader(headers, headerName) {
 
 function acceptsEncoding(headers, encoding) {
   const ae = getHeader(headers, 'Accept-Encoding')
-  if(!ae || typeof ae != 'string') {
+  if (!ae || typeof ae != 'string') {
     return false
   }
-  return ae.split(',').some(e => e.trim().toLowerCase().startsWith(encoding.toLowerCase()))
+  return ae.split(',').some((e) => e.trim().toLowerCase().startsWith(encoding.toLowerCase()))
 }
 
 function handler(event, context, callback) {
@@ -37,8 +30,8 @@ function handler(event, context, callback) {
 
   // If not an archive file (which are not precompressed), rewrite the URL to
   // get the corresponding .gz file
-  if(!ARCHIVE_EXTS.every(ext => request.uri.endsWith(ext))) {
-    if(acceptsEncoding(headers, 'gzip')) {
+  if (ARCHIVE_EXTS.every((ext) => !request.uri.endsWith(ext))) {
+    if (acceptsEncoding(headers, 'gzip')) {
       request.uri += '.gz'
     }
   }
@@ -47,4 +40,3 @@ function handler(event, context, callback) {
 }
 
 exports.handler = handler
-

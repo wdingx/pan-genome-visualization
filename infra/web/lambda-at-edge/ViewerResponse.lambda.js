@@ -1,4 +1,3 @@
-/* eslint-disable prefer-destructuring */
 // Adds additional headers to the response, including security headers.
 // Suited for websites.
 //
@@ -9,22 +8,14 @@
 // event of a Cloudfront distribution
 
 const FEATURE_POLICY = {
-  'accelerometer': `'none'`,
-  'autoplay': `'none'`,
-  'camera': `'none'`,
-  'document-domain': `'none'`,
-  'encrypted-media': `'none'`,
-  'fullscreen': `'none'`,
-  'geolocation': `'none'`,
-  'gyroscope': `'none'`,
-  'magnetometer': `'none'`,
-  'microphone': `'none'`,
-  'midi': `'none'`,
-  'payment': `'none'`,
-  'picture-in-picture': `'none'`,
-  'sync-xhr': `'none'`,
-  'usb': `'none'`,
-  'xr-spatial-tracking': `'none'`,
+  accelerometer: `'none'`,
+  camera: `'none'`,
+  geolocation: `'none'`,
+  gyroscope: `'none'`,
+  magnetometer: `'none'`,
+  microphone: `'none'`,
+  payment: `'none'`,
+  usb: `'none'`,
 }
 
 function generateFeaturePolicyHeader(featurePolicyObject) {
@@ -35,46 +26,14 @@ function generateFeaturePolicyHeader(featurePolicyObject) {
 
 const PERMISSIONS_POLICY = {
   'accelerometer': '()',
-  'ambient-light-sensor': '()',
-  'autoplay': '()',
-  'battery': '()',
   'camera': '()',
-  'clipboard-read': '()',
-  'clipboard-write': '()',
-  'conversion-measurement': '()',
-  'cross-origin-isolated': '()',
-  'display-capture': '()',
-  'document-domain': '()',
-  'encrypted-media': '()',
-  'execution-while-not-rendered': '()',
-  'execution-while-out-of-viewport': '()',
-  'focus-without-user-activation': '()',
-  'fullscreen': '()',
-  'gamepad': '()',
   'geolocation': '()',
   'gyroscope': '()',
-  'hid': '()',
-  'idle-detection': '()',
-  'interest-cohort': '()',
-  'keyboard-map': '()',
   'magnetometer': '()',
   'microphone': '()',
-  'midi': '()',
-  'navigation-override': '()',
   'payment': '()',
-  'picture-in-picture': '()',
-  'publickey-credentials-get': '()',
-  'screen-wake-lock': '()',
-  'serial': '()',
-  'speaker-selection': '()',
-  'sync-script': '()',
-  'sync-xhr': '()',
-  'trust-token-redemption': '()',
   'usb': '()',
-  'vertical-scroll': '()',
-  'web-share': '()',
-  'window-placement': '()',
-  'xr-spatial-tracking': '()',
+  'interest-cohort': '()',
 }
 
 function generatePermissionsPolicyHeader(permissionsPolicyObject) {
@@ -82,7 +41,6 @@ function generatePermissionsPolicyHeader(permissionsPolicyObject) {
     .map(([policy, value]) => `${policy}=${value}`)
     .join(', ')
 }
-
 const NEW_HEADERS = {
   'Content-Security-Policy':
     `default-src 'self' *.pangenome.org; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.pangenome.org maxcdn.bootstrapcdn.com; style-src 'self' 'unsafe-inline' maxcdn.bootstrapcdn.com fonts.googleapis.com; font-src 'self' maxcdn.bootstrapcdn.com fonts.googleapis.com fonts.gstatic.com;img-src 'self' data:; connect-src *; frame-src 'self' player.vimeo.com`,
@@ -99,10 +57,7 @@ const NEW_HEADERS = {
 
 function addHeaders(headersObject) {
   return Object.fromEntries(
-    Object.entries(headersObject).map(([header, value]) => [header.toLowerCase(), [{
-      key: header,
-      value
-    }]]),
+    Object.entries(headersObject).map(([header, value]) => [header.toLowerCase(), [{ key: header, value }]]),
   )
 }
 
@@ -110,11 +65,11 @@ const HEADERS_TO_REMOVE = new Set(['server', 'via'])
 
 function filterHeaders(headers) {
   return Object.entries(headers).reduce((result, [key, value]) => {
-    if(HEADERS_TO_REMOVE.has(key.toLowerCase())) {
+    if (HEADERS_TO_REMOVE.has(key.toLowerCase())) {
       return result
     }
 
-    if(key.toLowerCase().includes('powered-by')) {
+    if (key.toLowerCase().includes('powered-by')) {
       return result
     }
 
@@ -122,6 +77,7 @@ function filterHeaders(headers) {
   }, {})
 }
 
+// eslint-disable-next-line unused-imports/no-unused-vars
 function modifyHeaders({ request, response }) {
   let newHeaders = addHeaders(NEW_HEADERS)
 
