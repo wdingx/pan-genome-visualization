@@ -11,6 +11,8 @@ if(!DATA_ROOT_URL) {
   throw new Error('Environment variable \'DATA_ROOT_URL\' needs to be set')
 }
 
+const PLAUSIBLE_IO_DOMAIN = process.env.PLAUSIBLE_IO_DOMAIN
+
 const readFile = util.promisify(fs.readFile)
 const writeFile = util.promisify(fs.writeFile)
 
@@ -19,6 +21,7 @@ async function renderPathogenHtml(pathogen) {
     pretty: true,
     ...pathogen,
     DATA_ROOT_URL,
+    PLAUSIBLE_IO_DOMAIN,
   })
   return writeFile(`public/${pathogen.pathogenName}.html`, html)
 }
