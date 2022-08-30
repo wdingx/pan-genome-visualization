@@ -31,6 +31,7 @@ jobs:
           echo "AWS_DEFAULT_REGION=${{ secrets.RELEASE_AWS_DEFAULT_REGION }}" >> $GITHUB_ENV
           echo "AWS_S3_BUCKET=${{ secrets.RELEASE_AWS_S3_BUCKET }}" >> $GITHUB_ENV
           echo "AWS_CLOUDFRONT_DISTRIBUTION_ID=${{ secrets.RELEASE_AWS_CLOUDFRONT_DISTRIBUTION_ID }}" >> $GITHUB_ENV
+          echo "PLAUSIBLE_IO_DOMAIN=pangenome.org" >> $GITHUB_ENV
 
       - name: Setup environment (master)
         if: endsWith(github.ref, '/static-app')
@@ -42,6 +43,7 @@ jobs:
           echo "AWS_DEFAULT_REGION=${{ secrets.MASTER_AWS_DEFAULT_REGION }}" >> $GITHUB_ENV
           echo "AWS_S3_BUCKET=${{ secrets.MASTER_AWS_S3_BUCKET }}" >> $GITHUB_ENV
           echo "AWS_CLOUDFRONT_DISTRIBUTION_ID=${{ secrets.MASTER_AWS_CLOUDFRONT_DISTRIBUTION_ID }}" >> $GITHUB_ENV
+          echo "PLAUSIBLE_IO_DOMAIN=master.pangenome.org" >> $GITHUB_ENV
 
       - name: Checkout source code
         uses: actions/checkout@v3

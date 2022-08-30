@@ -1,12 +1,18 @@
+const dotenv = require('dotenv')
 const jade = require('jade')
 const fs = require('fs')
 const util = require('util')
 
+dotenv.config()
+
 const writeFile = util.promisify(fs.writeFile)
+
+const PLAUSIBLE_IO_DOMAIN = process.env.PLAUSIBLE_IO_DOMAIN
 
 async function renderPageHtml(page) {
   const html = jade.renderFile(`views/${page}.jade`, {
     pretty: true,
+    PLAUSIBLE_IO_DOMAIN
   })
   return writeFile(`public/${page}.html`, html)
 }
