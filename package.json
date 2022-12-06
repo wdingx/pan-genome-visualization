@@ -23,7 +23,7 @@
     "datatables.net-dt": "^1.10.13",
     "dc": "^2.1.3",
     "debug": ">=2.6.9",
-    "express": "~4.13.1",
+    "express": "~4.17.3",
     "express-expose": "~0.3.4",
     "import-loader": "^1.0.1",
     "jade": "~1.11.0",
