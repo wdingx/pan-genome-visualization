@@ -23,7 +23,7 @@
     "datatables.net-dt": "^1.10.13",
     "dc": "^2.1.3",
     "debug": ">=2.6.9",
-    "express": "~4.13.1",
+    "express": "~4.18.2",
     "express-expose": "~0.3.4",
     "import-loader": "^1.0.1",
     "jade": "~1.11.0",
@@ -34,7 +34,7 @@
     "msa": "^1.0.3",
     "nouislider": "^9.2.0",
     "require-dir": "^0.3.0",
-    "serve-favicon": "~2.3.0",
+    "serve-favicon": "~2.5.0",
     "svg-pan-zoom": "^3.5.0"
   },
   "devDependencies": {
